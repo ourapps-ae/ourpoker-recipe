@@ -1,0 +1,3427 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-default",
+  "title": "OurPoker: default answers",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "ourapps-ae.web-host",
+      "name": "Web host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/web-host",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "web-shell",
+          "name": "Web shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/web-shell",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "applicationId",
+          "name": "Applicationid",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationName",
+          "name": "Applicationname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "shortName",
+          "name": "Shortname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "themeColour",
+          "name": "Themecolour",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "backgroundColour",
+          "name": "Backgroundcolour",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "iconPath",
+          "name": "Iconpath",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "icon"
+        },
+        {
+          "id": "webAddress",
+          "name": "Webaddress",
+          "type": "string",
+          "required": true,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.apple-host",
+      "name": "Apple host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/apple-host",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "apple-shell",
+          "name": "Apple shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/apple-shell",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "bundleIdentifier",
+          "name": "Bundleidentifier",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "displayName",
+          "name": "Displayname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "targets",
+          "name": "Targets",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "web ios android macos windows tvos"
+        },
+        {
+          "id": "deploymentTargets",
+          "name": "Deploymenttargets",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "ios17 tvos17 macos14"
+        },
+        {
+          "id": "scheme",
+          "name": "Scheme",
+          "type": "string",
+          "required": true,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.android-host",
+      "name": "Android host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/android-host",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "android-shell",
+          "name": "Android shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/android-shell",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "packageId",
+          "name": "Packageid",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationName",
+          "name": "Applicationname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "minSdk",
+          "name": "Minsdk",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 26
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.windows-desktop",
+      "name": "Windows desktop",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/windows-desktop",
+      "version": "0.3.1",
+      "ports": [
+        {
+          "id": "configuration",
+          "name": "Host configuration",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/windows-desktop-configuration",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "facility",
+          "name": "Windows desktop",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/desktop-host",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.server-host",
+      "name": "Server host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/server-host",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "room-session",
+          "name": "Room session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "room-directory",
+          "name": "Room directory",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-directory",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "server-host",
+          "name": "Server host",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/server-host",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "provider",
+          "name": "Provider",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "accountReference",
+          "name": "Accountreference",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "none"
+        },
+        {
+          "id": "allowedOrigins",
+          "name": "Allowedorigins",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "http://localhost:5173"
+        },
+        {
+          "id": "roomPrefix",
+          "name": "Roomprefix",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "region",
+          "name": "Region",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "any"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.ourapps-release",
+      "name": "Ourapps release",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/ourapps-release",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "release-pipeline",
+          "name": "Release pipeline",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/release-pipeline",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "targets",
+          "name": "Targets",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationId",
+          "name": "Applicationid",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationName",
+          "name": "Applicationname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "manifestUrl",
+          "name": "Manifesturl",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "https://ourapps.app"
+        },
+        {
+          "id": "storeCredentials",
+          "name": "Storecredentials",
+          "type": "string",
+          "required": false,
+          "secret": true
+        },
+        {
+          "id": "bundleIdentifier",
+          "name": "Bundleidentifier",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "androidSigning",
+          "name": "Androidsigning",
+          "type": "string",
+          "required": false,
+          "secret": true
+        },
+        {
+          "id": "webDeploy",
+          "name": "Webdeploy",
+          "type": "string",
+          "required": false,
+          "secret": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.realtime-rooms",
+      "name": "Realtime rooms",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/realtime-rooms",
+      "version": "0.4.0",
+      "ports": [
+        {
+          "id": "game",
+          "name": "Game adapter",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "session",
+          "name": "Room session",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.room-directory",
+      "name": "Room directory",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/room-directory",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "room-session",
+          "name": "Room session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "room-directory",
+          "name": "Room directory",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/room-directory",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "roomCapacity",
+          "name": "Roomcapacity",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "maxConnections",
+          "name": "Maxconnections",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1000
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.guest-identity",
+      "name": "Guest identity",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/guest-identity",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "nameMinLength",
+          "name": "Nameminlength",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "nameMaxLength",
+          "name": "Namemaxlength",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 20
+        },
+        {
+          "id": "tokenRotationSeconds",
+          "name": "Tokenrotationseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.presence",
+      "name": "Presence",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/presence",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "presence",
+          "name": "Presence",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/presence",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "awayAfterSeconds",
+          "name": "Awayafterseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "dropAfterSeconds",
+          "name": "Dropafterseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1800
+        },
+        {
+          "id": "hostAbsentRule",
+          "name": "Hostabsentrule",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "pause"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.invitations",
+      "name": "Invitations",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/invitations",
+      "version": "0.1.0",
+      "ports": [
+        {
+          "id": "invitations",
+          "name": "Invitations",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/invitations",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "inviteAddress",
+          "name": "Inviteaddress",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "codeLength",
+          "name": "Codelength",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 6
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.private-views",
+      "name": "Private views",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/private-views",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "private-views",
+          "name": "Private views",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/private-views",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.display-mode",
+      "name": "Display mode",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/display-mode",
+      "version": "0.3.1",
+      "ports": [
+        {
+          "id": "configuration",
+          "name": "Host configuration",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/display-mode-configuration",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "facility",
+          "name": "Display mode",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/display-policy",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.video-calls",
+      "name": "Video calls",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/video-calls",
+      "version": "0.3.1",
+      "ports": [
+        {
+          "id": "configuration",
+          "name": "Host configuration",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/video-calls-configuration",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "facility",
+          "name": "Video calls",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/media-session",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "enabled",
+          "name": "Enabled",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "serviceUrl",
+          "name": "Serviceurl",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "keyReference",
+          "name": "Keyreference",
+          "type": "string",
+          "required": false,
+          "secret": true
+        },
+        {
+          "id": "secretReference",
+          "name": "Secretreference",
+          "type": "string",
+          "required": false,
+          "secret": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.preferences",
+      "name": "Preferences",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/preferences",
+      "version": "0.1.0",
+      "ports": [
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "defaultSound",
+          "name": "Defaultsound",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "defaultMicrophoneOn",
+          "name": "Defaultmicrophoneon",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "defaultCameraOn",
+          "name": "Defaultcameraon",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.turn-engine",
+      "name": "Turn engine",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/turn-engine",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "game-rules",
+          "name": "Game rules",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-rules",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "seating",
+          "name": "Seating",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/seating",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "game-clock",
+          "name": "Game clock",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-clock",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "private-views",
+          "name": "Private views",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/private-views",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "presence",
+          "name": "Presence",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/presence",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "tournament",
+          "name": "Tournament",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/tournament",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "computer-players",
+          "name": "Computer players",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/computer-players",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "round-history",
+          "name": "Round history",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/round-history",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "rules-settings",
+          "name": "Rules settings",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/rules-settings",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "game-adapter",
+          "name": "Game adapter",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "decisionSeconds",
+          "name": "Decisionseconds",
+          "type": "number",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "settleMs",
+          "name": "Settlems",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 4000
+        },
+        {
+          "id": "staleMinutes",
+          "name": "Staleminutes",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "standingsSeconds",
+          "name": "Standingsseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 20
+        },
+        {
+          "id": "lobbyDropSeconds",
+          "name": "Lobbydropseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 60
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.game-clock",
+      "name": "Game clock",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/game-clock",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "game-clock",
+          "name": "Game clock",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-clock",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "decisionSeconds",
+          "name": "Decisionseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "onTimeout",
+          "name": "Ontimeout",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "check-or-fold"
+        },
+        {
+          "id": "pauseFreezes",
+          "name": "Pausefreezes",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.seating",
+      "name": "Seating",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/seating",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "seating",
+          "name": "Seating",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/seating",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "minimumPlayers",
+          "name": "Minimumplayers",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 2
+        },
+        {
+          "id": "maximumPlayers",
+          "name": "Maximumplayers",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "seating",
+          "name": "Seating",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "random"
+        },
+        {
+          "id": "returnToStack",
+          "name": "Returntostack",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "hostRemovesPeople",
+          "name": "Hostremovespeople",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.fair-shuffle",
+      "name": "Fair shuffle",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/fair-shuffle",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "random-source",
+          "name": "Random source",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/random-source",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "source",
+          "name": "Source",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "secure"
+        },
+        {
+          "id": "seed",
+          "name": "Seed",
+          "type": "string",
+          "required": false,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.card-deck",
+      "name": "Card deck",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/card-deck",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "random-source",
+          "name": "Random source",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/random-source",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "decks",
+          "name": "Decks",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "jokers",
+          "name": "Jokers",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.computer-players",
+      "name": "Computer players",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/computer-players",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "player-strategy",
+          "name": "Player strategy",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/player-strategy",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "game-clock",
+          "name": "Game clock",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-clock",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "seating",
+          "name": "Seating",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/seating",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "computer-players",
+          "name": "Computer players",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/computer-players",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "names",
+          "name": "Names",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "Robin Sam Alex Jordan Casey Morgan Taylor Riley"
+        },
+        {
+          "id": "mode",
+          "name": "Mode",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "on-request"
+        },
+        {
+          "id": "thinkMinMs",
+          "name": "Thinkminms",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 300
+        },
+        {
+          "id": "thinkSpreadMs",
+          "name": "Thinkspreadms",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1200
+        },
+        {
+          "id": "minimumGapMs",
+          "name": "Minimumgapms",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 4000
+        },
+        {
+          "id": "rebuyDelayMs",
+          "name": "Rebuydelayms",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 4000
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.chip-ledger",
+      "name": "Chip ledger",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/chip-ledger",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "chip-ledger",
+          "name": "Chip ledger",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/chip-ledger",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "startingStack",
+          "name": "Startingstack",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 5000
+        },
+        {
+          "id": "minimumUnit",
+          "name": "Minimumunit",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "oddChipRule",
+          "name": "Oddchiprule",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "clockwise-after-button"
+        },
+        {
+          "id": "sidePots",
+          "name": "Sidepots",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "seats",
+          "name": "Seats",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 9
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.level-schedule",
+      "name": "Level schedule",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/level-schedule",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "level-schedule",
+          "name": "Level schedule",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/level-schedule",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "levelSeconds",
+          "name": "Levelseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 600
+        },
+        {
+          "id": "afterLastLevel",
+          "name": "Afterlastlevel",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "double"
+        },
+        {
+          "id": "multiplier",
+          "name": "Multiplier",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 2
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.tournament",
+      "name": "Tournament",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/tournament",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "chip-ledger",
+          "name": "Chip ledger",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/chip-ledger",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "level-schedule",
+          "name": "Level schedule",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/level-schedule",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "seating",
+          "name": "Seating",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/seating",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "tournament",
+          "name": "Tournament",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/tournament",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "startingStack",
+          "name": "Startingstack",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 5000
+        },
+        {
+          "id": "rebuysPerPlayer",
+          "name": "Rebuysperplayer",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "rebuyStack",
+          "name": "Rebuystack",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 5000
+        },
+        {
+          "id": "lastRebuyLevel",
+          "name": "Lastrebuylevel",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 3
+        },
+        {
+          "id": "rebuyDecisionSeconds",
+          "name": "Rebuydecisionseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "tiebreak",
+          "name": "Tiebreak",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "stackAtDeal"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.round-history",
+      "name": "Round history",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/round-history",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "round-history",
+          "name": "Round history",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/round-history",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "maxRounds",
+          "name": "Maxrounds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 50
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.rules-settings",
+      "name": "Rules settings",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/rules-settings",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "rules-settings",
+          "name": "Rules settings",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/rules-settings",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "rulesFile",
+          "name": "Rulesfile",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "house-rules"
+        },
+        {
+          "id": "strict",
+          "name": "Strict",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.poker-hand-ranking",
+      "name": "Poker hand ranking",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/poker-hand-ranking",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.poker-odds",
+      "name": "Poker odds",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/poker-odds",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-odds",
+          "name": "Poker odds",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/poker-odds",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "sampleBoards",
+          "name": "Sampleboards",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 2000
+        },
+        {
+          "id": "cacheSize",
+          "name": "Cachesize",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 500
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.holdem-rules",
+      "name": "Hold'em rules",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/holdem-rules",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "chip-ledger",
+          "name": "Chip ledger",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/chip-ledger",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "level-schedule",
+          "name": "Level schedule",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/level-schedule",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "rules-settings",
+          "name": "Rules settings",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/rules-settings",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "game-rules",
+          "name": "Game rules",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-rules",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "seats",
+          "name": "Seats",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "minimumOpeningBetBigBlinds",
+          "name": "Minimumopeningbetbigblinds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "revealAtRunout",
+          "name": "Revealatrunout",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.poker-strategy",
+      "name": "Poker strategy",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/poker-strategy",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-odds",
+          "name": "Poker odds",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/poker-odds",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "player-strategy",
+          "name": "Player strategy",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/player-strategy",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "difficulty",
+          "name": "Difficulty",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 2
+        },
+        {
+          "id": "aggression",
+          "name": "Aggression",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 50
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.theme",
+      "name": "Theme",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/theme",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "themeName",
+          "name": "Themename",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "night"
+        },
+        {
+          "id": "primaryColour",
+          "name": "Primarycolour",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "tableColour",
+          "name": "Tablecolour",
+          "type": "string",
+          "required": false,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.controls",
+      "name": "Controls",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/controls",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.table-layout",
+      "name": "Table layout",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/table-layout",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "table-layout",
+          "name": "Table layout",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/table-layout",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.card-graphics",
+      "name": "Card graphics",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/card-graphics",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-graphics",
+          "name": "Card graphics",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/card-graphics",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "backStyle",
+          "name": "Backstyle",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "stripes"
+        },
+        {
+          "id": "cornerStyle",
+          "name": "Cornerstyle",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "rounded"
+        },
+        {
+          "id": "cardWidth",
+          "name": "Cardwidth",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 56
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.chip-graphics",
+      "name": "Chip graphics",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/chip-graphics",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "chip-graphics",
+          "name": "Chip graphics",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/chip-graphics",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "denominations",
+          "name": "Denominations",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "casino 5000 1000 500 100 25 5 1"
+        },
+        {
+          "id": "chipColours",
+          "name": "Chipcolours",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "casino"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.sound-cues",
+      "name": "Sound cues",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/sound-cues",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "sound-cues",
+          "name": "Sound cues",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/sound-cues",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "soundManifest",
+          "name": "Soundmanifest",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "sounds"
+        },
+        {
+          "id": "defaultMuted",
+          "name": "Defaultmuted",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.guided-tour",
+      "name": "Guided tour",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/guided-tour",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.translations",
+      "name": "Translations",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/translations",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "language",
+          "name": "Translations",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "languages",
+          "name": "Languages",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "en fr de es"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.ourpoker",
+      "name": "OurPoker",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "game-adapter",
+          "name": "Game adapter",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "web-shell",
+          "name": "Web shell",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/web-shell",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "apple-shell",
+          "name": "Apple shell",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/apple-shell",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "android-shell",
+          "name": "Android shell",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/android-shell",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "desktop-host",
+          "name": "Desktop host",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/desktop-host",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "server-host",
+          "name": "Server host",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/server-host",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "release-pipeline",
+          "name": "Release pipeline",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/release-pipeline",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "invitations",
+          "name": "Invitations",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/invitations",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "display-policy",
+          "name": "Display policy",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/display-policy",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "media-session",
+          "name": "Media session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/media-session",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "table-layout",
+          "name": "Table layout",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/table-layout",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-graphics",
+          "name": "Card graphics",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-graphics",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "chip-graphics",
+          "name": "Chip graphics",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/chip-graphics",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "sound-cues",
+          "name": "Sound cues",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/sound-cues",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "updates",
+          "name": "Updates",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/updates",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-game-adapter",
+          "name": "Poker game adapter",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "applicationId",
+          "name": "applicationId",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker"
+        },
+        {
+          "id": "applicationName",
+          "name": "applicationName",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "OurPoker"
+        },
+        {
+          "id": "packageId",
+          "name": "packageId",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "app.ourapps.ourpoker"
+        },
+        {
+          "id": "scheme",
+          "name": "scheme",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker"
+        },
+        {
+          "id": "serverAddress",
+          "name": "serverAddress",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "http://localhost:8788"
+        },
+        {
+          "id": "webAddress",
+          "name": "webAddress",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "http://localhost:5173"
+        },
+        {
+          "id": "roomPrefix",
+          "name": "roomPrefix",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker-"
+        },
+        {
+          "id": "inviteAddress",
+          "name": "inviteAddress",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "https://store.example/l/0123456789abcdef01234567"
+        },
+        {
+          "id": "updatesEnabled",
+          "name": "updatesEnabled",
+          "type": "boolean",
+          "required": true,
+          "secret": false,
+          "default": false
+        },
+        {
+          "id": "modeEvent",
+          "name": "modeEvent",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker-mode"
+        },
+        {
+          "id": "signingEnvironmentPrefix",
+          "name": "signingEnvironmentPrefix",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "OURPOKER"
+        },
+        {
+          "id": "maximumPlayers",
+          "name": "maximumPlayers",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "startingStack",
+          "name": "startingStack",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 5000
+        },
+        {
+          "id": "levelSeconds",
+          "name": "levelSeconds",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 600
+        },
+        {
+          "id": "rebuysPerPlayer",
+          "name": "rebuysPerPlayer",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "decisionSeconds",
+          "name": "decisionSeconds",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "computerPlayers",
+          "name": "computerPlayers",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "on-request"
+        }
+      ]
+    }
+  ],
+  "instances": [
+    {
+      "id": "web-host",
+      "name": "Web host",
+      "definition": "ourapps-ae.web-host",
+      "configuration": {
+        "iconPath": "icon",
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "shortName": "OurPoker",
+        "themeColour": "primary",
+        "backgroundColour": "background",
+        "webAddress": "http://localhost:5173"
+      }
+    },
+    {
+      "id": "apple-host",
+      "name": "Apple host",
+      "definition": "ourapps-ae.apple-host",
+      "configuration": {
+        "targets": "web ios android macos windows tvos",
+        "deploymentTargets": "ios17 tvos17 macos14",
+        "bundleIdentifier": "app.ourapps.ourpoker",
+        "displayName": "OurPoker",
+        "scheme": "OurPoker"
+      }
+    },
+    {
+      "id": "android-host",
+      "name": "Android host",
+      "definition": "ourapps-ae.android-host",
+      "configuration": {
+        "minSdk": 26,
+        "packageId": "app.ourapps.ourpoker",
+        "applicationName": "OurPoker"
+      }
+    },
+    {
+      "id": "windows-desktop",
+      "name": "Windows desktop",
+      "definition": "ourapps-ae.windows-desktop",
+      "configuration": {}
+    },
+    {
+      "id": "server-host",
+      "name": "Server host",
+      "definition": "ourapps-ae.server-host",
+      "configuration": {
+        "accountReference": "ourpoker-cloudflare-account",
+        "allowedOrigins": "http://localhost:5173",
+        "region": "any",
+        "roomPrefix": "ourpoker-",
+        "provider": "cloudflare-free"
+      }
+    },
+    {
+      "id": "ourapps-release",
+      "name": "Ourapps release",
+      "definition": "ourapps-ae.ourapps-release",
+      "configuration": {
+        "manifestUrl": "https://ourapps.app",
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "bundleIdentifier": "app.ourapps.ourpoker",
+        "targets": "web ios android macos windows tvos",
+        "storeCredentials": {
+          "secretRef": "ourpoker/store-credentials"
+        },
+        "androidSigning": {
+          "secretRef": "ourpoker/android-signing"
+        },
+        "webDeploy": {
+          "secretRef": "ourpoker/web-deploy"
+        }
+      }
+    },
+    {
+      "id": "realtime-rooms",
+      "name": "Realtime rooms",
+      "definition": "ourapps-ae.realtime-rooms",
+      "configuration": {}
+    },
+    {
+      "id": "room-directory",
+      "name": "Room directory",
+      "definition": "ourapps-ae.room-directory",
+      "configuration": {
+        "roomCapacity": 9,
+        "maxConnections": 1000
+      }
+    },
+    {
+      "id": "guest-identity",
+      "name": "Guest identity",
+      "definition": "ourapps-ae.guest-identity",
+      "configuration": {
+        "nameMinLength": 1,
+        "nameMaxLength": 20,
+        "tokenRotationSeconds": 0
+      }
+    },
+    {
+      "id": "presence",
+      "name": "Presence",
+      "definition": "ourapps-ae.presence",
+      "configuration": {
+        "awayAfterSeconds": 30,
+        "dropAfterSeconds": 1800,
+        "hostAbsentRule": "pause"
+      }
+    },
+    {
+      "id": "invitations",
+      "name": "Invitations",
+      "definition": "ourapps-ae.invitations",
+      "configuration": {
+        "codeLength": 6,
+        "inviteAddress": "http://localhost:5173"
+      }
+    },
+    {
+      "id": "private-views",
+      "name": "Private views",
+      "definition": "ourapps-ae.private-views",
+      "configuration": {}
+    },
+    {
+      "id": "display-mode",
+      "name": "Display mode",
+      "definition": "ourapps-ae.display-mode",
+      "configuration": {}
+    },
+    {
+      "id": "video-calls",
+      "name": "Video calls",
+      "definition": "ourapps-ae.video-calls",
+      "configuration": {
+        "enabled": true,
+        "keyReference": {
+          "secretRef": "ourpoker/video-key"
+        },
+        "secretReference": {
+          "secretRef": "ourpoker/video-secret"
+        }
+      }
+    },
+    {
+      "id": "preferences",
+      "name": "Preferences",
+      "definition": "ourapps-ae.preferences",
+      "configuration": {
+        "defaultSound": true,
+        "defaultMicrophoneOn": true,
+        "defaultCameraOn": true
+      }
+    },
+    {
+      "id": "turn-engine",
+      "name": "Turn engine",
+      "definition": "ourapps-ae.turn-engine",
+      "configuration": {
+        "settleMs": 4000,
+        "staleMinutes": 30,
+        "standingsSeconds": 20,
+        "lobbyDropSeconds": 60,
+        "decisionSeconds": 30
+      }
+    },
+    {
+      "id": "game-clock",
+      "name": "Game clock",
+      "definition": "ourapps-ae.game-clock",
+      "configuration": {
+        "decisionSeconds": 30,
+        "onTimeout": "check-or-fold",
+        "pauseFreezes": true
+      }
+    },
+    {
+      "id": "seating",
+      "name": "Seating",
+      "definition": "ourapps-ae.seating",
+      "configuration": {
+        "minimumPlayers": 2,
+        "maximumPlayers": 9,
+        "seating": "random",
+        "returnToStack": true,
+        "hostRemovesPeople": false
+      }
+    },
+    {
+      "id": "fair-shuffle",
+      "name": "Fair shuffle",
+      "definition": "ourapps-ae.fair-shuffle",
+      "configuration": {
+        "source": "secure"
+      }
+    },
+    {
+      "id": "card-deck",
+      "name": "Card deck",
+      "definition": "ourapps-ae.card-deck",
+      "configuration": {
+        "decks": 1,
+        "jokers": false
+      }
+    },
+    {
+      "id": "computer-players",
+      "name": "Computer players",
+      "definition": "ourapps-ae.computer-players",
+      "configuration": {
+        "names": "Robin Sam Alex Jordan Casey Morgan Taylor Riley",
+        "mode": "on-request",
+        "thinkMinMs": 300,
+        "thinkSpreadMs": 1200,
+        "minimumGapMs": 4000,
+        "rebuyDelayMs": 4000
+      }
+    },
+    {
+      "id": "chip-ledger",
+      "name": "Chip ledger",
+      "definition": "ourapps-ae.chip-ledger",
+      "configuration": {
+        "startingStack": 5000,
+        "minimumUnit": 1,
+        "oddChipRule": "clockwise-after-button",
+        "sidePots": true,
+        "seats": 9
+      }
+    },
+    {
+      "id": "level-schedule",
+      "name": "Level schedule",
+      "definition": "ourapps-ae.level-schedule",
+      "configuration": {
+        "levelSeconds": 600,
+        "afterLastLevel": "double",
+        "multiplier": 2
+      }
+    },
+    {
+      "id": "tournament",
+      "name": "Tournament",
+      "definition": "ourapps-ae.tournament",
+      "configuration": {
+        "startingStack": 5000,
+        "rebuysPerPlayer": 1,
+        "rebuyStack": 5000,
+        "lastRebuyLevel": 3,
+        "rebuyDecisionSeconds": 30,
+        "tiebreak": "stackAtDeal"
+      }
+    },
+    {
+      "id": "round-history",
+      "name": "Round history",
+      "definition": "ourapps-ae.round-history",
+      "configuration": {
+        "maxRounds": 50
+      }
+    },
+    {
+      "id": "rules-settings",
+      "name": "Rules settings",
+      "definition": "ourapps-ae.rules-settings",
+      "configuration": {
+        "rulesFile": "texas-holdem-house-rules",
+        "strict": true
+      }
+    },
+    {
+      "id": "poker-hand-ranking",
+      "name": "Poker hand ranking",
+      "definition": "ourapps-ae.poker-hand-ranking",
+      "configuration": {}
+    },
+    {
+      "id": "poker-odds",
+      "name": "Poker odds",
+      "definition": "ourapps-ae.poker-odds",
+      "configuration": {
+        "sampleBoards": 2000,
+        "cacheSize": 500
+      }
+    },
+    {
+      "id": "holdem-rules",
+      "name": "Hold'em rules",
+      "definition": "ourapps-ae.holdem-rules",
+      "configuration": {
+        "seats": 9,
+        "minimumOpeningBetBigBlinds": 1,
+        "revealAtRunout": true
+      }
+    },
+    {
+      "id": "poker-strategy",
+      "name": "Poker strategy",
+      "definition": "ourapps-ae.poker-strategy",
+      "configuration": {
+        "difficulty": 2,
+        "aggression": 50
+      }
+    },
+    {
+      "id": "theme",
+      "name": "Theme",
+      "definition": "ourapps-ae.theme",
+      "configuration": {
+        "themeName": "night"
+      }
+    },
+    {
+      "id": "controls",
+      "name": "Controls",
+      "definition": "ourapps-ae.controls",
+      "configuration": {}
+    },
+    {
+      "id": "table-layout",
+      "name": "Table layout",
+      "definition": "ourapps-ae.table-layout",
+      "configuration": {}
+    },
+    {
+      "id": "card-graphics",
+      "name": "Card graphics",
+      "definition": "ourapps-ae.card-graphics",
+      "configuration": {
+        "backStyle": "stripes",
+        "cornerStyle": "rounded",
+        "cardWidth": 56
+      }
+    },
+    {
+      "id": "chip-graphics",
+      "name": "Chip graphics",
+      "definition": "ourapps-ae.chip-graphics",
+      "configuration": {
+        "denominations": "casino 5000 1000 500 100 25 5 1",
+        "chipColours": "casino"
+      }
+    },
+    {
+      "id": "sound-cues",
+      "name": "Sound cues",
+      "definition": "ourapps-ae.sound-cues",
+      "configuration": {
+        "soundManifest": "sounds",
+        "defaultMuted": false
+      }
+    },
+    {
+      "id": "guided-tour",
+      "name": "Guided tour",
+      "definition": "ourapps-ae.guided-tour",
+      "configuration": {}
+    },
+    {
+      "id": "translations",
+      "name": "Translations",
+      "definition": "ourapps-ae.translations",
+      "configuration": {
+        "languages": "en fr de es"
+      }
+    },
+    {
+      "id": "application",
+      "name": "OurPoker",
+      "definition": "ourapps-ae.ourpoker",
+      "configuration": {
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "packageId": "app.ourapps.ourpoker",
+        "scheme": "ourpoker",
+        "serverAddress": "http://localhost:8788",
+        "webAddress": "http://localhost:5173",
+        "roomPrefix": "ourpoker-",
+        "inviteAddress": "https://store.example/l/0123456789abcdef01234567",
+        "updatesEnabled": false,
+        "modeEvent": "ourpoker-mode",
+        "signingEnvironmentPrefix": "OURPOKER",
+        "maximumPlayers": 9,
+        "startingStack": 5000,
+        "levelSeconds": 600,
+        "rebuysPerPlayer": 1,
+        "decisionSeconds": 30,
+        "computerPlayers": "on-request"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "web-host",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "apple-host",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "android-host",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "realtime-rooms",
+        "port": "session"
+      },
+      "target": {
+        "instance": "server-host",
+        "port": "room-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "room-directory",
+        "port": "room-directory"
+      },
+      "target": {
+        "instance": "server-host",
+        "port": "room-directory"
+      }
+    },
+    {
+      "source": {
+        "instance": "application",
+        "port": "poker-game-adapter"
+      },
+      "target": {
+        "instance": "realtime-rooms",
+        "port": "game"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "realtime-rooms",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "realtime-rooms",
+        "port": "session"
+      },
+      "target": {
+        "instance": "room-directory",
+        "port": "room-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "presence",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "holdem-rules",
+        "port": "game-rules"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "game-rules"
+      }
+    },
+    {
+      "source": {
+        "instance": "seating",
+        "port": "seating"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "seating"
+      }
+    },
+    {
+      "source": {
+        "instance": "game-clock",
+        "port": "game-clock"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "game-clock"
+      }
+    },
+    {
+      "source": {
+        "instance": "private-views",
+        "port": "private-views"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "private-views"
+      }
+    },
+    {
+      "source": {
+        "instance": "presence",
+        "port": "presence"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "presence"
+      }
+    },
+    {
+      "source": {
+        "instance": "tournament",
+        "port": "tournament"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "tournament"
+      }
+    },
+    {
+      "source": {
+        "instance": "computer-players",
+        "port": "computer-players"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "computer-players"
+      }
+    },
+    {
+      "source": {
+        "instance": "round-history",
+        "port": "round-history"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "round-history"
+      }
+    },
+    {
+      "source": {
+        "instance": "rules-settings",
+        "port": "rules-settings"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "rules-settings"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "seating",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "fair-shuffle",
+        "port": "random-source"
+      },
+      "target": {
+        "instance": "card-deck",
+        "port": "random-source"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-strategy",
+        "port": "player-strategy"
+      },
+      "target": {
+        "instance": "computer-players",
+        "port": "player-strategy"
+      }
+    },
+    {
+      "source": {
+        "instance": "game-clock",
+        "port": "game-clock"
+      },
+      "target": {
+        "instance": "computer-players",
+        "port": "game-clock"
+      }
+    },
+    {
+      "source": {
+        "instance": "seating",
+        "port": "seating"
+      },
+      "target": {
+        "instance": "computer-players",
+        "port": "seating"
+      }
+    },
+    {
+      "source": {
+        "instance": "chip-ledger",
+        "port": "chip-ledger"
+      },
+      "target": {
+        "instance": "tournament",
+        "port": "chip-ledger"
+      }
+    },
+    {
+      "source": {
+        "instance": "level-schedule",
+        "port": "level-schedule"
+      },
+      "target": {
+        "instance": "tournament",
+        "port": "level-schedule"
+      }
+    },
+    {
+      "source": {
+        "instance": "seating",
+        "port": "seating"
+      },
+      "target": {
+        "instance": "tournament",
+        "port": "seating"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-deck",
+        "port": "card-deck"
+      },
+      "target": {
+        "instance": "poker-hand-ranking",
+        "port": "card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "poker-odds",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-deck",
+        "port": "card-deck"
+      },
+      "target": {
+        "instance": "poker-odds",
+        "port": "card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-deck",
+        "port": "card-deck"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "chip-ledger",
+        "port": "chip-ledger"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "chip-ledger"
+      }
+    },
+    {
+      "source": {
+        "instance": "level-schedule",
+        "port": "level-schedule"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "level-schedule"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "rules-settings",
+        "port": "rules-settings"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "rules-settings"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "poker-strategy",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-odds",
+        "port": "poker-odds"
+      },
+      "target": {
+        "instance": "poker-strategy",
+        "port": "poker-odds"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "controls",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "table-layout",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "table-layout",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "card-graphics",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "chip-graphics",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "preferences",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "sound-cues",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "preferences",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "translations",
+        "port": "language"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "language"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-engine",
+        "port": "game-adapter"
+      },
+      "target": {
+        "instance": "application",
+        "port": "game-adapter"
+      }
+    },
+    {
+      "source": {
+        "instance": "web-host",
+        "port": "web-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "web-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "apple-host",
+        "port": "apple-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "apple-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "android-host",
+        "port": "android-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "android-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "windows-desktop",
+        "port": "facility"
+      },
+      "target": {
+        "instance": "application",
+        "port": "desktop-host"
+      }
+    },
+    {
+      "source": {
+        "instance": "server-host",
+        "port": "server-host"
+      },
+      "target": {
+        "instance": "application",
+        "port": "server-host"
+      }
+    },
+    {
+      "source": {
+        "instance": "ourapps-release",
+        "port": "release-pipeline"
+      },
+      "target": {
+        "instance": "application",
+        "port": "release-pipeline"
+      }
+    },
+    {
+      "source": {
+        "instance": "invitations",
+        "port": "invitations"
+      },
+      "target": {
+        "instance": "application",
+        "port": "invitations"
+      }
+    },
+    {
+      "source": {
+        "instance": "display-mode",
+        "port": "facility"
+      },
+      "target": {
+        "instance": "application",
+        "port": "display-policy"
+      }
+    },
+    {
+      "source": {
+        "instance": "video-calls",
+        "port": "facility"
+      },
+      "target": {
+        "instance": "application",
+        "port": "media-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "table-layout",
+        "port": "table-layout"
+      },
+      "target": {
+        "instance": "application",
+        "port": "table-layout"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-graphics",
+        "port": "card-graphics"
+      },
+      "target": {
+        "instance": "application",
+        "port": "card-graphics"
+      }
+    },
+    {
+      "source": {
+        "instance": "chip-graphics",
+        "port": "chip-graphics"
+      },
+      "target": {
+        "instance": "application",
+        "port": "chip-graphics"
+      }
+    },
+    {
+      "source": {
+        "instance": "sound-cues",
+        "port": "sound-cues"
+      },
+      "target": {
+        "instance": "application",
+        "port": "sound-cues"
+      }
+    },
+    {
+      "source": {
+        "instance": "guided-tour",
+        "port": "guided-tour"
+      },
+      "target": {
+        "instance": "application",
+        "port": "guided-tour"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "application",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "preferences",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "application",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "translations",
+        "port": "language"
+      },
+      "target": {
+        "instance": "application",
+        "port": "language"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "application",
+        "port": "theme"
+      }
+    }
+  ]
+}

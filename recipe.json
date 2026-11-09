@@ -1,0 +1,1944 @@
+{
+  "format": 1,
+  "name": "ourapps-ae/ourpoker",
+  "version": "0.2.0",
+  "title": "OurPoker",
+  "summary": "A complete Texas hold'em game for two to nine players: phones, tablets, computers, the web and a television as a shared table, optional video, computer players, lessons, rebuys and rising blinds.",
+  "category": "games",
+  "tags": [
+    "cards",
+    "multiplayer",
+    "poker",
+    "texas-holdem",
+    "tournament"
+  ],
+  "targets": {
+    "client": [
+      "web",
+      "ios",
+      "android",
+      "macos",
+      "windows",
+      "tvos"
+    ],
+    "server": [
+      "hosting-provider",
+      "own-hardware"
+    ]
+  },
+  "components": [
+    {
+      "id": "web-host",
+      "name": "ourapps-ae/web-host",
+      "version": "0.2.0",
+      "configuration": {
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "shortName": "OurPoker",
+        "themeColour": "primary",
+        "backgroundColour": "background"
+      },
+      "includedWhen": {
+        "question": "targets",
+        "contains": "web"
+      }
+    },
+    {
+      "id": "apple-host",
+      "name": "ourapps-ae/apple-host",
+      "version": "0.3.0",
+      "configuration": {
+        "bundleIdentifier": "app.ourapps.ourpoker",
+        "displayName": "OurPoker",
+        "scheme": "OurPoker"
+      },
+      "includedWhen": {
+        "any": [
+          {
+            "question": "targets",
+            "contains": "ios"
+          },
+          {
+            "question": "targets",
+            "contains": "macos"
+          },
+          {
+            "question": "targets",
+            "contains": "tvos"
+          }
+        ]
+      }
+    },
+    {
+      "id": "android-host",
+      "name": "ourapps-ae/android-host",
+      "version": "0.2.0",
+      "configuration": {
+        "packageId": "app.ourapps.ourpoker",
+        "applicationName": "OurPoker"
+      },
+      "includedWhen": {
+        "question": "targets",
+        "contains": "android"
+      }
+    },
+    {
+      "id": "windows-desktop",
+      "name": "ourapps-ae/windows-desktop",
+      "version": "0.3.1",
+      "configuration": {},
+      "includedWhen": {
+        "question": "targets",
+        "contains": "windows"
+      }
+    },
+    {
+      "id": "server-host",
+      "name": "ourapps-ae/server-host",
+      "version": "0.3.0",
+      "configuration": {
+        "roomPrefix": "ourpoker-"
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "ourapps-release",
+      "name": "ourapps-ae/ourapps-release",
+      "version": "0.2.0",
+      "configuration": {
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "bundleIdentifier": "app.ourapps.ourpoker"
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "store-update",
+      "name": "ourapps-ae/store-update",
+      "version": "0.3.0",
+      "configuration": {},
+      "includedWhen": {
+        "question": "updates",
+        "equals": true
+      }
+    },
+    {
+      "id": "realtime-rooms",
+      "name": "ourapps-ae/realtime-rooms",
+      "version": "0.4.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "room-directory",
+      "name": "ourapps-ae/room-directory",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "guest-identity",
+      "name": "ourapps-ae/guest-identity",
+      "version": "0.3.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "presence",
+      "name": "ourapps-ae/presence",
+      "version": "0.2.0",
+      "configuration": {
+        "awayAfterSeconds": 30,
+        "dropAfterSeconds": 1800,
+        "hostAbsentRule": "pause"
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "invitations",
+      "name": "ourapps-ae/invitations",
+      "version": "0.1.0",
+      "configuration": {
+        "codeLength": 6
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "private-views",
+      "name": "ourapps-ae/private-views",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "display-mode",
+      "name": "ourapps-ae/display-mode",
+      "version": "0.3.1",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "video-calls",
+      "name": "ourapps-ae/video-calls",
+      "version": "0.3.1",
+      "configuration": {},
+      "includedWhen": {
+        "question": "video",
+        "equals": true
+      }
+    },
+    {
+      "id": "preferences",
+      "name": "ourapps-ae/preferences",
+      "version": "0.1.0",
+      "configuration": {
+        "defaultSound": true,
+        "defaultMicrophoneOn": true,
+        "defaultCameraOn": true
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "turn-engine",
+      "name": "ourapps-ae/turn-engine",
+      "version": "0.3.0",
+      "configuration": {
+        "settleMs": 4000,
+        "staleMinutes": 30,
+        "standingsSeconds": 20,
+        "lobbyDropSeconds": 60
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "game-clock",
+      "name": "ourapps-ae/game-clock",
+      "version": "0.2.0",
+      "configuration": {
+        "pauseFreezes": true
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "seating",
+      "name": "ourapps-ae/seating",
+      "version": "0.2.0",
+      "configuration": {
+        "hostRemovesPeople": false
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "fair-shuffle",
+      "name": "ourapps-ae/fair-shuffle",
+      "version": "0.2.0",
+      "configuration": {
+        "source": "secure"
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "card-deck",
+      "name": "ourapps-ae/card-deck",
+      "version": "0.2.0",
+      "configuration": {
+        "decks": 1,
+        "jokers": false
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "computer-players",
+      "name": "ourapps-ae/computer-players",
+      "version": "0.3.0",
+      "configuration": {
+        "names": "Robin Sam Alex Jordan Casey Morgan Taylor Riley",
+        "thinkMinMs": 300,
+        "thinkSpreadMs": 1200,
+        "minimumGapMs": 4000,
+        "rebuyDelayMs": 4000
+      },
+      "includedWhen": {
+        "not": {
+          "question": "computerPlayers",
+          "equals": "none"
+        }
+      }
+    },
+    {
+      "id": "chip-ledger",
+      "name": "ourapps-ae/chip-ledger",
+      "version": "0.3.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "level-schedule",
+      "name": "ourapps-ae/level-schedule",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "tournament",
+      "name": "ourapps-ae/tournament",
+      "version": "0.2.0",
+      "configuration": {
+        "tiebreak": "stackAtDeal"
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "round-history",
+      "name": "ourapps-ae/round-history",
+      "version": "0.2.0",
+      "configuration": {
+        "maxRounds": 50
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "rules-settings",
+      "name": "ourapps-ae/rules-settings",
+      "version": "0.2.0",
+      "configuration": {
+        "rulesFile": "texas-holdem-house-rules",
+        "strict": true
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "poker-hand-ranking",
+      "name": "ourapps-ae/poker-hand-ranking",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "poker-odds",
+      "name": "ourapps-ae/poker-odds",
+      "version": "0.2.0",
+      "configuration": {
+        "sampleBoards": 2000,
+        "cacheSize": 500
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "holdem-rules",
+      "name": "ourapps-ae/holdem-rules",
+      "version": "0.2.0",
+      "configuration": {
+        "revealAtRunout": true
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "poker-strategy",
+      "name": "ourapps-ae/poker-strategy",
+      "version": "0.2.0",
+      "configuration": {
+        "difficulty": 2,
+        "aggression": 50
+      },
+      "includedWhen": {
+        "not": {
+          "question": "computerPlayers",
+          "equals": "none"
+        }
+      }
+    },
+    {
+      "id": "theme",
+      "name": "ourapps-ae/theme",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "controls",
+      "name": "ourapps-ae/controls",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "table-layout",
+      "name": "ourapps-ae/table-layout",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": null
+    },
+    {
+      "id": "card-graphics",
+      "name": "ourapps-ae/card-graphics",
+      "version": "0.2.0",
+      "configuration": {
+        "cornerStyle": "rounded",
+        "cardWidth": 56
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "chip-graphics",
+      "name": "ourapps-ae/chip-graphics",
+      "version": "0.2.0",
+      "configuration": {
+        "denominations": "casino 5000 1000 500 100 25 5 1",
+        "chipColours": "casino"
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "sound-cues",
+      "name": "ourapps-ae/sound-cues",
+      "version": "0.2.0",
+      "configuration": {
+        "soundManifest": "sounds",
+        "defaultMuted": false
+      },
+      "includedWhen": null
+    },
+    {
+      "id": "guided-tour",
+      "name": "ourapps-ae/guided-tour",
+      "version": "0.2.0",
+      "configuration": {},
+      "includedWhen": {
+        "question": "lessons",
+        "equals": true
+      }
+    },
+    {
+      "id": "translations",
+      "name": "ourapps-ae/translations",
+      "version": "0.3.0",
+      "configuration": {},
+      "includedWhen": null
+    }
+  ],
+  "jobs": [
+    {
+      "id": "server",
+      "overrideQuestion": "server",
+      "candidates": [
+        {
+          "component": "ourapps-ae/server-host",
+          "profile": "cloudflare-free"
+        },
+        {
+          "component": "ourapps-ae/server-host",
+          "profile": "cloudflare-paid"
+        },
+        {
+          "component": "ourapps-ae/server-host",
+          "profile": "own-hardware"
+        }
+      ]
+    },
+    {
+      "id": "realtime",
+      "overrideQuestion": "server",
+      "candidates": [
+        {
+          "component": "ourapps-ae/realtime-rooms",
+          "profile": "free"
+        },
+        {
+          "component": "ourapps-ae/realtime-rooms",
+          "profile": "paid"
+        },
+        {
+          "component": "ourapps-ae/realtime-rooms",
+          "profile": "own-hardware"
+        }
+      ]
+    },
+    {
+      "id": "video",
+      "candidates": [
+        {
+          "component": "ourapps-ae/video-calls",
+          "profile": "free"
+        },
+        {
+          "component": "ourapps-ae/video-calls",
+          "profile": "paid"
+        },
+        {
+          "component": "ourapps-ae/video-calls",
+          "profile": "scale"
+        }
+      ]
+    }
+  ],
+  "scale": {
+    "question": "scale",
+    "bands": [
+      {
+        "id": "small",
+        "label": "small: fewer than 10 people, occasional use",
+        "load": {
+          "concurrentPeople": 10,
+          "requestsPerDay": 2000,
+          "storedMegabytes": 100
+        }
+      },
+      {
+        "id": "medium",
+        "label": "medium: up to 100 people, daily use",
+        "load": {
+          "concurrentPeople": 100,
+          "requestsPerDay": 50000,
+          "storedMegabytes": 1000
+        }
+      },
+      {
+        "id": "large",
+        "label": "large: 100 or more people, continuous use",
+        "load": {
+          "concurrentPeople": 1000,
+          "requestsPerDay": 1000000,
+          "storedMegabytes": 10000
+        }
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "targets",
+      "ask": "Which devices should the game run on?",
+      "askAgent": "Infer from the request (phone, tablet, television, computer, browser); ask only if no device is named.",
+      "type": "set",
+      "options": [
+        "web",
+        "ios",
+        "android",
+        "macos",
+        "windows",
+        "tvos"
+      ],
+      "default": [
+        "web",
+        "ios",
+        "android",
+        "macos",
+        "windows",
+        "tvos"
+      ],
+      "effects": [
+        {
+          "sets": {
+            "ourapps-release.targets": "$answer",
+            "apple-host.targets": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "webAddress",
+      "ask": "At which web address will the web version be served?",
+      "askAgent": "Ask only when the web is a target; keep http://localhost:5173 for local use, otherwise the developer's own https address.",
+      "askWhen": {
+        "question": "targets",
+        "contains": "web"
+      },
+      "type": "text",
+      "default": "http://localhost:5173",
+      "effects": [
+        {
+          "sets": {
+            "web-host.webAddress": "$answer",
+            "application.webAddress": "$answer",
+            "server-host.allowedOrigins": "$answer",
+            "invitations.inviteAddress": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bundleId",
+      "ask": "Which bundle identifier should the phone, tablet, television and Mac apps carry (for example com.yourname.poker)? Leave empty to use the one the application derives.",
+      "askAgent": "Leave empty unless the developer names one; the application derives app.ourapps.<applicationId>.",
+      "type": "text",
+      "default": "",
+      "effects": [
+        {
+          "sets": {
+            "apple-host.bundleIdentifier": "$answer",
+            "android-host.packageId": "$answer",
+            "ourapps-release.bundleIdentifier": "$answer",
+            "application.packageId": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scale",
+      "ask": "How many people will use it, and how often?",
+      "askAgent": "Choose from the group size and rhythm described: a dozen friends meeting weekly is small; a club or a few dozen people playing daily is medium; 100 or more people playing continuously is large.",
+      "type": "choice",
+      "options": [
+        "small",
+        "medium",
+        "large"
+      ],
+      "default": "small",
+      "effects": []
+    },
+    {
+      "id": "languages",
+      "ask": "Which languages should the game speak?",
+      "askAgent": "Use the languages the request names; otherwise keep all four.",
+      "type": "set",
+      "options": [
+        "en",
+        "fr",
+        "de",
+        "es"
+      ],
+      "default": [
+        "en",
+        "fr",
+        "de",
+        "es"
+      ],
+      "effects": [
+        {
+          "sets": {
+            "translations.languages": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "look",
+      "ask": "Which look should the game have?",
+      "askAgent": "Pick night (dark) or lounge (warm) from any style the request gives; otherwise keep night.",
+      "type": "choice",
+      "options": [
+        "night",
+        "lounge"
+      ],
+      "default": "night",
+      "effects": [
+        {
+          "sets": {
+            "theme.themeName": "$answer",
+            "card-graphics.backStyle": {
+              "map": {
+                "night": "stripes",
+                "lounge": "plain"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "ask": "What is the largest number of players at one table (2 to 9)?",
+      "askAgent": "Use the largest group that will sit together; keep 9 if unstated.",
+      "type": "integer",
+      "min": 2,
+      "max": 9,
+      "default": 9,
+      "effects": [
+        {
+          "sets": {
+            "seating.maximumPlayers": "$answer",
+            "holdem-rules.seats": "$answer",
+            "chip-ledger.seats": "$answer",
+            "room-directory.roomCapacity": "$answer",
+            "application.maximumPlayers": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "startingChips",
+      "ask": "How many chips does each player start with?",
+      "askAgent": "Use the number in the request; keep 5000 if unstated.",
+      "type": "integer",
+      "min": 100,
+      "max": 1000000,
+      "default": 5000,
+      "effects": [
+        {
+          "sets": {
+            "tournament.startingStack": "$answer",
+            "tournament.rebuyStack": "$answer",
+            "application.startingStack": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "levelSeconds",
+      "ask": "How many seconds does each blind level last?",
+      "askAgent": "Convert minutes to seconds; keep 600 (10 minutes) if unstated.",
+      "type": "integer",
+      "min": 60,
+      "max": 3600,
+      "default": 600,
+      "effects": [
+        {
+          "sets": {
+            "level-schedule.levelSeconds": "$answer",
+            "application.levelSeconds": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rebuys",
+      "ask": "How many rebuys may each player take (0 for none)?",
+      "askAgent": "Use 0 if the request says no rebuys; keep 1 (until level 3) if unstated.",
+      "type": "integer",
+      "min": 0,
+      "max": 5,
+      "default": 1,
+      "effects": [
+        {
+          "sets": {
+            "tournament.rebuysPerPlayer": "$answer",
+            "application.rebuysPerPlayer": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "decisionSeconds",
+      "ask": "How many seconds does a player have to act before the game checks or folds for them?",
+      "askAgent": "Keep 30 unless the request names a pace.",
+      "type": "integer",
+      "min": 5,
+      "max": 300,
+      "default": 30,
+      "effects": [
+        {
+          "sets": {
+            "game-clock.decisionSeconds": "$answer",
+            "turn-engine.decisionSeconds": "$answer",
+            "application.decisionSeconds": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "computerPlayers",
+      "ask": "Should computer players be available? none: never; on-request: a person adds one and one plays for someone who is away; fill-empty: also fills every empty seat when the game starts.",
+      "askAgent": "on-request unless the request says people only (none) or asks for full tables (fill-empty).",
+      "type": "choice",
+      "options": [
+        "none",
+        "on-request",
+        "fill-empty"
+      ],
+      "default": "on-request",
+      "effects": [
+        {
+          "sets": {
+            "computer-players.mode": "$answer",
+            "application.computerPlayers": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "video",
+      "ask": "Should players see and hear each other by video?",
+      "askAgent": "No if the request says no video or the people share a room; when yes the developer supplies the video service address and the key and secret by reference.",
+      "type": "boolean",
+      "default": true,
+      "effects": []
+    },
+    {
+      "id": "videoServiceUrl",
+      "ask": "What is the web address of your LiveKit video service (leave empty to set it later)?",
+      "askAgent": "Ask only when video is on; the developer's own LiveKit address, never invented.",
+      "askWhen": {
+        "question": "video",
+        "equals": true
+      },
+      "type": "text",
+      "default": "",
+      "effects": [
+        {
+          "sets": {
+            "video-calls.serviceUrl": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "videoKey",
+      "ask": "Under which name is the video service API key kept in your secret store?",
+      "askAgent": "Ask only when video is on; a reference name, never the key.",
+      "askWhen": {
+        "question": "video",
+        "equals": true
+      },
+      "type": "secretRef",
+      "effects": [
+        {
+          "sets": {
+            "video-calls.keyReference": {
+              "ref": "videoKey"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "videoSecret",
+      "ask": "Under which name is the video service API secret kept in your secret store?",
+      "askAgent": "Ask only when video is on; a reference name, never the secret.",
+      "askWhen": {
+        "question": "video",
+        "equals": true
+      },
+      "type": "secretRef",
+      "effects": [
+        {
+          "sets": {
+            "video-calls.secretReference": {
+              "ref": "videoSecret"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "lessons",
+      "ask": "Should the game teach new players with step-by-step lessons?",
+      "askAgent": "Yes unless the request says players already know the game.",
+      "type": "boolean",
+      "default": true,
+      "effects": []
+    },
+    {
+      "id": "server",
+      "ask": "Where should the server run: on a hosting provider (Cloudflare) or on your own hardware?",
+      "askAgent": "Ask the developer; never guess a hosting account. cloudflare needs the developer's Cloudflare account; own-hardware needs a machine. The cost and size of the choice are picked from the scale answer.",
+      "type": "choice",
+      "options": [
+        "cloudflare",
+        "own-hardware"
+      ],
+      "effects": []
+    },
+    {
+      "id": "hostingAccount",
+      "ask": "Under which name is your Cloudflare account kept in your secret store?",
+      "askAgent": "Ask only for a hosting provider; a reference name (lowercase letters, digits, hyphens), never the account key.",
+      "askWhen": {
+        "question": "server",
+        "in": [
+          "cloudflare"
+        ]
+      },
+      "type": "secretRef",
+      "effects": [
+        {
+          "sets": {
+            "server-host.accountReference": {
+              "ref": "hostingAccount"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "updates",
+      "ask": "Should installed apps offer new versions through ourapps.app?",
+      "askAgent": "No unless the request mentions updates or keeping the app current.",
+      "type": "boolean",
+      "default": false,
+      "effects": [
+        {
+          "sets": {
+            "application.updatesEnabled": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storeInvitation",
+      "ask": "What is your ourapps.app store invitation link (leave empty to set it later)?",
+      "askAgent": "Ask only when updates are on; the developer's own link, never invented.",
+      "askWhen": {
+        "question": "updates",
+        "equals": true
+      },
+      "type": "text",
+      "default": "",
+      "effects": [
+        {
+          "sets": {
+            "store-update.inviteAddress": "$answer",
+            "application.inviteAddress": "$answer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storeCredentials",
+      "ask": "Under which name are your app store credentials kept in your secret store?",
+      "askAgent": "Ask only when updates are on or iPhone and iPad is a target (the release pipeline has no store call and no iOS job without it); a reference name, never the credentials.",
+      "askWhen": {
+        "any": [
+          {
+            "question": "updates",
+            "equals": true
+          },
+          {
+            "question": "targets",
+            "contains": "ios"
+          }
+        ]
+      },
+      "type": "secretRef",
+      "effects": [
+        {
+          "sets": {
+            "ourapps-release.storeCredentials": {
+              "ref": "storeCredentials"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "androidSigning",
+      "ask": "Under which name is your Android signing key kept in your secret store?",
+      "askAgent": "Ask only when Android is a target; a reference name, never the key.",
+      "askWhen": {
+        "question": "targets",
+        "contains": "android"
+      },
+      "type": "secretRef",
+      "effects": [
+        {
+          "sets": {
+            "ourapps-release.androidSigning": {
+              "ref": "androidSigning"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "webDeploy",
+      "ask": "Under which name is your web deployment key kept in your secret store?",
+      "askAgent": "Ask only when the web is a target; a reference name, never the key.",
+      "askWhen": {
+        "question": "targets",
+        "contains": "web"
+      },
+      "type": "secretRef",
+      "effects": [
+        {
+          "sets": {
+            "ourapps-release.webDeploy": {
+              "ref": "webDeploy"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "web-host",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "apple-host",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "android-host",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "realtime-rooms",
+        "port": "session"
+      },
+      "target": {
+        "instance": "server-host",
+        "port": "room-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "room-directory",
+        "port": "room-directory"
+      },
+      "target": {
+        "instance": "server-host",
+        "port": "room-directory"
+      }
+    },
+    {
+      "source": {
+        "instance": "application",
+        "port": "poker-game-adapter"
+      },
+      "target": {
+        "instance": "realtime-rooms",
+        "port": "game"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "realtime-rooms",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "realtime-rooms",
+        "port": "session"
+      },
+      "target": {
+        "instance": "room-directory",
+        "port": "room-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "presence",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "holdem-rules",
+        "port": "game-rules"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "game-rules"
+      }
+    },
+    {
+      "source": {
+        "instance": "seating",
+        "port": "seating"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "seating"
+      }
+    },
+    {
+      "source": {
+        "instance": "game-clock",
+        "port": "game-clock"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "game-clock"
+      }
+    },
+    {
+      "source": {
+        "instance": "private-views",
+        "port": "private-views"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "private-views"
+      }
+    },
+    {
+      "source": {
+        "instance": "presence",
+        "port": "presence"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "presence"
+      }
+    },
+    {
+      "source": {
+        "instance": "tournament",
+        "port": "tournament"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "tournament"
+      }
+    },
+    {
+      "source": {
+        "instance": "computer-players",
+        "port": "computer-players"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "computer-players"
+      }
+    },
+    {
+      "source": {
+        "instance": "round-history",
+        "port": "round-history"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "round-history"
+      }
+    },
+    {
+      "source": {
+        "instance": "rules-settings",
+        "port": "rules-settings"
+      },
+      "target": {
+        "instance": "turn-engine",
+        "port": "rules-settings"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "seating",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "fair-shuffle",
+        "port": "random-source"
+      },
+      "target": {
+        "instance": "card-deck",
+        "port": "random-source"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-strategy",
+        "port": "player-strategy"
+      },
+      "target": {
+        "instance": "computer-players",
+        "port": "player-strategy"
+      }
+    },
+    {
+      "source": {
+        "instance": "game-clock",
+        "port": "game-clock"
+      },
+      "target": {
+        "instance": "computer-players",
+        "port": "game-clock"
+      }
+    },
+    {
+      "source": {
+        "instance": "seating",
+        "port": "seating"
+      },
+      "target": {
+        "instance": "computer-players",
+        "port": "seating"
+      }
+    },
+    {
+      "source": {
+        "instance": "chip-ledger",
+        "port": "chip-ledger"
+      },
+      "target": {
+        "instance": "tournament",
+        "port": "chip-ledger"
+      }
+    },
+    {
+      "source": {
+        "instance": "level-schedule",
+        "port": "level-schedule"
+      },
+      "target": {
+        "instance": "tournament",
+        "port": "level-schedule"
+      }
+    },
+    {
+      "source": {
+        "instance": "seating",
+        "port": "seating"
+      },
+      "target": {
+        "instance": "tournament",
+        "port": "seating"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-deck",
+        "port": "card-deck"
+      },
+      "target": {
+        "instance": "poker-hand-ranking",
+        "port": "card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "poker-odds",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-deck",
+        "port": "card-deck"
+      },
+      "target": {
+        "instance": "poker-odds",
+        "port": "card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-deck",
+        "port": "card-deck"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "chip-ledger",
+        "port": "chip-ledger"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "chip-ledger"
+      }
+    },
+    {
+      "source": {
+        "instance": "level-schedule",
+        "port": "level-schedule"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "level-schedule"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "rules-settings",
+        "port": "rules-settings"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "rules-settings"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "poker-strategy",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-odds",
+        "port": "poker-odds"
+      },
+      "target": {
+        "instance": "poker-strategy",
+        "port": "poker-odds"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "controls",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "table-layout",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "table-layout",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "card-graphics",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "chip-graphics",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "preferences",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "sound-cues",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "preferences",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "translations",
+        "port": "language"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "language"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-engine",
+        "port": "game-adapter"
+      },
+      "target": {
+        "instance": "application",
+        "port": "game-adapter"
+      }
+    },
+    {
+      "source": {
+        "instance": "web-host",
+        "port": "web-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "web-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "apple-host",
+        "port": "apple-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "apple-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "android-host",
+        "port": "android-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "android-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "windows-desktop",
+        "port": "facility"
+      },
+      "target": {
+        "instance": "application",
+        "port": "desktop-host"
+      }
+    },
+    {
+      "source": {
+        "instance": "server-host",
+        "port": "server-host"
+      },
+      "target": {
+        "instance": "application",
+        "port": "server-host"
+      }
+    },
+    {
+      "source": {
+        "instance": "ourapps-release",
+        "port": "release-pipeline"
+      },
+      "target": {
+        "instance": "application",
+        "port": "release-pipeline"
+      }
+    },
+    {
+      "source": {
+        "instance": "invitations",
+        "port": "invitations"
+      },
+      "target": {
+        "instance": "application",
+        "port": "invitations"
+      }
+    },
+    {
+      "source": {
+        "instance": "display-mode",
+        "port": "facility"
+      },
+      "target": {
+        "instance": "application",
+        "port": "display-policy"
+      }
+    },
+    {
+      "source": {
+        "instance": "video-calls",
+        "port": "facility"
+      },
+      "target": {
+        "instance": "application",
+        "port": "media-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "table-layout",
+        "port": "table-layout"
+      },
+      "target": {
+        "instance": "application",
+        "port": "table-layout"
+      }
+    },
+    {
+      "source": {
+        "instance": "card-graphics",
+        "port": "card-graphics"
+      },
+      "target": {
+        "instance": "application",
+        "port": "card-graphics"
+      }
+    },
+    {
+      "source": {
+        "instance": "chip-graphics",
+        "port": "chip-graphics"
+      },
+      "target": {
+        "instance": "application",
+        "port": "chip-graphics"
+      }
+    },
+    {
+      "source": {
+        "instance": "sound-cues",
+        "port": "sound-cues"
+      },
+      "target": {
+        "instance": "application",
+        "port": "sound-cues"
+      }
+    },
+    {
+      "source": {
+        "instance": "guided-tour",
+        "port": "guided-tour"
+      },
+      "target": {
+        "instance": "application",
+        "port": "guided-tour"
+      }
+    },
+    {
+      "source": {
+        "instance": "store-update",
+        "port": "updates"
+      },
+      "target": {
+        "instance": "application",
+        "port": "updates"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "application",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "preferences",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "application",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "translations",
+        "port": "language"
+      },
+      "target": {
+        "instance": "application",
+        "port": "language"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "application",
+        "port": "theme"
+      }
+    }
+  ],
+  "tests": {
+    "defaultAnswers": {
+      "targets": [
+        "web",
+        "ios",
+        "android",
+        "macos",
+        "windows",
+        "tvos"
+      ],
+      "scale": "small",
+      "languages": [
+        "en",
+        "fr",
+        "de",
+        "es"
+      ],
+      "look": "night",
+      "players": 9,
+      "startingChips": 5000,
+      "levelSeconds": 600,
+      "rebuys": 1,
+      "decisionSeconds": 30,
+      "computerPlayers": "on-request",
+      "video": true,
+      "lessons": true,
+      "server": "cloudflare",
+      "updates": false,
+      "videoKey": "ourpoker/video-key",
+      "videoSecret": "ourpoker/video-secret",
+      "hostingAccount": "ourpoker-cloudflare-account",
+      "storeCredentials": "ourpoker/store-credentials",
+      "androidSigning": "ourpoker/android-signing",
+      "webDeploy": "ourpoker/web-deploy"
+    },
+    "answerSets": [
+      {
+        "id": "book-club",
+        "answers": {
+          "targets": [
+            "ios",
+            "android",
+            "tvos"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "fr"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 3000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": false,
+          "lessons": true,
+          "server": "cloudflare",
+          "updates": false,
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "storeCredentials": "ourpoker/store-credentials",
+          "androidSigning": "ourpoker/android-signing"
+        }
+      },
+      {
+        "id": "poker-league",
+        "answers": {
+          "targets": [
+            "web",
+            "ios",
+            "android",
+            "macos",
+            "windows",
+            "tvos"
+          ],
+          "scale": "medium",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": true,
+          "lessons": true,
+          "server": "cloudflare",
+          "updates": true,
+          "videoKey": "ourpoker/video-key",
+          "videoSecret": "ourpoker/video-secret",
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "storeCredentials": "ourpoker/store-credentials",
+          "androidSigning": "ourpoker/android-signing",
+          "webDeploy": "ourpoker/web-deploy",
+          "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567",
+          "webAddress": "https://poker.acme.io"
+        }
+      },
+      {
+        "id": "company-event",
+        "answers": {
+          "targets": [
+            "web",
+            "ios",
+            "android",
+            "macos",
+            "windows",
+            "tvos"
+          ],
+          "scale": "large",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": true,
+          "lessons": true,
+          "server": "own-hardware",
+          "updates": true,
+          "videoKey": "ourpoker/video-key",
+          "videoSecret": "ourpoker/video-secret",
+          "storeCredentials": "ourpoker/store-credentials",
+          "androidSigning": "ourpoker/android-signing",
+          "webDeploy": "ourpoker/web-deploy",
+          "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567",
+          "webAddress": "https://poker.acme.io"
+        }
+      },
+      {
+        "id": "company-event-hosted",
+        "answers": {
+          "targets": [
+            "web",
+            "ios",
+            "android",
+            "macos",
+            "windows",
+            "tvos"
+          ],
+          "scale": "large",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": true,
+          "lessons": true,
+          "server": "cloudflare",
+          "updates": true,
+          "videoKey": "ourpoker/video-key",
+          "videoSecret": "ourpoker/video-secret",
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "storeCredentials": "ourpoker/store-credentials",
+          "androidSigning": "ourpoker/android-signing",
+          "webDeploy": "ourpoker/web-deploy",
+          "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567",
+          "webAddress": "https://poker.acme.io"
+        }
+      },
+      {
+        "id": "tv-only",
+        "answers": {
+          "targets": [
+            "tvos"
+          ],
+          "scale": "small",
+          "languages": [
+            "en"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": false,
+          "lessons": false,
+          "server": "cloudflare",
+          "updates": false,
+          "hostingAccount": "ourpoker-cloudflare-account"
+        }
+      },
+      {
+        "id": "browser-only-no-extras",
+        "answers": {
+          "targets": [
+            "web"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 0,
+          "decisionSeconds": 30,
+          "computerPlayers": "none",
+          "video": false,
+          "lessons": false,
+          "server": "cloudflare",
+          "updates": false,
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "webDeploy": "ourpoker/web-deploy"
+        }
+      },
+      {
+        "id": "large-paid-host",
+        "answers": {
+          "targets": [
+            "web",
+            "ios",
+            "android",
+            "macos",
+            "windows",
+            "tvos"
+          ],
+          "scale": "large",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "lounge",
+          "players": 6,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 3,
+          "decisionSeconds": 30,
+          "computerPlayers": "fill-empty",
+          "video": true,
+          "lessons": true,
+          "server": "cloudflare",
+          "updates": false,
+          "videoKey": "ourpoker/video-key",
+          "videoSecret": "ourpoker/video-secret",
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "storeCredentials": "ourpoker/store-credentials",
+          "androidSigning": "ourpoker/android-signing",
+          "webDeploy": "ourpoker/web-deploy",
+          "bundleId": "io.acme.poker",
+          "webAddress": "https://poker.acme.io",
+          "videoServiceUrl": "https://video.acme.io"
+        }
+      },
+      {
+        "id": "clinic",
+        "answers": {
+          "targets": [
+            "web",
+            "windows"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": false,
+          "lessons": false,
+          "server": "own-hardware",
+          "updates": false,
+          "webDeploy": "ourpoker/web-deploy",
+          "webAddress": "http://clinic.local:8080"
+        }
+      },
+      {
+        "id": "no-computers",
+        "answers": {
+          "targets": [
+            "web",
+            "android"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "none",
+          "video": true,
+          "lessons": true,
+          "server": "cloudflare",
+          "updates": false,
+          "videoKey": "ourpoker/video-key",
+          "videoSecret": "ourpoker/video-secret",
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "androidSigning": "ourpoker/android-signing",
+          "webDeploy": "ourpoker/web-deploy",
+          "webAddress": "https://poker.acme.io"
+        }
+      }
+    ]
+  },
+  "page": {
+    "description": "page/description.md",
+    "diagram": "page/diagram.svg",
+    "screenshots": []
+  },
+  "instructions": "INSTRUCTIONS.md"
+}

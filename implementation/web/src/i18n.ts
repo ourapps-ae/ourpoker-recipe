@@ -1,0 +1,74 @@
+// Localised text from the string table; placeholders are {name} and filled in order of the English
+// text's first appearance, the same convention the phone apps use for server prompts.
+import strings from "./strings.json";
+import { selectLanguage, lookup } from "../../components/translations/web/i18n";
+import type { View } from "./api";
+
+type Table = Record<string, string>;
+const tables = strings as Record<string, Table>;
+const en: Table = tables.en;
+
+// The app's language: the one picked on the home screen, else the browser's.
+export const LANGUAGES: [string, string][] = [["en", "English"], ["fr", "Français"], ["de", "Deutsch"], ["es", "Español"]];
+const resolve = (picked: string | null) => selectLanguage(picked ?? navigator.language ?? "en", Object.keys(tables), "en");
+let lang = resolve(localStorage.getItem("lang"));
+let t: Table = tables[lang];
+document.documentElement.lang = lang;
+
+export function currentLanguage(): string {
+  return lang;
+}
+
+export function pickedLanguage(): string | null {
+  return localStorage.getItem("lang");
+}
+
+// null goes back to the browser's language.
+export function pickLanguage(code: string | null) {
+  if (code) localStorage.setItem("lang", code);
+  else localStorage.removeItem("lang");
+  lang = resolve(code);
+  t = tables[lang];
+  document.documentElement.lang = lang;
+}
+
+export function L(key: string, ...args: (string | number)[]): string {
+  const template = lookup(key in t ? t : en, key);
+  const order: string[] = [];
+  (en[key] ?? template).replace(/\{(\w+)\}/g, (m, k) => (order.includes(k) ? m : (order.push(k), m)));
+  return template.replace(/\{(\w+)\}/g, (_, k) => {
+    const i = order.indexOf(k);
+    return i >= 0 && i < args.length ? String(args[i]) : "";
+  });
+}
+
+// The text for a key as it is, or the key itself when there is none (a gap shows).
+export function lookupText(key: string): string {
+  return lookup(key in t ? t : en, key);
+}
+
+export function promptText(view: View): string {
+  const key = "p_" + view.promptKey;
+  if (!(key in t) && !(key in en)) return view.prompt;
+  return L(key, ...view.promptArgs.map((a) => (typeof a === "number" ? a.toLocaleString("en-US") : a)));
+}
+
+// What the table is settling on: the deal, a street, or the last action.
+export function eventText(view: View): string | null {
+  const h = view.hand;
+  if (!h || !h.event) return null;
+  if (h.event !== "action") return L("ev_" + (h.event === "deal" ? "dealt" : h.event));
+  const p = view.players.find((x) => x.id === h.lastActorId);
+  const a = p?.lastAction;
+  if (!p || !a) return null;
+  return L("ev_" + a.kind, p.name, a.amount === null ? "" : a.amount.toLocaleString("en-US"));
+}
+
+export function roomName(id: string): string {
+  return L("room_" + id);
+}
+
+export function actionText(a: { kind: string; amount: number | null; auto: boolean }): string {
+  const text = L("act_" + a.kind, a.amount === null ? "" : a.amount.toLocaleString("en-US"));
+  return a.auto ? `${text} ${L("auto_mark")}` : text;
+}

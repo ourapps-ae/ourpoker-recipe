@@ -1,0 +1,46 @@
+{
+  "format": 1,
+  "cues": {
+    "click": "click.wav",
+    "enter": "enter.wav",
+    "exit": "exit.wav",
+    "start": "start.wav",
+    "end": "end.wav",
+    "bot_add": "bot_add.wav",
+    "bot_remove": "bot_remove.wav",
+    "deal": "deal.wav",
+    "burn": "burn.wav",
+    "flip": "flip.wav",
+    "check": "check.wav",
+    "fold": "fold.wav",
+    "chips": "chips.wav",
+    "allin": "allin.wav",
+    "win": "win.wav",
+    "turn": "turn.wav"
+  },
+  "events": {
+    "street": [
+      "burn",
+      {
+        "cue": "flip",
+        "delayMs": 300
+      }
+    ],
+    "winner": [
+      {
+        "cue": "win",
+        "delayMs": 500
+      }
+    ],
+    "myTurn": [
+      "turn"
+    ],
+    "lowTime": [
+      "turn",
+      {
+        "cue": "turn",
+        "delayMs": 220
+      }
+    ]
+  }
+}

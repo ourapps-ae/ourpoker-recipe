@@ -1,0 +1,492 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-rooms-people-and-sessions",
+  "title": "OurPoker: Rooms, people and sessions, default answers",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "ourapps-ae.realtime-rooms",
+      "name": "Realtime rooms",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/realtime-rooms",
+      "version": "0.4.0",
+      "ports": [
+        {
+          "id": "game",
+          "name": "Game adapter",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "session",
+          "name": "Room session",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.room-directory",
+      "name": "Room directory",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/room-directory",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "room-session",
+          "name": "Room session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "room-directory",
+          "name": "Room directory",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/room-directory",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "roomCapacity",
+          "name": "Roomcapacity",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "maxConnections",
+          "name": "Maxconnections",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1000
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.guest-identity",
+      "name": "Guest identity",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/guest-identity",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "nameMinLength",
+          "name": "Nameminlength",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "nameMaxLength",
+          "name": "Namemaxlength",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 20
+        },
+        {
+          "id": "tokenRotationSeconds",
+          "name": "Tokenrotationseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.presence",
+      "name": "Presence",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/presence",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "guest-identity",
+          "name": "Guest identity",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "presence",
+          "name": "Presence",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/presence",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "awayAfterSeconds",
+          "name": "Awayafterseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "dropAfterSeconds",
+          "name": "Dropafterseconds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1800
+        },
+        {
+          "id": "hostAbsentRule",
+          "name": "Hostabsentrule",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "pause"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.invitations",
+      "name": "Invitations",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/invitations",
+      "version": "0.1.0",
+      "ports": [
+        {
+          "id": "invitations",
+          "name": "Invitations",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/invitations",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "inviteAddress",
+          "name": "Inviteaddress",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "codeLength",
+          "name": "Codelength",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 6
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.private-views",
+      "name": "Private views",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/private-views",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "private-views",
+          "name": "Private views",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/private-views",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.display-mode",
+      "name": "Display mode",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/display-mode",
+      "version": "0.3.1",
+      "ports": [
+        {
+          "id": "configuration",
+          "name": "Host configuration",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/display-mode-configuration",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "facility",
+          "name": "Display mode",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/display-policy",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.video-calls",
+      "name": "Video calls",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/video-calls",
+      "version": "0.3.1",
+      "ports": [
+        {
+          "id": "configuration",
+          "name": "Host configuration",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/video-calls-configuration",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "facility",
+          "name": "Video calls",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/media-session",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "enabled",
+          "name": "Enabled",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "serviceUrl",
+          "name": "Serviceurl",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "keyReference",
+          "name": "Keyreference",
+          "type": "string",
+          "required": false,
+          "secret": true
+        },
+        {
+          "id": "secretReference",
+          "name": "Secretreference",
+          "type": "string",
+          "required": false,
+          "secret": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.preferences",
+      "name": "Preferences",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/preferences",
+      "version": "0.1.0",
+      "ports": [
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "defaultSound",
+          "name": "Defaultsound",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "defaultMicrophoneOn",
+          "name": "Defaultmicrophoneon",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        },
+        {
+          "id": "defaultCameraOn",
+          "name": "Defaultcameraon",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        }
+      ]
+    }
+  ],
+  "instances": [
+    {
+      "id": "realtime-rooms",
+      "name": "Realtime rooms",
+      "definition": "ourapps-ae.realtime-rooms",
+      "configuration": {}
+    },
+    {
+      "id": "room-directory",
+      "name": "Room directory",
+      "definition": "ourapps-ae.room-directory",
+      "configuration": {
+        "roomCapacity": 9,
+        "maxConnections": 1000
+      }
+    },
+    {
+      "id": "guest-identity",
+      "name": "Guest identity",
+      "definition": "ourapps-ae.guest-identity",
+      "configuration": {
+        "nameMinLength": 1,
+        "nameMaxLength": 20,
+        "tokenRotationSeconds": 0
+      }
+    },
+    {
+      "id": "presence",
+      "name": "Presence",
+      "definition": "ourapps-ae.presence",
+      "configuration": {
+        "awayAfterSeconds": 30,
+        "dropAfterSeconds": 1800,
+        "hostAbsentRule": "pause"
+      }
+    },
+    {
+      "id": "invitations",
+      "name": "Invitations",
+      "definition": "ourapps-ae.invitations",
+      "configuration": {
+        "codeLength": 6,
+        "inviteAddress": "http://localhost:5173"
+      }
+    },
+    {
+      "id": "private-views",
+      "name": "Private views",
+      "definition": "ourapps-ae.private-views",
+      "configuration": {}
+    },
+    {
+      "id": "display-mode",
+      "name": "Display mode",
+      "definition": "ourapps-ae.display-mode",
+      "configuration": {}
+    },
+    {
+      "id": "video-calls",
+      "name": "Video calls",
+      "definition": "ourapps-ae.video-calls",
+      "configuration": {
+        "enabled": true,
+        "keyReference": {
+          "secretRef": "ourpoker/video-key"
+        },
+        "secretReference": {
+          "secretRef": "ourpoker/video-secret"
+        }
+      }
+    },
+    {
+      "id": "preferences",
+      "name": "Preferences",
+      "definition": "ourapps-ae.preferences",
+      "configuration": {
+        "defaultSound": true,
+        "defaultMicrophoneOn": true,
+        "defaultCameraOn": true
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "realtime-rooms",
+        "port": "guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "realtime-rooms",
+        "port": "session"
+      },
+      "target": {
+        "instance": "room-directory",
+        "port": "room-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "guest-identity",
+        "port": "guest-identity"
+      },
+      "target": {
+        "instance": "presence",
+        "port": "guest-identity"
+      }
+    }
+  ]
+}

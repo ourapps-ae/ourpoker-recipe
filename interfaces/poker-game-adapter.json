@@ -1,0 +1,34 @@
+{
+  "id": "poker-game-adapter",
+  "type": "ae/game-adapter",
+  "version": "1.0.0",
+  "operations": {
+    "pokerAdapter": {
+      "arguments": [
+        "links:{inviteUrl:string|null,updateUrl:string|null}"
+      ],
+      "returns": "GameAdapter (turn-engine) whose view() answers in the poker wire view"
+    },
+    "toWireView": {
+      "arguments": [
+        "view:EngineView",
+        "links:LinkExtras"
+      ],
+      "returns": "View (server/src/contract.ts)"
+    }
+  },
+  "exports": {
+    "server/src/adapter.ts": [
+      "pokerAdapter"
+    ],
+    "server/src/wire.ts": [
+      "toWireView"
+    ],
+    "server/src/contract.ts": [
+      "CONTRACT_VERSION=1",
+      "View",
+      "Action"
+    ]
+  },
+  "note": "recipe.json connects this port to realtime-rooms' `game` requirement; the application's own `game-adapter` requirement takes turn-engine's adapter, which pokerAdapter wraps."
+}

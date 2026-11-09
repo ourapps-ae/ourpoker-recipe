@@ -1,0 +1,1472 @@
+{
+  "camera_select": {"en": "Select camera", "fr": "Choisir la caméra", "de": "Kamera auswählen", "es": "Seleccionar cámara"},
+  "camera_automatic": {"en": "Automatic camera", "fr": "Caméra automatique", "de": "Automatische Kamera", "es": "Cámara automática"},
+  "camera_unavailable": {"en": "Camera unavailable. Check system permissions or choose another camera.", "fr": "Caméra indisponible. Vérifiez les autorisations système ou choisissez une autre caméra.", "de": "Kamera nicht verfügbar. Systemberechtigungen prüfen oder eine andere Kamera wählen.", "es": "Cámara no disponible. Revisa los permisos del sistema o elige otra cámara."},
+  "mode_player": {"en":"Player","fr":"Joueur","de":"Spieler","es":"Jugador"},
+  "mode_board": {"en":"Board","fr":"Tableau","de":"Tischanzeige","es":"Mesa"},
+  "zoom_cards": {"en":"View cards","fr":"Voir les cartes","de":"Karten ansehen","es":"Ver las cartas"},
+  "tut_remote_cards": {
+    "en": "Use the buttons to fold, check or call. Choose an amount, then confirm your bet. Select a card to reveal it when allowed.",
+    "fr": "Utilisez les boutons pour vous coucher, checker ou suivre. Choisissez un montant, puis confirmez la mise. Sélectionnez une carte pour la montrer lorsque cela est permis.",
+    "de": "Nutze die Tasten zum Passen, Schieben oder Mitgehen. Wähle einen Betrag und bestätige den Einsatz. Wähle eine Karte, um sie zu zeigen, wenn dies erlaubt ist.",
+    "es": "Usa los botones para retirarte, pasar o igualar. Elige un importe y confirma la apuesta. Selecciona una carta para mostrarla cuando esté permitido."
+  },
+  "tut_remote_zoom": {
+    "en": "Choose View cards or On the table to enlarge cards. Choose Done to close them.",
+    "fr": "Choisissez Voir les cartes ou Sur la table pour agrandir les cartes. Choisissez Terminé pour les fermer.",
+    "de": "Wähle Karten ansehen oder Auf dem Tisch, um Karten zu vergrößern. Wähle Fertig, um sie zu schließen.",
+    "es": "Elige Ver las cartas o En la mesa para ampliar las cartas. Elige Listo para cerrarlas."
+  },
+  "beginner_title": {"en":"Are you a beginner?","fr":"Vous débutez ?","de":"Bist du Anfänger?","es":"¿Eres principiante?"},
+  "beginner_yes": {"en":"Yes, show me how","fr":"Oui, expliquez-moi","de":"Ja, zeig es mir","es":"Sí, enséñame"},
+  "beginner_no": {"en":"No, I know how to play","fr":"Non, je sais jouer","de":"Nein, ich kenne das Spiel","es":"No, sé jugar"},
+  "move_fold": {"en":"Fold","fr":"Se coucher","de":"Passen","es":"Retirarse"},
+  "move_check": {"en":"Check","fr":"Parole","de":"Schieben","es":"Pasar"},
+  "move_raise": {"en":"Raise","fr":"Relancer","de":"Erhöhen","es":"Subir"},
+  "app_name": {
+    "en": "OurPoker",
+    "fr": "OurPoker",
+    "de": "OurPoker",
+    "es": "OurPoker"
+  },
+  "tagline": {
+    "en": "Hold'em tournaments with friends, face to face.",
+    "fr": "Tournois de hold'em entre amis, face à face.",
+    "de": "Hold'em-Turniere mit Freunden, von Angesicht zu Angesicht.",
+    "es": "Torneos de hold'em con amigos, cara a cara."
+  },
+  "your_name": {
+    "en": "Your name",
+    "fr": "Votre nom",
+    "de": "Dein Name",
+    "es": "Tu nombre"
+  },
+  "first_run_title": {
+    "en": "Who are you?",
+    "fr": "Qui êtes-vous ?",
+    "de": "Wer bist du?",
+    "es": "¿Quién eres?"
+  },
+  "change_name": {
+    "en": "Change name",
+    "fr": "Changer de nom",
+    "de": "Namen ändern",
+    "es": "Cambiar nombre"
+  },
+  "language": {
+    "en": "Language",
+    "fr": "Langue",
+    "de": "Sprache",
+    "es": "Idioma"
+  },
+  "lang_device": {
+    "en": "Device language",
+    "fr": "Langue de l'appareil",
+    "de": "Gerätesprache",
+    "es": "Idioma del dispositivo"
+  },
+  "reset_hints": {
+    "en": "Reset hints",
+    "fr": "Revoir les conseils",
+    "de": "Tipps zurücksetzen",
+    "es": "Reiniciar consejos"
+  },
+  "first_run_body": {
+    "en": "The name your friends will see at the table.",
+    "fr": "Le nom que vos amis verront à la table.",
+    "de": "Der Name, den deine Freunde am Tisch sehen.",
+    "es": "El nombre que verán tus amigos en la mesa."
+  },
+  "save": {
+    "en": "Save",
+    "fr": "Enregistrer",
+    "de": "Speichern",
+    "es": "Guardar"
+  },
+  "cancel": {
+    "en": "Cancel",
+    "fr": "Annuler",
+    "de": "Abbrechen",
+    "es": "Cancelar"
+  },
+  "done": {
+    "en": "Done",
+    "fr": "Terminé",
+    "de": "Fertig",
+    "es": "Hecho"
+  },
+  "playing_as": {
+    "en": "Playing as {name}",
+    "fr": "Vous jouez en tant que {name}",
+    "de": "Du spielst als {name}",
+    "es": "Juegas como {name}"
+  },
+  "looking": {
+    "en": "Looking for rooms...",
+    "fr": "Recherche des salles...",
+    "de": "Suche Räume...",
+    "es": "Buscando salas..."
+  },
+  "split_pot": {
+    "en": "Split pot",
+    "fr": "Pot partagé",
+    "de": "Geteilter Pot",
+    "es": "Bote dividido"
+  },
+  "won_on_kicker": {
+    "en": "Won on the kicker",
+    "fr": "Gagné au kicker",
+    "de": "Mit dem Kicker gewonnen",
+    "es": "Ganado por el kicker"
+  },
+  "uncontested": {
+    "en": "Uncontested",
+    "fr": "Sans abattage",
+    "de": "Kampflos gewonnen",
+    "es": "Sin oposición"
+  },
+  "everyone_folded": {
+    "en": "Everyone else folded.",
+    "fr": "Tous les autres se sont couchés.",
+    "de": "Alle anderen haben gepasst.",
+    "es": "Todos los demás se retiraron."
+  },
+  "wins_amount": {
+    "en": "{name} wins {amount}",
+    "fr": "{name} remporte {amount}",
+    "de": "{name} gewinnt {amount}",
+    "es": "{name} gana {amount}"
+  },
+  "join_how": {
+    "en": "How do you want to join?",
+    "fr": "Comment voulez-vous rejoindre ?",
+    "de": "Wie möchtest du beitreten?",
+    "es": "¿Cómo quieres unirte?"
+  },
+  "join_as_viewer": {
+    "en": "As the table viewer",
+    "fr": "Comme écran de table",
+    "de": "Als Tischanzeige",
+    "es": "Como pantalla de mesa"
+  },
+  "viewer_note": {
+    "en": "The table viewer lies in the middle of the table and shows the game to everyone round it. It takes no seat and shows nobody's hidden cards; each player plays on their own phone.",
+    "fr": "L'écran de table se pose au milieu de la table et montre la partie à tous ceux qui sont autour. Il ne prend pas de place et ne montre les cartes cachées de personne ; chacun joue sur son téléphone.",
+    "de": "Die Tischanzeige liegt in der Mitte des Tisches und zeigt allen ringsum das Spiel. Sie belegt keinen Platz und zeigt niemandes verdeckte Karten; jeder spielt auf seinem eigenen Telefon.",
+    "es": "La pantalla de mesa se coloca en el centro de la mesa y muestra la partida a todos los que están alrededor. No ocupa sitio ni enseña las cartas ocultas de nadie; cada jugador juega en su propio teléfono."
+  },
+  "viewer_stop": {
+    "en": "Stop the table viewer",
+    "fr": "Arrêter l'écran de table",
+    "de": "Tischanzeige beenden",
+    "es": "Detener la pantalla de mesa"
+  },
+  "viewer_stop_confirm": {
+    "en": "Stop showing the table on this screen?",
+    "fr": "Ne plus afficher la table sur cet écran ?",
+    "de": "Den Tisch auf diesem Bildschirm nicht mehr zeigen?",
+    "es": "¿Dejar de mostrar la mesa en esta pantalla?"
+  },
+  "viewer_turn": {
+    "en": "Turn the seats",
+    "fr": "Tourner les places",
+    "de": "Plätze drehen",
+    "es": "Girar los asientos"
+  },
+  "viewer_turn_back": {
+    "en": "Turn the seats anticlockwise",
+    "fr": "Tourner les places vers la gauche",
+    "de": "Plätze gegen den Uhrzeigersinn drehen",
+    "es": "Girar los asientos hacia la izquierda"
+  },
+  "viewer_turn_on": {
+    "en": "Turn the seats clockwise",
+    "fr": "Tourner les places vers la droite",
+    "de": "Plätze im Uhrzeigersinn drehen",
+    "es": "Girar los asientos hacia la derecha"
+  },
+  "viewer_drag": {
+    "en": "Drag a name round the edge of the table until it faces its player.",
+    "fr": "Faites glisser un nom le long du bord de la table jusqu'à ce qu'il soit face à son joueur.",
+    "de": "Ziehe einen Namen am Tischrand entlang, bis er zu seinem Spieler zeigt.",
+    "es": "Arrastra un nombre por el borde de la mesa hasta que quede frente a su jugador."
+  },
+  "viewer_scan": {
+    "en": "Scan to get OurPoker.",
+    "fr": "Scannez pour installer OurPoker.",
+    "de": "Scannen, um OurPoker zu laden.",
+    "es": "Escanea para instalar OurPoker."
+  },
+  "viewer_join": {
+    "en": "Then join {room} on your phone.",
+    "fr": "Puis rejoignez {room} sur votre téléphone.",
+    "de": "Dann auf deinem Telefon {room} beitreten.",
+    "es": "Luego únete a {room} en tu teléfono."
+  },
+  "unreachable": {
+    "en": "Can't reach the tables. Trying again...",
+    "fr": "Impossible de joindre les tables. Nouvel essai...",
+    "de": "Die Tische sind nicht erreichbar. Neuer Versuch...",
+    "es": "No se puede conectar con las mesas. Reintentando..."
+  },
+  "room_casino": {
+    "en": "Casino",
+    "fr": "Casino",
+    "de": "Casino",
+    "es": "Casino"
+  },
+  "room_home": {
+    "en": "Home",
+    "fr": "Maison",
+    "de": "Zuhause",
+    "es": "Casa"
+  },
+  "room_empty": {
+    "en": "Empty",
+    "fr": "Vide",
+    "de": "Leer",
+    "es": "Vacía"
+  },
+  "room_lobby": {
+    "en": "Waiting: {names}",
+    "fr": "En attente : {names}",
+    "de": "Wartet: {names}",
+    "es": "Esperando: {names}"
+  },
+  "room_in_game": {
+    "en": "Playing: {names}",
+    "fr": "En jeu : {names}",
+    "de": "Spielt: {names}",
+    "es": "Jugando: {names}"
+  },
+  "room_join": {
+    "en": "Sit down",
+    "fr": "S'asseoir",
+    "de": "Platz nehmen",
+    "es": "Sentarse"
+  },
+  "room_rejoin": {
+    "en": "Back to your seat",
+    "fr": "Retour à votre place",
+    "de": "Zurück zu deinem Platz",
+    "es": "Volver a tu asiento"
+  },
+  "room_watch": {
+    "en": "Watch",
+    "fr": "Regarder",
+    "de": "Zuschauen",
+    "es": "Mirar"
+  },
+  "room_full": {
+    "en": "Full",
+    "fr": "Complet",
+    "de": "Voll",
+    "es": "Llena"
+  },
+  "select_room": {
+    "en": "Select a room to play in, then enter",
+    "fr": "Choisissez une salle où jouer, puis entrez",
+    "de": "Wähle einen Raum zum Spielen, dann tritt ein",
+    "es": "Elige una sala para jugar y entra"
+  },
+  "how_to_play": {
+    "en": "How to play",
+    "fr": "Comment jouer",
+    "de": "Spielregeln",
+    "es": "Cómo jugar"
+  },
+  "start_game": {
+    "en": "Start the game",
+    "fr": "Lancer la partie",
+    "de": "Spiel starten",
+    "es": "Empezar la partida"
+  },
+  "need_two": {
+    "en": "Two players are needed",
+    "fr": "Il faut deux joueurs",
+    "de": "Zwei Spieler werden gebraucht",
+    "es": "Hacen falta dos jugadores"
+  },
+  "add_computer": {
+    "en": "Add a computer player",
+    "fr": "Ajouter un joueur ordinateur",
+    "de": "Computerspieler hinzufügen",
+    "es": "Añadir un jugador de ordenador"
+  },
+  "remove": {
+    "en": "Remove",
+    "fr": "Retirer",
+    "de": "Entfernen",
+    "es": "Quitar"
+  },
+  "computer": {
+    "en": "Computer player",
+    "fr": "Joueur ordinateur",
+    "de": "Computerspieler",
+    "es": "Jugador de ordenador"
+  },
+  "leave": {
+    "en": "Leave",
+    "fr": "Quitter",
+    "de": "Verlassen",
+    "es": "Salir"
+  },
+  "you_suffix": {
+    "en": "(you)",
+    "fr": "(vous)",
+    "de": "(du)",
+    "es": "(tú)"
+  },
+  "host_suffix": {
+    "en": "(host)",
+    "fr": "(hôte)",
+    "de": "(Gastgeber)",
+    "es": "(anfitrión)"
+  },
+  "video_title": {
+    "en": "Video",
+    "fr": "Vidéo",
+    "de": "Video",
+    "es": "Vídeo"
+  },
+  "video_unavailable": {
+    "en": "Video is off on this table.",
+    "fr": "La vidéo est désactivée sur cette table.",
+    "de": "Video ist an diesem Tisch aus.",
+    "es": "El vídeo está apagado en esta mesa."
+  },
+  "mic_on": {
+    "en": "Microphone on",
+    "fr": "Micro activé",
+    "de": "Mikrofon an",
+    "es": "Micrófono encendido"
+  },
+  "mic_off": {
+    "en": "Microphone off",
+    "fr": "Micro coupé",
+    "de": "Mikrofon aus",
+    "es": "Micrófono apagado"
+  },
+  "cam_on": {
+    "en": "Camera on",
+    "fr": "Caméra activée",
+    "de": "Kamera an",
+    "es": "Cámara encendida"
+  },
+  "cam_off": {
+    "en": "Camera off",
+    "fr": "Caméra coupée",
+    "de": "Kamera aus",
+    "es": "Cámara apagada"
+  },
+  "sound_on": {
+    "en": "Turn sounds off",
+    "fr": "Couper les sons",
+    "de": "Töne aus",
+    "es": "Silenciar sonidos"
+  },
+  "sound_off": {
+    "en": "Turn sounds on",
+    "fr": "Activer les sons",
+    "de": "Töne an",
+    "es": "Activar sonidos"
+  },
+  "video_reconnect": {
+    "en": "Reconnect video",
+    "fr": "Reconnecter la vidéo",
+    "de": "Video neu verbinden",
+    "es": "Reconectar vídeo"
+  },
+  "table_reset": {
+    "en": "Your seat is gone. The table was reset or you were away too long.",
+    "fr": "Votre place a disparu. La table a été réinitialisée ou vous êtes resté absent trop longtemps.",
+    "de": "Dein Platz ist weg. Der Tisch wurde zurückgesetzt oder du warst zu lange fort.",
+    "es": "Tu asiento ha desaparecido. La mesa se reinició o estuviste fuera demasiado tiempo."
+  },
+  "network_error": {
+    "en": "Cannot reach the server.",
+    "fr": "Impossible de joindre le serveur.",
+    "de": "Server nicht erreichbar.",
+    "es": "No se puede conectar con el servidor."
+  },
+  "err_badName": {
+    "en": "Name must be 1 to 20 plain characters and not already taken.",
+    "fr": "Le nom doit comporter 1 à 20 caractères simples et ne pas être déjà pris.",
+    "de": "Der Name muss 1 bis 20 einfache Zeichen haben und frei sein.",
+    "es": "El nombre debe tener de 1 a 20 caracteres simples y no estar ya en uso."
+  },
+  "err_roomFull": {
+    "en": "The room is full.",
+    "fr": "La salle est complète.",
+    "de": "Der Raum ist voll.",
+    "es": "La sala está llena."
+  },
+  "err_staleVersion": {
+    "en": "The table has changed.",
+    "fr": "La table a changé.",
+    "de": "Der Tisch hat sich geändert.",
+    "es": "La mesa ha cambiado."
+  },
+  "err_notYourTurn": {
+    "en": "It is not your turn.",
+    "fr": "Ce n'est pas votre tour.",
+    "de": "Du bist nicht dran.",
+    "es": "No es tu turno."
+  },
+  "err_wrongPhase": {
+    "en": "That is not possible right now.",
+    "fr": "Ce n'est pas possible pour le moment.",
+    "de": "Das geht gerade nicht.",
+    "es": "Eso no es posible ahora."
+  },
+  "err_notEnoughPlayers": {
+    "en": "At least two players are needed.",
+    "fr": "Il faut au moins deux joueurs.",
+    "de": "Mindestens zwei Spieler werden gebraucht.",
+    "es": "Hacen falta al menos dos jugadores."
+  },
+  "err_badAmount": {
+    "en": "That amount is not allowed.",
+    "fr": "Ce montant n'est pas autorisé.",
+    "de": "Dieser Betrag ist nicht erlaubt.",
+    "es": "Esa cantidad no está permitida."
+  },
+  "err_notAllowed": {
+    "en": "You cannot do that.",
+    "fr": "Vous ne pouvez pas faire cela.",
+    "de": "Das kannst du nicht tun.",
+    "es": "No puedes hacer eso."
+  },
+  "err_paused": {
+    "en": "The game is paused.",
+    "fr": "La partie est en pause.",
+    "de": "Das Spiel ist pausiert.",
+    "es": "La partida está en pausa."
+  },
+  "fold": {
+    "en": "Fold",
+    "fr": "Se coucher",
+    "de": "Passen",
+    "es": "Retirarse"
+  },
+  "check": {
+    "en": "Check",
+    "fr": "Parole",
+    "de": "Schieben",
+    "es": "Pasar"
+  },
+  "call": {
+    "en": "Call {amount}",
+    "fr": "Suivre {amount}",
+    "de": "Mitgehen {amount}",
+    "es": "Igualar {amount}"
+  },
+  "bet": {
+    "en": "Bet",
+    "fr": "Miser",
+    "de": "Setzen",
+    "es": "Apostar"
+  },
+  "raise": {
+    "en": "Raise",
+    "fr": "Relancer",
+    "de": "Erhöhen",
+    "es": "Subir"
+  },
+  "bet_to": {
+    "en": "Bet {amount}",
+    "fr": "Miser {amount}",
+    "de": "{amount} setzen",
+    "es": "Apostar {amount}"
+  },
+  "raise_to": {
+    "en": "Raise to {amount}",
+    "fr": "Relancer à {amount}",
+    "de": "Erhöhen auf {amount}",
+    "es": "Subir a {amount}"
+  },
+  "all_in": {
+    "en": "All in",
+    "fr": "Tapis",
+    "de": "All-in",
+    "es": "All-in"
+  },
+  "min": {
+    "en": "Min",
+    "fr": "Min",
+    "de": "Min",
+    "es": "Mín"
+  },
+  "half_pot": {
+    "en": "1/2 pot",
+    "fr": "1/2 pot",
+    "de": "1/2 Pot",
+    "es": "1/2 bote"
+  },
+  "pot": {
+    "en": "Pot",
+    "fr": "Pot",
+    "de": "Pot",
+    "es": "Bote"
+  },
+  "pot_label": {
+    "en": "Pot {amount}",
+    "fr": "Pot {amount}",
+    "de": "Pot {amount}",
+    "es": "Bote {amount}"
+  },
+  "side_pot": {
+    "en": "Side pot {amount}",
+    "fr": "Pot annexe {amount}",
+    "de": "Nebenpot {amount}",
+    "es": "Bote lateral {amount}"
+  },
+  "level": {
+    "en": "Level {level}",
+    "fr": "Niveau {level}",
+    "de": "Stufe {level}",
+    "es": "Nivel {level}"
+  },
+  "blinds": {
+    "en": "Blinds {sb}/{bb}",
+    "fr": "Blindes {sb}/{bb}",
+    "de": "Blinds {sb}/{bb}",
+    "es": "Ciegas {sb}/{bb}"
+  },
+  "next_level": {
+    "en": "Next {sb}/{bb} in {time}",
+    "fr": "Puis {sb}/{bb} dans {time}",
+    "de": "Dann {sb}/{bb} in {time}",
+    "es": "Luego {sb}/{bb} en {time}"
+  },
+  "hand_no": {
+    "en": "Hand {no}",
+    "fr": "Main {no}",
+    "de": "Hand {no}",
+    "es": "Mano {no}"
+  },
+  "dealer": {
+    "en": "D",
+    "fr": "D",
+    "de": "D",
+    "es": "D"
+  },
+  "sitting_out": {
+    "en": "sitting out",
+    "fr": "absent",
+    "de": "sitzt aus",
+    "es": "ausente"
+  },
+  "away": {
+    "en": "away",
+    "fr": "parti",
+    "de": "weg",
+    "es": "fuera"
+  },
+  "out": {
+    "en": "out",
+    "fr": "éliminé",
+    "de": "raus",
+    "es": "eliminado"
+  },
+  "all_in_mark": {
+    "en": "all in",
+    "fr": "tapis",
+    "de": "all-in",
+    "es": "all-in"
+  },
+  "folded": {
+    "en": "folded",
+    "fr": "couché",
+    "de": "gepasst",
+    "es": "retirado"
+  },
+  "auto_mark": {
+    "en": "(auto)",
+    "fr": "(auto)",
+    "de": "(auto)",
+    "es": "(auto)"
+  },
+  "act_blind": {
+    "en": "blind {amount}",
+    "fr": "blinde {amount}",
+    "de": "Blind {amount}",
+    "es": "ciega {amount}"
+  },
+  "act_fold": {
+    "en": "fold",
+    "fr": "se couche",
+    "de": "passt",
+    "es": "se retira"
+  },
+  "act_check": {
+    "en": "check",
+    "fr": "parole",
+    "de": "schiebt",
+    "es": "pasa"
+  },
+  "act_call": {
+    "en": "call {amount}",
+    "fr": "suit {amount}",
+    "de": "geht mit {amount}",
+    "es": "iguala {amount}"
+  },
+  "act_bet": {
+    "en": "bet {amount}",
+    "fr": "mise {amount}",
+    "de": "setzt {amount}",
+    "es": "apuesta {amount}"
+  },
+  "act_raise": {
+    "en": "raise to {amount}",
+    "fr": "relance à {amount}",
+    "de": "erhöht auf {amount}",
+    "es": "sube a {amount}"
+  },
+  "act_allIn": {
+    "en": "all in {amount}",
+    "fr": "tapis {amount}",
+    "de": "all-in {amount}",
+    "es": "all-in {amount}"
+  },
+  "show_cards": {
+    "en": "Show cards",
+    "fr": "Montrer les cartes",
+    "de": "Karten zeigen",
+    "es": "Mostrar cartas"
+  },
+  "show_one": {
+    "en": "Show one",
+    "fr": "Montrer une carte",
+    "de": "Eine Karte zeigen",
+    "es": "Mostrar una"
+  },
+  "rebuy_title": {
+    "en": "Out of chips",
+    "fr": "Plus de jetons",
+    "de": "Keine Chips mehr",
+    "es": "Sin fichas"
+  },
+  "rebuy_body": {
+    "en": "Take your one rebuy of 5,000 chips? {time} s left.",
+    "fr": "Prendre votre unique recave de 5 000 jetons ? {time} s restantes.",
+    "de": "Deinen einen Rebuy von 5.000 Chips nehmen? Noch {time} s.",
+    "es": "¿Tomar tu única recompra de 5.000 fichas? Quedan {time} s."
+  },
+  "rebuy_yes": {
+    "en": "Rebuy",
+    "fr": "Recaver",
+    "de": "Rebuy",
+    "es": "Recomprar"
+  },
+  "rebuy_no": {
+    "en": "I am out",
+    "fr": "Je suis éliminé",
+    "de": "Ich bin raus",
+    "es": "Estoy fuera"
+  },
+  "paused_title": {
+    "en": "Paused",
+    "fr": "En pause",
+    "de": "Pausiert",
+    "es": "En pausa"
+  },
+  "pause": {
+    "en": "Pause",
+    "fr": "Pause",
+    "de": "Pause",
+    "es": "Pausa"
+  },
+  "resume": {
+    "en": "Resume",
+    "fr": "Reprendre",
+    "de": "Weiter",
+    "es": "Reanudar"
+  },
+  "sit_out": {
+    "en": "Sit out",
+    "fr": "S'absenter",
+    "de": "Aussetzen",
+    "es": "Ausentarse"
+  },
+  "end_game": {
+    "en": "End game",
+    "fr": "Terminer la partie",
+    "de": "Spiel beenden",
+    "es": "Terminar la partida"
+  },
+  "end_game_confirm": {
+    "en": "End the whole game for everyone? Nobody wins.",
+    "fr": "Terminer la partie pour tout le monde ? Personne ne gagne.",
+    "de": "Das ganze Spiel für alle beenden? Niemand gewinnt.",
+    "es": "¿Terminar la partida para todos? Nadie gana."
+  },
+  "new_game": {
+    "en": "New game",
+    "fr": "Nouvelle partie",
+    "de": "Neues Spiel",
+    "es": "Nueva partida"
+  },
+  "standings": {
+    "en": "Standings",
+    "fr": "Classement",
+    "de": "Rangliste",
+    "es": "Clasificación"
+  },
+  "winner": {
+    "en": "Winner",
+    "fr": "Vainqueur",
+    "de": "Sieger",
+    "es": "Ganador"
+  },
+  "place": {
+    "en": "{place}.",
+    "fr": "{place}.",
+    "de": "{place}.",
+    "es": "{place}."
+  },
+  "rebought": {
+    "en": "rebought",
+    "fr": "a recavé",
+    "de": "mit Rebuy",
+    "es": "recompró"
+  },
+  "cancelled_title": {
+    "en": "Game ended",
+    "fr": "Partie terminée",
+    "de": "Spiel beendet",
+    "es": "Partida terminada"
+  },
+  "cancelled_body": {
+    "en": "No winner. Chips from the last hand went back to their owners.",
+    "fr": "Pas de vainqueur. Les jetons de la dernière main sont revenus à leurs propriétaires.",
+    "de": "Kein Sieger. Die Chips der letzten Hand gingen an ihre Besitzer zurück.",
+    "es": "Sin ganador. Las fichas de la última mano volvieron a sus dueños."
+  },
+  "watching": {
+    "en": "Watching",
+    "fr": "Spectateur",
+    "de": "Zuschauer",
+    "es": "Espectador"
+  },
+  "history": {
+    "en": "Hands",
+    "fr": "Mains",
+    "de": "Hände",
+    "es": "Manos"
+  },
+  "voided": {
+    "en": "voided",
+    "fr": "annulée",
+    "de": "annulliert",
+    "es": "anulada"
+  },
+  "p_watching": {
+    "en": "You are watching this table.",
+    "fr": "Vous regardez cette table.",
+    "de": "Du schaust an diesem Tisch zu.",
+    "es": "Estás mirando esta mesa."
+  },
+  "p_lobbyWaiting": {
+    "en": "Waiting for players: {n} needed.",
+    "fr": "En attente de joueurs : {n} nécessaires.",
+    "de": "Warten auf Spieler: {n} nötig.",
+    "es": "Esperando jugadores: hacen falta {n}."
+  },
+  "p_lobbyReady": {
+    "en": "Anyone can start the game.",
+    "fr": "N'importe qui peut lancer la partie.",
+    "de": "Jeder kann das Spiel starten.",
+    "es": "Cualquiera puede empezar la partida."
+  },
+  "p_champion": {
+    "en": "{name} wins the tournament.",
+    "fr": "{name} remporte le tournoi.",
+    "de": "{name} gewinnt das Turnier.",
+    "es": "{name} gana el torneo."
+  },
+  "p_completedTie": {
+    "en": "The tournament is over.",
+    "fr": "Le tournoi est terminé.",
+    "de": "Das Turnier ist vorbei.",
+    "es": "El torneo ha terminado."
+  },
+  "p_cancelled": {
+    "en": "The game was ended. No winner.",
+    "fr": "La partie a été terminée. Pas de vainqueur.",
+    "de": "Das Spiel wurde beendet. Kein Sieger.",
+    "es": "La partida se ha terminado. Sin ganador."
+  },
+  "p_pausedHost": {
+    "en": "Paused: {name} (host) is away.",
+    "fr": "Pause : {name} (hôte) est absent.",
+    "de": "Pause: {name} (Gastgeber) ist weg.",
+    "es": "Pausa: {name} (anfitrión) está fuera."
+  },
+  "p_pausedOffline": {
+    "en": "Paused: nobody in the game is connected.",
+    "fr": "Pause : personne dans la partie n'est connecté.",
+    "de": "Pause: niemand im Spiel ist verbunden.",
+    "es": "Pausa: nadie de la partida está conectado."
+  },
+  "p_pausedManual": {
+    "en": "Paused by {name}.",
+    "fr": "Mis en pause par {name}.",
+    "de": "Pausiert von {name}.",
+    "es": "Pausado por {name}."
+  },
+  "p_rebuyOffer": {
+    "en": "Out of chips. Take your one rebuy of 5,000?",
+    "fr": "Plus de jetons. Prendre votre unique recave de 5 000 ?",
+    "de": "Keine Chips mehr. Deinen einen Rebuy von 5.000 nehmen?",
+    "es": "Sin fichas. ¿Tomar tu única recompra de 5.000?"
+  },
+  "p_rebuyWaiting": {
+    "en": "Waiting for {who} to decide on a rebuy.",
+    "fr": "En attente de la décision de {who} sur une recave.",
+    "de": "Warten auf {who} wegen eines Rebuys.",
+    "es": "Esperando a que {who} decida sobre una recompra."
+  },
+  "p_dealing": {
+    "en": "Dealing.",
+    "fr": "Distribution.",
+    "de": "Es wird gegeben.",
+    "es": "Repartiendo."
+  },
+  "p_handVoided": {
+    "en": "The hand was voided.",
+    "fr": "La main a été annulée.",
+    "de": "Die Hand wurde annulliert.",
+    "es": "La mano se ha anulado."
+  },
+  "p_handWon": {
+    "en": "{name} wins {total}.",
+    "fr": "{name} remporte {total}.",
+    "de": "{name} gewinnt {total}.",
+    "es": "{name} gana {total}."
+  },
+  "p_handSplit": {
+    "en": "Split: {names}.",
+    "fr": "Partage : {names}.",
+    "de": "Geteilt: {names}.",
+    "es": "Reparto: {names}."
+  },
+  "p_runout": {
+    "en": "All in. Dealing the board.",
+    "fr": "Tapis. Distribution du tableau.",
+    "de": "All-in. Das Board wird gegeben.",
+    "es": "All-in. Repartiendo la mesa."
+  },
+  "p_youAreOut": {
+    "en": "You finished {place}.",
+    "fr": "Vous terminez {place}.",
+    "de": "Du bist {place}.",
+    "es": "Terminas {place}."
+  },
+  "p_yourTurnCall": {
+    "en": "Your turn: {amount} to call.",
+    "fr": "À vous : {amount} pour suivre.",
+    "de": "Du bist dran: {amount} zum Mitgehen.",
+    "es": "Tu turno: {amount} para igualar."
+  },
+  "p_yourTurn": {
+    "en": "Your turn.",
+    "fr": "À vous.",
+    "de": "Du bist dran.",
+    "es": "Tu turno."
+  },
+  "p_waitingFor": {
+    "en": "Waiting for {name}.",
+    "fr": "En attente de {name}.",
+    "de": "Warten auf {name}.",
+    "es": "Esperando a {name}."
+  },
+  "help_idea_t": {
+    "en": "The idea",
+    "fr": "Le principe",
+    "de": "Die Idee",
+    "es": "La idea"
+  },
+  "help_idea": {
+    "en": "A single-table no-limit Texas hold'em tournament for 2 to 9 friends. Everyone starts with 5,000 chips; blinds rise every 10 minutes; the last player with chips wins.",
+    "fr": "Un tournoi de Texas hold'em no-limit à une table pour 2 à 9 amis. Chacun commence avec 5 000 jetons ; les blindes montent toutes les 10 minutes ; le dernier joueur avec des jetons gagne.",
+    "de": "Ein No-Limit-Texas-Hold'em-Turnier an einem Tisch für 2 bis 9 Freunde. Alle starten mit 5.000 Chips; die Blinds steigen alle 10 Minuten; wer zuletzt Chips hat, gewinnt.",
+    "es": "Un torneo de Texas hold'em sin límite en una mesa para 2 a 9 amigos. Todos empiezan con 5.000 fichas; las ciegas suben cada 10 minutos; gana el último con fichas."
+  },
+  "help_join_t": {
+    "en": "Rooms",
+    "fr": "Les salles",
+    "de": "Räume",
+    "es": "Salas"
+  },
+  "help_join": {
+    "en": "Pick the Casino or the Home room. Anyone at a room can add computer players and start. Whoever starts is the host for the whole game. Join a running game to watch.",
+    "fr": "Choisissez la salle Casino ou Maison. N'importe qui dans une salle peut ajouter des joueurs ordinateur et lancer. Celui qui lance est l'hôte pour toute la partie. Rejoignez une partie en cours pour regarder.",
+    "de": "Wähle den Casino- oder den Zuhause-Raum. Jeder im Raum kann Computerspieler hinzufügen und starten. Wer startet, ist für das ganze Spiel Gastgeber. Tritt einem laufenden Spiel bei, um zuzuschauen.",
+    "es": "Elige la sala Casino o Casa. Cualquiera en una sala puede añadir jugadores de ordenador y empezar. Quien empieza es el anfitrión durante toda la partida. Entra en una partida en curso para mirar."
+  },
+  "help_play_t": {
+    "en": "Playing a hand",
+    "fr": "Jouer une main",
+    "de": "Eine Hand spielen",
+    "es": "Jugar una mano"
+  },
+  "help_play": {
+    "en": "You have 30 seconds for each decision. Tap Fold, Check or Call, or drag the slider to bet or raise. If time runs out you check when that is free, otherwise you fold.",
+    "fr": "Vous avez 30 secondes par décision. Touchez Se coucher, Parole ou Suivre, ou faites glisser le curseur pour miser ou relancer. Si le temps s'écoule, vous faites parole quand c'est gratuit, sinon vous vous couchez.",
+    "de": "Du hast 30 Sekunden pro Entscheidung. Tippe Passen, Schieben oder Mitgehen, oder zieh den Regler zum Setzen oder Erhöhen. Läuft die Zeit ab, schiebst du, wenn das nichts kostet, sonst passt du.",
+    "es": "Tienes 30 segundos por decisión. Toca Retirarse, Pasar o Igualar, o arrastra el control para apostar o subir. Si se acaba el tiempo, pasas cuando es gratis y si no te retiras."
+  },
+  "help_rebuy_t": {
+    "en": "One rebuy",
+    "fr": "Une recave",
+    "de": "Ein Rebuy",
+    "es": "Una recompra"
+  },
+  "help_rebuy": {
+    "en": "Lose all your chips in a hand dealt at level 1, 2 or 3 and you are offered one rebuy of 5,000 within 30 seconds. After that, or if you decline, you are out.",
+    "fr": "Perdez tous vos jetons dans une main distribuée au niveau 1, 2 ou 3 et une recave unique de 5 000 vous est proposée pendant 30 secondes. Ensuite, ou si vous refusez, vous êtes éliminé.",
+    "de": "Verlierst du alle Chips in einer Hand, die in Stufe 1, 2 oder 3 gegeben wurde, bekommst du 30 Sekunden lang einen einzigen Rebuy von 5.000 angeboten. Danach, oder wenn du ablehnst, bist du raus.",
+    "es": "Si pierdes todas tus fichas en una mano repartida en el nivel 1, 2 o 3 se te ofrece una única recompra de 5.000 durante 30 segundos. Después, o si la rechazas, quedas eliminado."
+  },
+  "help_pause_t": {
+    "en": "Pauses and leaving",
+    "fr": "Pauses et départs",
+    "de": "Pausen und Verlassen",
+    "es": "Pausas y salidas"
+  },
+  "help_pause": {
+    "en": "If the host leaves or loses connection the game pauses for everyone until they are back. Anyone else leaving keeps their seat and chips and can come back. The host can pause between hands. Any player still in can end the game for everyone; then nobody wins.",
+    "fr": "Si l'hôte part ou perd la connexion, la partie se met en pause pour tous jusqu'à son retour. Quiconque d'autre part garde sa place et ses jetons et peut revenir. L'hôte peut faire une pause entre deux mains. Tout joueur encore en lice peut terminer la partie pour tous ; alors personne ne gagne.",
+    "de": "Geht der Gastgeber oder verliert die Verbindung, pausiert das Spiel für alle, bis er zurück ist. Wer sonst geht, behält Platz und Chips und kann zurückkommen. Der Gastgeber kann zwischen zwei Händen pausieren. Jeder noch im Spiel kann das Spiel für alle beenden; dann gewinnt niemand.",
+    "es": "Si el anfitrión se va o pierde la conexión, la partida se pausa para todos hasta que vuelva. Cualquier otro que se vaya conserva su asiento y fichas y puede volver. El anfitrión puede pausar entre manos. Cualquier jugador aún en juego puede terminar la partida para todos; entonces nadie gana."
+  },
+  "help_video_t": {
+    "en": "Video",
+    "fr": "Vidéo",
+    "de": "Video",
+    "es": "Vídeo"
+  },
+  "help_video": {
+    "en": "Camera and microphone connect when you sit down. Tap the toggles to switch them off. Computer-only games keep them off.",
+    "fr": "Caméra et micro se connectent quand vous vous asseyez. Touchez les boutons pour les couper. Les parties contre l'ordinateur seul les laissent coupés.",
+    "de": "Kamera und Mikrofon verbinden sich, wenn du Platz nimmst. Tippe die Schalter, um sie auszuschalten. Spiele nur gegen den Computer lassen sie aus.",
+    "es": "La cámara y el micrófono se conectan al sentarte. Toca los botones para apagarlos. Las partidas solo contra el ordenador los dejan apagados."
+  },
+  "help_footer": {
+    "en": "Standard tournament rules: dead button, minimum raise equals the last full raise, odd chips go clockwise from the button.",
+    "fr": "Règles de tournoi standard : bouton mort, relance minimale égale à la dernière relance complète, jetons impairs dans le sens horaire depuis le bouton.",
+    "de": "Übliche Turnierregeln: Dead Button, Mindesterhöhung gleich der letzten vollen Erhöhung, ungerade Chips im Uhrzeigersinn ab dem Button.",
+    "es": "Reglas de torneo estándar: botón muerto, subida mínima igual a la última subida completa, fichas sobrantes en el sentido horario desde el botón."
+  },
+  "update_available": {
+    "en": "Version {version} available",
+    "fr": "Version {version} disponible",
+    "de": "Version {version} verfügbar",
+    "es": "Versión {version} disponible"
+  },
+  "update_body": {
+    "en": "You have {version}. Install the new version to keep playing with everyone.",
+    "fr": "Vous avez la {version}. Installez la nouvelle version pour continuer à jouer avec tout le monde.",
+    "de": "Du hast {version}. Installiere die neue Version, um mit allen weiterzuspielen.",
+    "es": "Tienes la {version}. Instala la nueva versión para seguir jugando con todos."
+  },
+  "update_now": {
+    "en": "Update",
+    "fr": "Mettre à jour",
+    "de": "Aktualisieren",
+    "es": "Actualizar"
+  },
+  "update_later": {
+    "en": "Later",
+    "fr": "Plus tard",
+    "de": "Später",
+    "es": "Más tarde"
+  },
+  "update_needed": {
+    "en": "Update needed",
+    "fr": "Mise à jour nécessaire",
+    "de": "Aktualisierung nötig",
+    "es": "Actualización necesaria"
+  },
+  "video_paused": {
+    "en": "Video paused after inactivity. Tap to reconnect.",
+    "fr": "Vidéo en pause après inactivité. Touchez pour reconnecter.",
+    "de": "Video nach Inaktivität pausiert. Tippen zum Neuverbinden.",
+    "es": "Vídeo en pausa por inactividad. Toca para reconectar."
+  },
+  "back_in": {
+    "en": "I am back",
+    "fr": "Je suis de retour",
+    "de": "Ich bin zurück",
+    "es": "He vuelto"
+  },
+  "rank_A": {
+    "en": "A",
+    "fr": "A",
+    "de": "A",
+    "es": "A"
+  },
+  "rank_K": {
+    "en": "K",
+    "fr": "R",
+    "de": "K",
+    "es": "K"
+  },
+  "rank_Q": {
+    "en": "Q",
+    "fr": "D",
+    "de": "D",
+    "es": "Q"
+  },
+  "rank_J": {
+    "en": "J",
+    "fr": "V",
+    "de": "B",
+    "es": "J"
+  },
+  "rank_T": {
+    "en": "10",
+    "fr": "10",
+    "de": "10",
+    "es": "10"
+  },
+  "hands_panel": {
+    "en": "Possible hands",
+    "fr": "Mains possibles",
+    "de": "Mögliche Blätter",
+    "es": "Manos posibles"
+  },
+  "in_hand": {
+    "en": "in hand",
+    "fr": "en main",
+    "de": "auf der Hand",
+    "es": "en mano"
+  },
+  "on_table": {
+    "en": "community cards",
+    "fr": "cartes communes",
+    "de": "Gemeinschaftskarten",
+    "es": "cartas comunitarias"
+  },
+  "to_come": {
+    "en": "still to come",
+    "fr": "à venir",
+    "de": "noch offen",
+    "es": "por venir"
+  },
+  "hand_royalFlush": {
+    "en": "Royal flush",
+    "fr": "Quinte flush royale",
+    "de": "Royal Flush",
+    "es": "Escalera real"
+  },
+  "hand_straightFlush": {
+    "en": "Straight flush",
+    "fr": "Quinte flush",
+    "de": "Straight Flush",
+    "es": "Escalera de color"
+  },
+  "hand_fourOfAKind": {
+    "en": "Four of a kind",
+    "fr": "Carré",
+    "de": "Vierling",
+    "es": "Póker"
+  },
+  "hand_fullHouse": {
+    "en": "Full house",
+    "fr": "Full",
+    "de": "Full House",
+    "es": "Full"
+  },
+  "hand_flush": {
+    "en": "Flush",
+    "fr": "Couleur",
+    "de": "Flush",
+    "es": "Color"
+  },
+  "hand_straight": {
+    "en": "Straight",
+    "fr": "Quinte",
+    "de": "Straße",
+    "es": "Escalera"
+  },
+  "hand_threeOfAKind": {
+    "en": "Three of a kind",
+    "fr": "Brelan",
+    "de": "Drilling",
+    "es": "Trío"
+  },
+  "hand_twoPair": {
+    "en": "Two pair",
+    "fr": "Deux paires",
+    "de": "Zwei Paare",
+    "es": "Doble pareja"
+  },
+  "hand_pair": {
+    "en": "Pair",
+    "fr": "Paire",
+    "de": "Paar",
+    "es": "Pareja"
+  },
+  "hand_highCard": {
+    "en": "High card",
+    "fr": "Carte haute",
+    "de": "Hohe Karte",
+    "es": "Carta alta"
+  },
+  "spare": {
+    "en": "spare",
+    "fr": "en plus",
+    "de": "übrig",
+    "es": "sobrante"
+  },
+  "got_it": {
+    "en": "Got it!",
+    "fr": "Compris !",
+    "de": "Verstanden!",
+    "es": "¡Entendido!"
+  },
+  "guide_next": {
+    "en": "Next",
+    "fr": "Suivant",
+    "de": "Weiter",
+    "es": "Siguiente"
+  },
+  "guide_skip": {
+    "en": "Skip",
+    "fr": "Passer",
+    "de": "Überspringen",
+    "es": "Omitir"
+  },
+  "hold_look": {
+    "en": "{name} is looking at the cards",
+    "fr": "{name} regarde les cartes",
+    "de": "{name} sieht sich die Karten an",
+    "es": "{name} está mirando las cartas"
+  },
+  "hold_learn": {
+    "en": "{name} is reading a guide",
+    "fr": "{name} lit un guide",
+    "de": "{name} liest eine Anleitung",
+    "es": "{name} está leyendo una guía"
+  },
+  "tut_home_t": {
+    "en": "Welcome to OurPoker",
+    "fr": "Bienvenue sur OurPoker",
+    "de": "Willkommen bei OurPoker",
+    "es": "Bienvenido a OurPoker"
+  },
+  "tut_home_rooms": {
+    "en": "Each room is a poker table: Casino and Home. Up to nine players sit at one, friends and computer players.",
+    "fr": "Chaque salle est une table de poker : Casino et Maison. Jusqu'à neuf joueurs s'y assoient, amis et joueurs ordinateur.",
+    "de": "Jeder Raum ist ein Pokertisch: Casino und Zuhause. Bis zu neun Spieler sitzen daran, Freunde und Computerspieler.",
+    "es": "Cada sala es una mesa de póquer: Casino y Casa. Se sientan hasta nueve jugadores, amigos y jugadores de ordenador."
+  },
+  "tut_home_preview": {
+    "en": "Tap a room to select it and see what it looks like.",
+    "fr": "Touchez une salle pour la choisir et voir à quoi elle ressemble.",
+    "de": "Tippe auf einen Raum, um ihn auszuwählen und zu sehen, wie er aussieht.",
+    "es": "Toca una sala para elegirla y ver cómo es."
+  },
+  "tut_home_enter": {
+    "en": "Tap the arrow to sit down in the selected room. If a game is already on there, you watch it.",
+    "fr": "Touchez la flèche pour vous asseoir dans la salle choisie. Si une partie y est en cours, vous la regardez.",
+    "de": "Tippe auf den Pfeil, um dich in den gewählten Raum zu setzen. Läuft dort schon ein Spiel, schaust du zu.",
+    "es": "Toca la flecha para sentarte en la sala elegida. Si ya hay una partida, la miras."
+  },
+  "tut_home_name": {
+    "en": "Tap the pencil to change the name the others see.",
+    "fr": "Touchez le crayon pour changer le nom que voient les autres.",
+    "de": "Tippe auf den Stift, um den Namen zu ändern, den die anderen sehen.",
+    "es": "Toca el lápiz para cambiar el nombre que ven los demás."
+  },
+  "tut_lobby_t": {
+    "en": "The waiting room",
+    "fr": "La salle d'attente",
+    "de": "Der Warteraum",
+    "es": "La sala de espera"
+  },
+  "tut_lobby_room": {
+    "en": "Everyone listed here plays the next game together.",
+    "fr": "Tous ceux de la liste jouent ensemble la prochaine partie.",
+    "de": "Alle hier Aufgeführten spielen das nächste Spiel zusammen.",
+    "es": "Todos los de la lista juegan juntos la próxima partida."
+  },
+  "tut_lobby_bots": {
+    "en": "Add a computer player with the robot button.",
+    "fr": "Ajoutez un joueur ordinateur avec le bouton robot.",
+    "de": "Füge mit dem Roboterknopf einen Computerspieler hinzu.",
+    "es": "Añade un jugador de ordenador con el botón del robot."
+  },
+  "tut_lobby_start": {
+    "en": "Anyone can press play to start the game once two players are here.",
+    "fr": "Dès que deux joueurs sont là, n'importe qui peut appuyer sur lecture pour lancer la partie.",
+    "de": "Sobald zwei Spieler da sind, kann jeder auf Start drücken, um das Spiel zu beginnen.",
+    "es": "Cuando haya dos jugadores, cualquiera puede pulsar el botón de inicio para empezar la partida."
+  },
+  "tut_lobby_exit": {
+    "en": "The arrow on the left takes you out. When the last person leaves, the room is cleared, computer players too.",
+    "fr": "La flèche à gauche vous fait sortir. Quand la dernière personne part, la salle est vidée, joueurs ordinateur compris.",
+    "de": "Der Pfeil links bringt dich hinaus. Wenn die letzte Person geht, wird der Raum geleert, Computerspieler eingeschlossen.",
+    "es": "La flecha de la izquierda te saca de la sala. Cuando se va la última persona, la sala se vacía, también los jugadores de ordenador."
+  },
+  "tut_bots_t": {
+    "en": "Computer players",
+    "fr": "Joueurs ordinateur",
+    "de": "Computerspieler",
+    "es": "Jugadores de ordenador"
+  },
+  "tut_bots_mark": {
+    "en": "A robot marks a computer player.",
+    "fr": "Un robot signale un joueur ordinateur.",
+    "de": "Ein Roboter kennzeichnet einen Computerspieler.",
+    "es": "Un robot señala a un jugador de ordenador."
+  },
+  "tut_bots_remove": {
+    "en": "Tap the minus beside one to remove it.",
+    "fr": "Touchez le moins à côté de l'un d'eux pour le retirer.",
+    "de": "Tippe auf das Minus daneben, um ihn zu entfernen.",
+    "es": "Toca el signo menos a su lado para quitarlo."
+  },
+  "tut_table_t": {
+    "en": "The table",
+    "fr": "La table",
+    "de": "Der Tisch",
+    "es": "La mesa"
+  },
+  "tut_table_board": {
+    "en": "The middle row holds the community cards, shared by everyone. Each place is underlined gold.",
+    "fr": "La rangée du milieu reçoit les cartes communes, partagées par tous. Chaque place est soulignée d'or.",
+    "de": "In der mittleren Reihe liegen die Gemeinschaftskarten, die allen gehören. Jeder Platz ist golden unterstrichen.",
+    "es": "La fila del centro tiene las cartas comunitarias, compartidas por todos. Cada lugar está subrayado en dorado."
+  },
+  "tut_table_pot": {
+    "en": "The pot ring collects the chips bet in each round. The winner of the hand takes it all.",
+    "fr": "Le cercle du pot reçoit les jetons misés à chaque tour. Le gagnant de la main remporte tout.",
+    "de": "Im Potkreis sammeln sich die Chips jeder Setzrunde. Der Gewinner der Hand bekommt alles.",
+    "es": "El círculo del bote recoge las fichas apostadas en cada ronda. El ganador de la mano se lo lleva todo."
+  },
+  "tut_table_level": {
+    "en": "Above the prompt: the level, the blinds and the time until they rise.",
+    "fr": "Au-dessus du message : le niveau, les blindes et le temps avant qu'elles montent.",
+    "de": "Über der Ansage: die Stufe, die Blinds und die Zeit, bis sie steigen.",
+    "es": "Encima del mensaje: el nivel, las ciegas y el tiempo hasta que suban."
+  },
+  "tut_cards_t": {
+    "en": "Your cards and chips",
+    "fr": "Vos cartes et vos jetons",
+    "de": "Deine Karten und Chips",
+    "es": "Tus cartas y fichas"
+  },
+  "tut_cards_hand": {
+    "en": "Your two cards are underlined green. When it is your turn they glow: double tap them to check, flick them up to fold.",
+    "fr": "Vos deux cartes sont soulignées de vert. Quand c'est votre tour, elles brillent : touchez-les deux fois pour parler, lancez-les vers le haut pour vous coucher.",
+    "de": "Deine zwei Karten sind grün unterstrichen. Bist du dran, leuchten sie: zweimal tippen zum Schieben, nach oben wischen zum Passen.",
+    "es": "Tus dos cartas están subrayadas en verde. Cuando es tu turno brillan: tócalas dos veces para pasar, deslízalas hacia arriba para retirarte."
+  },
+  "tut_cards_stack": {
+    "en": "Tap your chips to bet or raise; tap Call to match the bet.",
+    "fr": "Touchez vos jetons pour miser ou relancer ; touchez Suivre pour égaler la mise.",
+    "de": "Tippe auf deine Chips, um zu setzen oder zu erhöhen; tippe auf Mitgehen, um den Einsatz zu halten.",
+    "es": "Toca tus fichas para apostar o subir; toca Igualar para igualar la apuesta."
+  },
+  "tut_cards_zoom": {
+    "en": "Tap any cards to see them large; tap again to put them away.",
+    "fr": "Touchez des cartes pour les voir en grand ; touchez encore pour les ranger.",
+    "de": "Tippe auf Karten, um sie groß zu sehen; tippe erneut, um sie wegzulegen.",
+    "es": "Toca cualquier carta para verla en grande; vuelve a tocar para guardarla."
+  },
+  "tut_odds_list": {
+    "en": "Under the table: the hands your cards can still make, most likely first, with the chance of each.",
+    "fr": "Sous la table : les mains que vos cartes peuvent encore faire, la plus probable d'abord, avec la chance de chacune.",
+    "de": "Unter dem Tisch: die Blätter, die deine Karten noch ergeben können, das wahrscheinlichste zuerst, mit der Chance für jedes.",
+    "es": "Debajo de la mesa: las manos que tus cartas aún pueden formar, la más probable primero, con la probabilidad de cada una."
+  },
+  "tut_odds_box": {
+    "en": "The cards that make a hand sit in a dotted box; the cards after it only settle ties.",
+    "fr": "Les cartes qui forment une main sont dans un cadre pointillé ; celles d'après ne servent qu'à départager.",
+    "de": "Die Karten, die ein Blatt bilden, stehen in einem gepunkteten Rahmen; die Karten danach entscheiden nur bei Gleichstand.",
+    "es": "Las cartas que forman una mano van en un recuadro punteado; las de después solo deshacen empates."
+  },
+  "tut_odds_colours": {
+    "en": "Underlines show where each card comes from: green your hand, gold the community cards, red still to come.",
+    "fr": "Les soulignements montrent d'où vient chaque carte : vert votre main, or les cartes communes, rouge encore à venir.",
+    "de": "Die Unterstriche zeigen, woher jede Karte kommt: grün deine Hand, gold die Gemeinschaftskarten, rot noch ausstehend.",
+    "es": "Los subrayados muestran de dónde viene cada carta: verde tu mano, dorado las comunitarias, rojo las que faltan."
+  },
+  "tut_odds_rank": {
+    "en": "#1 is the best hand there is, a royal flush; every hand beats all the hands ranked below it.",
+    "fr": "#1 est la meilleure main possible, la quinte flush royale ; chaque main bat toutes celles classées en dessous.",
+    "de": "#1 ist das beste Blatt überhaupt, ein Royal Flush; jedes Blatt schlägt alle, die unter ihm stehen.",
+    "es": "El #1 es la mejor mano posible, la escalera real; cada mano gana a todas las que están por debajo."
+  },
+  "tut_ev_blinds_t": {
+    "en": "The blinds",
+    "fr": "Les blindes",
+    "de": "Die Blinds",
+    "es": "Las ciegas"
+  },
+  "tut_ev_blinds": {
+    "en": "Every hand starts with two forced bets: the small blind and the big blind, twice as much. They move one seat round the table each hand and rise with each level.",
+    "fr": "Chaque main commence par deux mises forcées : la petite blinde et la grosse blinde, deux fois plus. Elles avancent d'une place à chaque main et montent à chaque niveau.",
+    "de": "Jede Hand beginnt mit zwei Pflichteinsätzen: dem Small Blind und dem doppelt so hohen Big Blind. Sie wandern jede Hand einen Platz weiter und steigen mit jeder Stufe.",
+    "es": "Cada mano empieza con dos apuestas obligadas: la ciega pequeña y la ciega grande, el doble. Avanzan un asiento en cada mano y suben con cada nivel."
+  },
+  "tut_ev_call_t": {
+    "en": "Calling",
+    "fr": "Suivre",
+    "de": "Mitgehen",
+    "es": "Igualar"
+  },
+  "tut_ev_call": {
+    "en": "To call is to put in as much as the highest bet so far, to stay in the hand.",
+    "fr": "Suivre, c'est mettre autant que la plus grosse mise du tour, pour rester dans la main.",
+    "de": "Mitgehen heißt, so viel zu setzen wie der höchste Einsatz bisher, um in der Hand zu bleiben.",
+    "es": "Igualar es poner tanto como la apuesta más alta hasta ahora, para seguir en la mano."
+  },
+  "tut_ev_bet_t": {
+    "en": "Betting and raising",
+    "fr": "Miser et relancer",
+    "de": "Setzen und Erhöhen",
+    "es": "Apostar y subir"
+  },
+  "tut_ev_bet": {
+    "en": "A bet puts in chips that everyone else must match to stay in; a raise makes the bet bigger.",
+    "fr": "Une mise engage des jetons que les autres doivent égaler pour rester ; une relance augmente la mise.",
+    "de": "Ein Einsatz bringt Chips ins Spiel, die alle anderen halten müssen, um dabeizubleiben; eine Erhöhung macht den Einsatz größer.",
+    "es": "Una apuesta pone fichas que los demás deben igualar para seguir; una subida hace la apuesta mayor."
+  },
+  "tut_ev_pot_t": {
+    "en": "The pot",
+    "fr": "Le pot",
+    "de": "Der Pot",
+    "es": "El bote"
+  },
+  "tut_ev_pot": {
+    "en": "When a round of betting ends, the bets go into the pot. The best hand at the end, or the last player left, takes it.",
+    "fr": "À la fin d'un tour d'enchères, les mises vont au pot. La meilleure main à la fin, ou le dernier joueur restant, le remporte.",
+    "de": "Am Ende einer Setzrunde kommen die Einsätze in den Pot. Das beste Blatt am Schluss, oder der letzte verbliebene Spieler, gewinnt ihn.",
+    "es": "Cuando termina una ronda de apuestas, las apuestas van al bote. Se lo lleva la mejor mano al final, o el último jugador que quede."
+  },
+  "tut_ev_flop_t": {
+    "en": "The flop",
+    "fr": "Le flop",
+    "de": "Der Flop",
+    "es": "El flop"
+  },
+  "tut_ev_flop": {
+    "en": "Three community cards are turned up together: the flop. Another round of betting follows.",
+    "fr": "Trois cartes communes sont retournées ensemble : le flop. Un autre tour d'enchères suit.",
+    "de": "Drei Gemeinschaftskarten werden zusammen aufgedeckt: der Flop. Danach folgt eine weitere Setzrunde.",
+    "es": "Se descubren tres cartas comunitarias a la vez: el flop. Sigue otra ronda de apuestas."
+  },
+  "tut_ev_turn_t": {
+    "en": "The turn",
+    "fr": "Le turn",
+    "de": "Der Turn",
+    "es": "El turn"
+  },
+  "tut_ev_turn": {
+    "en": "A fourth community card: the turn. Then another round of betting.",
+    "fr": "Une quatrième carte commune : le turn. Puis un autre tour d'enchères.",
+    "de": "Eine vierte Gemeinschaftskarte: der Turn. Dann folgt eine weitere Setzrunde.",
+    "es": "Una cuarta carta comunitaria: el turn. Luego otra ronda de apuestas."
+  },
+  "tut_ev_river_t": {
+    "en": "The river",
+    "fr": "La river",
+    "de": "Der River",
+    "es": "El river"
+  },
+  "tut_ev_river": {
+    "en": "The fifth and last community card: the river. After the last round of betting, the hands are shown.",
+    "fr": "La cinquième et dernière carte commune : la river. Après le dernier tour d'enchères, les mains sont montrées.",
+    "de": "Die fünfte und letzte Gemeinschaftskarte: der River. Nach der letzten Setzrunde werden die Blätter gezeigt.",
+    "es": "La quinta y última carta comunitaria: el river. Tras la última ronda de apuestas, se muestran las manos."
+  },
+  "your_chips": {
+    "en": "Your chips",
+    "fr": "Vos jetons",
+    "de": "Deine Chips",
+    "es": "Tus fichas"
+  },
+  "ev_dealt": {
+    "en": "Cards dealt.",
+    "fr": "Cartes distribuées.",
+    "de": "Karten ausgeteilt.",
+    "es": "Cartas repartidas."
+  },
+  "ev_flop": {
+    "en": "The flop.",
+    "fr": "Le flop.",
+    "de": "Der Flop.",
+    "es": "El flop."
+  },
+  "ev_turn": {
+    "en": "The turn.",
+    "fr": "Le turn.",
+    "de": "Der Turn.",
+    "es": "El turn."
+  },
+  "ev_river": {
+    "en": "The river.",
+    "fr": "La river.",
+    "de": "Der River.",
+    "es": "El river."
+  },
+  "ev_check": {
+    "en": "{name} checks.",
+    "fr": "{name} fait parole.",
+    "de": "{name} schiebt.",
+    "es": "{name} pasa."
+  },
+  "ev_fold": {
+    "en": "{name} folds.",
+    "fr": "{name} se couche.",
+    "de": "{name} passt.",
+    "es": "{name} se retira."
+  },
+  "ev_call": {
+    "en": "{name} calls {amount}.",
+    "fr": "{name} suit {amount}.",
+    "de": "{name} geht mit {amount} mit.",
+    "es": "{name} iguala {amount}."
+  },
+  "ev_bet": {
+    "en": "{name} bets {amount}.",
+    "fr": "{name} mise {amount}.",
+    "de": "{name} setzt {amount}.",
+    "es": "{name} apuesta {amount}."
+  },
+  "ev_raise": {
+    "en": "{name} raises to {amount}.",
+    "fr": "{name} relance à {amount}.",
+    "de": "{name} erhöht auf {amount}.",
+    "es": "{name} sube a {amount}."
+  },
+  "ev_allIn": {
+    "en": "{name} is all in for {amount}.",
+    "fr": "{name} fait tapis pour {amount}.",
+    "de": "{name} ist all-in mit {amount}.",
+    "es": "{name} va all-in con {amount}."
+  },
+  "ev_blind": {
+    "en": "{name} posts {amount}.",
+    "fr": "{name} pose {amount}.",
+    "de": "{name} setzt {amount} Blind.",
+    "es": "{name} pone {amount}."
+  },
+  "waiting_for": {
+    "en": "needed",
+    "fr": "requise",
+    "de": "benötigt",
+    "es": "necesaria"
+  },
+  "other_ways": {
+    "en": "other ways",
+    "fr": "autres façons",
+    "de": "andere Wege",
+    "es": "otras formas"
+  }
+}

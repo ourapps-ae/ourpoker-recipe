@@ -1,0 +1,180 @@
+{
+  "contractVersion": 1,
+  "version": 13,
+  "gameNumber": 1,
+  "roomId": "casino",
+  "you": "bob",
+  "holds": [],
+  "display": false,
+  "status": "running",
+  "phase": "rebuy",
+  "pauseReasons": [],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 0,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": false,
+      "folded": false,
+      "allIn": true,
+      "cards": [],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4975,
+        "auto": false
+      },
+      "hand": null
+    },
+    {
+      "id": "cat",
+      "name": "Cat",
+      "seat": 1,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": false,
+      "folded": false,
+      "allIn": true,
+      "cards": [],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4950,
+        "auto": false
+      },
+      "hand": null
+    },
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 2,
+      "isBot": false,
+      "isHost": true,
+      "stack": 15000,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": false,
+      "folded": false,
+      "allIn": true,
+      "cards": [],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": null
+    }
+  ],
+  "hand": null,
+  "lastResult": {
+    "no": 1,
+    "board": [
+      "Ah",
+      "Kc",
+      "9d",
+      "4s",
+      "2h"
+    ],
+    "pots": [
+      {
+        "amount": 15000,
+        "winners": [
+          {
+            "playerId": "ann",
+            "amount": 15000,
+            "handName": "Two pair, aces and kings"
+          }
+        ]
+      }
+    ],
+    "uncontested": false,
+    "voided": false,
+    "showdown": {
+      "kind": "combination",
+      "winners": [
+        "ann"
+      ],
+      "kickers": {}
+    },
+    "holdMs": 22000
+  },
+  "clock": {
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "nextSb": 50,
+    "nextBb": 100,
+    "nextLevelInMs": 568000,
+    "levelDurationMs": 600000
+  },
+  "rebuyOffers": [
+    {
+      "playerId": "bob",
+      "remainingMs": 30000
+    },
+    {
+      "playerId": "cat",
+      "remainingMs": 30000
+    }
+  ],
+  "winnerId": null,
+  "history": [
+    {
+      "no": 1,
+      "level": 1,
+      "winners": [
+        {
+          "playerId": "ann",
+          "amount": 15000
+        }
+      ],
+      "voided": false
+    }
+  ],
+  "odds": null,
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": true,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": true,
+    "show": [],
+    "pause": false,
+    "resume": false,
+    "cancel": true,
+    "newGame": false
+  },
+  "prompt": "Out of chips. Take your one rebuy of 5,000?",
+  "promptKey": "rebuyOffer",
+  "promptArgs": [],
+  "inviteUrl": null,
+  "updateUrl": null
+}

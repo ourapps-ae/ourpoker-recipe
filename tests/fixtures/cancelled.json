@@ -1,0 +1,110 @@
+{
+  "contractVersion": 1,
+  "version": 20,
+  "gameNumber": 1,
+  "roomId": "home",
+  "you": "ann",
+  "holds": [],
+  "display": false,
+  "status": "cancelled",
+  "phase": "cancelled",
+  "pauseReasons": [],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 0,
+      "isBot": false,
+      "isHost": false,
+      "stack": 5000,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": false,
+      "folded": false,
+      "allIn": false,
+      "cards": [],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "blind",
+        "amount": 50,
+        "auto": false
+      },
+      "hand": null
+    },
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 1,
+      "isBot": false,
+      "isHost": true,
+      "stack": 5000,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": false,
+      "folded": false,
+      "allIn": false,
+      "cards": [],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "blind",
+        "amount": 25,
+        "auto": false
+      },
+      "hand": null
+    }
+  ],
+  "hand": null,
+  "lastResult": {
+    "no": 1,
+    "board": [],
+    "pots": [],
+    "uncontested": false,
+    "voided": true,
+    "showdown": null,
+    "holdMs": 0
+  },
+  "clock": null,
+  "rebuyOffers": [],
+  "winnerId": null,
+  "history": [
+    {
+      "no": 1,
+      "level": 1,
+      "winners": [],
+      "voided": true
+    }
+  ],
+  "odds": null,
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": false,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": false,
+    "show": [],
+    "pause": false,
+    "resume": false,
+    "cancel": false,
+    "newGame": true
+  },
+  "prompt": "The game was ended. No winner.",
+  "promptKey": "cancelled",
+  "promptArgs": [],
+  "inviteUrl": null,
+  "updateUrl": null
+}

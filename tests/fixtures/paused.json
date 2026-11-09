@@ -1,0 +1,131 @@
+{
+  "contractVersion": 1,
+  "version": 21,
+  "gameNumber": 1,
+  "roomId": "home",
+  "you": "bob",
+  "holds": [],
+  "display": false,
+  "status": "running",
+  "phase": "betting",
+  "pauseReasons": [
+    "hostAbsent"
+  ],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 0,
+      "isBot": false,
+      "isHost": true,
+      "stack": 4975,
+      "bet": 25,
+      "totalIn": 25,
+      "inHand": true,
+      "folded": false,
+      "allIn": false,
+      "cards": [
+        null,
+        null
+      ],
+      "status": "in",
+      "place": null,
+      "connected": false,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "blind",
+        "amount": 25,
+        "auto": false
+      },
+      "hand": null
+    },
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 1,
+      "isBot": false,
+      "isHost": false,
+      "stack": 4950,
+      "bet": 50,
+      "totalIn": 50,
+      "inHand": true,
+      "folded": false,
+      "allIn": false,
+      "cards": [
+        "9h",
+        "Ad"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "blind",
+        "amount": 50,
+        "auto": false
+      },
+      "hand": null
+    }
+  ],
+  "hand": {
+    "no": 1,
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "button": 0,
+    "sbSeat": 0,
+    "bbSeat": 1,
+    "street": "preflop",
+    "board": [],
+    "pots": [],
+    "potTotal": 75,
+    "currentBet": 50,
+    "actorId": "ann",
+    "remainingMs": 35360,
+    "settleMs": 5360,
+    "event": "deal",
+    "lastActorId": null
+  },
+  "lastResult": null,
+  "clock": {
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "nextSb": 50,
+    "nextBb": 100,
+    "nextLevelInMs": 600000,
+    "levelDurationMs": 600000
+  },
+  "rebuyOffers": [],
+  "winnerId": null,
+  "history": [],
+  "odds": [],
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": true,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": false,
+    "show": [],
+    "pause": false,
+    "resume": false,
+    "cancel": true,
+    "newGame": false
+  },
+  "prompt": "Paused: Ann (host) is away.",
+  "promptKey": "pausedHost",
+  "promptArgs": [
+    "Ann"
+  ],
+  "inviteUrl": null,
+  "updateUrl": null
+}

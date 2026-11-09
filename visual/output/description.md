@@ -1,0 +1,3 @@
+# OurPoker application-specific component
+
+The OurPoker recipe's own component at version 0.2.0 provides four interfaces to the rest of the application: ae/display-mode-configuration, ae/video-calls-configuration and ae/windows-desktop-configuration version 1.0.0, which no other component supplies, and ae/game-adapter version 1.0.0, the poker view of the turn engine. It requires twenty interfaces from the other components: the host shells, the server host, the release pipeline, the interface and presentation components, the display, video and update facilities, language, invitations and the turn engine's game adapter. Each arrow runs from a named output to an input of the same type and version. Setting values shown are defaults and no secret appears.

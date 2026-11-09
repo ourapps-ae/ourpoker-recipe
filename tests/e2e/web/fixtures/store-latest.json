@@ -1,0 +1,16 @@
+{
+  "name": "Fixture poker",
+  "version": "2.1.0",
+  "testflightVersion": "1.9.0",
+  "testflightUrl": "https://testflight.apple.com/join/Example1",
+  "apple": {
+    "ios": {"version":"1.9.0","testflightUrl":"https://testflight.apple.com/join/Example1"},
+    "macos": {"version":"1.8.0","testflightUrl":"https://testflight.apple.com/join/Example2"},
+    "tvos": {"version":"1.7.0","testflightUrl":"https://testflight.apple.com/join/Example3"}
+  },
+  "android": {"apkUrl":"https://delivery.example/poker.apk?signature=fixture"},
+  "macos": {"version":"2.1.0","packages":[{"url":"https://delivery.example/poker.dmg","format":"dmg","architectures":["arm64"],"minOsVersion":"14.0","signing":"unsigned","notarization":"not-notarized"}]},
+  "windows": {"version":"2.1.0","packages":[{"url":"https://delivery.example/poker.exe","format":"exe","architectures":["x64"],"minOsVersion":"10","signing":"unsigned"}]},
+  "pwa": "https://play.example/poker/",
+  "linksExpireAt": "2099-01-01T00:00:00.000Z"
+}

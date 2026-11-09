@@ -1,0 +1,14 @@
+{
+  "id": "display-policy",
+  "type": "ae/display-policy",
+  "version": "1.0.0",
+  "component": "ourapps-ae/display-mode",
+  "imports": {
+    "web/mode": [
+      "SessionMode",
+      "createMode",
+      "displayCapabilities"
+    ]
+  },
+  "native": "The component's Swift and Kotlin sources are compiled with the application (apple/Sources, android/src/main/java)."
+}

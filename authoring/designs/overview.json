@@ -1,0 +1,557 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-default-overview",
+  "title": "OurPoker: default answers, the five groups (the application connects to every group)",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "group-1",
+      "name": "Delivery and hosts (6 components)",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "web-host-theme",
+          "name": "web-host: theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "apple-host-theme",
+          "name": "apple-host: theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "android-host-theme",
+          "name": "android-host: theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "server-host-room-session",
+          "name": "server-host: room-session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "server-host-room-directory",
+          "name": "server-host: room-directory",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-directory",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "group-2",
+      "name": "Rooms, people and sessions (9 components)",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "realtime-rooms-session",
+          "name": "realtime-rooms: session",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0"
+        },
+        {
+          "id": "room-directory-room-directory",
+          "name": "room-directory: room-directory",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/room-directory",
+          "version": "1.0.0"
+        },
+        {
+          "id": "private-views-private-views",
+          "name": "private-views: private-views",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/private-views",
+          "version": "1.0.0"
+        },
+        {
+          "id": "presence-presence",
+          "name": "presence: presence",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/presence",
+          "version": "1.0.0"
+        },
+        {
+          "id": "guest-identity-guest-identity",
+          "name": "guest-identity: guest-identity",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0"
+        },
+        {
+          "id": "preferences-preferences",
+          "name": "preferences: preferences",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "group-3",
+      "name": "Turn-based game framework (11 components)",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "turn-engine-game-rules",
+          "name": "turn-engine: game-rules",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-rules",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "turn-engine-private-views",
+          "name": "turn-engine: private-views",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/private-views",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "turn-engine-presence",
+          "name": "turn-engine: presence",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/presence",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "seating-guest-identity",
+          "name": "seating: guest-identity",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guest-identity",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "computer-players-player-strategy",
+          "name": "computer-players: player-strategy",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/player-strategy",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-deck-card-deck",
+          "name": "card-deck: card-deck",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0"
+        },
+        {
+          "id": "chip-ledger-chip-ledger",
+          "name": "chip-ledger: chip-ledger",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/chip-ledger",
+          "version": "1.0.0"
+        },
+        {
+          "id": "level-schedule-level-schedule",
+          "name": "level-schedule: level-schedule",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/level-schedule",
+          "version": "1.0.0"
+        },
+        {
+          "id": "rules-settings-rules-settings",
+          "name": "rules-settings: rules-settings",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/rules-settings",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "group-4",
+      "name": "Poker (4 components)",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "holdem-rules-game-rules",
+          "name": "holdem-rules: game-rules",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-rules",
+          "version": "1.0.0"
+        },
+        {
+          "id": "poker-strategy-player-strategy",
+          "name": "poker-strategy: player-strategy",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/player-strategy",
+          "version": "1.0.0"
+        },
+        {
+          "id": "poker-hand-ranking-card-deck",
+          "name": "poker-hand-ranking: card-deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-odds-card-deck",
+          "name": "poker-odds: card-deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "holdem-rules-card-deck",
+          "name": "holdem-rules: card-deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "holdem-rules-chip-ledger",
+          "name": "holdem-rules: chip-ledger",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/chip-ledger",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "holdem-rules-level-schedule",
+          "name": "holdem-rules: level-schedule",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/level-schedule",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "holdem-rules-rules-settings",
+          "name": "holdem-rules: rules-settings",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/rules-settings",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "group-5",
+      "name": "Interface and presentation (8 components)",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "theme-theme",
+          "name": "theme: theme",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0"
+        },
+        {
+          "id": "sound-cues-preferences",
+          "name": "sound-cues: preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "guided-tour-preferences",
+          "name": "guided-tour: preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        }
+      ],
+      "settings": []
+    }
+  ],
+  "instances": [
+    {
+      "id": "delivery-and-hosts",
+      "name": "Delivery and hosts",
+      "definition": "group-1",
+      "configuration": {}
+    },
+    {
+      "id": "rooms-people-and-sessions",
+      "name": "Rooms, people and sessions",
+      "definition": "group-2",
+      "configuration": {}
+    },
+    {
+      "id": "turn-based-game-framework",
+      "name": "Turn-based game framework",
+      "definition": "group-3",
+      "configuration": {}
+    },
+    {
+      "id": "poker",
+      "name": "Poker",
+      "definition": "group-4",
+      "configuration": {}
+    },
+    {
+      "id": "interface-and-presentation",
+      "name": "Interface and presentation",
+      "definition": "group-5",
+      "configuration": {}
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "interface-and-presentation",
+        "port": "theme-theme"
+      },
+      "target": {
+        "instance": "delivery-and-hosts",
+        "port": "web-host-theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "interface-and-presentation",
+        "port": "theme-theme"
+      },
+      "target": {
+        "instance": "delivery-and-hosts",
+        "port": "apple-host-theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "interface-and-presentation",
+        "port": "theme-theme"
+      },
+      "target": {
+        "instance": "delivery-and-hosts",
+        "port": "android-host-theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "realtime-rooms-session"
+      },
+      "target": {
+        "instance": "delivery-and-hosts",
+        "port": "server-host-room-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "room-directory-room-directory"
+      },
+      "target": {
+        "instance": "delivery-and-hosts",
+        "port": "server-host-room-directory"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker",
+        "port": "holdem-rules-game-rules"
+      },
+      "target": {
+        "instance": "turn-based-game-framework",
+        "port": "turn-engine-game-rules"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "private-views-private-views"
+      },
+      "target": {
+        "instance": "turn-based-game-framework",
+        "port": "turn-engine-private-views"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "presence-presence"
+      },
+      "target": {
+        "instance": "turn-based-game-framework",
+        "port": "turn-engine-presence"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "guest-identity-guest-identity"
+      },
+      "target": {
+        "instance": "turn-based-game-framework",
+        "port": "seating-guest-identity"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker",
+        "port": "poker-strategy-player-strategy"
+      },
+      "target": {
+        "instance": "turn-based-game-framework",
+        "port": "computer-players-player-strategy"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-based-game-framework",
+        "port": "card-deck-card-deck"
+      },
+      "target": {
+        "instance": "poker",
+        "port": "poker-hand-ranking-card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-based-game-framework",
+        "port": "card-deck-card-deck"
+      },
+      "target": {
+        "instance": "poker",
+        "port": "poker-odds-card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-based-game-framework",
+        "port": "card-deck-card-deck"
+      },
+      "target": {
+        "instance": "poker",
+        "port": "holdem-rules-card-deck"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-based-game-framework",
+        "port": "chip-ledger-chip-ledger"
+      },
+      "target": {
+        "instance": "poker",
+        "port": "holdem-rules-chip-ledger"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-based-game-framework",
+        "port": "level-schedule-level-schedule"
+      },
+      "target": {
+        "instance": "poker",
+        "port": "holdem-rules-level-schedule"
+      }
+    },
+    {
+      "source": {
+        "instance": "turn-based-game-framework",
+        "port": "rules-settings-rules-settings"
+      },
+      "target": {
+        "instance": "poker",
+        "port": "holdem-rules-rules-settings"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "preferences-preferences"
+      },
+      "target": {
+        "instance": "interface-and-presentation",
+        "port": "sound-cues-preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "rooms-people-and-sessions",
+        "port": "preferences-preferences"
+      },
+      "target": {
+        "instance": "interface-and-presentation",
+        "port": "guided-tour-preferences"
+      }
+    }
+  ]
+}

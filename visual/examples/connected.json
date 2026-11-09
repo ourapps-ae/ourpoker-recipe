@@ -1,0 +1,770 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-connected",
+  "title": "OurPoker application-specific component: connected",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "ourapps-ae.ourpoker",
+      "name": "OurPoker",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.2.0",
+      "ports": [
+        {
+          "id": "game-adapter",
+          "name": "Game adapter",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "web-shell",
+          "name": "Web shell",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/web-shell",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "apple-shell",
+          "name": "Apple shell",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/apple-shell",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "android-shell",
+          "name": "Android shell",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/android-shell",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "desktop-host",
+          "name": "Desktop host",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/desktop-host",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "server-host",
+          "name": "Server host",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/server-host",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "release-pipeline",
+          "name": "Release pipeline",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/release-pipeline",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "invitations",
+          "name": "Invitations",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/invitations",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "display-policy",
+          "name": "Display policy",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/display-policy",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "media-session",
+          "name": "Media session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/media-session",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "table-layout",
+          "name": "Table layout",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/table-layout",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-graphics",
+          "name": "Card graphics",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-graphics",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "chip-graphics",
+          "name": "Chip graphics",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/chip-graphics",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "sound-cues",
+          "name": "Sound cues",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/sound-cues",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "updates",
+          "name": "Updates",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/updates",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-game-adapter",
+          "name": "Poker game adapter",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "applicationId",
+          "name": "applicationId",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker"
+        },
+        {
+          "id": "applicationName",
+          "name": "applicationName",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "OurPoker"
+        },
+        {
+          "id": "packageId",
+          "name": "packageId",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "app.ourapps.ourpoker"
+        },
+        {
+          "id": "scheme",
+          "name": "scheme",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker"
+        },
+        {
+          "id": "serverAddress",
+          "name": "serverAddress",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "http://localhost:8788"
+        },
+        {
+          "id": "webAddress",
+          "name": "webAddress",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "http://localhost:5173"
+        },
+        {
+          "id": "roomPrefix",
+          "name": "roomPrefix",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker-"
+        },
+        {
+          "id": "inviteAddress",
+          "name": "inviteAddress",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "https://store.example/l/0123456789abcdef01234567"
+        },
+        {
+          "id": "updatesEnabled",
+          "name": "updatesEnabled",
+          "type": "boolean",
+          "required": true,
+          "secret": false,
+          "default": false
+        },
+        {
+          "id": "modeEvent",
+          "name": "modeEvent",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "ourpoker-mode"
+        },
+        {
+          "id": "signingEnvironmentPrefix",
+          "name": "signingEnvironmentPrefix",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "OURPOKER"
+        },
+        {
+          "id": "maximumPlayers",
+          "name": "maximumPlayers",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "startingStack",
+          "name": "startingStack",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 5000
+        },
+        {
+          "id": "levelSeconds",
+          "name": "levelSeconds",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 600
+        },
+        {
+          "id": "rebuysPerPlayer",
+          "name": "rebuysPerPlayer",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "decisionSeconds",
+          "name": "decisionSeconds",
+          "type": "number",
+          "required": true,
+          "secret": false,
+          "default": 30
+        },
+        {
+          "id": "computerPlayers",
+          "name": "computerPlayers",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "on-request"
+        }
+      ]
+    },
+    {
+      "id": "rest",
+      "name": "The recipe's other components",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.1.0",
+      "ports": [
+        {
+          "id": "game-adapter",
+          "name": "Game adapter",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0"
+        },
+        {
+          "id": "web-shell",
+          "name": "Web shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/web-shell",
+          "version": "1.0.0"
+        },
+        {
+          "id": "apple-shell",
+          "name": "Apple shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/apple-shell",
+          "version": "1.0.0"
+        },
+        {
+          "id": "android-shell",
+          "name": "Android shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/android-shell",
+          "version": "1.0.0"
+        },
+        {
+          "id": "desktop-host",
+          "name": "Desktop host",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/desktop-host",
+          "version": "1.0.0"
+        },
+        {
+          "id": "server-host",
+          "name": "Server host",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/server-host",
+          "version": "1.0.0"
+        },
+        {
+          "id": "release-pipeline",
+          "name": "Release pipeline",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/release-pipeline",
+          "version": "1.0.0"
+        },
+        {
+          "id": "invitations",
+          "name": "Invitations",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/invitations",
+          "version": "1.0.0"
+        },
+        {
+          "id": "display-policy",
+          "name": "Display policy",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/display-policy",
+          "version": "1.0.0"
+        },
+        {
+          "id": "media-session",
+          "name": "Media session",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/media-session",
+          "version": "1.0.0"
+        },
+        {
+          "id": "table-layout",
+          "name": "Table layout",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/table-layout",
+          "version": "1.0.0"
+        },
+        {
+          "id": "card-graphics",
+          "name": "Card graphics",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/card-graphics",
+          "version": "1.0.0"
+        },
+        {
+          "id": "chip-graphics",
+          "name": "Chip graphics",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/chip-graphics",
+          "version": "1.0.0"
+        },
+        {
+          "id": "sound-cues",
+          "name": "Sound cues",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/sound-cues",
+          "version": "1.0.0"
+        },
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0"
+        },
+        {
+          "id": "updates",
+          "name": "Updates",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/updates",
+          "version": "1.0.0"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0"
+        },
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0"
+        },
+        {
+          "id": "poker-game-adapter",
+          "name": "Poker game adapter",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/game-adapter",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        }
+      ],
+      "settings": []
+    }
+  ],
+  "instances": [
+    {
+      "id": "application",
+      "name": "OurPoker",
+      "definition": "ourapps-ae.ourpoker",
+      "configuration": {}
+    },
+    {
+      "id": "rest",
+      "name": "Other components",
+      "definition": "rest",
+      "configuration": {}
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "rest",
+        "port": "game-adapter"
+      },
+      "target": {
+        "instance": "application",
+        "port": "game-adapter"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "web-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "web-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "apple-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "apple-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "android-shell"
+      },
+      "target": {
+        "instance": "application",
+        "port": "android-shell"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "desktop-host"
+      },
+      "target": {
+        "instance": "application",
+        "port": "desktop-host"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "server-host"
+      },
+      "target": {
+        "instance": "application",
+        "port": "server-host"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "release-pipeline"
+      },
+      "target": {
+        "instance": "application",
+        "port": "release-pipeline"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "invitations"
+      },
+      "target": {
+        "instance": "application",
+        "port": "invitations"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "display-policy"
+      },
+      "target": {
+        "instance": "application",
+        "port": "display-policy"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "media-session"
+      },
+      "target": {
+        "instance": "application",
+        "port": "media-session"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "table-layout"
+      },
+      "target": {
+        "instance": "application",
+        "port": "table-layout"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "card-graphics"
+      },
+      "target": {
+        "instance": "application",
+        "port": "card-graphics"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "chip-graphics"
+      },
+      "target": {
+        "instance": "application",
+        "port": "chip-graphics"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "sound-cues"
+      },
+      "target": {
+        "instance": "application",
+        "port": "sound-cues"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "guided-tour"
+      },
+      "target": {
+        "instance": "application",
+        "port": "guided-tour"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "updates"
+      },
+      "target": {
+        "instance": "application",
+        "port": "updates"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "application",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "application",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "language"
+      },
+      "target": {
+        "instance": "application",
+        "port": "language"
+      }
+    },
+    {
+      "source": {
+        "instance": "rest",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "application",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "application",
+        "port": "poker-game-adapter"
+      },
+      "target": {
+        "instance": "rest",
+        "port": "poker-game-adapter"
+      }
+    }
+  ]
+}

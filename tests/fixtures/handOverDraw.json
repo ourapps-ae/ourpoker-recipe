@@ -1,0 +1,343 @@
+{
+  "contractVersion": 1,
+  "version": 12,
+  "gameNumber": 1,
+  "roomId": "casino",
+  "you": "ann",
+  "holds": [],
+  "display": false,
+  "status": "running",
+  "phase": "handOver",
+  "pauseReasons": [],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 0,
+      "isBot": false,
+      "isHost": false,
+      "stack": 7500,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "As",
+        "5h"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": {
+        "category": "twoPair",
+        "ranks": [
+          12,
+          7,
+          11
+        ],
+        "name": "Two pair, aces and nines",
+        "best": [
+          {
+            "code": "As",
+            "rank": "A",
+            "suit": "s",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "Ah",
+            "rank": "A",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "9c",
+            "rank": "9",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "9s",
+            "rank": "9",
+            "suit": "s",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "Kd",
+            "rank": "K",
+            "suit": "d",
+            "from": "board",
+            "spare": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "cat",
+      "name": "Cat",
+      "seat": 1,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "Qh",
+        "Jh"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4975,
+        "auto": false
+      },
+      "hand": {
+        "category": "pair",
+        "ranks": [
+          7,
+          12,
+          11,
+          10
+        ],
+        "name": "Pair of nines",
+        "best": [
+          {
+            "code": "9c",
+            "rank": "9",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "9s",
+            "rank": "9",
+            "suit": "s",
+            "from": "board",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 2,
+      "isBot": false,
+      "isHost": true,
+      "stack": 7500,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "Ac",
+        "3d"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4950,
+        "auto": false
+      },
+      "hand": {
+        "category": "twoPair",
+        "ranks": [
+          12,
+          7,
+          11
+        ],
+        "name": "Two pair, aces and nines",
+        "best": [
+          {
+            "code": "Ac",
+            "rank": "A",
+            "suit": "c",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "Ah",
+            "rank": "A",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "9c",
+            "rank": "9",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "9s",
+            "rank": "9",
+            "suit": "s",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "Kd",
+            "rank": "K",
+            "suit": "d",
+            "from": "board",
+            "spare": true
+          }
+        ]
+      }
+    }
+  ],
+  "hand": {
+    "no": 1,
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "button": 0,
+    "sbSeat": 1,
+    "bbSeat": 2,
+    "street": "river",
+    "board": [
+      "Ah",
+      "Kd",
+      "9c",
+      "9s",
+      "4h"
+    ],
+    "pots": [
+      {
+        "amount": 15000,
+        "eligible": [
+          "bob",
+          "cat",
+          "ann"
+        ]
+      }
+    ],
+    "potTotal": 0,
+    "currentBet": 5000,
+    "actorId": null,
+    "remainingMs": 42000,
+    "settleMs": null,
+    "event": null,
+    "lastActorId": null
+  },
+  "lastResult": {
+    "no": 1,
+    "board": [
+      "Ah",
+      "Kd",
+      "9c",
+      "9s",
+      "4h"
+    ],
+    "pots": [
+      {
+        "amount": 15000,
+        "winners": [
+          {
+            "playerId": "ann",
+            "amount": 7500,
+            "handName": "Two pair, aces and nines"
+          },
+          {
+            "playerId": "bob",
+            "amount": 7500,
+            "handName": "Two pair, aces and nines"
+          }
+        ]
+      }
+    ],
+    "uncontested": false,
+    "voided": false,
+    "showdown": {
+      "kind": "draw",
+      "winners": [
+        "ann",
+        "bob"
+      ],
+      "kickers": {
+        "ann": 5,
+        "bob": 5
+      }
+    },
+    "holdMs": 42000
+  },
+  "clock": {
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "nextSb": 50,
+    "nextBb": 100,
+    "nextLevelInMs": 590000,
+    "levelDurationMs": 600000
+  },
+  "rebuyOffers": [],
+  "winnerId": null,
+  "history": [
+    {
+      "no": 1,
+      "level": 1,
+      "winners": [
+        {
+          "playerId": "ann",
+          "amount": 7500
+        },
+        {
+          "playerId": "bob",
+          "amount": 7500
+        }
+      ],
+      "voided": false
+    }
+  ],
+  "odds": null,
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": true,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": false,
+    "show": [],
+    "pause": true,
+    "resume": false,
+    "cancel": true,
+    "newGame": false
+  },
+  "prompt": "Split: Ann, Bob.",
+  "promptKey": "handSplit",
+  "promptArgs": [
+    "Ann, Bob"
+  ],
+  "inviteUrl": null,
+  "updateUrl": null
+}

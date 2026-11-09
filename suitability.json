@@ -1,0 +1,8 @@
+{
+  "format": 1,
+  "jobs": ["ourpoker"],
+  "profiles": [
+    { "id": "any", "load": {}, "cost": "none", "regions": ["any"], "compliance": [] }
+  ],
+  "notes": "Source and data files only; it deploys nothing and holds no data. The server, hosting, video and release services it connects are chosen and priced through server-host, video-calls and ourapps-release; their suitability files carry the load limits."
+}

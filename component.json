@@ -1,0 +1,3422 @@
+{
+  "format": 1,
+  "kind": "recipe",
+  "identity": {
+    "name": "ourapps-ae/ourpoker",
+    "version": "0.2.0",
+    "sourceRevision": "19905b75dbea89fbfd424d67fe26c81aaed0e018",
+    "sourceTreeDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "licenceStatus": "deferred"
+  },
+  "facilities": [
+    {
+      "id": "application",
+      "description": "OurPoker application-specific component: screen flow, house rules, text, lessons, artwork, wiring and end-to-end tests"
+    }
+  ],
+  "documents": {
+    "contract": "CONTRACT.md",
+    "interfaces": [
+      "interfaces/poker-game-adapter.json",
+      "interfaces/required/android-shell.json",
+      "interfaces/required/apple-shell.json",
+      "interfaces/required/card-graphics.json",
+      "interfaces/required/chip-graphics.json",
+      "interfaces/required/controls.json",
+      "interfaces/required/desktop-host.json",
+      "interfaces/required/display-policy.json",
+      "interfaces/required/game-adapter.json",
+      "interfaces/required/guided-tour.json",
+      "interfaces/required/invitations.json",
+      "interfaces/required/language.json",
+      "interfaces/required/media-session.json",
+      "interfaces/required/preferences.json",
+      "interfaces/required/release-pipeline.json",
+      "interfaces/required/server-host.json",
+      "interfaces/required/sound-cues.json",
+      "interfaces/required/table-layout.json",
+      "interfaces/required/theme.json",
+      "interfaces/required/updates.json",
+      "interfaces/required/web-shell.json",
+      "suitability.json"
+    ],
+    "examples": [
+      "examples/configuration.ts"
+    ],
+    "licenceNotice": "LICENCE"
+  },
+  "collect": [
+    {
+      "id": "applicationId",
+      "type": "string",
+      "grammar": "slug",
+      "required": true,
+      "secret": false,
+      "default": "ourpoker"
+    },
+    {
+      "id": "applicationName",
+      "type": "string",
+      "grammar": "label",
+      "required": true,
+      "secret": false,
+      "default": "OurPoker"
+    },
+    {
+      "id": "packageId",
+      "type": "string",
+      "grammar": "qualified",
+      "required": true,
+      "secret": false,
+      "default": "app.ourapps.ourpoker"
+    },
+    {
+      "id": "scheme",
+      "type": "string",
+      "grammar": "slug",
+      "required": true,
+      "secret": false,
+      "default": "ourpoker"
+    },
+    {
+      "id": "serverAddress",
+      "type": "string",
+      "grammar": "address",
+      "required": true,
+      "secret": false,
+      "default": "http://localhost:8788"
+    },
+    {
+      "id": "webAddress",
+      "type": "string",
+      "grammar": "address",
+      "required": true,
+      "secret": false,
+      "default": "http://localhost:5173"
+    },
+    {
+      "id": "roomPrefix",
+      "type": "string",
+      "grammar": "slug",
+      "required": true,
+      "secret": false,
+      "default": "ourpoker-"
+    },
+    {
+      "id": "inviteAddress",
+      "type": "string",
+      "grammar": "address",
+      "required": true,
+      "secret": false,
+      "default": "https://store.example/l/0123456789abcdef01234567"
+    },
+    {
+      "id": "updatesEnabled",
+      "type": "boolean",
+      "grammar": "boolean",
+      "required": true,
+      "secret": false,
+      "default": false
+    },
+    {
+      "id": "modeEvent",
+      "type": "string",
+      "grammar": "slug",
+      "required": true,
+      "secret": false,
+      "default": "ourpoker-mode"
+    },
+    {
+      "id": "signingEnvironmentPrefix",
+      "type": "string",
+      "grammar": "environment",
+      "required": true,
+      "secret": false,
+      "default": "OURPOKER"
+    },
+    {
+      "id": "maximumPlayers",
+      "type": "integer",
+      "grammar": "integer",
+      "required": true,
+      "secret": false,
+      "default": 9
+    },
+    {
+      "id": "startingStack",
+      "type": "integer",
+      "grammar": "integer",
+      "required": true,
+      "secret": false,
+      "default": 5000
+    },
+    {
+      "id": "levelSeconds",
+      "type": "integer",
+      "grammar": "integer",
+      "required": true,
+      "secret": false,
+      "default": 600
+    },
+    {
+      "id": "rebuysPerPlayer",
+      "type": "integer",
+      "grammar": "integer",
+      "required": true,
+      "secret": false,
+      "default": 1
+    },
+    {
+      "id": "decisionSeconds",
+      "type": "integer",
+      "grammar": "integer",
+      "required": true,
+      "secret": false,
+      "default": 30
+    },
+    {
+      "id": "computerPlayers",
+      "type": "string",
+      "grammar": "slug",
+      "required": true,
+      "secret": false,
+      "default": "on-request"
+    }
+  ],
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "executable": false
+    },
+    {
+      "path": "INSTRUCTIONS.md",
+      "executable": false
+    },
+    {
+      "path": "INTEGRATION-GAPS.md",
+      "executable": false
+    },
+    {
+      "path": "LICENCE",
+      "executable": false
+    },
+    {
+      "path": "SOURCE.md",
+      "executable": false
+    },
+    {
+      "path": "assets/ASSETS.json",
+      "executable": false
+    },
+    {
+      "path": "assets/android/ic_launcher_background.xml",
+      "executable": false
+    },
+    {
+      "path": "assets/android/ic_launcher_foreground.xml",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/icon-1024.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-128@1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-128@2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-16@1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-16@2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-256@1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-256@2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-32@1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-32@2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-512@1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/AppIcon.appiconset/mac-512@2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/Resources/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/1x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/2x.png",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/apple/tv/Assets.xcassets/Contents.json",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-back-casino.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-back-home.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-casino-jack.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-casino-king.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-casino-queen.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-home-jack.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-home-king.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/card-home-queen.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/icon.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/scene-casino-back.jpg",
+      "executable": false
+    },
+    {
+      "path": "assets/art/scene-casino-front.png",
+      "executable": false
+    },
+    {
+      "path": "assets/art/scene-home-back.jpg",
+      "executable": false
+    },
+    {
+      "path": "assets/art/scene-home-front.png",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/allin.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/bot_add.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/bot_remove.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/burn.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/check.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/chips.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/click.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/deal.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/end.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/enter.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/exit.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/flip.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/fold.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/start.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/turn.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/sounds/win.wav",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-back-casino.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-back-home.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-casino-jack.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-casino-king.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-casino-queen.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-home-jack.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-home-king.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/card-home-queen.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/scene-casino-back.jpg",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/scene-casino-front.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/scene-home-back.jpg",
+      "executable": false
+    },
+    {
+      "path": "assets/web/art/scene-home-front.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/icon-192.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/icon.png",
+      "executable": false
+    },
+    {
+      "path": "assets/web/manifest.json",
+      "executable": false
+    },
+    {
+      "path": "assets/web/sounds-manifest.json",
+      "executable": false
+    },
+    {
+      "path": "examples/configuration.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/AppLanguage.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/AppSettings.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/MainActivity.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Sound.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/TableViewModel.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/net/TableClient.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/EndScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Guides.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/HelpScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/LobbyScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Marks.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/MediaToggles.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/NameScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Palette.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/RoomLook.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Strings.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/TableEffects.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/TableScreen.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/VideoPanel.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/Bridge.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/DisplayScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/EndScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/Guides.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/HelpScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/HomeScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/LiveMessage.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/LobbyScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/Marks.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/MediaToggles.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/Model.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/NameScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/OurPokerApp.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/Palette.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/RoomLook.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/RootView.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/SeatScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/Strings.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/TableClient.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/TableEffects.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/TableModel.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/TableScreen.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/package.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/scripts/build.cjs",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/scripts/package.cjs",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/src/configuration.cjs",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/src/main.cjs",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/src/verify.cjs",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/test/integration.test.cjs",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/adapter.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/computers.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/contract.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/directory.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/index.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/parts.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/room.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/rules.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/settings.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/update-links.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/video.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/wire.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/page-body.html",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/api.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/betting.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/board.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/configuration.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/geometry.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/guide-style.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/guide.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/i18n.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/main.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/mode.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/odds-panel.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/poker.css",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/rooms.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/screens.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/shell.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/showdown.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/sound.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/store-response.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/store.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/table.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/timers.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/ui.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/update.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/src/video.ts",
+      "executable": false
+    },
+    {
+      "path": "interfaces/poker-game-adapter.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/android-shell.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/apple-shell.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/card-graphics.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/chip-graphics.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/controls.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/desktop-host.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/display-policy.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/game-adapter.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/guided-tour.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/invitations.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/language.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/media-session.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/preferences.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/release-pipeline.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/server-host.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/sound-cues.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/table-layout.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/theme.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/updates.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/required/web-shell.json",
+      "executable": false
+    },
+    {
+      "path": "locales/lessons.json",
+      "executable": false
+    },
+    {
+      "path": "locales/strings.json",
+      "executable": false
+    },
+    {
+      "path": "page/description.md",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-application.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-delivery-and-hosts.png",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-delivery-and-hosts.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-full.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-interface-and-presentation.png",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-interface-and-presentation.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-poker.png",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-poker.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-rooms-people-and-sessions.png",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-rooms-people-and-sessions.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-turn-based-game-framework.png",
+      "executable": false
+    },
+    {
+      "path": "page/diagram-turn-based-game-framework.svg",
+      "executable": false
+    },
+    {
+      "path": "page/diagram.png",
+      "executable": false
+    },
+    {
+      "path": "page/diagram.svg",
+      "executable": false
+    },
+    {
+      "path": "recipe.json",
+      "executable": false
+    },
+    {
+      "path": "rules/texas-holdem-house-rules.json",
+      "executable": false
+    },
+    {
+      "path": "rules/texas-holdem-house-rules.md",
+      "executable": false
+    },
+    {
+      "path": "rules/texas-holdem-house-rules.schema.json",
+      "executable": false
+    },
+    {
+      "path": "suitability.json",
+      "executable": false
+    },
+    {
+      "path": "tests/conditional_artefacts_test.py",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/android/FixtureScreenTest.kt",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/android/FixturesTest.kt",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/android/SoundSettingTest.kt",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/apple/ChallengeLayoutTests.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/apple/ContractTests.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/apple/GuideTests.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/apple/HomeButtonsUITests.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/apple/ServerAddress.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/apple/SessionTests.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/server/adapter.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/server/hand.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/server/room.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/server/update-links.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/server/video-services.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/server/video.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/application-assertions.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/application-assertions.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/application-bridge-fixture.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/application-media.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/media-runner.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/native-check.py",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/native-server.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/native-server.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/prepare-browser.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/update-check.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/update-check.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/update-runner.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/update-runner.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/windows-package.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/verification/windows-runtime.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/browser.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/fake-livekit.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/fixtures/store-latest.json",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/local-application.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/media.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/multiplayer.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/register.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/session.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/sound.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/e2e/web/update.test.mjs",
+      "executable": false
+    },
+    {
+      "path": "tests/evaluate_recipe_test.py",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/betting.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/cancelled.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/completed.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/display.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/handOver.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/handOverDraw.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/handOverKicker.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/handOverUncontested.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/lobby.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/paused.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/rebuy.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/runout.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/showdownFive.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/showdownSeven.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/spectator.json",
+      "executable": false
+    },
+    {
+      "path": "tests/portable.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tests/recipe.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tools.lock.json",
+      "executable": false
+    },
+    {
+      "path": "visual/definition.json",
+      "executable": false
+    },
+    {
+      "path": "visual/examples/connected.json",
+      "executable": false
+    },
+    {
+      "path": "visual/output/connected.png",
+      "executable": false
+    },
+    {
+      "path": "visual/output/connected.svg",
+      "executable": false
+    },
+    {
+      "path": "visual/output/description.md",
+      "executable": false
+    }
+  ],
+  "artefacts": [
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/AppLanguage.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/AppLanguage.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/AppSettings.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/AppSettings.kt",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/MainActivity.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/MainActivity.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Sound.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/Sound.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/TableViewModel.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/TableViewModel.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/net/TableClient.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/net/TableClient.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/EndScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/EndScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Guides.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Guides.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/HelpScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/HelpScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/LobbyScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/LobbyScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Marks.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Marks.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/MediaToggles.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/MediaToggles.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/NameScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/NameScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Palette.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Palette.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/RoomLook.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/RoomLook.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Strings.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Strings.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/TableEffects.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/TableEffects.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/TableScreen.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/TableScreen.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/VideoPanel.kt",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/VideoPanel.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/Bridge.swift",
+      "destination": "ios/OurPoker/Sources/Bridge.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/DisplayScreen.swift",
+      "destination": "ios/OurPoker/Sources/DisplayScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/EndScreen.swift",
+      "destination": "ios/OurPoker/Sources/EndScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/Guides.swift",
+      "destination": "ios/OurPoker/Sources/Guides.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/HelpScreen.swift",
+      "destination": "ios/OurPoker/Sources/HelpScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/HomeScreen.swift",
+      "destination": "ios/OurPoker/Sources/HomeScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/LiveMessage.swift",
+      "destination": "ios/OurPoker/Sources/LiveMessage.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/LobbyScreen.swift",
+      "destination": "ios/OurPoker/Sources/LobbyScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/Marks.swift",
+      "destination": "ios/OurPoker/Sources/Marks.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/MediaToggles.swift",
+      "destination": "ios/OurPoker/Sources/MediaToggles.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/Model.swift",
+      "destination": "ios/OurPoker/Sources/Model.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/NameScreen.swift",
+      "destination": "ios/OurPoker/Sources/NameScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/OurPokerApp.swift",
+      "destination": "ios/OurPoker/Sources/OurPokerApp.swift",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/Palette.swift",
+      "destination": "ios/OurPoker/Sources/Palette.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/RoomLook.swift",
+      "destination": "ios/OurPoker/Sources/RoomLook.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/RootView.swift",
+      "destination": "ios/OurPoker/Sources/RootView.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/SeatScreen.swift",
+      "destination": "ios/OurPoker/Sources/SeatScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/Strings.swift",
+      "destination": "ios/OurPoker/Sources/Strings.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/TableClient.swift",
+      "destination": "ios/OurPoker/Sources/TableClient.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/TableEffects.swift",
+      "destination": "ios/OurPoker/Sources/TableEffects.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/TableModel.swift",
+      "destination": "ios/OurPoker/Sources/TableModel.swift",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/TableScreen.swift",
+      "destination": "ios/OurPoker/Sources/TableScreen.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/desktop/package.json",
+      "destination": "desktop/package.json",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/desktop/scripts/build.cjs",
+      "destination": "desktop/scripts/build.cjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/windows-desktop"
+    },
+    {
+      "source": "implementation/desktop/scripts/package.cjs",
+      "destination": "desktop/scripts/package.cjs",
+      "template": true,
+      "executable": false,
+      "component": "ourapps-ae/windows-desktop"
+    },
+    {
+      "source": "implementation/desktop/src/configuration.cjs",
+      "destination": "desktop/src/configuration.cjs",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/desktop/src/main.cjs",
+      "destination": "desktop/src/main.cjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/windows-desktop"
+    },
+    {
+      "source": "implementation/desktop/src/verify.cjs",
+      "destination": "desktop/src/verify.cjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/windows-desktop"
+    },
+    {
+      "source": "implementation/desktop/test/integration.test.cjs",
+      "destination": "desktop/test/integration.test.cjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/windows-desktop"
+    },
+    {
+      "source": "implementation/server/src/adapter.ts",
+      "destination": "server/src/adapter.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/computers.ts",
+      "destination": "server/src/computers.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/computer-players"
+    },
+    {
+      "source": "implementation/server/src/contract.ts",
+      "destination": "server/src/contract.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/directory.ts",
+      "destination": "server/src/directory.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/index.ts",
+      "destination": "server/src/index.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/parts.ts",
+      "destination": "server/src/parts.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/room.ts",
+      "destination": "server/src/room.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/rules.ts",
+      "destination": "server/src/rules.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/settings.ts",
+      "destination": "server/src/settings.ts",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/update-links.ts",
+      "destination": "server/src/update-links.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "implementation/server/src/video.ts",
+      "destination": "server/src/video.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/server/src/wire.ts",
+      "destination": "server/src/wire.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/page-body.html",
+      "destination": "web/page-body.html",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/api.ts",
+      "destination": "web/src/api.ts",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/betting.ts",
+      "destination": "web/src/betting.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/board.ts",
+      "destination": "web/src/board.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/configuration.ts",
+      "destination": "web/src/configuration.ts",
+      "template": true,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/geometry.ts",
+      "destination": "web/src/geometry.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/guide-style.ts",
+      "destination": "web/src/guide-style.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/guided-tour"
+    },
+    {
+      "source": "implementation/web/src/guide.ts",
+      "destination": "web/src/guide.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/guided-tour"
+    },
+    {
+      "source": "implementation/web/src/i18n.ts",
+      "destination": "web/src/i18n.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/main.ts",
+      "destination": "web/src/main.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/mode.ts",
+      "destination": "web/src/mode.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/odds-panel.ts",
+      "destination": "web/src/odds-panel.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/poker.css",
+      "destination": "web/src/poker.css",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/rooms.ts",
+      "destination": "web/src/rooms.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/screens.ts",
+      "destination": "web/src/screens.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/shell.ts",
+      "destination": "web/src/shell.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/web-host"
+    },
+    {
+      "source": "implementation/web/src/showdown.ts",
+      "destination": "web/src/showdown.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/sound.ts",
+      "destination": "web/src/sound.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/store-response.ts",
+      "destination": "web/src/store-response.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "implementation/web/src/store.ts",
+      "destination": "web/src/store.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/table.ts",
+      "destination": "web/src/table.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/timers.ts",
+      "destination": "web/src/timers.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/ui.ts",
+      "destination": "web/src/ui.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/src/update.ts",
+      "destination": "web/src/update.ts",
+      "template": true,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "implementation/web/src/video.ts",
+      "destination": "web/src/video.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "rules/texas-holdem-house-rules.json",
+      "destination": "rules/texas-holdem-house-rules.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "rules/texas-holdem-house-rules.md",
+      "destination": "rules/texas-holdem-house-rules.md",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "rules/texas-holdem-house-rules.schema.json",
+      "destination": "rules/texas-holdem-house-rules.schema.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/android/FixtureScreenTest.kt",
+      "destination": "android/app/src/androidTest/java/app/ourapps/ourpoker/FixtureScreenTest.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/android/FixturesTest.kt",
+      "destination": "android/app/src/test/java/app/ourapps/ourpoker/FixturesTest.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/android/SoundSettingTest.kt",
+      "destination": "android/app/src/test/java/app/ourapps/ourpoker/SoundSettingTest.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/apple/ChallengeLayoutTests.swift",
+      "destination": "ios/OurPokerTests/ChallengeLayoutTests.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/apple/ContractTests.swift",
+      "destination": "ios/OurPokerTests/ContractTests.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/apple/GuideTests.swift",
+      "destination": "ios/OurPokerTests/GuideTests.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/apple/HomeButtonsUITests.swift",
+      "destination": "ios/OurPokerUITests/HomeButtonsUITests.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/apple/ServerAddress.swift",
+      "destination": "ios/VerificationSupport/ServerAddress.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/apple/SessionTests.swift",
+      "destination": "ios/OurPokerTests/SessionTests.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/server/adapter.test.ts",
+      "destination": "server/test/adapter.test.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/server/hand.test.ts",
+      "destination": "server/test/hand.test.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/server/room.test.ts",
+      "destination": "server/test/room.test.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/server/update-links.test.ts",
+      "destination": "server/test/update-links.test.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "tests/e2e/server/video-services.test.ts",
+      "destination": "server/test/video-services.test.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/server/video.test.ts",
+      "destination": "server/test/video.test.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/application-assertions.mjs",
+      "destination": "verification/application-assertions.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/verification/application-assertions.test.mjs",
+      "destination": "verification/application-assertions.test.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/verification/application-bridge-fixture.mjs",
+      "destination": "verification/application-bridge-fixture.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/application-media.mjs",
+      "destination": "verification/application-media.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/media-runner.mjs",
+      "destination": "verification/media-runner.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/native-check.py",
+      "destination": "verification/native-check.py",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/native-server.mjs",
+      "destination": "verification/native-server.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/native-server.test.mjs",
+      "destination": "verification/native-server.test.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/verification/prepare-browser.mjs",
+      "destination": "verification/prepare-browser.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/verification/update-check.mjs",
+      "destination": "verification/update-check.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "tests/e2e/verification/update-check.test.mjs",
+      "destination": "verification/update-check.test.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "tests/e2e/verification/update-runner.mjs",
+      "destination": "verification/update-runner.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "tests/e2e/verification/update-runner.test.mjs",
+      "destination": "verification/update-runner.test.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "tests/e2e/verification/windows-package.mjs",
+      "destination": "verification/windows-package.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/windows-desktop"
+    },
+    {
+      "source": "tests/e2e/verification/windows-runtime.mjs",
+      "destination": "verification/windows-runtime.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/web/browser.mjs",
+      "destination": "web/test/browser.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/web/fake-livekit.mjs",
+      "destination": "web/test/fake-livekit.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/web/fixtures/store-latest.json",
+      "destination": "web/test/fixtures/store-latest.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/web/local-application.mjs",
+      "destination": "web/test/local-application.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/web/media.test.mjs",
+      "destination": "web/test/media.test.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/web/multiplayer.mjs",
+      "destination": "web/test/multiplayer.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "tests/e2e/web/register.mjs",
+      "destination": "web/test/register.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/web/session.test.mjs",
+      "destination": "web/test/session.test.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/guided-tour"
+    },
+    {
+      "source": "tests/e2e/web/sound.test.mjs",
+      "destination": "web/test/sound.test.mjs",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/e2e/web/update.test.mjs",
+      "destination": "web/test/update.test.mjs",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/store-update"
+    },
+    {
+      "source": "tests/fixtures/betting.json",
+      "destination": "server/fixtures/betting.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/cancelled.json",
+      "destination": "server/fixtures/cancelled.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/completed.json",
+      "destination": "server/fixtures/completed.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/display.json",
+      "destination": "server/fixtures/display.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/handOver.json",
+      "destination": "server/fixtures/handOver.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/handOverDraw.json",
+      "destination": "server/fixtures/handOverDraw.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/handOverKicker.json",
+      "destination": "server/fixtures/handOverKicker.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/handOverUncontested.json",
+      "destination": "server/fixtures/handOverUncontested.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/lobby.json",
+      "destination": "server/fixtures/lobby.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/paused.json",
+      "destination": "server/fixtures/paused.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/rebuy.json",
+      "destination": "server/fixtures/rebuy.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/runout.json",
+      "destination": "server/fixtures/runout.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/showdownFive.json",
+      "destination": "server/fixtures/showdownFive.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/showdownSeven.json",
+      "destination": "server/fixtures/showdownSeven.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "tests/fixtures/spectator.json",
+      "destination": "server/fixtures/spectator.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/strings.json",
+      "destination": "resources/strings.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/lessons.json",
+      "destination": "web/src/lessons.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/lessons.json",
+      "destination": "ios/OurPoker/Resources/lessons.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/lessons.json",
+      "destination": "android/app/src/main/res/raw/lessons.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/allin.wav",
+      "destination": "web/public/sounds/allin.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/allin.wav",
+      "destination": "ios/OurPoker/Art/Sounds/allin.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/allin.wav",
+      "destination": "android/app/src/main/res/raw/snd_allin.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/bot_add.wav",
+      "destination": "web/public/sounds/bot_add.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/bot_add.wav",
+      "destination": "ios/OurPoker/Art/Sounds/bot_add.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/bot_add.wav",
+      "destination": "android/app/src/main/res/raw/snd_bot_add.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/bot_remove.wav",
+      "destination": "web/public/sounds/bot_remove.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/bot_remove.wav",
+      "destination": "ios/OurPoker/Art/Sounds/bot_remove.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/bot_remove.wav",
+      "destination": "android/app/src/main/res/raw/snd_bot_remove.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/burn.wav",
+      "destination": "web/public/sounds/burn.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/burn.wav",
+      "destination": "ios/OurPoker/Art/Sounds/burn.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/burn.wav",
+      "destination": "android/app/src/main/res/raw/snd_burn.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/check.wav",
+      "destination": "web/public/sounds/check.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/check.wav",
+      "destination": "ios/OurPoker/Art/Sounds/check.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/check.wav",
+      "destination": "android/app/src/main/res/raw/snd_check.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/chips.wav",
+      "destination": "web/public/sounds/chips.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/chips.wav",
+      "destination": "ios/OurPoker/Art/Sounds/chips.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/chips.wav",
+      "destination": "android/app/src/main/res/raw/snd_chips.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/click.wav",
+      "destination": "web/public/sounds/click.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/click.wav",
+      "destination": "ios/OurPoker/Art/Sounds/click.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/click.wav",
+      "destination": "android/app/src/main/res/raw/snd_click.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/deal.wav",
+      "destination": "web/public/sounds/deal.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/deal.wav",
+      "destination": "ios/OurPoker/Art/Sounds/deal.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/deal.wav",
+      "destination": "android/app/src/main/res/raw/snd_deal.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/end.wav",
+      "destination": "web/public/sounds/end.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/end.wav",
+      "destination": "ios/OurPoker/Art/Sounds/end.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/end.wav",
+      "destination": "android/app/src/main/res/raw/snd_end.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/enter.wav",
+      "destination": "web/public/sounds/enter.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/enter.wav",
+      "destination": "ios/OurPoker/Art/Sounds/enter.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/enter.wav",
+      "destination": "android/app/src/main/res/raw/snd_enter.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/exit.wav",
+      "destination": "web/public/sounds/exit.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/exit.wav",
+      "destination": "ios/OurPoker/Art/Sounds/exit.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/exit.wav",
+      "destination": "android/app/src/main/res/raw/snd_exit.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/flip.wav",
+      "destination": "web/public/sounds/flip.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/flip.wav",
+      "destination": "ios/OurPoker/Art/Sounds/flip.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/flip.wav",
+      "destination": "android/app/src/main/res/raw/snd_flip.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/fold.wav",
+      "destination": "web/public/sounds/fold.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/fold.wav",
+      "destination": "ios/OurPoker/Art/Sounds/fold.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/fold.wav",
+      "destination": "android/app/src/main/res/raw/snd_fold.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/start.wav",
+      "destination": "web/public/sounds/start.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/start.wav",
+      "destination": "ios/OurPoker/Art/Sounds/start.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/start.wav",
+      "destination": "android/app/src/main/res/raw/snd_start.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/turn.wav",
+      "destination": "web/public/sounds/turn.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/turn.wav",
+      "destination": "ios/OurPoker/Art/Sounds/turn.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/turn.wav",
+      "destination": "android/app/src/main/res/raw/snd_turn.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/win.wav",
+      "destination": "web/public/sounds/win.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/win.wav",
+      "destination": "ios/OurPoker/Art/Sounds/win.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/sounds/win.wav",
+      "destination": "android/app/src/main/res/raw/snd_win.wav",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/sounds-manifest.json",
+      "destination": "web/public/sounds/manifest.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/sounds-manifest.json",
+      "destination": "ios/OurPoker/Art/Sounds/sounds-manifest.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/sounds-manifest.json",
+      "destination": "android/app/src/main/res/raw/sounds_manifest.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-back-casino.png",
+      "destination": "ios/OurPoker/Art/card-back-casino.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-back-casino.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_back_casino.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-back-home.png",
+      "destination": "ios/OurPoker/Art/card-back-home.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-back-home.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_back_home.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-casino-jack.png",
+      "destination": "ios/OurPoker/Art/card-casino-jack.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-casino-jack.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_casino_jack.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-casino-king.png",
+      "destination": "ios/OurPoker/Art/card-casino-king.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-casino-king.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_casino_king.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-casino-queen.png",
+      "destination": "ios/OurPoker/Art/card-casino-queen.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-casino-queen.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_casino_queen.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-home-jack.png",
+      "destination": "ios/OurPoker/Art/card-home-jack.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-home-jack.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_home_jack.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-home-king.png",
+      "destination": "ios/OurPoker/Art/card-home-king.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-home-king.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_home_king.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-home-queen.png",
+      "destination": "ios/OurPoker/Art/card-home-queen.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/card-home-queen.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/card_home_queen.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-casino-back.jpg",
+      "destination": "ios/OurPoker/Art/scene-casino-back.jpg",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-casino-back.jpg",
+      "destination": "android/app/src/main/res/drawable-nodpi/scene_casino_back.jpg",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-casino-front.png",
+      "destination": "ios/OurPoker/Art/scene-casino-front.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-casino-front.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/scene_casino_front.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-home-back.jpg",
+      "destination": "ios/OurPoker/Art/scene-home-back.jpg",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-home-back.jpg",
+      "destination": "android/app/src/main/res/drawable-nodpi/scene_home_back.jpg",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-home-front.png",
+      "destination": "ios/OurPoker/Art/scene-home-front.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/art/scene-home-front.png",
+      "destination": "android/app/src/main/res/drawable-nodpi/scene_home_front.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-back-casino.png",
+      "destination": "web/public/art/card-back-casino.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-back-home.png",
+      "destination": "web/public/art/card-back-home.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-casino-jack.png",
+      "destination": "web/public/art/card-casino-jack.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-casino-king.png",
+      "destination": "web/public/art/card-casino-king.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-casino-queen.png",
+      "destination": "web/public/art/card-casino-queen.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-home-jack.png",
+      "destination": "web/public/art/card-home-jack.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-home-king.png",
+      "destination": "web/public/art/card-home-king.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/card-home-queen.png",
+      "destination": "web/public/art/card-home-queen.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/scene-casino-back.jpg",
+      "destination": "web/public/art/scene-casino-back.jpg",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/scene-casino-front.png",
+      "destination": "web/public/art/scene-casino-front.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/scene-home-back.jpg",
+      "destination": "web/public/art/scene-home-back.jpg",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/art/scene-home-front.png",
+      "destination": "web/public/art/scene-home-front.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/manifest.json",
+      "destination": "web/public/art/manifest.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/icon.png",
+      "destination": "web/public/icon.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/web/icon-192.png",
+      "destination": "web/public/icon-192.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/android/ic_launcher_background.xml",
+      "destination": "android/app/src/main/res/drawable/ic_launcher_background.xml",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/android/ic_launcher_foreground.xml",
+      "destination": "android/app/src/main/res/drawable/ic_launcher_foreground.xml",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/Contents.json",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/icon-1024.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-128@1x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-128@1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-128@2x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-128@2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-16@1x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-16@1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-16@2x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-16@2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-256@1x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-256@1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-256@2x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-256@2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-32@1x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-32@1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-32@2x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-32@2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-512@1x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/AppIcon.appiconset/mac-512@2x.png",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/Resources/Contents.json",
+      "destination": "ios/OurPoker/Resources/Assets.xcassets/Contents.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/1x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/2x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/2x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/2x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/2x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/1x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Wide.imageset/1x.png",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "assets/apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/2x.png",
+      "destination": "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Wide.imageset/2x.png",
+      "template": false,
+      "executable": false
+    }
+  ],
+  "dependencies": [],
+  "provides": [
+    {
+      "id": "poker-game-adapter",
+      "type": "ae/game-adapter",
+      "version": "1.0.0",
+      "path": "interfaces/poker-game-adapter.json"
+    }
+  ],
+  "requires": [
+    {
+      "id": "game-adapter",
+      "type": "ae/game-adapter",
+      "version": "1.0.0",
+      "path": "interfaces/required/game-adapter.json"
+    },
+    {
+      "id": "web-shell",
+      "type": "ae/web-shell",
+      "version": "1.0.0",
+      "path": "interfaces/required/web-shell.json",
+      "optional": true
+    },
+    {
+      "id": "apple-shell",
+      "type": "ae/apple-shell",
+      "version": "1.0.0",
+      "path": "interfaces/required/apple-shell.json",
+      "optional": true
+    },
+    {
+      "id": "android-shell",
+      "type": "ae/android-shell",
+      "version": "1.0.0",
+      "path": "interfaces/required/android-shell.json",
+      "optional": true
+    },
+    {
+      "id": "desktop-host",
+      "type": "ae/desktop-host",
+      "version": "1.0.0",
+      "path": "interfaces/required/desktop-host.json",
+      "optional": true
+    },
+    {
+      "id": "server-host",
+      "type": "ae/server-host",
+      "version": "1.0.0",
+      "path": "interfaces/required/server-host.json"
+    },
+    {
+      "id": "release-pipeline",
+      "type": "ae/release-pipeline",
+      "version": "1.0.0",
+      "path": "interfaces/required/release-pipeline.json"
+    },
+    {
+      "id": "invitations",
+      "type": "ae/invitations",
+      "version": "1.0.0",
+      "path": "interfaces/required/invitations.json"
+    },
+    {
+      "id": "display-policy",
+      "type": "ae/display-policy",
+      "version": "1.0.0",
+      "path": "interfaces/required/display-policy.json"
+    },
+    {
+      "id": "media-session",
+      "type": "ae/media-session",
+      "version": "1.0.0",
+      "path": "interfaces/required/media-session.json",
+      "optional": true
+    },
+    {
+      "id": "table-layout",
+      "type": "ae/table-layout",
+      "version": "1.0.0",
+      "path": "interfaces/required/table-layout.json"
+    },
+    {
+      "id": "card-graphics",
+      "type": "ae/card-graphics",
+      "version": "1.0.0",
+      "path": "interfaces/required/card-graphics.json"
+    },
+    {
+      "id": "chip-graphics",
+      "type": "ae/chip-graphics",
+      "version": "1.0.0",
+      "path": "interfaces/required/chip-graphics.json"
+    },
+    {
+      "id": "sound-cues",
+      "type": "ae/sound-cues",
+      "version": "1.0.0",
+      "path": "interfaces/required/sound-cues.json"
+    },
+    {
+      "id": "guided-tour",
+      "type": "ae/guided-tour",
+      "version": "1.0.0",
+      "path": "interfaces/required/guided-tour.json",
+      "optional": true
+    },
+    {
+      "id": "updates",
+      "type": "ae/updates",
+      "version": "1.0.0",
+      "path": "interfaces/required/updates.json",
+      "optional": true
+    },
+    {
+      "id": "controls",
+      "type": "ae/controls",
+      "version": "1.0.0",
+      "path": "interfaces/required/controls.json"
+    },
+    {
+      "id": "preferences",
+      "type": "ae/preferences",
+      "version": "1.0.0",
+      "path": "interfaces/required/preferences.json"
+    },
+    {
+      "id": "language",
+      "type": "ae/language",
+      "version": "1.0.0",
+      "path": "interfaces/required/language.json"
+    },
+    {
+      "id": "theme",
+      "type": "ae/theme",
+      "version": "1.0.0",
+      "path": "interfaces/required/theme.json"
+    }
+  ],
+  "visual": {
+    "definition": "visual/definition.json",
+    "examples": [
+      "visual/examples/connected.json"
+    ],
+    "outputs": [
+      "visual/output/connected.svg",
+      "visual/output/connected.png"
+    ],
+    "descriptions": [
+      "visual/output/description.md"
+    ]
+  },
+  "capabilities": {
+    "hosts": [],
+    "secrets": [],
+    "writes": [
+      "android/app/src/androidTest/java/app/ourapps/ourpoker/FixtureScreenTest.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/AppLanguage.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/AppSettings.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/MainActivity.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/Sound.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/TableViewModel.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/net/TableClient.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/EndScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/Guides.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/HelpScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/LobbyScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/Marks.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/MediaToggles.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/NameScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/Palette.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/RoomLook.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/Strings.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/TableEffects.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/TableScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/VideoPanel.kt",
+      "android/app/src/main/res/drawable-nodpi/card_back_casino.png",
+      "android/app/src/main/res/drawable-nodpi/card_back_home.png",
+      "android/app/src/main/res/drawable-nodpi/card_casino_jack.png",
+      "android/app/src/main/res/drawable-nodpi/card_casino_king.png",
+      "android/app/src/main/res/drawable-nodpi/card_casino_queen.png",
+      "android/app/src/main/res/drawable-nodpi/card_home_jack.png",
+      "android/app/src/main/res/drawable-nodpi/card_home_king.png",
+      "android/app/src/main/res/drawable-nodpi/card_home_queen.png",
+      "android/app/src/main/res/drawable-nodpi/scene_casino_back.jpg",
+      "android/app/src/main/res/drawable-nodpi/scene_casino_front.png",
+      "android/app/src/main/res/drawable-nodpi/scene_home_back.jpg",
+      "android/app/src/main/res/drawable-nodpi/scene_home_front.png",
+      "android/app/src/main/res/drawable/ic_launcher_background.xml",
+      "android/app/src/main/res/drawable/ic_launcher_foreground.xml",
+      "android/app/src/main/res/raw/lessons.json",
+      "android/app/src/main/res/raw/snd_allin.wav",
+      "android/app/src/main/res/raw/snd_bot_add.wav",
+      "android/app/src/main/res/raw/snd_bot_remove.wav",
+      "android/app/src/main/res/raw/snd_burn.wav",
+      "android/app/src/main/res/raw/snd_check.wav",
+      "android/app/src/main/res/raw/snd_chips.wav",
+      "android/app/src/main/res/raw/snd_click.wav",
+      "android/app/src/main/res/raw/snd_deal.wav",
+      "android/app/src/main/res/raw/snd_end.wav",
+      "android/app/src/main/res/raw/snd_enter.wav",
+      "android/app/src/main/res/raw/snd_exit.wav",
+      "android/app/src/main/res/raw/snd_flip.wav",
+      "android/app/src/main/res/raw/snd_fold.wav",
+      "android/app/src/main/res/raw/snd_start.wav",
+      "android/app/src/main/res/raw/snd_turn.wav",
+      "android/app/src/main/res/raw/snd_win.wav",
+      "android/app/src/main/res/raw/sounds_manifest.json",
+      "android/app/src/test/java/app/ourapps/ourpoker/FixturesTest.kt",
+      "android/app/src/test/java/app/ourapps/ourpoker/SoundSettingTest.kt",
+      "desktop/package.json",
+      "desktop/scripts/build.cjs",
+      "desktop/scripts/package.cjs",
+      "desktop/src/configuration.cjs",
+      "desktop/src/main.cjs",
+      "desktop/src/verify.cjs",
+      "desktop/test/integration.test.cjs",
+      "ios/OurPoker/Art/Sounds/allin.wav",
+      "ios/OurPoker/Art/Sounds/bot_add.wav",
+      "ios/OurPoker/Art/Sounds/bot_remove.wav",
+      "ios/OurPoker/Art/Sounds/burn.wav",
+      "ios/OurPoker/Art/Sounds/check.wav",
+      "ios/OurPoker/Art/Sounds/chips.wav",
+      "ios/OurPoker/Art/Sounds/click.wav",
+      "ios/OurPoker/Art/Sounds/deal.wav",
+      "ios/OurPoker/Art/Sounds/end.wav",
+      "ios/OurPoker/Art/Sounds/enter.wav",
+      "ios/OurPoker/Art/Sounds/exit.wav",
+      "ios/OurPoker/Art/Sounds/flip.wav",
+      "ios/OurPoker/Art/Sounds/fold.wav",
+      "ios/OurPoker/Art/Sounds/sounds-manifest.json",
+      "ios/OurPoker/Art/Sounds/start.wav",
+      "ios/OurPoker/Art/Sounds/turn.wav",
+      "ios/OurPoker/Art/Sounds/win.wav",
+      "ios/OurPoker/Art/card-back-casino.png",
+      "ios/OurPoker/Art/card-back-home.png",
+      "ios/OurPoker/Art/card-casino-jack.png",
+      "ios/OurPoker/Art/card-casino-king.png",
+      "ios/OurPoker/Art/card-casino-queen.png",
+      "ios/OurPoker/Art/card-home-jack.png",
+      "ios/OurPoker/Art/card-home-king.png",
+      "ios/OurPoker/Art/card-home-queen.png",
+      "ios/OurPoker/Art/scene-casino-back.jpg",
+      "ios/OurPoker/Art/scene-casino-front.png",
+      "ios/OurPoker/Art/scene-home-back.jpg",
+      "ios/OurPoker/Art/scene-home-front.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-128@1x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-128@2x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-16@1x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-16@2x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-256@1x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-256@2x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-32@1x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-32@2x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@1x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@2x.png",
+      "ios/OurPoker/Resources/Assets.xcassets/Contents.json",
+      "ios/OurPoker/Resources/lessons.json",
+      "ios/OurPoker/Sources/Bridge.swift",
+      "ios/OurPoker/Sources/DisplayScreen.swift",
+      "ios/OurPoker/Sources/EndScreen.swift",
+      "ios/OurPoker/Sources/Guides.swift",
+      "ios/OurPoker/Sources/HelpScreen.swift",
+      "ios/OurPoker/Sources/HomeScreen.swift",
+      "ios/OurPoker/Sources/LiveMessage.swift",
+      "ios/OurPoker/Sources/LobbyScreen.swift",
+      "ios/OurPoker/Sources/Marks.swift",
+      "ios/OurPoker/Sources/MediaToggles.swift",
+      "ios/OurPoker/Sources/Model.swift",
+      "ios/OurPoker/Sources/NameScreen.swift",
+      "ios/OurPoker/Sources/OurPokerApp.swift",
+      "ios/OurPoker/Sources/Palette.swift",
+      "ios/OurPoker/Sources/RoomLook.swift",
+      "ios/OurPoker/Sources/RootView.swift",
+      "ios/OurPoker/Sources/SeatScreen.swift",
+      "ios/OurPoker/Sources/Strings.swift",
+      "ios/OurPoker/Sources/TableClient.swift",
+      "ios/OurPoker/Sources/TableEffects.swift",
+      "ios/OurPoker/Sources/TableModel.swift",
+      "ios/OurPoker/Sources/TableScreen.swift",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/1x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/2x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/2x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/2x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Wide.imageset/1x.png",
+      "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Wide.imageset/2x.png",
+      "ios/OurPokerTests/ChallengeLayoutTests.swift",
+      "ios/OurPokerTests/ContractTests.swift",
+      "ios/OurPokerTests/GuideTests.swift",
+      "ios/OurPokerTests/SessionTests.swift",
+      "ios/OurPokerUITests/HomeButtonsUITests.swift",
+      "ios/VerificationSupport/ServerAddress.swift",
+      "resources/strings.json",
+      "rules/texas-holdem-house-rules.json",
+      "rules/texas-holdem-house-rules.md",
+      "rules/texas-holdem-house-rules.schema.json",
+      "server/fixtures/betting.json",
+      "server/fixtures/cancelled.json",
+      "server/fixtures/completed.json",
+      "server/fixtures/display.json",
+      "server/fixtures/handOver.json",
+      "server/fixtures/handOverDraw.json",
+      "server/fixtures/handOverKicker.json",
+      "server/fixtures/handOverUncontested.json",
+      "server/fixtures/lobby.json",
+      "server/fixtures/paused.json",
+      "server/fixtures/rebuy.json",
+      "server/fixtures/runout.json",
+      "server/fixtures/showdownFive.json",
+      "server/fixtures/showdownSeven.json",
+      "server/fixtures/spectator.json",
+      "server/src/adapter.ts",
+      "server/src/computers.ts",
+      "server/src/contract.ts",
+      "server/src/directory.ts",
+      "server/src/index.ts",
+      "server/src/parts.ts",
+      "server/src/room.ts",
+      "server/src/rules.ts",
+      "server/src/settings.ts",
+      "server/src/update-links.ts",
+      "server/src/video.ts",
+      "server/src/wire.ts",
+      "server/test/adapter.test.ts",
+      "server/test/hand.test.ts",
+      "server/test/room.test.ts",
+      "server/test/update-links.test.ts",
+      "server/test/video-services.test.ts",
+      "server/test/video.test.ts",
+      "verification/application-assertions.mjs",
+      "verification/application-assertions.test.mjs",
+      "verification/application-bridge-fixture.mjs",
+      "verification/application-media.mjs",
+      "verification/media-runner.mjs",
+      "verification/native-check.py",
+      "verification/native-server.mjs",
+      "verification/native-server.test.mjs",
+      "verification/prepare-browser.mjs",
+      "verification/update-check.mjs",
+      "verification/update-check.test.mjs",
+      "verification/update-runner.mjs",
+      "verification/update-runner.test.mjs",
+      "verification/windows-package.mjs",
+      "verification/windows-runtime.mjs",
+      "web/page-body.html",
+      "web/public/art/card-back-casino.png",
+      "web/public/art/card-back-home.png",
+      "web/public/art/card-casino-jack.png",
+      "web/public/art/card-casino-king.png",
+      "web/public/art/card-casino-queen.png",
+      "web/public/art/card-home-jack.png",
+      "web/public/art/card-home-king.png",
+      "web/public/art/card-home-queen.png",
+      "web/public/art/manifest.json",
+      "web/public/art/scene-casino-back.jpg",
+      "web/public/art/scene-casino-front.png",
+      "web/public/art/scene-home-back.jpg",
+      "web/public/art/scene-home-front.png",
+      "web/public/icon-192.png",
+      "web/public/icon.png",
+      "web/public/sounds/allin.wav",
+      "web/public/sounds/bot_add.wav",
+      "web/public/sounds/bot_remove.wav",
+      "web/public/sounds/burn.wav",
+      "web/public/sounds/check.wav",
+      "web/public/sounds/chips.wav",
+      "web/public/sounds/click.wav",
+      "web/public/sounds/deal.wav",
+      "web/public/sounds/end.wav",
+      "web/public/sounds/enter.wav",
+      "web/public/sounds/exit.wav",
+      "web/public/sounds/flip.wav",
+      "web/public/sounds/fold.wav",
+      "web/public/sounds/manifest.json",
+      "web/public/sounds/start.wav",
+      "web/public/sounds/turn.wav",
+      "web/public/sounds/win.wav",
+      "web/src/api.ts",
+      "web/src/betting.ts",
+      "web/src/board.ts",
+      "web/src/configuration.ts",
+      "web/src/geometry.ts",
+      "web/src/guide-style.ts",
+      "web/src/guide.ts",
+      "web/src/i18n.ts",
+      "web/src/lessons.json",
+      "web/src/main.ts",
+      "web/src/mode.ts",
+      "web/src/odds-panel.ts",
+      "web/src/poker.css",
+      "web/src/rooms.ts",
+      "web/src/screens.ts",
+      "web/src/shell.ts",
+      "web/src/showdown.ts",
+      "web/src/sound.ts",
+      "web/src/store-response.ts",
+      "web/src/store.ts",
+      "web/src/table.ts",
+      "web/src/timers.ts",
+      "web/src/ui.ts",
+      "web/src/update.ts",
+      "web/src/video.ts",
+      "web/test/browser.mjs",
+      "web/test/fake-livekit.mjs",
+      "web/test/fixtures/store-latest.json",
+      "web/test/local-application.mjs",
+      "web/test/media.test.mjs",
+      "web/test/multiplayer.mjs",
+      "web/test/register.mjs",
+      "web/test/session.test.mjs",
+      "web/test/sound.test.mjs",
+      "web/test/update.test.mjs"
+    ]
+  },
+  "infrastructure": {
+    "accounts": [],
+    "costStatus": "unmeasured",
+    "deployedReason": "Deploys nothing itself: the server, web, native and desktop builds are produced by the components the recipe selects."
+  },
+  "verification": [
+    {
+      "id": "portable",
+      "root": "package",
+      "argv": [
+        "node",
+        "--test",
+        "tests/portable.test.ts"
+      ],
+      "cwd": ".",
+      "prepare": [],
+      "tools": {
+        "node": "26.5.0"
+      },
+      "fixtures": [
+        "locales/strings.json",
+        "rules/texas-holdem-house-rules.json",
+        "tests/fixtures"
+      ],
+      "locks": [
+        "tools.lock.json"
+      ],
+      "network": false,
+      "timeoutSeconds": 120,
+      "expectedExit": 0,
+      "scope": "required-local",
+      "requirements": []
+    }
+  ],
+  "upgrade": {
+    "policy": "patch",
+    "migration": "files-only"
+  }
+}

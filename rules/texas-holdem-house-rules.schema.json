@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Texas hold'em house rules file",
+  "description": "The fuller schema the rules-settings component takes for the OurPoker house rules. Sections not listed are allowed.",
+  "type": "object",
+  "required": ["schema_version", "ruleset_id", "game", "format", "players", "chips", "betting", "blinds", "rebuy", "showdown", "pots", "timing", "absence", "hosting_and_pauses", "cancellation", "results"],
+  "properties": {
+    "schema_version": { "type": "integer", "minimum": 1, "description": "Version of this rules file layout" },
+    "ruleset_id": { "type": "string", "pattern": "^[a-z0-9_]+$", "description": "Name of this rule set, stable across edits to the same rules" },
+    "game": { "const": "texas_holdem", "description": "Which game the rules are for" },
+    "format": { "type": "string", "minLength": 1, "description": "The shape of a session" },
+    "players": {
+      "type": "object",
+      "required": ["minimum", "maximum"],
+      "properties": {
+        "minimum": { "type": "integer", "minimum": 2, "maximum": 9, "description": "Fewest people at one table" },
+        "maximum": { "type": "integer", "minimum": 2, "maximum": 9, "description": "Most people at one table" },
+        "seating": { "type": "string", "enum": ["random"] },
+        "return_to_existing_stack_allowed": { "type": "boolean" }
+      }
+    },
+    "chips": {
+      "type": "object",
+      "required": ["starting_stack", "minimum_unit"],
+      "properties": {
+        "starting_stack": { "type": "integer", "minimum": 1, "description": "Chips each player starts with" },
+        "minimum_unit": { "type": "integer", "minimum": 1, "description": "Smallest chip amount" },
+        "integer_only": { "type": "boolean" },
+        "add_ons": { "type": "boolean" }
+      }
+    },
+    "betting": {
+      "type": "object",
+      "required": ["structure", "side_pots", "minimum_opening_bet_big_blinds"],
+      "properties": {
+        "structure": { "type": "string", "enum": ["no_limit"] },
+        "side_pots": { "type": "boolean" },
+        "minimum_opening_bet_big_blinds": { "type": "integer", "minimum": 1, "description": "Smallest opening bet in big blinds" }
+      }
+    },
+    "blinds": {
+      "type": "object",
+      "required": ["level_duration_seconds", "levels", "after_last_level"],
+      "properties": {
+        "level_duration_seconds": { "type": "integer", "minimum": 1, "description": "Unpaused seconds in each blind level" },
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["level", "small_blind", "big_blind"],
+            "properties": {
+              "level": { "type": "integer", "minimum": 1 },
+              "small_blind": { "type": "integer", "minimum": 1 },
+              "big_blind": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "after_last_level": {
+          "type": "object",
+          "required": ["small_blind_multiplier_each_level", "big_blind_multiplier_each_level"],
+          "properties": {
+            "small_blind_multiplier_each_level": { "type": "integer", "minimum": 1 },
+            "big_blind_multiplier_each_level": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "rebuy": {
+      "type": "object",
+      "required": ["maximum_per_player", "stack_awarded", "eligibility", "decision_seconds"],
+      "properties": {
+        "maximum_per_player": { "type": "integer", "minimum": 0 },
+        "stack_awarded": { "type": "integer", "minimum": 1 },
+        "eligibility": {
+          "type": "object",
+          "required": ["maximum_level"],
+          "properties": { "maximum_level": { "type": "integer", "minimum": 1, "description": "Last level at which a rebuy is offered" } }
+        },
+        "decision_seconds": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "showdown": { "type": "object" },
+    "pots": { "type": "object" },
+    "timing": {
+      "type": "object",
+      "required": ["decision_seconds"],
+      "properties": {
+        "decision_seconds": { "type": "integer", "minimum": 1, "description": "Seconds a player has to act" },
+        "timeout": { "type": "string" }
+      }
+    },
+    "absence": { "type": "object" },
+    "hosting_and_pauses": { "type": "object" },
+    "cancellation": { "type": "object" },
+    "results": { "type": "object" }
+  }
+}

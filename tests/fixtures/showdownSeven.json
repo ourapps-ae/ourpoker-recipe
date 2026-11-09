@@ -1,0 +1,541 @@
+{
+  "contractVersion": 1,
+  "version": 60,
+  "gameNumber": 1,
+  "roomId": "casino",
+  "you": "ann",
+  "holds": [],
+  "display": false,
+  "status": "running",
+  "phase": "handOver",
+  "pauseReasons": [],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "fay",
+      "name": "Fay",
+      "seat": 0,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "7h",
+        "7s"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": {
+        "category": "threeOfAKind",
+        "ranks": [
+          5,
+          11,
+          4
+        ],
+        "name": "Three of a kind, sevens",
+        "best": [
+          {
+            "code": "7h",
+            "rank": "7",
+            "suit": "h",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "7s",
+            "rank": "7",
+            "suit": "s",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "7c",
+            "rank": "7",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "gus",
+      "name": "Gus",
+      "seat": 1,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "5c",
+        "5d"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": {
+        "category": "threeOfAKind",
+        "ranks": [
+          3,
+          11,
+          5
+        ],
+        "name": "Three of a kind, fives",
+        "best": [
+          {
+            "code": "5c",
+            "rank": "5",
+            "suit": "c",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "5d",
+            "rank": "5",
+            "suit": "d",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "5h",
+            "rank": "5",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "cat",
+      "name": "Cat",
+      "seat": 2,
+      "isBot": false,
+      "isHost": false,
+      "stack": 30000,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "8d",
+        "4h"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": {
+        "category": "straight",
+        "ranks": [
+          6
+        ],
+        "name": "Straight, eight high",
+        "best": [
+          {
+            "code": "4h",
+            "rank": "4",
+            "suit": "h",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "5h",
+            "rank": "5",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "6h",
+            "rank": "6",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7c",
+            "rank": "7",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "8d",
+            "rank": "8",
+            "suit": "d",
+            "from": "hole",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 3,
+      "isBot": false,
+      "isHost": true,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "4c",
+        "3d"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": {
+        "category": "straight",
+        "ranks": [
+          5
+        ],
+        "name": "Straight, seven high",
+        "best": [
+          {
+            "code": "3d",
+            "rank": "3",
+            "suit": "d",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "4c",
+            "rank": "4",
+            "suit": "c",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "5h",
+            "rank": "5",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "6h",
+            "rank": "6",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7c",
+            "rank": "7",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "eve",
+      "name": "Eve",
+      "seat": 4,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "6d",
+        "6c"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4975,
+        "auto": false
+      },
+      "hand": {
+        "category": "threeOfAKind",
+        "ranks": [
+          4,
+          11,
+          5
+        ],
+        "name": "Three of a kind, sixes",
+        "best": [
+          {
+            "code": "6d",
+            "rank": "6",
+            "suit": "d",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "6c",
+            "rank": "6",
+            "suit": "c",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "6h",
+            "rank": "6",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "dan",
+      "name": "Dan",
+      "seat": 5,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "Kc",
+        "Kh"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4950,
+        "auto": false
+      },
+      "hand": {
+        "category": "threeOfAKind",
+        "ranks": [
+          11,
+          5,
+          4
+        ],
+        "name": "Three of a kind, kings",
+        "best": [
+          {
+            "code": "Kc",
+            "rank": "K",
+            "suit": "c",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "Kh",
+            "rank": "K",
+            "suit": "h",
+            "from": "hole",
+            "spare": false
+          },
+          {
+            "code": "Kd",
+            "rank": "K",
+            "suit": "d",
+            "from": "board",
+            "spare": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 6,
+      "isBot": false,
+      "isHost": false,
+      "stack": 5000,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": true,
+      "allIn": false,
+      "cards": [
+        null,
+        null
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "fold",
+        "amount": null,
+        "auto": false
+      },
+      "hand": null
+    }
+  ],
+  "hand": {
+    "no": 1,
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "button": 3,
+    "sbSeat": 4,
+    "bbSeat": 5,
+    "street": "river",
+    "board": [
+      "5h",
+      "6h",
+      "7c",
+      "Kd",
+      "2s"
+    ],
+    "pots": [
+      {
+        "amount": 30000,
+        "eligible": [
+          "fay",
+          "gus",
+          "cat",
+          "ann",
+          "eve",
+          "dan"
+        ]
+      }
+    ],
+    "potTotal": 0,
+    "currentBet": 5000,
+    "actorId": null,
+    "remainingMs": 22000,
+    "settleMs": null,
+    "event": null,
+    "lastActorId": null
+  },
+  "lastResult": {
+    "no": 1,
+    "board": [
+      "5h",
+      "6h",
+      "7c",
+      "Kd",
+      "2s"
+    ],
+    "pots": [
+      {
+        "amount": 30000,
+        "winners": [
+          {
+            "playerId": "cat",
+            "amount": 30000,
+            "handName": "Straight, eight high"
+          }
+        ]
+      }
+    ],
+    "uncontested": false,
+    "voided": false,
+    "showdown": {
+      "kind": "combination",
+      "winners": [
+        "cat"
+      ],
+      "kickers": {}
+    },
+    "holdMs": 22000
+  },
+  "clock": {
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "nextSb": 50,
+    "nextBb": 100,
+    "nextLevelInMs": 590000,
+    "levelDurationMs": 600000
+  },
+  "rebuyOffers": [],
+  "winnerId": null,
+  "history": [
+    {
+      "no": 1,
+      "level": 1,
+      "winners": [
+        {
+          "playerId": "cat",
+          "amount": 30000
+        }
+      ],
+      "voided": false
+    }
+  ],
+  "odds": null,
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": true,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": false,
+    "show": [],
+    "pause": true,
+    "resume": false,
+    "cancel": true,
+    "newGame": false
+  },
+  "prompt": "Cat wins 30000.",
+  "promptKey": "handWon",
+  "promptArgs": [
+    "Cat",
+    30000
+  ],
+  "inviteUrl": null,
+  "updateUrl": null
+}

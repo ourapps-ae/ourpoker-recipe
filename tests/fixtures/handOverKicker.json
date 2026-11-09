@@ -1,0 +1,355 @@
+{
+  "contractVersion": 1,
+  "version": 12,
+  "gameNumber": 1,
+  "roomId": "casino",
+  "you": "ann",
+  "holds": [],
+  "display": false,
+  "status": "running",
+  "phase": "handOver",
+  "pauseReasons": [],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "cat",
+      "name": "Cat",
+      "seat": 0,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "8c",
+        "6h"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 5000,
+        "auto": false
+      },
+      "hand": {
+        "category": "twoPair",
+        "ranks": [
+          11,
+          5,
+          6
+        ],
+        "name": "Two pair, kings and sevens",
+        "best": [
+          {
+            "code": "Kc",
+            "rank": "K",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "Kd",
+            "rank": "K",
+            "suit": "d",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7h",
+            "rank": "7",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7s",
+            "rank": "7",
+            "suit": "s",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "8c",
+            "rank": "8",
+            "suit": "c",
+            "from": "hole",
+            "spare": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 1,
+      "isBot": false,
+      "isHost": false,
+      "stack": 0,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "Qh",
+        "5d"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4975,
+        "auto": false
+      },
+      "hand": {
+        "category": "twoPair",
+        "ranks": [
+          11,
+          5,
+          10
+        ],
+        "name": "Two pair, kings and sevens",
+        "best": [
+          {
+            "code": "Kc",
+            "rank": "K",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "Kd",
+            "rank": "K",
+            "suit": "d",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7h",
+            "rank": "7",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7s",
+            "rank": "7",
+            "suit": "s",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "Qh",
+            "rank": "Q",
+            "suit": "h",
+            "from": "hole",
+            "spare": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 2,
+      "isBot": false,
+      "isHost": true,
+      "stack": 15000,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": true,
+      "cards": [
+        "As",
+        "3d"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "allIn",
+        "amount": 4950,
+        "auto": false
+      },
+      "hand": {
+        "category": "twoPair",
+        "ranks": [
+          11,
+          5,
+          12
+        ],
+        "name": "Two pair, kings and sevens",
+        "best": [
+          {
+            "code": "Kc",
+            "rank": "K",
+            "suit": "c",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "Kd",
+            "rank": "K",
+            "suit": "d",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7h",
+            "rank": "7",
+            "suit": "h",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "7s",
+            "rank": "7",
+            "suit": "s",
+            "from": "board",
+            "spare": false
+          },
+          {
+            "code": "As",
+            "rank": "A",
+            "suit": "s",
+            "from": "hole",
+            "spare": true
+          }
+        ]
+      }
+    }
+  ],
+  "hand": {
+    "no": 1,
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "button": 0,
+    "sbSeat": 1,
+    "bbSeat": 2,
+    "street": "river",
+    "board": [
+      "Kc",
+      "Kd",
+      "7h",
+      "7s",
+      "2c"
+    ],
+    "pots": [
+      {
+        "amount": 15000,
+        "eligible": [
+          "cat",
+          "bob",
+          "ann"
+        ]
+      }
+    ],
+    "potTotal": 0,
+    "currentBet": 5000,
+    "actorId": null,
+    "remainingMs": 27000,
+    "settleMs": null,
+    "event": null,
+    "lastActorId": null
+  },
+  "lastResult": {
+    "no": 1,
+    "board": [
+      "Kc",
+      "Kd",
+      "7h",
+      "7s",
+      "2c"
+    ],
+    "pots": [
+      {
+        "amount": 15000,
+        "winners": [
+          {
+            "playerId": "ann",
+            "amount": 15000,
+            "handName": "Two pair, kings and sevens"
+          }
+        ]
+      }
+    ],
+    "uncontested": false,
+    "voided": false,
+    "showdown": {
+      "kind": "kicker",
+      "winners": [
+        "ann"
+      ],
+      "kickers": {
+        "cat": 1,
+        "bob": 1,
+        "ann": 1
+      }
+    },
+    "holdMs": 27000
+  },
+  "clock": {
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "nextSb": 50,
+    "nextBb": 100,
+    "nextLevelInMs": 590000,
+    "levelDurationMs": 600000
+  },
+  "rebuyOffers": [],
+  "winnerId": null,
+  "history": [
+    {
+      "no": 1,
+      "level": 1,
+      "winners": [
+        {
+          "playerId": "ann",
+          "amount": 15000
+        }
+      ],
+      "voided": false
+    }
+  ],
+  "odds": null,
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": true,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": false,
+    "show": [],
+    "pause": true,
+    "resume": false,
+    "cancel": true,
+    "newGame": false
+  },
+  "prompt": "Ann wins 15000.",
+  "promptKey": "handWon",
+  "promptArgs": [
+    "Ann",
+    15000
+  ],
+  "inviteUrl": null,
+  "updateUrl": null
+}

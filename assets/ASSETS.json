@@ -1,0 +1,426 @@
+{
+  "format": 1,
+  "maximumBytes": 5242880,
+  "files": [
+    {
+      "path": "android/ic_launcher_background.xml",
+      "bytes": 478,
+      "sha256": "7a1422a28216f397472ac55439056a7437337c4ff0170c42624d352f90139500"
+    },
+    {
+      "path": "android/ic_launcher_foreground.xml",
+      "bytes": 716,
+      "sha256": "1a90b268792e2b8d049243eda3aa11045fb7bc4213d720533c57ae701d196fa1"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/Contents.json",
+      "bytes": 1353,
+      "sha256": "29eb9f2df6a76e7fb693d92841a6edb12ddda24a68dd9d8dc4122e637b283816"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/icon-1024.png",
+      "bytes": 6504,
+      "sha256": "5152b4661abcbdc3f9d0a5e97cc51445233380850d9d07fcb976e8ff1b7d139f"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-128@1x.png",
+      "bytes": 361,
+      "sha256": "8a14cb8fa7091f15559b8a94e4807a334e35326fc72bab8c7928f33753d02725"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-128@2x.png",
+      "bytes": 858,
+      "sha256": "a86eceb6060634fc394f56e525b9e370a13d9b84ea01b0ef9c1f58d08ac05c9b"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-16@1x.png",
+      "bytes": 82,
+      "sha256": "f9bfaa6eaf2fbd336375bd0627e72d08b1a862fb868dc25ea08b3f16ec215c64"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-16@2x.png",
+      "bytes": 105,
+      "sha256": "0779bc4614b8636bf8c04be846c8d3905072f421cbcd685d0214f64c86873d5f"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-256@1x.png",
+      "bytes": 858,
+      "sha256": "a86eceb6060634fc394f56e525b9e370a13d9b84ea01b0ef9c1f58d08ac05c9b"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-256@2x.png",
+      "bytes": 2201,
+      "sha256": "0ae56ef639a89c7cec10d32d0add1305a1447aa70ad1a724547ead04bf3bf218"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-32@1x.png",
+      "bytes": 105,
+      "sha256": "0779bc4614b8636bf8c04be846c8d3905072f421cbcd685d0214f64c86873d5f"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-32@2x.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-512@1x.png",
+      "bytes": 2201,
+      "sha256": "0ae56ef639a89c7cec10d32d0add1305a1447aa70ad1a724547ead04bf3bf218"
+    },
+    {
+      "path": "apple/Resources/AppIcon.appiconset/mac-512@2x.png",
+      "bytes": 6504,
+      "sha256": "5152b4661abcbdc3f9d0a5e97cc51445233380850d9d07fcb976e8ff1b7d139f"
+    },
+    {
+      "path": "apple/Resources/Contents.json",
+      "bytes": 48,
+      "sha256": "67328f1f20917d61b0904d1eeadd3a9af5ebdfeb20bdd8c6f585f97f7192d873"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Contents.json",
+      "bytes": 599,
+      "sha256": "1bd49f8cd9537a0ee0dfd2d6ae0d6b091af759b035723dd62717bb1bbea2b09a"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/1x.png",
+      "bytes": 7106,
+      "sha256": "3bdb87ac1e195180c6850430d338a579c25ab270bc284022c4a7031ad7b3d733"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/2x.png",
+      "bytes": 25044,
+      "sha256": "e09b0f7269f08bcc7a25d64e6ae7b51ecea10ecdae5a1c12672c5313febc87b7"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/Contents.json",
+      "bytes": 242,
+      "sha256": "342cebf0787ae370d84cab99dc22f41445cc1bcc0931892fc4779105f77a63c7"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "bytes": 933,
+      "sha256": "ab18130d243409b8ce5fe9f3b5a38ae32b3263a4f46762af593f538c753981d8"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/2x.png",
+      "bytes": 2609,
+      "sha256": "63e6ac326b7b9941247e064e2f1af11142a83d01791938f977ca3f2524f3fe80"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/Contents.json",
+      "bytes": 242,
+      "sha256": "342cebf0787ae370d84cab99dc22f41445cc1bcc0931892fc4779105f77a63c7"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Contents.json",
+      "bytes": 60,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "bytes": 933,
+      "sha256": "ab18130d243409b8ce5fe9f3b5a38ae32b3263a4f46762af593f538c753981d8"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/2x.png",
+      "bytes": 2609,
+      "sha256": "63e6ac326b7b9941247e064e2f1af11142a83d01791938f977ca3f2524f3fe80"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Content.imageset/Contents.json",
+      "bytes": 242,
+      "sha256": "342cebf0787ae370d84cab99dc22f41445cc1bcc0931892fc4779105f77a63c7"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Background.imagestacklayer/Contents.json",
+      "bytes": 60,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Contents.json",
+      "bytes": 195,
+      "sha256": "612996a9df2d22895a4a22c3586880ba9ef2ce11b6c0e4d3baf9dbd423da39e6"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
+      "bytes": 5658,
+      "sha256": "a83d1e0027f9a70445bbd505f75e86483fb5f33090f37d2cbe3850ef26ff9812"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Content.imageset/Contents.json",
+      "bytes": 160,
+      "sha256": "f132a4afa38198a848f5083da70034e2d869887676d97bd54b32e30a17609ec0"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Artwork.imagestacklayer/Contents.json",
+      "bytes": 60,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/1x.png",
+      "bytes": 5658,
+      "sha256": "a83d1e0027f9a70445bbd505f75e86483fb5f33090f37d2cbe3850ef26ff9812"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Content.imageset/Contents.json",
+      "bytes": 160,
+      "sha256": "f132a4afa38198a848f5083da70034e2d869887676d97bd54b32e30a17609ec0"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Background.imagestacklayer/Contents.json",
+      "bytes": 60,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Store.imagestack/Contents.json",
+      "bytes": 195,
+      "sha256": "612996a9df2d22895a4a22c3586880ba9ef2ce11b6c0e4d3baf9dbd423da39e6"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/1x.png",
+      "bytes": 8262,
+      "sha256": "2ca34bf840c36ab1c8b4a687d1899943fba3c7426ec9609b95a8ce2678593cf4"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/2x.png",
+      "bytes": 29550,
+      "sha256": "338a5953047ada0e9769f2d58659a5420950515130e8e146acd017e2516ca8c6"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/AppIcon.brandassets/Wide.imageset/Contents.json",
+      "bytes": 242,
+      "sha256": "342cebf0787ae370d84cab99dc22f41445cc1bcc0931892fc4779105f77a63c7"
+    },
+    {
+      "path": "apple/tv/Assets.xcassets/Contents.json",
+      "bytes": 60,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "art/card-back-casino.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-back-home.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-casino-jack.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-casino-king.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-casino-queen.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-home-jack.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-home-king.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/card-home-queen.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/icon.png",
+      "bytes": 6504,
+      "sha256": "5152b4661abcbdc3f9d0a5e97cc51445233380850d9d07fcb976e8ff1b7d139f"
+    },
+    {
+      "path": "art/scene-casino-back.jpg",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/scene-casino-front.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/scene-home-back.jpg",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "art/scene-home-front.png",
+      "bytes": 210,
+      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
+    },
+    {
+      "path": "sounds/allin.wav",
+      "bytes": 19888,
+      "sha256": "153dcc2078059d2a5fb62802d1fab9d616437bc31bf140bb4be9dd3e1c7e2136"
+    },
+    {
+      "path": "sounds/bot_add.wav",
+      "bytes": 6218,
+      "sha256": "690f1d478d5a59a8177a636934008a0d3fe1b7fc4a1335681f22a489643f7ab3"
+    },
+    {
+      "path": "sounds/bot_remove.wav",
+      "bytes": 6218,
+      "sha256": "abba6d1aa3934fbe69cd097f10782dca5392a822252364348e142bb10f6c0d24"
+    },
+    {
+      "path": "sounds/burn.wav",
+      "bytes": 3130,
+      "sha256": "fd64886eae25269bdcc3cf365f1ecb470666c25af27d2d788d4eaac337fa23bc"
+    },
+    {
+      "path": "sounds/check.wav",
+      "bytes": 13274,
+      "sha256": "4956cca3a2e39d6a30d18d89393e169eb508ac862a6df989a5f285bd6c785e79"
+    },
+    {
+      "path": "sounds/chips.wav",
+      "bytes": 8864,
+      "sha256": "3318c358cd48f2cd6c5d715850fe7fd5843ff36dc684ad6376f5306f74ea45f6"
+    },
+    {
+      "path": "sounds/click.wav",
+      "bytes": 1366,
+      "sha256": "d9220d69f3cb7493f80ae2e96b4e010b712b74f94dcd7e7b029fe45df5b0dc62"
+    },
+    {
+      "path": "sounds/deal.wav",
+      "bytes": 17684,
+      "sha256": "452c8ebaa543f0fb57eeeef95bbaa15688b257f81186d21653b2e0abcc01e87f"
+    },
+    {
+      "path": "sounds/end.wav",
+      "bytes": 30912,
+      "sha256": "26d41c712a4ded6006690b50277e010728f64c88c5a1a043e6cecbb388bd6162"
+    },
+    {
+      "path": "sounds/enter.wav",
+      "bytes": 19888,
+      "sha256": "d5aa278d27a0f2af21e06a05fdb1cd81066c2379695b112848bf3a756de79794"
+    },
+    {
+      "path": "sounds/exit.wav",
+      "bytes": 19888,
+      "sha256": "772f911388302bc97af97235138f6236c1ddb71e47d8f6410e5e7bfb8712c403"
+    },
+    {
+      "path": "sounds/flip.wav",
+      "bytes": 5336,
+      "sha256": "9ca1020604fa16e85b2d0021ce2fbeabd70253002045965a119a3401461c96b1"
+    },
+    {
+      "path": "sounds/fold.wav",
+      "bytes": 12392,
+      "sha256": "f3c73368f22f01d4a7cd4f23d6f630078c1c12dc481ec49846986247b39e0469"
+    },
+    {
+      "path": "sounds/start.wav",
+      "bytes": 30912,
+      "sha256": "d1074a7ff6f7b95b2b96e80e9f68f0559899a2e421cfb50c924a03293e3290db"
+    },
+    {
+      "path": "sounds/turn.wav",
+      "bytes": 17684,
+      "sha256": "aec18936368330d0ecb48531cd27ab219f1894815bd3f40cbb98cfe866b83b68"
+    },
+    {
+      "path": "sounds/win.wav",
+      "bytes": 39734,
+      "sha256": "ff6aeb5c2b7ce6f98510bc7015160523df34d5e0ae1b9e483bde93804ded75d8"
+    },
+    {
+      "path": "web/art/card-back-casino.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-back-home.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-casino-jack.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-casino-king.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-casino-queen.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-home-jack.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-home-king.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/card-home-queen.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/scene-casino-back.jpg",
+      "bytes": 543,
+      "sha256": "34855a1ab1a33a187870b6536d0fd3613926d9d707779d8d5c9288514c036215"
+    },
+    {
+      "path": "web/art/scene-casino-front.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/art/scene-home-back.jpg",
+      "bytes": 543,
+      "sha256": "34855a1ab1a33a187870b6536d0fd3613926d9d707779d8d5c9288514c036215"
+    },
+    {
+      "path": "web/art/scene-home-front.png",
+      "bytes": 1132,
+      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
+    },
+    {
+      "path": "web/icon-192.png",
+      "bytes": 414,
+      "sha256": "e7b7da5f4d441e25d64cd2db766d15d2993279a816be08546cd7b5dbc5ce7579"
+    },
+    {
+      "path": "web/icon.png",
+      "bytes": 1493,
+      "sha256": "a64d51e4c8064126ef21ea27c808b8dfe24565879d227ad2743437c95d35fa07"
+    },
+    {
+      "path": "web/manifest.json",
+      "bytes": 285,
+      "sha256": "7a4fe726a2f4db514b199ae3d1a073da5a9c07f183c637d5d3aa373cda428656"
+    },
+    {
+      "path": "web/sounds-manifest.json",
+      "bytes": 781,
+      "sha256": "48798539b432b5aaed1fee6580fa4557aecf1eea77ce433e23678beebb6d40f7"
+    }
+  ]
+}

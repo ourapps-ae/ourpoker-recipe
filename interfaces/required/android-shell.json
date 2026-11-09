@@ -1,0 +1,8 @@
+{
+  "id": "android-shell",
+  "type": "ae/android-shell",
+  "version": "1.0.0",
+  "component": "ourapps-ae/android-host",
+  "imports": {},
+  "native": "The component's Swift and Kotlin sources are compiled with the application (apple/Sources, android/src/main/java)."
+}

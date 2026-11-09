@@ -1,0 +1,470 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-delivery-and-hosts",
+  "title": "OurPoker: Delivery and hosts, default answers",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "ourapps-ae.web-host",
+      "name": "Web host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/web-host",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "web-shell",
+          "name": "Web shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/web-shell",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "applicationId",
+          "name": "Applicationid",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationName",
+          "name": "Applicationname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "shortName",
+          "name": "Shortname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "themeColour",
+          "name": "Themecolour",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "backgroundColour",
+          "name": "Backgroundcolour",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "iconPath",
+          "name": "Iconpath",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "icon"
+        },
+        {
+          "id": "webAddress",
+          "name": "Webaddress",
+          "type": "string",
+          "required": true,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.apple-host",
+      "name": "Apple host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/apple-host",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "apple-shell",
+          "name": "Apple shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/apple-shell",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "bundleIdentifier",
+          "name": "Bundleidentifier",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "displayName",
+          "name": "Displayname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "targets",
+          "name": "Targets",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "web ios android macos windows tvos"
+        },
+        {
+          "id": "deploymentTargets",
+          "name": "Deploymenttargets",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "ios17 tvos17 macos14"
+        },
+        {
+          "id": "scheme",
+          "name": "Scheme",
+          "type": "string",
+          "required": true,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.android-host",
+      "name": "Android host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/android-host",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "android-shell",
+          "name": "Android shell",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/android-shell",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "packageId",
+          "name": "Packageid",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationName",
+          "name": "Applicationname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "minSdk",
+          "name": "Minsdk",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 26
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.windows-desktop",
+      "name": "Windows desktop",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/windows-desktop",
+      "version": "0.3.1",
+      "ports": [
+        {
+          "id": "configuration",
+          "name": "Host configuration",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/windows-desktop-configuration",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "facility",
+          "name": "Windows desktop",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/desktop-host",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.server-host",
+      "name": "Server host",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/server-host",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "room-session",
+          "name": "Room session",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-session",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "room-directory",
+          "name": "Room directory",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/room-directory",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "server-host",
+          "name": "Server host",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/server-host",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "provider",
+          "name": "Provider",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "accountReference",
+          "name": "Accountreference",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "none"
+        },
+        {
+          "id": "allowedOrigins",
+          "name": "Allowedorigins",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "http://localhost:5173"
+        },
+        {
+          "id": "roomPrefix",
+          "name": "Roomprefix",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "region",
+          "name": "Region",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "any"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.ourapps-release",
+      "name": "Ourapps release",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/ourapps-release",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "release-pipeline",
+          "name": "Release pipeline",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/release-pipeline",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "targets",
+          "name": "Targets",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationId",
+          "name": "Applicationid",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "applicationName",
+          "name": "Applicationname",
+          "type": "string",
+          "required": true,
+          "secret": false
+        },
+        {
+          "id": "manifestUrl",
+          "name": "Manifesturl",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "https://ourapps.app"
+        },
+        {
+          "id": "storeCredentials",
+          "name": "Storecredentials",
+          "type": "string",
+          "required": false,
+          "secret": true
+        },
+        {
+          "id": "bundleIdentifier",
+          "name": "Bundleidentifier",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "androidSigning",
+          "name": "Androidsigning",
+          "type": "string",
+          "required": false,
+          "secret": true
+        },
+        {
+          "id": "webDeploy",
+          "name": "Webdeploy",
+          "type": "string",
+          "required": false,
+          "secret": true
+        }
+      ]
+    }
+  ],
+  "instances": [
+    {
+      "id": "web-host",
+      "name": "Web host",
+      "definition": "ourapps-ae.web-host",
+      "configuration": {
+        "iconPath": "icon",
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "shortName": "OurPoker",
+        "themeColour": "primary",
+        "backgroundColour": "background",
+        "webAddress": "http://localhost:5173"
+      }
+    },
+    {
+      "id": "apple-host",
+      "name": "Apple host",
+      "definition": "ourapps-ae.apple-host",
+      "configuration": {
+        "targets": "web ios android macos windows tvos",
+        "deploymentTargets": "ios17 tvos17 macos14",
+        "bundleIdentifier": "app.ourapps.ourpoker",
+        "displayName": "OurPoker",
+        "scheme": "OurPoker"
+      }
+    },
+    {
+      "id": "android-host",
+      "name": "Android host",
+      "definition": "ourapps-ae.android-host",
+      "configuration": {
+        "minSdk": 26,
+        "packageId": "app.ourapps.ourpoker",
+        "applicationName": "OurPoker"
+      }
+    },
+    {
+      "id": "windows-desktop",
+      "name": "Windows desktop",
+      "definition": "ourapps-ae.windows-desktop",
+      "configuration": {}
+    },
+    {
+      "id": "server-host",
+      "name": "Server host",
+      "definition": "ourapps-ae.server-host",
+      "configuration": {
+        "accountReference": "ourpoker-cloudflare-account",
+        "allowedOrigins": "http://localhost:5173",
+        "region": "any",
+        "roomPrefix": "ourpoker-",
+        "provider": "cloudflare-free"
+      }
+    },
+    {
+      "id": "ourapps-release",
+      "name": "Ourapps release",
+      "definition": "ourapps-ae.ourapps-release",
+      "configuration": {
+        "manifestUrl": "https://ourapps.app",
+        "applicationId": "ourpoker",
+        "applicationName": "OurPoker",
+        "bundleIdentifier": "app.ourapps.ourpoker",
+        "targets": "web ios android macos windows tvos",
+        "storeCredentials": {
+          "secretRef": "ourpoker/store-credentials"
+        },
+        "androidSigning": {
+          "secretRef": "ourpoker/android-signing"
+        },
+        "webDeploy": {
+          "secretRef": "ourpoker/web-deploy"
+        }
+      }
+    }
+  ],
+  "connections": []
+}

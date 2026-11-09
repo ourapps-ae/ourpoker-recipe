@@ -1,0 +1,10 @@
+import { createMode, displayCapabilities, type SessionMode } from "../../components/display-mode/web/mode";
+import { displayModeConfiguration } from "./configuration";
+export type { SessionMode };
+export const modeEvent = displayModeConfiguration.eventName;
+const mode = createMode(localStorage.getItem("sessionMode") === "board" ? "board" : displayModeConfiguration.initialMode, modeEvent);
+export const desktop = import.meta.env.VITE_DESKTOP === "1";
+export const sessionMode = mode.current;
+export const publishMode = mode.publish;
+export const canCapture = () => displayCapabilities(sessionMode() === "board").canCapture;
+mode.publish(mode.current());

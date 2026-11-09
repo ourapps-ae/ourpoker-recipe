@@ -1,0 +1,248 @@
+{
+  "format": 1,
+  "lessons": [
+    {
+      "id": "home",
+      "screen": "home",
+      "steps": [
+        {
+          "title": "tut_home_t",
+          "text": "tut_home_rooms",
+          "anchor": "rooms"
+        },
+        {
+          "title": "tut_home_t",
+          "text": "tut_home_preview",
+          "anchor": "roomName"
+        },
+        {
+          "title": "tut_home_t",
+          "text": "tut_home_enter",
+          "anchor": "roomJoin"
+        },
+        {
+          "title": "tut_home_t",
+          "text": "tut_home_name",
+          "anchor": "editName"
+        }
+      ]
+    },
+    {
+      "id": "lobby",
+      "screen": "lobby",
+      "steps": [
+        {
+          "title": "tut_lobby_t",
+          "text": "tut_lobby_room",
+          "anchor": "players"
+        },
+        {
+          "title": "tut_lobby_t",
+          "text": "tut_lobby_bots",
+          "anchor": "addBot"
+        },
+        {
+          "title": "tut_lobby_t",
+          "text": "tut_lobby_start",
+          "anchor": "start"
+        },
+        {
+          "title": "tut_lobby_t",
+          "text": "tut_lobby_exit",
+          "anchor": "leave"
+        }
+      ]
+    },
+    {
+      "id": "bots",
+      "screen": "lobby",
+      "steps": [
+        {
+          "title": "tut_bots_t",
+          "text": "tut_bots_mark",
+          "anchor": "botMark"
+        },
+        {
+          "title": "tut_bots_t",
+          "text": "tut_bots_remove",
+          "anchor": "botRemove"
+        }
+      ]
+    },
+    {
+      "id": "table",
+      "steps": [
+        {
+          "title": "tut_table_t",
+          "text": "tut_table_board",
+          "anchor": "board"
+        },
+        {
+          "title": "tut_table_t",
+          "text": "tut_table_pot",
+          "anchor": "pot"
+        },
+        {
+          "title": "tut_table_t",
+          "text": "tut_table_level",
+          "anchor": "level"
+        },
+        {
+          "title": "tut_cards_t",
+          "text": "tut_cards_hand",
+          "anchor": "hand"
+        },
+        {
+          "title": "tut_cards_t",
+          "text": "tut_cards_stack",
+          "anchor": "stack"
+        },
+        {
+          "title": "tut_cards_t",
+          "text": "tut_cards_zoom",
+          "anchor": "board"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_list",
+          "anchor": "odds"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_box",
+          "anchor": "odds"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_colours",
+          "anchor": "odds"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_rank",
+          "anchor": "odds"
+        }
+      ]
+    },
+    {
+      "id": "table-tv",
+      "steps": [
+        {
+          "title": "tut_table_t",
+          "text": "tut_table_board",
+          "anchor": "board"
+        },
+        {
+          "title": "tut_table_t",
+          "text": "tut_table_pot",
+          "anchor": "pot"
+        },
+        {
+          "title": "tut_table_t",
+          "text": "tut_table_level",
+          "anchor": "level"
+        },
+        {
+          "title": "tut_cards_t",
+          "text": "tut_remote_cards",
+          "anchor": "hand"
+        },
+        {
+          "title": "tut_cards_t",
+          "text": "tut_remote_zoom",
+          "anchor": "board"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_list",
+          "anchor": "odds"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_box",
+          "anchor": "odds"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_colours",
+          "anchor": "odds"
+        },
+        {
+          "title": "hands_panel",
+          "text": "tut_odds_rank",
+          "anchor": "odds"
+        }
+      ]
+    },
+    {
+      "id": "blinds",
+      "steps": [
+        {
+          "title": "tut_ev_blinds_t",
+          "text": "tut_ev_blinds",
+          "anchor": "level"
+        }
+      ]
+    },
+    {
+      "id": "call",
+      "steps": [
+        {
+          "title": "tut_ev_call_t",
+          "text": "tut_ev_call",
+          "anchor": "stack"
+        }
+      ]
+    },
+    {
+      "id": "bet",
+      "steps": [
+        {
+          "title": "tut_ev_bet_t",
+          "text": "tut_ev_bet",
+          "anchor": "stack"
+        }
+      ]
+    },
+    {
+      "id": "pot",
+      "steps": [
+        {
+          "title": "tut_ev_pot_t",
+          "text": "tut_ev_pot",
+          "anchor": "pot"
+        }
+      ]
+    },
+    {
+      "id": "flop",
+      "steps": [
+        {
+          "title": "tut_ev_flop_t",
+          "text": "tut_ev_flop",
+          "anchor": "board"
+        }
+      ]
+    },
+    {
+      "id": "turn",
+      "steps": [
+        {
+          "title": "tut_ev_turn_t",
+          "text": "tut_ev_turn",
+          "anchor": "board"
+        }
+      ]
+    },
+    {
+      "id": "river",
+      "steps": [
+        {
+          "title": "tut_ev_river_t",
+          "text": "tut_ev_river",
+          "anchor": "board"
+        }
+      ]
+    }
+  ]
+}

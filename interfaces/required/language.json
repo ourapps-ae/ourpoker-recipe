@@ -1,0 +1,13 @@
+{
+  "id": "language",
+  "type": "ae/language",
+  "version": "1.0.0",
+  "component": "ourapps-ae/translations",
+  "imports": {
+    "web/i18n": [
+      "lookup",
+      "selectLanguage"
+    ]
+  },
+  "native": "The component's Swift and Kotlin sources are compiled with the application (apple/Sources, android/src/main/java)."
+}

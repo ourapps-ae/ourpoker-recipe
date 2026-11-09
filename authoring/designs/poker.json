@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-poker",
+  "title": "OurPoker: Poker, default answers",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "ourapps-ae.poker-hand-ranking",
+      "name": "Poker hand ranking",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/poker-hand-ranking",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.poker-odds",
+      "name": "Poker odds",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/poker-odds",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-odds",
+          "name": "Poker odds",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/poker-odds",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "sampleBoards",
+          "name": "Sampleboards",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 2000
+        },
+        {
+          "id": "cacheSize",
+          "name": "Cachesize",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 500
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.holdem-rules",
+      "name": "Hold'em rules",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/holdem-rules",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "card-deck",
+          "name": "Card deck",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/card-deck",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "chip-ledger",
+          "name": "Chip ledger",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/chip-ledger",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "level-schedule",
+          "name": "Level schedule",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/level-schedule",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "rules-settings",
+          "name": "Rules settings",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/rules-settings",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "game-rules",
+          "name": "Game rules",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/game-rules",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "seats",
+          "name": "Seats",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 9
+        },
+        {
+          "id": "minimumOpeningBetBigBlinds",
+          "name": "Minimumopeningbetbigblinds",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 1
+        },
+        {
+          "id": "revealAtRunout",
+          "name": "Revealatrunout",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": true
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.poker-strategy",
+      "name": "Poker strategy",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/poker-strategy",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "hand-ranking",
+          "name": "Hand ranking",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/hand-ranking",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "poker-odds",
+          "name": "Poker odds",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/poker-odds",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "player-strategy",
+          "name": "Player strategy",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/player-strategy",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "difficulty",
+          "name": "Difficulty",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 2
+        },
+        {
+          "id": "aggression",
+          "name": "Aggression",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "instances": [
+    {
+      "id": "poker-hand-ranking",
+      "name": "Poker hand ranking",
+      "definition": "ourapps-ae.poker-hand-ranking",
+      "configuration": {}
+    },
+    {
+      "id": "poker-odds",
+      "name": "Poker odds",
+      "definition": "ourapps-ae.poker-odds",
+      "configuration": {
+        "sampleBoards": 2000,
+        "cacheSize": 500
+      }
+    },
+    {
+      "id": "holdem-rules",
+      "name": "Hold'em rules",
+      "definition": "ourapps-ae.holdem-rules",
+      "configuration": {
+        "seats": 9,
+        "minimumOpeningBetBigBlinds": 1,
+        "revealAtRunout": true
+      }
+    },
+    {
+      "id": "poker-strategy",
+      "name": "Poker strategy",
+      "definition": "ourapps-ae.poker-strategy",
+      "configuration": {
+        "difficulty": 2,
+        "aggression": 50
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "poker-odds",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "holdem-rules",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-hand-ranking",
+        "port": "hand-ranking"
+      },
+      "target": {
+        "instance": "poker-strategy",
+        "port": "hand-ranking"
+      }
+    },
+    {
+      "source": {
+        "instance": "poker-odds",
+        "port": "poker-odds"
+      },
+      "target": {
+        "instance": "poker-strategy",
+        "port": "poker-odds"
+      }
+    }
+  ]
+}

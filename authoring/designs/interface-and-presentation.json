@@ -1,0 +1,478 @@
+{
+  "schemaVersion": 1,
+  "id": "ourpoker-interface-and-presentation",
+  "title": "OurPoker: Interface and presentation, default answers",
+  "status": "example",
+  "view": "application",
+  "definitions": [
+    {
+      "id": "ourapps-ae.theme",
+      "name": "Theme",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/theme",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "themeName",
+          "name": "Themename",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "night"
+        },
+        {
+          "id": "primaryColour",
+          "name": "Primarycolour",
+          "type": "string",
+          "required": false,
+          "secret": false
+        },
+        {
+          "id": "tableColour",
+          "name": "Tablecolour",
+          "type": "string",
+          "required": false,
+          "secret": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.controls",
+      "name": "Controls",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/controls",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.table-layout",
+      "name": "Table layout",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/table-layout",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "table-layout",
+          "name": "Table layout",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/table-layout",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.card-graphics",
+      "name": "Card graphics",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/card-graphics",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "card-graphics",
+          "name": "Card graphics",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/card-graphics",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "backStyle",
+          "name": "Backstyle",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "stripes"
+        },
+        {
+          "id": "cornerStyle",
+          "name": "Cornerstyle",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "rounded"
+        },
+        {
+          "id": "cardWidth",
+          "name": "Cardwidth",
+          "type": "number",
+          "required": false,
+          "secret": false,
+          "default": 56
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.chip-graphics",
+      "name": "Chip graphics",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/chip-graphics",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/theme",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "chip-graphics",
+          "name": "Chip graphics",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/chip-graphics",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "denominations",
+          "name": "Denominations",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "casino 5000 1000 500 100 25 5 1"
+        },
+        {
+          "id": "chipColours",
+          "name": "Chipcolours",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "casino"
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.sound-cues",
+      "name": "Sound cues",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/sound-cues",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "sound-cues",
+          "name": "Sound cues",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/sound-cues",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "soundManifest",
+          "name": "Soundmanifest",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "sounds"
+        },
+        {
+          "id": "defaultMuted",
+          "name": "Defaultmuted",
+          "type": "boolean",
+          "required": false,
+          "secret": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "id": "ourapps-ae.guided-tour",
+      "name": "Guided tour",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/guided-tour",
+      "version": "0.2.0",
+      "ports": [
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": false,
+          "cardinality": "one"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "ourapps-ae.translations",
+      "name": "Translations",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/translations",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "language",
+          "name": "Translations",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": [
+        {
+          "id": "languages",
+          "name": "Languages",
+          "type": "string",
+          "required": false,
+          "secret": false,
+          "default": "en fr de es"
+        }
+      ]
+    }
+  ],
+  "instances": [
+    {
+      "id": "theme",
+      "name": "Theme",
+      "definition": "ourapps-ae.theme",
+      "configuration": {
+        "themeName": "night"
+      }
+    },
+    {
+      "id": "controls",
+      "name": "Controls",
+      "definition": "ourapps-ae.controls",
+      "configuration": {}
+    },
+    {
+      "id": "table-layout",
+      "name": "Table layout",
+      "definition": "ourapps-ae.table-layout",
+      "configuration": {}
+    },
+    {
+      "id": "card-graphics",
+      "name": "Card graphics",
+      "definition": "ourapps-ae.card-graphics",
+      "configuration": {
+        "backStyle": "stripes",
+        "cornerStyle": "rounded",
+        "cardWidth": 56
+      }
+    },
+    {
+      "id": "chip-graphics",
+      "name": "Chip graphics",
+      "definition": "ourapps-ae.chip-graphics",
+      "configuration": {
+        "denominations": "casino 5000 1000 500 100 25 5 1",
+        "chipColours": "casino"
+      }
+    },
+    {
+      "id": "sound-cues",
+      "name": "Sound cues",
+      "definition": "ourapps-ae.sound-cues",
+      "configuration": {
+        "soundManifest": "sounds",
+        "defaultMuted": false
+      }
+    },
+    {
+      "id": "guided-tour",
+      "name": "Guided tour",
+      "definition": "ourapps-ae.guided-tour",
+      "configuration": {}
+    },
+    {
+      "id": "translations",
+      "name": "Translations",
+      "definition": "ourapps-ae.translations",
+      "configuration": {
+        "languages": "en fr de es"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "controls",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "table-layout",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "table-layout",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "card-graphics",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "theme",
+        "port": "theme"
+      },
+      "target": {
+        "instance": "chip-graphics",
+        "port": "theme"
+      }
+    },
+    {
+      "source": {
+        "instance": "controls",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "translations",
+        "port": "language"
+      },
+      "target": {
+        "instance": "guided-tour",
+        "port": "language"
+      }
+    }
+  ]
+}

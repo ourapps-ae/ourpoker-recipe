@@ -1,0 +1,171 @@
+{
+  "contractVersion": 1,
+  "version": 30,
+  "gameNumber": 1,
+  "roomId": "home",
+  "you": "ann",
+  "holds": [],
+  "display": false,
+  "status": "running",
+  "phase": "handOver",
+  "pauseReasons": [],
+  "hostId": "ann",
+  "players": [
+    {
+      "id": "bob",
+      "name": "Bob",
+      "seat": 0,
+      "isBot": false,
+      "isHost": false,
+      "stack": 5025,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": false,
+      "allIn": false,
+      "cards": [
+        null,
+        null
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "blind",
+        "amount": 50,
+        "auto": false
+      },
+      "hand": null
+    },
+    {
+      "id": "ann",
+      "name": "Ann",
+      "seat": 1,
+      "isBot": false,
+      "isHost": true,
+      "stack": 4975,
+      "bet": 0,
+      "totalIn": 0,
+      "inHand": true,
+      "folded": true,
+      "allIn": false,
+      "cards": [
+        "6h",
+        "Qd"
+      ],
+      "status": "in",
+      "place": null,
+      "connected": true,
+      "sittingOut": false,
+      "rebuysUsed": 0,
+      "lastAction": {
+        "kind": "fold",
+        "amount": null,
+        "auto": false
+      },
+      "hand": null
+    }
+  ],
+  "hand": {
+    "no": 1,
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "button": 1,
+    "sbSeat": 1,
+    "bbSeat": 0,
+    "street": "preflop",
+    "board": [],
+    "pots": [
+      {
+        "amount": 50,
+        "eligible": [
+          "bob"
+        ]
+      }
+    ],
+    "potTotal": 0,
+    "currentBet": 50,
+    "actorId": null,
+    "remainingMs": 6000,
+    "settleMs": null,
+    "event": null,
+    "lastActorId": null
+  },
+  "lastResult": {
+    "no": 1,
+    "board": [],
+    "pots": [
+      {
+        "amount": 50,
+        "winners": [
+          {
+            "playerId": "bob",
+            "amount": 50,
+            "handName": null
+          }
+        ]
+      }
+    ],
+    "uncontested": true,
+    "voided": false,
+    "showdown": null,
+    "holdMs": 6000
+  },
+  "clock": {
+    "level": 1,
+    "sb": 25,
+    "bb": 50,
+    "nextSb": 50,
+    "nextBb": 100,
+    "nextLevelInMs": 596000,
+    "levelDurationMs": 600000
+  },
+  "rebuyOffers": [],
+  "winnerId": null,
+  "history": [
+    {
+      "no": 1,
+      "level": 1,
+      "winners": [
+        {
+          "playerId": "bob",
+          "amount": 50
+        }
+      ],
+      "voided": false
+    }
+  ],
+  "odds": null,
+  "legal": {
+    "start": false,
+    "addBot": false,
+    "kick": false,
+    "leave": true,
+    "sitOut": true,
+    "return": false,
+    "fold": false,
+    "check": false,
+    "call": null,
+    "bet": null,
+    "rebuy": false,
+    "show": [
+      0,
+      1
+    ],
+    "pause": true,
+    "resume": false,
+    "cancel": true,
+    "newGame": false
+  },
+  "prompt": "Bob wins 50.",
+  "promptKey": "handWon",
+  "promptArgs": [
+    "Bob",
+    50
+  ],
+  "inviteUrl": null,
+  "updateUrl": null
+}
