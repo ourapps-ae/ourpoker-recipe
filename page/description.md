@@ -1,10 +1,10 @@
 # OurPoker
 
-A complete Texas hold'em game for two to nine players at one table. Friends play on phones, tablets, computers or the web; a television or any shared screen shows the public table; players can see and hear each other by video; computer players can fill empty seats; play has decision clocks, rising blinds and rebuys; and the game speaks English, French, German and Spanish.
+A complete Texas hold'em game for two to nine players at one table. People play on phones, tablets, computers or the web; a television or any shared screen shows the public table; players can see and hear each other by video; computer players can fill empty seats; play has decision clocks, rising blinds and rebuys; and the game speaks English, French, German and Spanish.
 
 ## Who it is for
 
-A group that wants its own poker night without accounts or an app store: a book club, a poker league, a company event. The group's developer owns the accounts and the server; nothing runs on our platform.
+A group that wants its own poker night without accounts or an app store: a book club, a club's league night, a poker league, a company event. The group's developer owns the accounts and the server; nothing runs on our platform.
 
 ## Devices
 
@@ -59,4 +59,4 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.3.2 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run (no assembler exists). The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.
+Version 0.3.3 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run, because the assembler (`aepm create`) is not yet available. The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.
