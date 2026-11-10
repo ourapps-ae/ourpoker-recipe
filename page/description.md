@@ -51,7 +51,7 @@ Secrets are given by reference only; no key is written into the recipe, the answ
 
 ## Components
 
-39 components in five groups (delivery and hosts; rooms, people and sessions; turn-based game framework; poker; interface and presentation) plus the recipe's own application-specific component: screen flow, artwork, text in four languages, lessons and end-to-end tests. Thirty-five of the 39 have nothing to do with poker. The diagram shows the default design, in which all but store-update are present (updates default to no).
+39 components in five groups (delivery and hosts; rooms, people and sessions; turn-based game framework; poker; interface and presentation) plus the recipe's own application-specific component: screen flow, artwork, text in four languages, lessons and end-to-end tests. Thirty-five of the 39 have nothing to do with poker. The diagram names every component, grouped, with the connections of the default design; store-update is dashed because it is present only when updates is yes.
 
 ## Tested answer sets
 
@@ -59,4 +59,4 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.3.0 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run (no assembler exists). The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.
+Version 0.3.1 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run (no assembler exists). The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.

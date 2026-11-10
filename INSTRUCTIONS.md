@@ -1,6 +1,6 @@
 # OurPoker recipe: instructions
 
-Package `ourapps-ae/ourpoker` 0.3.0. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts. `recipe.json` is the source of truth; this file explains how to use it.
+Package `ourapps-ae/ourpoker` 0.3.1. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts. `recipe.json` is the source of truth; this file explains how to use it.
 
 ## 1. For the agent
 
