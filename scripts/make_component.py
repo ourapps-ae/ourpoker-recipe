@@ -28,9 +28,10 @@ from aepm import application, model  # noqa: E402
 sys.path.insert(0, str(ROOT / "authoring"))
 import component_imports  # noqa: E402
 import make_recipe  # noqa: E402
+import poker_game_adapter  # noqa: E402
 
 NAME = "ourapps-ae/ourpoker"
-VERSION = "0.3.0"
+VERSION = json.loads((Path(__file__).resolve().parent.parent / "recipe.json").read_text(encoding="utf-8"))["version"]
 TITLE = "OurPoker"
 SOURCE_REVISION = "19905b75dbea89fbfd424d67fe26c81aaed0e018"
 KOTLIN = "app/ourapps/ourpoker"
@@ -261,7 +262,7 @@ def build_manifest(files):
         type_ = "ae/" + port
         # the type is the providing port's type; check it is real
         provided_port(component, type_)
-        entry = {"id": port, "type": type_, "version": "1.0.0", "path": f"interfaces/required/{port}.json"}
+        entry = {"id": port, "type": type_, "version": "1.0.0", "path": f"interfaces/required-{port}.json"}
         if port in OPTIONAL:
             entry["optional"] = True
         requires.append(entry)
@@ -279,7 +280,7 @@ def build_manifest(files):
     packaged = sorted(set(files) | {"INSTRUCTIONS.md"})
     return {
         "format": 1, "kind": "recipe",
-        "identity": {"name": NAME, "version": VERSION, "sourceRevision": SOURCE_REVISION, "sourceTreeDigest": "0" * 64, "licenceStatus": "deferred"},
+        "identity": {"name": NAME, "version": VERSION, "sourceRevision": SOURCE_REVISION, "sourceTreeDigest": "0" * 64, "licence": "Apache-2.0"},
         "facilities": [{"id": "application", "description": "OurPoker application-specific component: screen flow, house rules, text, lessons, artwork, wiring and end-to-end tests"}],
         "documents": {"contract": "CONTRACT.md", "interfaces": sorted(f for f in files if f.startswith("interfaces/")) + ["suitability.json"],
                       "examples": ["examples/configuration.ts"], "licenceNotice": "LICENCE"},
@@ -355,46 +356,17 @@ def render(example):
     svg.write_text(re.sub(r"<!DOCTYPE[^>]*>\s*", "", svg.read_text()))
 
 
-# ---- the interface file ----
-
-COMPONENT_OF_PORT = dict(REQUIRES)
-
-
-def scan_imports():
-    """Names the application imports from each component, per file (web, server and desktop code)."""
-    use = {}
-    for f in walk(ROOT / "implementation"):
-        if not f.endswith((".ts", ".cjs")):
-            continue
-        text = (ROOT / f).read_text(encoding="utf-8")
-        shown = f[len("implementation/"):]
-        for m in re.finditer(r'import\s+(?:type\s+)?\{([^}]*)\}\s*from\s*"\.\./\.\./components/([\w-]+)/(\w+)/([\w/.-]+)"', text):
-            names = sorted({n.strip().split(" as ")[0].replace("type ", "") for n in m.group(1).split(",") if n.strip()})
-            use.setdefault(m.group(2), {}).setdefault(m.group(3) + "/" + m.group(4), set()).update(names)
-        for m in re.finditer(r"require\('\.\./\.\./components/([\w-]+)/([\w/.-]+)'\)", text):
-            use.setdefault(m.group(1), {}).setdefault(m.group(2), set()).add("(module)")
-    return {c: {k: sorted(v) for k, v in sorted(files.items())} for c, files in sorted(use.items())}
-
+# ---- the interface files ----
 
 def interfaces_json(manifest):
-    """One file per provided port (interfaces/<port>.json) and per required port (interfaces/required/<port>.json)."""
-    imports = scan_imports()
+    """One standard document per provided port (interfaces/<port>.json). interfaces/required-<port>.json are copies of the
+    providing components' documents, written by the workspace's interface sync, not here."""
+    documents = {"poker-game-adapter": poker_game_adapter.document()}
     out = {}
-    detail = {
-        "poker-game-adapter": {
-            "operations": {"pokerAdapter": {"arguments": ["links:{inviteUrl:string|null,updateUrl:string|null}"], "returns": "GameAdapter (turn-engine) whose view() answers in the poker wire view"},
-                           "toWireView": {"arguments": ["view:EngineView", "links:LinkExtras"], "returns": "View (server/src/contract.ts)"}},
-            "exports": {"server/src/adapter.ts": ["pokerAdapter"], "server/src/wire.ts": ["toWireView"], "server/src/contract.ts": ["CONTRACT_VERSION=1", "View", "Action"]},
-            "note": "recipe.json connects this port to realtime-rooms' `game` requirement; the application's own `game-adapter` requirement takes turn-engine's adapter, which pokerAdapter wraps."},
-    }
     for p in manifest["provides"]:
-        out[f"interfaces/{p['id']}.json"] = {"id": p["id"], "type": p["type"], "version": p["version"], **detail[p["id"]]}
-    for r in manifest["requires"]:
-        component = COMPONENT_OF_PORT[r["id"]]
-        out[f"interfaces/required/{r['id']}.json"] = {
-            "id": r["id"], "type": r["type"], "version": r["version"], "component": "ourapps-ae/" + component,
-            "imports": imports.get(component, {}),
-            "native": "The component's Swift and Kotlin sources are compiled with the application (apple/Sources, android/src/main/java)."}
+        document = documents[p["id"]]
+        assert (document["info"]["title"], document["info"]["version"]) == (p["type"], p["version"]), p["id"]
+        out[f"interfaces/{p['id']}.json"] = document
     return out
 
 

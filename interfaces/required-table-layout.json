@@ -1,0 +1,983 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/table-layout",
+    "version": "1.0.0",
+    "description": "Seats around an oval table on every screen size (portrait, landscape, television) as a pure function of the seat count and the area, plus views that place seats from it. Web: implementation/web/layout.ts, table-view.ts, placed-seats.ts and table-layout.css (reads the theme's --table and --table-edge). Apple: TableGeometry, Ring, OvalTable and TelevisionTable in SwiftUI. Android: TableGeometry, Ring and the Compose function OvalTable in package ae.tablelayout."
+  },
+  "methods": [
+    {
+      "name": "tableLayout",
+      "description": "The layout for seats seats (2 to 9; others are clamped) in an area of width by height (default 1920 by 1080). Portrait ignores the size (fractions of a box 1.3 times as tall as wide). turn rotates the landscape ring by that fraction of a lap; television ignores it. Swift: TableGeometry.tableLayout(seats:orientation:width:height:turn:) (a precondition failure for a size not above 0). Kotlin: TableGeometry.tableLayout(seats, orientation, width, height, turn) (IllegalArgumentException).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "seats",
+              "orientation"
+            ],
+            "properties": {
+              "seats": {
+                "type": "number"
+              },
+              "orientation": {
+                "$ref": "#/components/schemas/Orientation"
+              },
+              "width": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "turn": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "layout",
+        "schema": {
+          "$ref": "#/components/schemas/TableLayout"
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "width and height must be above 0"
+        }
+      ]
+    },
+    {
+      "name": "screenClass",
+      "description": "portrait for areas under 600 wide or at least as tall as wide, landscape otherwise, tv when tv is true. Swift: TableGeometry.screenClass(width:height:tv:). Kotlin: TableGeometry.screenClass(width, height, tv).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "width",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "height",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "tv",
+          "required": false,
+          "schema": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      ],
+      "result": {
+        "name": "orientation",
+        "schema": {
+          "$ref": "#/components/schemas/Orientation"
+        }
+      }
+    },
+    {
+      "name": "relativeSeat",
+      "description": "Seat counted clockwise from the viewer's own seat (count at least 2). Swift: TableGeometry.relativeSeat(_:mySeat:count:). Kotlin: TableGeometry.relativeSeat(seat, mySeat, count).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "seat",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "mySeat",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "count",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "relative",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    {
+      "name": "clampSeats",
+      "description": "The seat count floored and held to 2 to 9. Swift: TableGeometry.clampSeats(_:). Kotlin: TableGeometry.clampSeats(n).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "n",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "seats",
+        "schema": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9
+        }
+      }
+    },
+    {
+      "name": "seatAngle",
+      "description": "How far round the portrait table seat k of n is, clockwise from straight below, in radians. Swift: TableGeometry.seatAngle(_:_:). Kotlin: TableGeometry.seatAngle(k, n).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "k",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "n",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "angle",
+        "schema": {
+          "type": "number"
+        }
+      }
+    },
+    {
+      "name": "ringPoint",
+      "description": "A point on the portrait ring of seats at any angle, for a light gliding between seats, as fractions of the table box. Swift: TableGeometry.ringPoint(_:). Kotlin: TableGeometry.ringPoint(a).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "angle",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "point",
+        "schema": {
+          "$ref": "#/components/schemas/Point"
+        }
+      }
+    },
+    {
+      "name": "clockwiseTarget",
+      "description": "The angle to move a light to so every move goes clockwise; from null gives to. Swift: TableGeometry.clockwiseTarget(from:to:). Kotlin: TableGeometry.clockwiseTarget(from, to).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "from",
+          "required": true,
+          "schema": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        {
+          "name": "to",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "angle",
+        "schema": {
+          "type": "number"
+        }
+      }
+    },
+    {
+      "name": "tableCardWidth",
+      "description": "Card width in points on the portrait table: 24 hidden and 32 open from seven seats, 29 and 36 below. Swift: TableGeometry.tableCardWidth(_:faceUp:). Kotlin: TableGeometry.tableCardWidth(n, faceUp).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "n",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "faceUp",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        }
+      ],
+      "result": {
+        "name": "width",
+        "schema": {
+          "type": "number",
+          "enum": [
+            24,
+            29,
+            32,
+            36
+          ]
+        }
+      }
+    },
+    {
+      "name": "tableBoxSize",
+      "description": "The portrait table box for a screen, leaving reserved height for the rest on a tall screen and taking the full height on a wide one. Swift: TableGeometry.tableBoxSize(width:height:padding:reserved:). Kotlin: TableGeometry.tableBoxSize(width, height, padding, reserved).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "width",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "height",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "padding": {
+                "type": "number",
+                "default": 12
+              },
+              "reserved": {
+                "type": "number",
+                "default": 0
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "size",
+        "schema": {
+          "$ref": "#/components/schemas/BoxSize"
+        }
+      }
+    },
+    {
+      "name": "Ring",
+      "description": "Builds an ellipse of radii rx and ry for even spacing along it. Web: new Ring(rx, ry). Swift: Ring(rx:ry:). Kotlin: Ring(rx, ry).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "rx",
+          "required": true,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        {
+          "name": "ry",
+          "required": true,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      ],
+      "result": {
+        "name": "ring",
+        "schema": {
+          "$ref": "#/components/schemas/Ring"
+        }
+      }
+    },
+    {
+      "name": "Ring.angle",
+      "description": "The ellipse angle at a fraction of the way round (wrapped to 0 to 1). Same name on every platform.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "fraction",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "angle",
+        "schema": {
+          "type": "number"
+        }
+      }
+    },
+    {
+      "name": "Ring.point",
+      "description": "The point on the ellipse at an angle, relative to its centre. Same name on every platform.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "t",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "point",
+        "schema": {
+          "$ref": "#/components/schemas/Point"
+        }
+      }
+    },
+    {
+      "name": "Ring.fractionToward",
+      "description": "The fraction of the way round at the edge point in the direction of p from the centre c. Swift: fractionToward(_:from:). Kotlin: fractionToward(p, c).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "p",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        {
+          "name": "c",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Point"
+          }
+        }
+      ],
+      "result": {
+        "name": "fraction",
+        "schema": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    {
+      "name": "Ring.outward",
+      "description": "The direction straight out from the ellipse at an angle. Same name on every platform.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "t",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "angle",
+        "schema": {
+          "type": "number"
+        }
+      }
+    },
+    {
+      "name": "seatStyle",
+      "description": "The CSS for one seat wrapper: centre at the spot, turned to face out. Web only; OvalTable turns and places seats itself.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "spot",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y",
+              "angle"
+            ],
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              },
+              "angle": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "style",
+        "schema": {
+          "$ref": "#/components/schemas/SeatStyle"
+        }
+      }
+    },
+    {
+      "name": "boxAspect",
+      "description": "The table box's CSS aspect ratio: 1 / 1.3 for portrait, width / height otherwise. Web only; OvalTable sets the same aspect ratio.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "layout",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/TableLayout"
+          }
+        }
+      ],
+      "result": {
+        "name": "aspect",
+        "schema": {
+          "type": "string",
+          "pattern": "^[0-9.]+ / [0-9.]+$"
+        }
+      }
+    },
+    {
+      "name": "tableView",
+      "description": "A table at the size of its container: the felt oval (theme --table and --table-edge), an optional centre and one wrapper per seat carrying data-seat; the box carries data-layout. Swift: OvalTable(layout:theme:seat:centre:). Kotlin: OvalTable(layout, theme, modifier, centre, seat).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "layout",
+              "seat"
+            ],
+            "properties": {
+              "layout": {
+                "$ref": "#/components/schemas/TableLayout"
+              },
+              "seat": {
+                "description": "A function supplied by the caller: (index: number) => Node. It is called, not serialised."
+              },
+              "centre": {
+                "$ref": "#/components/schemas/Node"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "tableFor",
+      "description": "Chooses the orientation for a screen (screenClass) and builds the table (tableLayout, tableView) in one call. Web only; Swift TelevisionTable(seats:theme:seat:centre:) does this for a television, recomputing the layout as the view's size changes.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "seats",
+              "width",
+              "height",
+              "seat"
+            ],
+            "properties": {
+              "seats": {
+                "type": "number"
+              },
+              "width": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              },
+              "tv": {
+                "type": "boolean"
+              },
+              "turn": {
+                "type": "number"
+              },
+              "seat": {
+                "description": "A function supplied by the caller: (index: number) => Node. It is called, not serialised."
+              },
+              "centre": {
+                "$ref": "#/components/schemas/Node"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "table",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "orientation",
+            "element"
+          ],
+          "properties": {
+            "orientation": {
+              "$ref": "#/components/schemas/Orientation"
+            },
+            "element": {
+              "$ref": "#/components/schemas/Element"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "tvScreen",
+      "description": "A television screen: a header with the title and an optional exit control, an optional status banner (the controls component's banner), then the table filling the rest. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "table"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Already translated text."
+              },
+              "banner": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Node"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "exit": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Node"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "table": {
+                "$ref": "#/components/schemas/Node"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Orientation": {
+        "type": "string",
+        "enum": [
+          "portrait",
+          "landscape",
+          "tv"
+        ],
+        "description": "Swift: TableOrientation .portrait, .landscape, .tv. Kotlin: TableOrientation PORTRAIT, LANDSCAPE, TV."
+      },
+      "Point": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y"
+        ],
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "description": "Swift and Kotlin: TablePoint."
+      },
+      "SeatSpot": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "x",
+          "y",
+          "angle",
+          "cards",
+          "shown",
+          "bet"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8,
+            "description": "0 is the viewer's seat at the bottom, then clockwise on screen."
+          },
+          "x": {
+            "type": "number",
+            "description": "Centre of the seat's plate, fraction of the area width."
+          },
+          "y": {
+            "type": "number",
+            "description": "Centre of the seat's plate, fraction of the area height."
+          },
+          "angle": {
+            "type": "number",
+            "description": "Radians, clockwise on screen, the plate is turned so its foot faces out; 0 on portrait and television layouts."
+          },
+          "cards": {
+            "$ref": "#/components/schemas/Point",
+            "description": "Where this seat's hidden cards sit."
+          },
+          "shown": {
+            "$ref": "#/components/schemas/Point",
+            "description": "Where its open and folded cards sit."
+          },
+          "bet": {
+            "$ref": "#/components/schemas/Point",
+            "description": "Where its stake sits in front of it."
+          }
+        }
+      },
+      "TableLayout": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "orientation",
+          "seats",
+          "width",
+          "height",
+          "seatSpots",
+          "oval",
+          "plate",
+          "pot",
+          "deck",
+          "burn",
+          "board",
+          "cardWidth",
+          "middleAngle"
+        ],
+        "properties": {
+          "orientation": {
+            "$ref": "#/components/schemas/Orientation"
+          },
+          "seats": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 9
+          },
+          "width": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "1 on portrait; the area width otherwise."
+          },
+          "height": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "1.3 on portrait; the area height otherwise."
+          },
+          "seatSpots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeatSpot"
+            },
+            "minItems": 2,
+            "maxItems": 9
+          },
+          "oval": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "cx",
+              "cy",
+              "rx",
+              "ry"
+            ],
+            "properties": {
+              "cx": {
+                "type": "number"
+              },
+              "cy": {
+                "type": "number"
+              },
+              "rx": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "ry": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "description": "The felt oval, centre and radii as fractions of the area; seats sit on its rim. Kotlin: ovalCx, ovalCy, ovalRx, ovalRy."
+          },
+          "plate": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "w",
+              "h"
+            ],
+            "properties": {
+              "w": {
+                "type": "number"
+              },
+              "h": {
+                "type": "number"
+              }
+            },
+            "description": "A seat's plate as fractions of the area. Kotlin: plateW, plateH."
+          },
+          "pot": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "deck": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "burn": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "board": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Point"
+            },
+            "minItems": 5,
+            "maxItems": 5
+          },
+          "cardWidth": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "hidden",
+              "shown"
+            ],
+            "properties": {
+              "hidden": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "shown": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "description": "Card widths in points for hidden and open cards. Kotlin: hiddenCardWidth, shownCardWidth."
+          },
+          "middleAngle": {
+            "type": "number",
+            "description": "How far the middle row (deck, board, pot) is turned: 0, or a quarter turn on a tall wide table."
+          }
+        },
+        "description": "Positions are fractions (0 to 1) of the area. Swift: struct TableLayout (oval, plate and cardWidth are tuples). Kotlin: class TableLayout with flattened oval, plate and card widths."
+      },
+      "BoxSize": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "width",
+          "height"
+        ],
+        "properties": {
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "description": "Swift: a (width:, height:) tuple. Kotlin: Pair(width, height)."
+      },
+      "SeatStyle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "left",
+          "top",
+          "transform"
+        ],
+        "properties": {
+          "left": {
+            "type": "string",
+            "pattern": "^-?[0-9.]+%$"
+          },
+          "top": {
+            "type": "string",
+            "pattern": "^-?[0-9.]+%$"
+          },
+          "transform": {
+            "type": "string"
+          }
+        }
+      },
+      "PlacedSeats": {
+        "type": "object",
+        "propertyNames": {
+          "pattern": "^[2-9]$"
+        },
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "hidden",
+            "shown",
+            "bets"
+          ],
+          "properties": {
+            "hidden": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "description": "[x, y] in percent of the portrait table box."
+              }
+            },
+            "shown": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "description": "[x, y] in percent of the portrait table box."
+              }
+            },
+            "bets": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "description": "[x, y] in percent of the portrait table box."
+              }
+            }
+          }
+        },
+        "description": "PLACED (web), PlacedSeats (Swift, Kotlin): where each seat's hidden cards, open cards and stake sit on the portrait table, by seat count and seat index."
+      },
+      "Limits": {
+        "const": {
+          "minSeats": 2,
+          "maxSeats": 9,
+          "portraitAspect": 1.3
+        },
+        "description": "MIN_SEATS, MAX_SEATS and PORTRAIT_ASPECT (web, Kotlin TableGeometry); minSeats, maxSeats, portraitAspect (Swift TableGeometry)."
+      },
+      "Ring": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rx",
+          "ry"
+        ],
+        "properties": {
+          "rx": {
+            "type": "number"
+          },
+          "ry": {
+            "type": "number"
+          }
+        },
+        "description": "An ellipse with points at equal distances along it, from the bottom, clockwise on screen (240 steps)."
+      },
+      "Node": {
+        "type": "object",
+        "description": "A DOM Node."
+      },
+      "Element": {
+        "type": "object",
+        "description": "A DOM HTMLElement."
+      }
+    }
+  }
+}

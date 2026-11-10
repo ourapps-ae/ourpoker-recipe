@@ -1,0 +1,763 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/android-shell",
+    "version": "1.0.0",
+    "description": "Android application shell. Methods tagged typescript are exported functions of android/render.ts and android/language.ts run at build time under Node; methods tagged kotlin are public Kotlin API in package ae.androidhost compiled into the application. Methods tagged with both exist in both languages with the same behaviour.",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "methods": [
+    {
+      "name": "renderAndroid",
+      "description": "Renders the Gradle settings, build files, wrapper properties, manifest and launcher icon resources from the settings.",
+      "params": [
+        {
+          "name": "settings",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/AndroidShellSettings"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/AndroidRenderOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "files",
+        "schema": {
+          "$ref": "#/components/schemas/AndroidFiles"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/SettingsError"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "writeAndroid",
+      "description": "Writes each file under directory, creating folders as needed. Throws the file system's error when a write fails.",
+      "params": [
+        {
+          "name": "directory",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "files",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Relative path to file text."
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "validateSettings",
+      "description": "Checks the settings against the collected grammars and the SDK range, and adds compileSdk.",
+      "params": [
+        {
+          "name": "settings",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/AndroidShellSettings"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/AndroidRenderOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "resolved",
+        "schema": {
+          "$ref": "#/components/schemas/ResolvedAndroidSettings"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/SettingsError"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "resolveLanguage",
+      "description": "The requested tag when supported, else its base language when supported, else the fallback.",
+      "params": [
+        {
+          "name": "requested",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Language tag."
+          }
+        },
+        {
+          "name": "supported",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "fallback",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "language",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "chooseLanguage",
+      "description": "resolveLanguage of the user's pick, or of the phone's tag when nothing is picked.",
+      "params": [
+        {
+          "name": "picked",
+          "required": true,
+          "schema": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Tag picked in the application; null follows the phone."
+          }
+        },
+        {
+          "name": "systemTag",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "supported",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "fallback",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "language",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "parseColour",
+      "description": "#rrggbb (made opaque) or #aarrggbb to 0xAARRGGBB; null when the text is not a colour.",
+      "params": [
+        {
+          "name": "text",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "colour",
+        "schema": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Colour as 0xAARRGGBB.",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellPalette.toColorScheme",
+      "description": "The palette as a dark Material 3 ColorScheme.",
+      "params": [
+        {
+          "name": "palette",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ShellPalette"
+          }
+        }
+      ],
+      "result": {
+        "name": "colorScheme",
+        "schema": {
+          "description": "androidx.compose.material3.ColorScheme."
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellActivity",
+      "description": "Abstract ComponentActivity the application subclasses as its one activity. The parameters are the members the subclass overrides; the shell applies the language to the base context, asks the permissions at start, wraps Content() in MaterialTheme with the palette, and calls the hooks.",
+      "params": [
+        {
+          "name": "permissions",
+          "description": "Permissions asked at start; default none.",
+          "required": false,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "language",
+          "description": "Null follows the phone's language; default null.",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "description": "ShellLanguage."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        {
+          "name": "palette",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ShellPalette"
+          }
+        },
+        {
+          "name": "Content",
+          "required": true,
+          "schema": {
+            "description": "Function () -> Unit, a @Composable that draws the application."
+          }
+        },
+        {
+          "name": "onShellCreated",
+          "required": false,
+          "schema": {
+            "description": "Function () -> Unit, called from onCreate before the content is set."
+          }
+        },
+        {
+          "name": "onPermissionsChecked",
+          "required": false,
+          "schema": {
+            "description": "Function (allGranted: Boolean, result: Map<String, Boolean>) -> Unit, called with whether every requested permission is granted."
+          }
+        },
+        {
+          "name": "onShellResumed",
+          "required": false,
+          "schema": {
+            "description": "Function () -> Unit, called from onResume."
+          }
+        },
+        {
+          "name": "onShellPaused",
+          "required": false,
+          "schema": {
+            "description": "Function () -> Unit, called from onPause."
+          }
+        }
+      ],
+      "result": {
+        "name": "activity",
+        "schema": {
+          "description": "androidx.activity.ComponentActivity subclass."
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellLanguage",
+      "description": "Creates the application's language store, kept in the named shared preferences.",
+      "params": [
+        {
+          "name": "preferencesName",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "all",
+          "description": "Languages offered, for a picker.",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageChoice"
+            }
+          }
+        },
+        {
+          "name": "fallback",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "description": "Defaults to en."
+          }
+        }
+      ],
+      "result": {
+        "name": "language",
+        "schema": {
+          "description": "ShellLanguage."
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellLanguage.picked",
+      "description": "The language picked inside the application, or null when none is.",
+      "params": [
+        {
+          "name": "context",
+          "required": true,
+          "schema": {
+            "description": "android.content.Context."
+          }
+        }
+      ],
+      "result": {
+        "name": "code",
+        "schema": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellLanguage.pick",
+      "description": "Stores the pick; null goes back to the phone's language. Takes effect when the activity is recreated.",
+      "params": [
+        {
+          "name": "context",
+          "required": true,
+          "schema": {
+            "description": "android.content.Context."
+          }
+        },
+        {
+          "name": "code",
+          "required": true,
+          "schema": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellLanguage.current",
+      "description": "The language the text is in: chooseLanguage of the pick, the phone's tag, the codes of all and the fallback.",
+      "params": [
+        {
+          "name": "context",
+          "required": true,
+          "schema": {
+            "description": "android.content.Context."
+          }
+        }
+      ],
+      "result": {
+        "name": "code",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "ShellLanguage.wrap",
+      "description": "A context configured for the picked language, or base when nothing is picked.",
+      "params": [
+        {
+          "name": "base",
+          "required": true,
+          "schema": {
+            "description": "android.content.Context."
+          }
+        }
+      ],
+      "result": {
+        "name": "context",
+        "schema": {
+          "description": "android.content.Context."
+        }
+      },
+      "tags": [
+        {
+          "name": "kotlin"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "schemas": {
+      "AndroidShellSettings": {
+        "type": "object",
+        "properties": {
+          "packageId": {
+            "type": "string",
+            "description": "Application id: lower-case words separated by dots (qualified grammar).",
+            "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+          },
+          "applicationName": {
+            "type": "string",
+            "description": "Label grammar.",
+            "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+          },
+          "minSdk": {
+            "type": "integer",
+            "description": "Lowest Android API level, from 21 to compileSdk.",
+            "minimum": 21,
+            "maximum": 99
+          }
+        },
+        "required": [
+          "packageId",
+          "applicationName",
+          "minSdk"
+        ],
+        "additionalProperties": false
+      },
+      "AndroidRenderOptions": {
+        "type": "object",
+        "properties": {
+          "componentFolders": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Plain relative path.",
+              "pattern": "^(\\.\\./)*[A-Za-z0-9_][A-Za-z0-9_./-]*$"
+            },
+            "description": "Folders (relative to the Android project) whose src/main/java and src/main/res join the application."
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Gradle coordinates group:name:version.",
+              "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+:[A-Za-z0-9_.+-]+$"
+            }
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Android permission name such as android.permission.INTERNET.",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)+$"
+            }
+          },
+          "cameraOptional": {
+            "type": "boolean",
+            "description": "Declares the camera as optional hardware."
+          },
+          "activityName": {
+            "type": "string",
+            "description": "Activity class; a leading dot is relative to packageId. Defaults to .MainActivity.",
+            "pattern": "^\\.?[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)*$"
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "portrait",
+              "landscape",
+              "unspecified"
+            ],
+            "description": "Defaults to portrait."
+          },
+          "compileSdk": {
+            "type": "integer",
+            "description": "Defaults to 36.",
+            "minimum": 21,
+            "maximum": 99
+          },
+          "projectName": {
+            "type": "string",
+            "description": "Gradle project name; defaults to applicationName.",
+            "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+          },
+          "signingPrefix": {
+            "type": "string",
+            "description": "Prefix of the environment variables that carry the signing keystore by reference; defaults to packageId's last word in capitals.",
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+          },
+          "allowCleartext": {
+            "type": "boolean",
+            "description": "Allows plain http traffic."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "ResolvedAndroidSettings": {
+        "type": "object",
+        "properties": {
+          "packageId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+          },
+          "applicationName": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+          },
+          "minSdk": {
+            "type": "integer",
+            "minimum": 21,
+            "maximum": 99
+          },
+          "compileSdk": {
+            "type": "integer",
+            "minimum": 21,
+            "maximum": 99
+          }
+        },
+        "required": [
+          "packageId",
+          "applicationName",
+          "minSdk",
+          "compileSdk"
+        ],
+        "additionalProperties": false
+      },
+      "AndroidFiles": {
+        "type": "object",
+        "properties": {
+          "settings.gradle.kts": {
+            "type": "string"
+          },
+          "build.gradle.kts": {
+            "type": "string"
+          },
+          "gradle.properties": {
+            "type": "string"
+          },
+          "gradle/wrapper/gradle-wrapper.properties": {
+            "type": "string"
+          },
+          "app/build.gradle.kts": {
+            "type": "string"
+          },
+          "app/src/main/AndroidManifest.xml": {
+            "type": "string"
+          },
+          "app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml": {
+            "type": "string"
+          },
+          "app/src/main/res/drawable/ic_launcher_background.xml": {
+            "type": "string"
+          },
+          "app/src/main/res/drawable/ic_launcher_foreground.xml": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "settings.gradle.kts",
+          "build.gradle.kts",
+          "gradle.properties",
+          "gradle/wrapper/gradle-wrapper.properties",
+          "app/build.gradle.kts",
+          "app/src/main/AndroidManifest.xml",
+          "app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+          "app/src/main/res/drawable/ic_launcher_background.xml",
+          "app/src/main/res/drawable/ic_launcher_foreground.xml"
+        ],
+        "additionalProperties": false,
+        "description": "Output path relative to the Android project folder to file text."
+      },
+      "ShellPalette": {
+        "type": "object",
+        "properties": {
+          "primary": {
+            "type": "integer",
+            "description": "Colour as 0xAARRGGBB.",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "secondary": {
+            "type": "integer",
+            "description": "Colour as 0xAARRGGBB.",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "background": {
+            "type": "integer",
+            "description": "Colour as 0xAARRGGBB.",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "surface": {
+            "type": "integer",
+            "description": "Colour as 0xAARRGGBB.",
+            "minimum": 0,
+            "maximum": 4294967295
+          },
+          "onPrimary": {
+            "type": "integer",
+            "description": "Colour as 0xAARRGGBB.",
+            "minimum": 0,
+            "maximum": 4294967295
+          }
+        },
+        "required": [
+          "primary",
+          "secondary",
+          "background",
+          "surface",
+          "onPrimary"
+        ],
+        "additionalProperties": false,
+        "description": "Kotlin data class ShellPalette; colours as Long 0xAARRGGBB."
+      },
+      "LanguageChoice": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Language tag."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name for a picker."
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ],
+        "additionalProperties": false,
+        "description": "Kotlin Pair<String, String> (first the code, second the name)."
+      }
+    },
+    "errors": {
+      "SettingsError": {
+        "code": 1,
+        "message": "SettingsError",
+        "data": {
+          "type": "string",
+          "description": "Names the setting or option that broke its grammar."
+        }
+      }
+    }
+  }
+}

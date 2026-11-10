@@ -1,8 +1,0 @@
-{
-  "id": "release-pipeline",
-  "type": "ae/release-pipeline",
-  "version": "1.0.0",
-  "component": "ourapps-ae/ourapps-release",
-  "imports": {},
-  "native": "The component's Swift and Kotlin sources are compiled with the application (apple/Sources, android/src/main/java)."
-}

@@ -1,0 +1,1068 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/chip-graphics",
+    "version": "1.0.0",
+    "description": "Chip piles for an amount in the application's denominations, and bets moving to the pot and winnings moving to winners. Web: implementation/web/chip-model.ts, chips.ts and chips.css (reads the theme's --primary). Apple: ChipModel and the SwiftUI views ChipPile and ChipFlightLayer. Android: ChipModel and the Compose functions ChipPile and ChipFlightLayer in package ae.chips."
+  },
+  "methods": [
+    {
+      "name": "parseDenominations",
+      "description": "The denominations of the installer setting (or a number list), largest first. Swift: ChipModel.parseDenominations(_:) throws ChipError.invalid. Kotlin: ChipModel.parseDenominations(value) throws IllegalArgumentException. The native forms take the string only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "value",
+          "required": true,
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DenominationsSetting"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "denominations",
+        "schema": {
+          "$ref": "#/components/schemas/Denominations"
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "denomination must be a whole number above 0: <word>"
+        },
+        {
+          "code": 2,
+          "message": "denominations must list at least one value"
+        },
+        {
+          "code": 3,
+          "message": "denominations must not repeat"
+        },
+        {
+          "code": 4,
+          "message": "denominations must include 1 so every amount can be made"
+        }
+      ]
+    },
+    {
+      "name": "inkFor",
+      "description": "#1b1a17 on light fills (relative luminance above 0.55), #f6f1e4 otherwise. Swift: ChipModel.inkFor(_:). Kotlin: ChipModel.inkFor(fill).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "fill",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          }
+        }
+      ],
+      "result": {
+        "name": "ink",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "#1b1a17",
+            "#f6f1e4"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseChipColours",
+      "description": "Colours for each denomination: casino colours where the denomination has one, a spare colour otherwise, the caller's own on top; a fill given alone gets the paper edge #f6f1e4 and a readable ink. Swift: ChipModel.parseChipColours(_:denominations:) throws. Kotlin: ChipModel.parseChipColours(value, denominations). The native forms take the string only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "value",
+          "required": true,
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChipColoursSetting"
+              },
+              {
+                "$ref": "#/components/schemas/ChipColourInput"
+              }
+            ]
+          }
+        },
+        {
+          "name": "denominations",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "colours",
+        "schema": {
+          "$ref": "#/components/schemas/ColourMap"
+        }
+      },
+      "errors": [
+        {
+          "code": 5,
+          "message": "chip colour must be denomination-rrggbb: <word>"
+        },
+        {
+          "code": 6,
+          "message": "colour for <denomination> must be #rrggbb"
+        }
+      ]
+    },
+    {
+      "name": "normaliseSettings",
+      "description": "Denominations and colours from the installer settings, defaults filled in. Swift: ChipStyle(denominations:chipColours:theme:) throws, set with .chipStyle(_:). Kotlin: ChipStyle.of(denominations, chipColours, theme), provided through LocalChipStyle.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "input",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/ChipSettings"
+          }
+        }
+      ],
+      "result": {
+        "name": "settings",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "denominations",
+            "colours"
+          ],
+          "properties": {
+            "denominations": {
+              "$ref": "#/components/schemas/Denominations"
+            },
+            "colours": {
+              "$ref": "#/components/schemas/ColourMap"
+            }
+          }
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "denomination must be a whole number above 0: <word>"
+        },
+        {
+          "code": 2,
+          "message": "denominations must list at least one value"
+        },
+        {
+          "code": 3,
+          "message": "denominations must not repeat"
+        },
+        {
+          "code": 4,
+          "message": "denominations must include 1 so every amount can be made"
+        },
+        {
+          "code": 5,
+          "message": "chip colour must be denomination-rrggbb: <word>"
+        }
+      ]
+    },
+    {
+      "name": "breakdown",
+      "description": "An amount (floored; negative or not finite is 0) as stacks, greedily from the largest denomination; a stack holds at most maxStack chips and more becomes another stack. Swift: ChipModel.breakdown(_:denominations:maxStack:) and breakdown(_:setting:) throws. Kotlin: ChipModel.breakdown(amount, denominations, maxStack) and breakdown(amount, setting).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "amount",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "denominations",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              {
+                "$ref": "#/components/schemas/DenominationsSetting"
+              }
+            ],
+            "default": "casino 5000 1000 500 100 25 5 1"
+          }
+        },
+        {
+          "name": "maxStack",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 12
+          }
+        }
+      ],
+      "result": {
+        "name": "stacks",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Stack"
+          }
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "denomination must be a whole number above 0: <word>"
+        },
+        {
+          "code": 2,
+          "message": "denominations must list at least one value"
+        },
+        {
+          "code": 3,
+          "message": "denominations must not repeat"
+        },
+        {
+          "code": 4,
+          "message": "denominations must include 1 so every amount can be made"
+        }
+      ]
+    },
+    {
+      "name": "stackTotal",
+      "description": "The amount stacks make. Swift: ChipModel.total(_:). Kotlin: ChipModel.total(stacks).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "stacks",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stack"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "total",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    {
+      "name": "shortDenom",
+      "description": "A chip label: 5000 is 5k, 1500 is 1.5k, values under 1000 plain. Swift: ChipModel.shortDenom(_:). Kotlin: ChipModel.shortDenom(d).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "denomination",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      ],
+      "result": {
+        "name": "label",
+        "schema": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9])?k?$"
+        }
+      }
+    },
+    {
+      "name": "pileLayout",
+      "description": "Where each chip of a pile sits for chips of diameter size: stacks side by side, each chip lifted about a fifth of its size. Swift: ChipModel.pileLayout(_:size:). Kotlin: ChipModel.pileLayout(stacks, size).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "stacks",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stack"
+            }
+          }
+        },
+        {
+          "name": "size",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 14
+          }
+        }
+      ],
+      "result": {
+        "name": "layout",
+        "schema": {
+          "$ref": "#/components/schemas/PileLayout"
+        }
+      }
+    },
+    {
+      "name": "pileEl",
+      "description": "A pile element with the amount under it (bordered by the theme's --primary, chips.css); data-total holds what the chips make. Swift: ChipPile(amount:size:label:labelSize:) reading ChipStyle from the environment. Kotlin: ChipPile(amount, size, label, modifier) reading LocalChipStyle.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "amount",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PileOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "denomination must be a whole number above 0: <word>"
+        },
+        {
+          "code": 2,
+          "message": "denominations must list at least one value"
+        },
+        {
+          "code": 3,
+          "message": "denominations must not repeat"
+        },
+        {
+          "code": 4,
+          "message": "denominations must include 1 so every amount can be made"
+        },
+        {
+          "code": 5,
+          "message": "chip colour must be denomination-rrggbb: <word>"
+        }
+      ]
+    },
+    {
+      "name": "sweepToPot",
+      "description": "Each bet above 0 moves from in front of its owner to the pot at the same moment. Swift: ChipModel.sweepToPot(_:pot:startMs:flyMs:). Kotlin: ChipModel.sweepToPot(bets, pot, startMs, flyMs).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "bets",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bet"
+            }
+          }
+        },
+        {
+          "name": "pot",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "startMs": {
+                "type": "number",
+                "default": 0
+              },
+              "flyMs": {
+                "type": "number",
+                "default": 450
+              },
+              "allInMs": {
+                "type": "number",
+                "default": 700
+              }
+            },
+            "description": "FlightOptions."
+          }
+        }
+      ],
+      "result": {
+        "name": "flights",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Flight"
+          }
+        }
+      }
+    },
+    {
+      "name": "awardPot",
+      "description": "Winnings above 0 move from the pot to each winner at the same moment. Swift: ChipModel.awardPot(_:pot:startMs:flyMs:). Kotlin: ChipModel.awardPot(awards, pot, startMs, flyMs).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "awards",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Award"
+            }
+          }
+        },
+        {
+          "name": "pot",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "startMs": {
+                "type": "number",
+                "default": 0
+              },
+              "flyMs": {
+                "type": "number",
+                "default": 450
+              },
+              "allInMs": {
+                "type": "number",
+                "default": 700
+              }
+            },
+            "description": "FlightOptions."
+          }
+        }
+      ],
+      "result": {
+        "name": "flights",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Flight"
+          }
+        }
+      }
+    },
+    {
+      "name": "betFlight",
+      "description": "What someone just put in: the rise from their previous bet (all of it after a sweep) from their seat to the bet spot, or null when nothing was added; an all in is slower (allInMs). Swift: ChipModel.betFlight(id:previous:bet:sweptSince:seat:spot:allIn:startMs:). Kotlin: ChipModel.betFlight(id, previous, bet, sweptSince, seat, spot, allIn, startMs).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "previous",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "bet",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "sweptSince",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "seat",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        {
+          "name": "spot",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        {
+          "name": "allIn",
+          "required": false,
+          "schema": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "startMs": {
+                "type": "number",
+                "default": 0
+              },
+              "flyMs": {
+                "type": "number",
+                "default": 450
+              },
+              "allInMs": {
+                "type": "number",
+                "default": 700
+              }
+            },
+            "description": "FlightOptions."
+          }
+        }
+      ],
+      "result": {
+        "name": "flight",
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/Flight"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "flightAt",
+      "description": "Position of a flying pile at progress 0 to 1 (clamped, eased in and out). Swift: ChipModel.flightAt(_:_:). Kotlin: ChipModel.flightAt(f, progress).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "flight",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to"
+            ],
+            "properties": {
+              "from": {
+                "$ref": "#/components/schemas/Point"
+              },
+              "to": {
+                "$ref": "#/components/schemas/Point"
+              }
+            },
+            "description": "A Flight or anything with from and to."
+          }
+        },
+        {
+          "name": "progress",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "point",
+        "schema": {
+          "$ref": "#/components/schemas/Point"
+        }
+      }
+    },
+    {
+      "name": "allInScale",
+      "description": "The pulse of an all in as it flies: 1 at the ends, 1.5 half way. Swift: ChipModel.allInScale(_:). Kotlin: ChipModel.allInScale(progress).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "progress",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "scale",
+        "schema": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1.5
+        }
+      }
+    },
+    {
+      "name": "lastLanding",
+      "description": "When the last flight lands, 0 for none. Swift: ChipModel.lastLanding(_:). Kotlin: ChipModel.lastLanding(flights).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "flights",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flight"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "endMs",
+        "schema": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    {
+      "name": "launchFlights",
+      "description": "Moves piles along flights over a positioned container laid over the table: each appears after delayMs, travels for durationMs, is removed and onLand runs. Returns a function that cancels everything pending. Swift: ChipFlightLayer(flights:width:height:chipSize:onLand:). Kotlin: ChipFlightLayer(flights, chipSize, onLand, modifier).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "container",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Element"
+          }
+        },
+        {
+          "name": "flights",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flight"
+            }
+          }
+        },
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "project"
+            ],
+            "properties": {
+              "project": {
+                "description": "A function supplied by the caller: (p: Point) => { x: number; y: number }, table fractions to pixels. It is called, not serialised."
+              },
+              "pile": {
+                "$ref": "#/components/schemas/PileOptions"
+              },
+              "onLand": {
+                "description": "A function supplied by the caller: (flight: Flight) => void. It is called, not serialised."
+              },
+              "steps": {
+                "type": "integer",
+                "minimum": 1,
+                "default": 12
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "cancel",
+        "schema": {
+          "description": "A function supplied by the caller: () => void. It is called, not serialised."
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Point": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y"
+        ],
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        },
+        "description": "Fractions of the table. Swift and Kotlin: ChipPoint."
+      },
+      "DenominationsSetting": {
+        "type": "string",
+        "pattern": "^[\\s,]*([A-Za-z][^\\s,]*[\\s,]+)?[1-9][0-9]*([\\s,]+[1-9][0-9]*)*[\\s,]*$",
+        "description": "An optional set name, then whole numbers above 0 separated by spaces, which must include 1 and not repeat, such as 'casino 5000 1000 500 100 25 5 1'. DEFAULT_DENOMINATIONS is that value."
+      },
+      "Denominations": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minItems": 1,
+        "uniqueItems": true,
+        "contains": {
+          "const": 1
+        },
+        "description": "Whole numbers above 0 including 1."
+      },
+      "ChipColoursSetting": {
+        "type": "string",
+        "pattern": "^\\s*([A-Za-z]+(\\s+|$))?([1-9][0-9]*-[0-9a-fA-F]{6}(\\s+|$))*$",
+        "description": "The name of a set, then optional denomination-rrggbb entries, such as 'casino' or 'mine 1000-e07b2a 25-2e8b57'. Denominations without an entry keep the casino colour (25 green, 100 black, 500 purple, 1000 orange, 5000 cream, 5 red, 1 grey) or get a spare one. DEFAULT_COLOURS is casino."
+      },
+      "ChipColour": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fill",
+          "edge",
+          "ink"
+        ],
+        "properties": {
+          "fill": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "edge": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "ink": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "description": "Text colour readable on the fill."
+          }
+        },
+        "description": "Swift and Kotlin: ChipColour."
+      },
+      "ChipColourInput": {
+        "type": "object",
+        "propertyNames": {
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^#?[0-9a-fA-F]{6}$"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [],
+              "properties": {
+                "fill": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                "edge": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                },
+                "ink": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                }
+              }
+            }
+          ]
+        },
+        "description": "Denomination to a fill colour or part of a ChipColour."
+      },
+      "ColourMap": {
+        "type": "object",
+        "propertyNames": {
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ChipColour"
+        },
+        "description": "Denomination to its colours."
+      },
+      "ChipSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "denominations": {
+            "$ref": "#/components/schemas/DenominationsSetting"
+          },
+          "chipColours": {
+            "$ref": "#/components/schemas/ChipColoursSetting"
+          }
+        },
+        "description": "The installer settings."
+      },
+      "Stack": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "denom",
+          "count"
+        ],
+        "properties": {
+          "denom": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "At most maxStack (MAX_STACK, 12)."
+          }
+        },
+        "description": "Swift and Kotlin: ChipStack."
+      },
+      "PlacedChip": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stack",
+          "index",
+          "denom",
+          "x",
+          "y",
+          "label"
+        ],
+        "properties": {
+          "stack": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "denom": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "label": {
+            "type": "boolean",
+            "description": "Only the top chip of a stack, and only from size 14."
+          }
+        }
+      },
+      "PileLayout": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "width",
+          "height",
+          "lift",
+          "chips"
+        ],
+        "properties": {
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "lift": {
+            "type": "number",
+            "minimum": 2
+          },
+          "chips": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlacedChip"
+            }
+          }
+        },
+        "description": "Top left origin, in the units of size."
+      },
+      "Flight": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "from",
+          "to",
+          "amount",
+          "delayMs",
+          "durationMs",
+          "endMs",
+          "allIn"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^(pot|stack|bet):",
+            "description": "pot:<id> for a bet swept to the pot, stack:<id> for winnings, bet:<id> for a new bet."
+          },
+          "from": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "to": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "delayMs": {
+            "type": "number"
+          },
+          "durationMs": {
+            "type": "number"
+          },
+          "endMs": {
+            "type": "number"
+          },
+          "allIn": {
+            "type": "boolean"
+          }
+        },
+        "description": "Swift and Kotlin: ChipFlight."
+      },
+      "Bet": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "amount",
+          "from"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "from": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        "description": "Swift: a (id:, amount:, from:) tuple. Kotlin: ChipModel.Bet."
+      },
+      "Award": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "amount",
+          "to"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "to": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        "description": "Swift: a (id:, amount:, to:) tuple. Kotlin: ChipModel.Award."
+      },
+      "PileOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "settings": {
+            "$ref": "#/components/schemas/ChipSettings"
+          },
+          "size": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 14,
+            "description": "Chip diameter in pixels."
+          },
+          "label": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show the amount under the pile."
+          },
+          "format": {
+            "description": "A function supplied by the caller: (amount: number) => string, defaults to digits with en-US thousands separators. It is called, not serialised."
+          }
+        }
+      },
+      "Limits": {
+        "const": {
+          "maxStack": 12,
+          "flyMs": 450,
+          "allInMs": 700
+        },
+        "description": "MAX_STACK, FLY_MS and ALL_IN_MS (web, Kotlin ChipModel); maxStack, flyMs, allInMs (Swift ChipModel)."
+      },
+      "Element": {
+        "type": "object",
+        "description": "A DOM HTMLElement."
+      }
+    }
+  }
+}

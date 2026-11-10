@@ -59,4 +59,4 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.3.3 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run, because the assembler (`aepm create`) is not yet available. The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.
+Version 0.4.0 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run, because the assembler (`aepm create`) is not yet available. The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.

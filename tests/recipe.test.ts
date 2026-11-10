@@ -4,12 +4,15 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import "../authoring/register-ts-js.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const componentsRoot = join(root, "..", "..", "components");
-const { validateRecipe, isSafeSvg } = await import("../../../ourapps/shared/src/catalogue.ts");
+// The ourapps checkout whose catalogue validator is used: OURAPPS, else ../../ourapps beside the recipes folder.
+const ourapps = process.env.OURAPPS ?? join(root, "..", "..", "ourapps");
+const { validateRecipe, isSafeSvg } = await import(pathToFileURL(join(ourapps, "shared/src/catalogue.ts")).href);
+const { checkCondition } = await import(pathToFileURL(join(ourapps, "shared/src/conditions.ts")).href);
 
 type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 type Obj = Record<string, any>;
@@ -92,7 +95,7 @@ test("recipe.json passes the ourapps catalogue validator, with the components' s
   const result = validateRecipe(recipe, validatorContext());
   assert.ok(result.ok, result.ok ? "" : result.errors.join("\n"));
   assert.equal(recipe.name, "ourapps-ae/ourpoker");
-  assert.equal(recipe.version, "0.3.3");
+  assert.equal(recipe.version, "0.4.0");
   assert.equal(recipe.components.length, 39);
   assert.equal(recipe.questions.length, 24);
 });
@@ -209,10 +212,10 @@ test("secret references come only from secretRef questions guarded by askWhen, e
     }
   }
   const askedWhen = (id: string) => questions.get(id)!.askWhen;
-  assert.deepEqual(askedWhen("videoKey"), { question: "video", equals: true });
-  assert.deepEqual(askedWhen("videoSecret"), { question: "video", equals: true });
-  assert.deepEqual(askedWhen("hostingAccount"), { question: "server", in: ["cloudflare"] });
-  assert.deepEqual(askedWhen("storeCredentials"), { any: [{ question: "updates", equals: true }, { question: "targets", contains: "ios" }] });
+  assert.equal(askedWhen("videoKey"), "video");
+  assert.equal(askedWhen("videoSecret"), "video");
+  assert.equal(askedWhen("hostingAccount"), "server == 'cloudflare'");
+  assert.equal(askedWhen("storeCredentials"), "updates || 'ios' in targets");
   assert.equal(manifests.get("ourapps-release")!.collect.find((s: Obj) => s.id === "storeCredentials").required, false);
   const storeSets = everyQuestionEffect().filter(([, target]) => target === "ourapps-release.storeCredentials");
   assert.equal(storeSets.length, 1, "storeCredentials is set once, only by the {ref} effect");
@@ -223,30 +226,27 @@ test("secret references come only from secretRef questions guarded by askWhen, e
 
 test("inclusion is by includedWhen only, with the decided conditions", () => {
   const when = (id: string) => byId.get(id)!.includedWhen;
-  const contains = (value: string) => ({ question: "targets", contains: value });
-  assert.deepEqual(when("web-host"), contains("web"));
-  assert.deepEqual(when("apple-host"), { any: [contains("ios"), contains("macos"), contains("tvos")] });
-  assert.deepEqual(when("android-host"), contains("android"));
-  assert.deepEqual(when("windows-desktop"), contains("windows"));
-  assert.deepEqual(when("video-calls"), { question: "video", equals: true });
-  assert.deepEqual(when("guided-tour"), { question: "lessons", equals: true });
-  assert.deepEqual(when("store-update"), { question: "updates", equals: true });
-  const computersOut = { not: { question: "computerPlayers", equals: "none" } };
+  assert.equal(when("web-host"), "'web' in targets");
+  assert.equal(when("apple-host"), "'ios' in targets || 'macos' in targets || 'tvos' in targets");
+  assert.equal(when("android-host"), "'android' in targets");
+  assert.equal(when("windows-desktop"), "'windows' in targets");
+  assert.equal(when("video-calls"), "video");
+  assert.equal(when("guided-tour"), "lessons");
+  assert.equal(when("store-update"), "updates");
+  const computersOut = "computerPlayers != 'none'";
   assert.ok(manifests.get("turn-engine")!.requires.some((p: Obj) => p.type === "ae/computer-players" && p.optional === true), "turn-engine's computer-players requirement is optional");
-  assert.deepEqual(when("computer-players"), computersOut);
-  assert.deepEqual(when("poker-strategy"), computersOut);
+  assert.equal(when("computer-players"), computersOut);
+  assert.equal(when("poker-strategy"), computersOut);
   const conditional = recipe.components.filter((c: Obj) => c.includedWhen).map((c: Obj) => c.id).sort();
   assert.deepEqual(conditional, ["android-host", "apple-host", "guided-tour", "store-update", "video-calls", "web-host", "windows-desktop", "computer-players", "poker-strategy"].sort());
   assert.deepEqual(questions.get("targets")!.effects[0].sets["apple-host.targets"], "$answer", "the devices answer reaches apple-host whole");
-  const leaves = (c: Obj): Obj[] => ("all" in c ? c.all.flatMap(leaves) : "any" in c ? c.any.flatMap(leaves) : "not" in c ? leaves(c.not) : [c]);
-  for (const c of recipe.components) {
-    if (!c.includedWhen) continue;
-    for (const leaf of leaves(c.includedWhen)) {
-      const q = questions.get(leaf.question)!;
-      assert.ok(q, `${c.id}: no question ${leaf.question}`);
-      if ("contains" in leaf) assert.ok(q.type === "set" && q.options.includes(leaf.contains), `${c.id}: contains value is not an option`);
-      else if ("equals" in leaf) assert.equal(answerProblem(q, leaf.equals), null, `${c.id}: equals value`);
-    }
+  // every condition is a CEL string that type-checks to bool over the questions, comparing only with options of the question
+  const conditions = [...recipe.components.map((c: Obj) => [c.id, c.includedWhen]), ...recipe.questions.map((q: Obj) => [q.id, q.askWhen])].filter(([, w]) => w !== null && w !== undefined);
+  assert.equal(conditions.length, 18);
+  for (const [owner, condition] of conditions) {
+    assert.equal(typeof condition, "string", `${owner}: a condition is a CEL string`);
+    const checked = checkCondition(condition, questions);
+    assert.ok(checked.ok, `${owner}: ${condition}: ${checked.ok ? "" : checked.error}`);
   }
   for (const q of recipe.questions) for (const e of q.effects) assert.ok(!("includes" in e), `${q.id}: effects have no includes`);
 });
@@ -390,12 +390,12 @@ test("addresses: no address setting in configuration; the web address and the fo
   const web = questions.get("webAddress")!;
   assert.equal(web.type, "text");
   assert.equal(web.default, "http://localhost:5173");
-  assert.deepEqual(web.askWhen, { question: "targets", contains: "web" });
+  assert.equal(web.askWhen, "'web' in targets");
   assert.equal(web.effects[0].sets["web-host.webAddress"], "$answer", "web-host.webAddress is never missing");
   const video = questions.get("videoServiceUrl")!;
-  assert.deepEqual([video.type, video.default, video.askWhen, video.effects[0].sets["video-calls.serviceUrl"]], ["text", "", { question: "video", equals: true }, "$answer"]);
+  assert.deepEqual([video.type, video.default, video.askWhen, video.effects[0].sets["video-calls.serviceUrl"]], ["text", "", "video", "$answer"]);
   const invite = questions.get("storeInvitation")!;
-  assert.deepEqual([invite.type, invite.default, invite.askWhen, invite.effects[0].sets["store-update.inviteAddress"]], ["text", "", { question: "updates", equals: true }, "$answer"]);
+  assert.deepEqual([invite.type, invite.default, invite.askWhen, invite.effects[0].sets["store-update.inviteAddress"]], ["text", "", "updates", "$answer"]);
   const bundle = questions.get("bundleId")!;
   assert.deepEqual([bundle.type, bundle.default, bundle.askWhen ?? null], ["text", "", null]);
   assert.deepEqual(Object.keys(bundle.effects[0].sets).sort(), ["android-host.packageId", "apple-host.bundleIdentifier", "application.packageId", "ourapps-release.bundleIdentifier"]);

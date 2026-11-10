@@ -1,0 +1,201 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/updates",
+    "version": "1.0.0",
+    "description": "Store update checks for browser, Apple and Android clients. Methods tagged typescript are exported functions of server/store.ts and web/update.ts; swift and kotlin name the native functions isNewer(_:than:) in apple/Sources/Version.swift and ae.update.isNewer in Kotlin, which compare the same way. Version comparison: numeric components compare with absent components as zero, suffixes after - are discarded, malformed components count as zero, and a current version starting with 0.0.0 never updates. Empty or separator-only version strings are outside the native input contract.",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "methods": [
+    {
+      "name": "updateUrlFor",
+      "description": "The store's update address for an invitation link http(s)://<host>/l/<one opaque segment>, keeping the whole segment; query and fragment are dropped. Additional path segments, encoded separators or control characters, credentials, whitespace, backslashes and malformed addresses give null.",
+      "params": [
+        {
+          "name": "inviteUrl",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "address",
+        "schema": {
+          "$ref": "#/components/schemas/UpdateAddress"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "updateAddress",
+      "description": "null when enabled is false, else updateUrlFor(inviteAddress).",
+      "params": [
+        {
+          "name": "settings",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/UpdateSettings"
+          }
+        }
+      ],
+      "result": {
+        "name": "address",
+        "schema": {
+          "$ref": "#/components/schemas/UpdateAddress"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "isNewer",
+      "description": "True when latest is a higher version than current.",
+      "params": [
+        {
+          "name": "latest",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Application version: dot-separated numbers, optionally followed by - and a suffix that does not affect ordering."
+          }
+        },
+        {
+          "name": "current",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Application version: dot-separated numbers, optionally followed by - and a suffix that does not affect ordering."
+          }
+        }
+      ],
+      "result": {
+        "name": "newer",
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        },
+        {
+          "name": "swift"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "fetchUpdate",
+      "description": "Fetches the update address with accept: application/json through the injected fetch and returns version and url when both are strings; null on network failure, unsuccessful status, invalid JSON or another shape. Adds no retries or timeout.",
+      "params": [
+        {
+          "name": "url",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "fetcher",
+          "required": true,
+          "schema": {
+            "description": "Function typeof fetch, the standard Fetch API function."
+          }
+        }
+      ],
+      "result": {
+        "name": "update",
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/Update"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "currentVersion",
+      "description": "The application's CFBundleShortVersionString, or 0.0.0 when absent (a Swift global constant).",
+      "params": [],
+      "result": {
+        "name": "version",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "schemas": {
+      "UpdateSettings": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "false switches updates off; defaults to true."
+          },
+          "inviteAddress": {
+            "type": "string",
+            "description": "The store invitation link, for example https://ourapps.app/l/0123456789abcdef01234567."
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "description": "The collected settings."
+      },
+      "UpdateAddress": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "<origin>/api/public/links/<identifier>/latest",
+        "pattern": "^https?://[^/]+/api/public/links/[^/]+/latest$"
+      },
+      "Update": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "description": "Where the update is installed from."
+          }
+        },
+        "required": [
+          "version",
+          "url"
+        ],
+        "additionalProperties": false,
+        "description": "The store's answer to GET on the update address (application/json); other fields are dropped."
+      }
+    }
+  }
+}

@@ -9,6 +9,7 @@ Run: PYTHONPATH=/Users/george/Projects/com/my/aepm /Users/george/.pyenv/versions
 import copy
 import itertools
 import json
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -384,16 +385,19 @@ class Rules(unittest.TestCase):
             def change(recipe):
                 next(c for c in recipe["components"] if c["id"] == "store-update")["includedWhen"] = condition
             return ids_of(evaluated(SETS["default"], self.mutate(change)))
-        self.assertIn("store-update", with_condition({"question": "scale", "equals": "small"}))
-        self.assertNotIn("store-update", with_condition({"question": "scale", "equals": "large"}))
-        self.assertIn("store-update", with_condition({"question": "scale", "in": ["small", "large"]}))
-        self.assertIn("store-update", with_condition({"question": "targets", "contains": "tvos"}))
-        self.assertIn("store-update", with_condition({"question": "video", "truthy": True}))
-        self.assertNotIn("store-update", with_condition({"question": "updates", "truthy": True}))
-        self.assertIn("store-update", with_condition({"not": {"question": "updates", "truthy": True}}))
-        self.assertIn("store-update", with_condition({"all": [{"question": "video", "equals": True}, {"question": "lessons", "equals": True}]}))
-        self.assertNotIn("store-update", with_condition({"all": [{"question": "video", "equals": True}, {"question": "updates", "equals": True}]}))
-        self.assertIn("store-update", with_condition({"any": [{"question": "updates", "equals": True}, {"question": "video", "equals": True}]}))
+        self.assertIn("store-update", with_condition("scale == 'small'"))
+        self.assertNotIn("store-update", with_condition("scale == 'large'"))
+        self.assertIn("store-update", with_condition("scale in ['small', 'large']"))
+        self.assertIn("store-update", with_condition("'tvos' in targets"))
+        self.assertIn("store-update", with_condition("video"))
+        self.assertNotIn("store-update", with_condition("updates"))
+        self.assertIn("store-update", with_condition("!updates"))
+        self.assertIn("store-update", with_condition("video && lessons"))
+        self.assertNotIn("store-update", with_condition("video && updates"))
+        self.assertIn("store-update", with_condition("updates || video"))
+        self.assertIn("store-update", with_condition("players >= 9 && size(languages) == 4"))
+        self.assertNotIn("store-update", with_condition("hostingAccount == ''"), "an asked reference has its value")
+        self.assertIn("store-update", with_condition("storeInvitation == ''"), "an unasked text question has its default")
 
     def test_settings_precedence_collect_default_then_configuration_then_question(self):
         default = settings_of(evaluated(SETS["default"]))
@@ -479,7 +483,7 @@ class Rules(unittest.TestCase):
         def change(recipe):
             self.question(recipe, "bundleId")["effects"] = []
             self.question(recipe, "videoServiceUrl")["effects"] = [{"sets": {"video-calls.serviceUrl": "$answer"}}]
-            alternative = {"id": "videoServiceUrl2", "ask": "x", "askWhen": {"question": "video", "equals": False}, "type": "text", "default": "https://fallback.acme.io",
+            alternative = {"id": "videoServiceUrl2", "ask": "x", "askWhen": "!video", "type": "text", "default": "https://fallback.acme.io",
                            "effects": [{"sets": {"video-calls.serviceUrl": "$answer"}}]}
             recipe["questions"].append(alternative)
         design = evaluated({**SETS["default"], "videoServiceUrl": "https://video.acme.io"}, self.mutate(change))
@@ -535,6 +539,118 @@ class Rules(unittest.TestCase):
     def test_the_devices_answer_goes_to_apple_host_whole(self):
         self.assertEqual(settings_of(evaluated({**SETS["default"], "targets": ["macos", "android", "web"]}))["apple-host"]["targets"], "web android macos")
         self.assertEqual(settings_of(evaluated(SETS["tv-only"]))["apple-host"]["targets"], "tvos")
+
+
+HELPER = ROOT / "authoring" / "cel_evaluate.mjs"
+KINDS = E.question_kinds(RECIPE)
+# Expressions over the recipe's questions that use every allowed construct; compared with @bufbuild/cel like the recipe's own
+# conditions.
+SAMPLES = [
+    "true", "false || video", "!lessons", "!!updates", "players >= 6", "players < 4 || startingChips > 3000", "-1 < rebuys",
+    "levelSeconds <= 0x258", "rebuys > --1", "rebuys >= -- -1", "-0x1 < rebuys", "decisionSeconds != 30", "size(targets) == 1", "targets.size() > 2", "size(bundleId) > 0",
+    "scale in ['medium', 'large']", "scale < 'medium'", "look != 'night'", "!(video && lessons)", "bundleId == ''",
+    "'en' in languages && !('de' in languages)", "computerPlayers == 'fill-empty' || (updates && server == 'own-hardware')",
+    "webAddress == 'http://localhost:5173'", 'storeInvitation != ""', "r'own-hardware' == server", "'''cloudflare''' == server",
+    "players in [2, 6, 9]", "video in [true]", "(players > 2) == (rebuys > 0)", "hostingAccount >= 'o'", r"'\x61\u0062' < look",
+    r"size('caf\u00e9') == 4 && webAddress > 'http'", "storeCredentials == '' && videoKey != ''",
+]
+
+
+def conditions_of(recipe):
+    out = [c["includedWhen"] for c in recipe["components"] if c.get("includedWhen") is not None]
+    out += [q["askWhen"] for q in recipe["questions"] if q.get("askWhen") is not None]
+    out += [c["includedWhen"] for j in recipe.get("jobs", []) for c in j["candidates"] if c.get("includedWhen") is not None]
+    return sorted(set(out))
+
+
+def bufbuild(lines):
+    """@bufbuild/cel's results for each {kinds, bindings, expressions} line (authoring/cel_evaluate.mjs)."""
+    assert (ROOT / "authoring" / "node_modules" / "@bufbuild" / "cel").is_dir(), "run: npm install --prefix authoring"
+    done = subprocess.run(["node", str(HELPER)], input="".join(json.dumps(line) + "\n" for line in lines), capture_output=True, text=True, check=True, cwd=ROOT)
+    return [json.loads(line)["results"] for line in done.stdout.splitlines()]
+
+
+class CelParity(unittest.TestCase):
+    """Every condition of recipe.json and every sample, for every answer set in recipe.json and every combination EveryAnswer
+    generates: this evaluator and @bufbuild/cel give the same true or false."""
+
+    def test_the_python_evaluator_and_bufbuild_cel_agree(self):
+        conditions = conditions_of(RECIPE)
+        self.assertEqual(len(conditions), 10, "distinct conditions of the recipe")
+        expressions = conditions + SAMPLES
+        answer_sets = list(SETS.values()) + list(all_answers())
+        lines = [{"kinds": KINDS, "bindings": E.bindings(WORLD, answers), "expressions": expressions} for answers in answer_sets]
+        theirs = bufbuild(lines)
+        self.assertEqual(len(theirs), len(lines))
+        compared, differ = 0, []
+        for line, results in zip(lines, theirs):
+            for expression, result in zip(line["expressions"], results):
+                self.assertIs(type(result), bool, f"{expression}: {result}")
+                ours = E.evaluate_condition(expression, line["bindings"], KINDS)
+                compared += 1
+                if ours != result:
+                    differ.append((expression, line["bindings"], ours, result))
+        self.assertEqual(differ[:3], [])
+        self.assertEqual(compared, (len(SETS) + 63 * 2 * 2 * 2 * 3 * 2 * 3) * len(expressions))
+        self.assertEqual(compared, 9082 * 43)
+
+    def test_each_condition_takes_both_values_over_the_combinations(self):
+        lines = [E.bindings(WORLD, answers) for answers in all_answers()]
+        for condition in conditions_of(RECIPE):
+            with self.subTest(condition):
+                self.assertEqual({E.evaluate_condition(condition, b, KINDS) for b in lines}, {True, False})
+
+
+class Cel(unittest.TestCase):
+    """The parser and type check accept exactly the allowed subset."""
+
+    def holds(self, expression, **answers):
+        return E.evaluate_condition(expression, E.bindings(WORLD, {**SETS["default"], **answers}), KINDS)
+
+    def test_the_recipe_conditions_read_the_answers(self):
+        apple = "'ios' in targets || 'macos' in targets || 'tvos' in targets"
+        self.assertTrue(self.holds(apple))
+        self.assertFalse(self.holds(apple, targets=["web", "android"]))
+        self.assertTrue(self.holds("computerPlayers != 'none'"))
+        self.assertFalse(self.holds("computerPlayers != 'none'", computerPlayers="none"))
+        self.assertTrue(self.holds("updates || 'ios' in targets", updates=False))
+        self.assertTrue(self.holds("storeCredentials == ''", targets=["web"]), "an unasked reference is the empty text")
+        self.assertEqual(E.names_in(E.parse_condition("updates || 'ios' in targets")), {"updates", "targets"})
+
+    def test_literals_and_operators(self):
+        self.assertEqual(E.parse_condition("x == -3"), ("call", "==", [("id", "x"), ("lit", -3)]))
+        self.assertEqual(E.parse_condition("x in [1, 2,]"), ("call", "in", [("id", "x"), ("list", [("lit", 1), ("lit", 2)])]))
+        self.assertEqual(E.parse_condition("!!x"), ("id", "x"))
+        self.assertEqual(E.parse_condition("x == --3"), ("call", "==", [("id", "x"), ("lit", 3)]))
+        self.assertEqual(E.parse_condition("x == -- -3"), ("call", "==", [("id", "x"), ("lit", -3)]))
+        self.assertEqual(E.parse_condition("a || b && c"), ("call", "||", [("id", "a"), ("call", "&&", [("id", "b"), ("id", "c")])]))
+        self.assertEqual(E.parse_condition("x // a comment\n == 'a'"), ("call", "==", [("id", "x"), ("lit", "a")]))
+        self.assertEqual(E.parse_condition(r"x == '\x41\101\u0042\U00000043\?\`\n'")[2][1], ("lit", "AABC?`\n"))
+        self.assertEqual(E.parse_condition(r"x == r'\n'")[2][1], ("lit", "\\n"))
+        self.assertEqual(E.parse_condition('x == """a\nb"""')[2][1], ("lit", "a\nb"))
+
+    def test_constructs_outside_the_subset_are_refused(self):
+        for expression, why in (("players + 1 > 2", "+ is not allowed"), ("- players < 0", "unary minus"), ("-(3) < players", "unary minus"),
+                                ("- 3 < players", "unary minus"), ("---3 < players", "unary minus"), ("- -3 < players", "unary minus"), ("lessons ? true : false", "?:"), ("targets[0] == 'web'", "indexing"),
+                                ("targets.all(t, t == 'web')", "the method all()"), ("has(scale.x)", "field selection"), ("scale.x == 'a'", "field selection"),
+                                ("{'a': true}", "map or message literal"), ("scale.startsWith('s')", "the method startsWith()"),
+                                ("int(scale) == 1", "the function int()"), ("exists(x)", "macros"), ("players == 1.5", "double literal"),
+                                ("players == 1u", "uint64 literal"), ("scale == null", "null literal"), ("look == b'a'", "bytes literal"),
+                                ("'a\nb' == look", "cannot read"), ("video &&", "unexpected"), ("in == 1", "reserved word"),
+                                ("size() == 0", "the function size()"), ("size(look, look) == 0", "the function size()"), ("", "1 to 1000 characters")):
+            with self.subTest(expression), self.assertRaises(E.CelError) as caught:
+                E.kind_of(E.parse_condition(expression), KINDS)
+            self.assertIn(why, str(caught.exception))
+
+    def test_types_are_checked_to_bool(self):
+        for expression, why in (("players", "not true or false"), ("lessons == 'yes'", "compares bool with string"), ("players == '5'", "compares int with string"),
+                                ("targets == ['web']", "cannot compare sets"), ("lessons < true", "cannot order"), ("'web' in scale", "in needs a value and a list"),
+                                ("1 in targets", "not int in list(string)"), ("lessons && players", "&& takes true or false"), ("size(lessons) > 0", "size() takes"),
+                                ("ghost", "not a question"), ("scale in []", "1 to 50 values"), ("scale in [look]", "only literals"), ("players in [1, 'a']", "one type"),
+                                ("players < 9223372036854775808", "64-bit")):
+            with self.subTest(expression), self.assertRaises(E.CelError) as caught:
+                E.evaluate_condition(expression, E.bindings(WORLD, SETS["default"]), KINDS)
+            self.assertIn(why, str(caught.exception))
 
 
 class Grammars(unittest.TestCase):

@@ -66,22 +66,23 @@ COMPUTER_MODES = ["none", "on-request", "fill-empty"]
 
 
 def contains(value):
-    return {"question": "targets", "contains": value}
+    """CEL: the devices answer (a set) includes `value`."""
+    return f"'{value}' in targets"
 
 
-# Inclusion is only by includedWhen (rule 4). The question is "targets" (which devices).
+# Inclusion is only by includedWhen (rule 4), a CEL expression over the answers. The question "targets" is which devices.
 INCLUDED_WHEN = {
     "web-host": contains("web"),
-    "apple-host": {"any": [contains("ios"), contains("macos"), contains("tvos")]},
+    "apple-host": " || ".join(contains(t) for t in ("ios", "macos", "tvos")),
     "android-host": contains("android"),
     "windows-desktop": contains("windows"),
-    "guided-tour": {"question": "lessons", "equals": True},
-    "video-calls": {"question": "video", "equals": True},
-    "store-update": {"question": "updates", "equals": True},
+    "guided-tour": "lessons",
+    "video-calls": "video",
+    "store-update": "updates",
 }
 # computer-players and poker-strategy are in the design unless the computer players answer is none (turn-engine's
-# `computer-players` requirement is optional since 0.3.0, so nothing is left unconnected; main() asserts it).
-WITHOUT_COMPUTERS = {"not": {"question": "computerPlayers", "equals": "none"}}
+# `computer-players` requirement is optional, so nothing is left unconnected; main() asserts it).
+WITHOUT_COMPUTERS = "computerPlayers != 'none'"
 
 
 def conditions(manifests):
@@ -142,15 +143,15 @@ QUESTIONS = [
      "type": "boolean", "default": True, "effects": []},
     {"id": "videoServiceUrl", "ask": "What is the web address of your LiveKit video service (leave empty to set it later)?",
      "askAgent": "Ask only when video is on; the developer's own LiveKit address, never invented.",
-     "askWhen": {"question": "video", "equals": True}, "type": "text", "default": "",
+     "askWhen": "video", "type": "text", "default": "",
      "effects": [{"sets": {"video-calls.serviceUrl": "$answer"}}]},
     {"id": "videoKey", "ask": "Under which name is the video service API key kept in your secret store?",
      "askAgent": "Ask only when video is on; a reference name, never the key.",
-     "askWhen": {"question": "video", "equals": True}, "type": "secretRef",
+     "askWhen": "video", "type": "secretRef",
      "effects": [{"sets": {"video-calls.keyReference": {"ref": "videoKey"}}}]},
     {"id": "videoSecret", "ask": "Under which name is the video service API secret kept in your secret store?",
      "askAgent": "Ask only when video is on; a reference name, never the secret.",
-     "askWhen": {"question": "video", "equals": True}, "type": "secretRef",
+     "askWhen": "video", "type": "secretRef",
      "effects": [{"sets": {"video-calls.secretReference": {"ref": "videoSecret"}}}]},
     {"id": "lessons", "ask": "Should the game teach new players with step-by-step lessons?",
      "askAgent": "Yes unless the request says players already know the game.",
@@ -160,18 +161,18 @@ QUESTIONS = [
      "type": "choice", "options": ["cloudflare", "own-hardware"], "effects": []},
     {"id": "hostingAccount", "ask": "Under which name is your Cloudflare account kept in your secret store?",
      "askAgent": "Ask only for a hosting provider; a reference name (lowercase letters, digits, hyphens), never the account key.",
-     "askWhen": {"question": "server", "in": ["cloudflare"]}, "type": "secretRef",
+     "askWhen": "server == 'cloudflare'", "type": "secretRef",
      "effects": [{"sets": {"server-host.accountReference": {"ref": "hostingAccount"}}}]},
     {"id": "updates", "ask": "Should installed apps offer new versions through ourapps.app?",
      "askAgent": "No unless the request mentions updates or keeping the app current.",
      "type": "boolean", "default": False, "effects": [{"sets": {"application.updatesEnabled": "$answer"}}]},
     {"id": "storeInvitation", "ask": "What is your ourapps.app store invitation link (leave empty to set it later)?",
      "askAgent": "Ask only when updates are on; the developer's own link, never invented.",
-     "askWhen": {"question": "updates", "equals": True}, "type": "text", "default": "",
+     "askWhen": "updates", "type": "text", "default": "",
      "effects": [{"sets": {"store-update.inviteAddress": "$answer", "application.inviteAddress": "$answer"}}]},
     {"id": "storeCredentials", "ask": "Under which name are your app store credentials kept in your secret store?",
      "askAgent": "Ask only when updates are on or iPhone and iPad is a target (the release pipeline has no store call and no iOS job without it); a reference name, never the credentials.",
-     "askWhen": {"any": [{"question": "updates", "equals": True}, contains("ios")]}, "type": "secretRef", "effects": [{"sets": {"ourapps-release.storeCredentials": {"ref": "storeCredentials"}}}]},
+     "askWhen": "updates || " + contains("ios"), "type": "secretRef", "effects": [{"sets": {"ourapps-release.storeCredentials": {"ref": "storeCredentials"}}}]},
     {"id": "androidSigning", "ask": "Under which name is your Android signing key kept in your secret store?",
      "askAgent": "Ask only when Android is a target; a reference name, never the key.",
      "askWhen": contains("android"), "type": "secretRef",
@@ -286,7 +287,7 @@ def main() -> None:
     connections = connections_from(manifests, application, included_when)
 
     recipe = {
-        "format": 1, "name": "ourapps-ae/ourpoker", "version": "0.3.3", "title": "OurPoker",
+        "format": 1, "name": "ourapps-ae/ourpoker", "version": "0.4.0", "title": "OurPoker",
         "summary": "A complete Texas hold'em game for two to nine players: phones, tablets, computers, the web and a television as a shared table, optional video, computer players, lessons, rebuys and rising blinds.",
         "category": "games", "tags": ["cards", "multiplayer", "poker", "texas-holdem", "tournament"],
         "targets": {"client": ALL_TARGETS, "server": ["hosting-provider", "own-hardware"]},

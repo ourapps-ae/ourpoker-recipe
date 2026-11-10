@@ -1,0 +1,9 @@
+{
+  "name": "ourpoker-authoring",
+  "private": true,
+  "type": "module",
+  "description": "Authoring tools of the OurPoker recipe (not packaged). @bufbuild/cel evaluates conditions for the parity test in tests/evaluate_recipe_test.py.",
+  "dependencies": {
+    "@bufbuild/cel": "0.6.2"
+  }
+}

@@ -11,7 +11,9 @@ Codes: unanswered, invalid-answer, missing-setting, uncovered, unconnected, conf
 updatePolicy and the optional `answers` and `selections` (rules 11 and 24); `aepm.application.validate_definition` accepts it.
 Output bytes are canonical: `to_json` sorts every key.
 
-Choices the first rules left open are rules 13 to 25; the comments name the rule.
+Choices the first rules left open are rules 13 to 25; the comments name the rule. Conditions (`includedWhen`, `askWhen`) are CEL
+expressions; the parser, type check and evaluation below cover exactly the subset the standard allows, and
+tests/evaluate_recipe_test.py compares every result with @bufbuild/cel (authoring/cel_evaluate.mjs).
 
 Usage: python3 -B authoring/evaluate_recipe.py [answers.json]     (prints the design for the answers, or the default answers)
 """
@@ -65,12 +67,355 @@ def fits_grammar(grammar, value):
     return isinstance(value, str) and grammar in GRAMMARS and re.fullmatch(GRAMMARS[grammar], value) is not None
 
 
-def truthy(value):
-    return value is not UNSET and bool(value)
+# ---- rule 3: conditions are CEL (Common Expression Language) expressions of type bool ----
+# Only the subset component-standard.md ("Standards") allows: literals (text, 64-bit integers, true, false, lists of one type),
+# question ids, == != < <= > >=, `in` (list membership), && || !, parentheses and size(). Anything else is a CelError.
+
+class CelError(ValueError):
+    pass
+
+
+KIND = {"set": "list(string)", "boolean": "bool", "integer": "int", "choice": "string", "text": "string", "secretRef": "string", "account": "string"}
+ZERO = {"list(string)": [], "bool": False, "int": 0, "string": ""}  # the value of a question that has none (an unset reference)
+INT64 = (-(2 ** 63), 2 ** 63 - 1)
+RESERVED = {"as", "break", "const", "continue", "else", "for", "function", "if", "import", "let", "loop", "package", "namespace", "return", "var", "void", "while", "in", "null"}
+ESCAPES = {"a": "\a", "b": "\b", "f": "\f", "n": "\n", "r": "\r", "t": "\t", "v": "\v", "\\": "\\", "?": "?", "'": "'", '"': '"', "`": "`"}
+_TOKEN = re.compile(r"""
+    (?P<space>\s+|//[^\n]*)
+  | (?P<number>0[xX][0-9a-fA-F]+[uU]?|\d+(?:\.\d*)?(?:[eE][+-]?\d+)?[uU]?|\.\d+(?:[eE][+-]?\d+)?)
+  | (?P<string>(?:[rRbB]{1,2})?(?:'''(?:\\.|[^\\])*?'''|\"\"\"(?:\\.|[^\\])*?\"\"\"|'(?:\\.|[^\\'\n])*'|"(?:\\.|[^\\"\n])*"))
+  | (?P<name>[_A-Za-z][_A-Za-z0-9]*)
+  | (?P<op>==|!=|<=|>=|&&|\|\||[<>!()\[\],.\-+*/%?:{}])
+""", re.X | re.S)
+
+
+def _tokens(text):
+    out, at = [], 0
+    while at < len(text):
+        m = _TOKEN.match(text, at)
+        if not m:
+            raise CelError(f"cannot read {text[at:at + 10]!r}")
+        at = m.end()
+        if m.lastgroup != "space":
+            out.append((m.lastgroup, m.group(), m.start()))
+    return out + [("end", "", len(text))]
+
+
+def _string(token):
+    prefix = re.match(r"[rRbB]*", token).group().lower()
+    if "b" in prefix:
+        raise CelError("a bytes literal is not allowed; literals are quoted text, whole numbers, true and false")
+    body = token[len(prefix):]
+    quote = 3 if body[:3] in ("'''", '"""') else 1
+    body = body[quote:-quote]
+    if "r" in prefix:
+        return body
+    out, i = [], 0
+    while i < len(body):
+        c = body[i]
+        if c != "\\":
+            out.append(c)
+            i += 1
+            continue
+        e = body[i + 1]
+        if e in ESCAPES:
+            out.append(ESCAPES[e])
+            i += 2
+        elif e in "xX" and re.fullmatch(r"[0-9a-fA-F]{2}", body[i + 2:i + 4]):
+            out.append(chr(int(body[i + 2:i + 4], 16)))
+            i += 4
+        elif e == "u" and re.fullmatch(r"[0-9a-fA-F]{4}", body[i + 2:i + 6]):
+            out.append(chr(int(body[i + 2:i + 6], 16)))
+            i += 6
+        elif e == "U" and re.fullmatch(r"[0-9a-fA-F]{8}", body[i + 2:i + 10]):
+            out.append(chr(int(body[i + 2:i + 10], 16)))
+            i += 10
+        elif re.fullmatch(r"[0-3][0-7]{2}", body[i + 1:i + 4]):
+            out.append(chr(int(body[i + 1:i + 4], 8)))
+            i += 4
+        else:
+            raise CelError(f"unknown escape \\{e}")
+    return "".join(out)
+
+
+class _Parser:
+    """Recursive descent over CEL's grammar, keeping only the allowed subset. Trees: ("lit", value), ("id", name),
+    ("list", [trees]), ("call", operator, [trees]) with operator one of == != < <= > >= in && || ! size."""
+
+    NOT_ALLOWED = {"+": "+", "*": "*", "/": "/", "%": "%", "?": "the conditional ?:", "{": "a map or message literal"}
+
+    def __init__(self, text):
+        self.tokens, self.at = _tokens(text), 0
+
+    def peek(self):
+        return self.tokens[self.at][:2]
+
+    def take(self, value=None):
+        token = self.tokens[self.at]
+        if value is not None and token[1] != value:
+            raise CelError(f"expected {value!r}, found {token[1] or 'the end'!r}")
+        self.at += 1
+        return token[:2]
+
+    def refuse_operator(self):
+        kind, value = self.peek()
+        if kind == "op" and value in self.NOT_ALLOWED:
+            raise CelError(f"{self.NOT_ALLOWED[value]} is not allowed")
+        if kind == "op" and value == "-":
+            raise CelError("- is not allowed")
+
+    def parse(self):
+        tree = self.disjunction()
+        self.refuse_operator()
+        if self.peek()[0] != "end":
+            raise CelError(f"unexpected {self.peek()[1]!r}")
+        return tree
+
+    def disjunction(self):
+        tree = self.conjunction()
+        while self.peek() == ("op", "||"):
+            self.take()
+            tree = ("call", "||", [tree, self.conjunction()])
+        return tree
+
+    def conjunction(self):
+        tree = self.relation()
+        while self.peek() == ("op", "&&"):
+            self.take()
+            tree = ("call", "&&", [tree, self.relation()])
+        return tree
+
+    def relation(self):
+        tree = self.unary()
+        self.refuse_operator()
+        while self.peek() in (("op", "=="), ("op", "!="), ("op", "<"), ("op", "<="), ("op", ">"), ("op", ">="), ("name", "in")):
+            op = self.take()[1]
+            tree = ("call", op, [tree, self.unary()])
+            self.refuse_operator()
+        return tree
+
+    def unary(self):
+        bangs = 0
+        while self.peek() == ("op", "!"):
+            self.take()
+            bangs += 1
+        minuses = 0
+        while self.peek() == ("op", "-") and not (minuses == 0 and self.signed_number()):
+            # as CEL's grammar: a run of minuses written together cancels in pairs; an odd run is unary minus, not allowed
+            minuses += 1
+            end = self.tokens[self.at][2] + 1
+            self.take()
+            if self.peek() != ("op", "-") or self.tokens[self.at][2] != end:
+                break
+        if minuses % 2:
+            raise CelError("unary minus is not allowed")
+        if self.signed_number():
+            self.take()
+            tree = ("lit", -self.number(self.take()[1]))
+        else:
+            tree = self.member()
+        return ("call", "!", [tree]) if bangs % 2 else tree
+
+    def signed_number(self):
+        """A minus written directly before a number is part of the literal."""
+        token, after = self.tokens[self.at], self.tokens[self.at + 1] if self.at + 1 < len(self.tokens) else ("end", "", 0)
+        return token[:2] == ("op", "-") and after[0] == "number" and after[2] == token[2] + 1
+
+    def number(self, text):
+        if text[-1] in "uU":
+            raise CelError("a uint64 literal is not allowed; literals are quoted text, whole numbers, true and false")
+        if re.fullmatch(r"0[xX][0-9a-fA-F]+", text):
+            return int(text, 16)
+        if not text.isdigit():
+            raise CelError("a double literal is not allowed; literals are quoted text, whole numbers, true and false")
+        return int(text)
+
+    def member(self):
+        tree = self.primary()
+        while True:
+            if self.peek() == ("op", "["):
+                raise CelError("indexing is not allowed")
+            if self.peek() != ("op", "."):
+                return tree
+            self.take()
+            kind, name = self.take()
+            if kind != "name":
+                raise CelError("a name must follow '.'")
+            if self.peek() != ("op", "("):
+                raise CelError(f"field selection (.{name}) is not allowed")
+            self.take("(")
+            if name != "size" or self.peek() != ("op", ")"):
+                raise CelError(f"the method {name}() is not allowed")
+            self.take(")")
+            tree = ("call", "size", [tree])
+
+    def primary(self):
+        kind, value = self.take()
+        if kind == "number":
+            return ("lit", self.number(value))
+        if kind == "string":
+            return ("lit", _string(value))
+        if kind == "name":
+            if value in ("true", "false"):
+                return ("lit", value == "true")
+            if value == "null":
+                raise CelError("a null literal is not allowed; literals are quoted text, whole numbers, true and false")
+            if value in RESERVED:
+                raise CelError(f"{value} is a reserved word")
+            if self.peek() == ("op", "("):
+                self.take()
+                args = self.arguments(")")
+                if value in ("has", "all", "exists", "exists_one", "map", "filter"):
+                    raise CelError("macros (has, all, exists, exists_one, map, filter) are not allowed")
+                if value != "size" or len(args) != 1:
+                    raise CelError(f"the function {value}() is not allowed")
+                return ("call", "size", args)
+            return ("id", value)
+        if (kind, value) == ("op", "("):
+            tree = self.disjunction()
+            self.refuse_operator()
+            self.take(")")
+            return tree
+        if (kind, value) == ("op", "["):
+            return ("list", self.arguments("]"))
+        if kind == "op" and value in self.NOT_ALLOWED:
+            raise CelError(f"{self.NOT_ALLOWED[value]} is not allowed")
+        raise CelError(f"unexpected {value or 'end'!r}")
+
+    def arguments(self, close):
+        items = []
+        while self.peek() != ("op", close):
+            items.append(self.disjunction())
+            if self.peek() != ("op", ","):
+                break
+            self.take()
+        self.take(close)
+        return items
+
+
+_PARSED = {}
+
+
+def parse_condition(text):
+    """The tree of a condition; raises CelError for anything outside the allowed subset."""
+    if not isinstance(text, str) or not text.strip() or len(text) > 1000:
+        raise CelError("a condition must be a CEL expression of 1 to 1000 characters")
+    if text not in _PARSED:
+        _PARSED[text] = _Parser(text).parse()
+    return _PARSED[text]
+
+
+def kind_of(tree, kinds):
+    """The CEL type of a tree, given the type of each question id (`KIND`); raises CelError on a type error."""
+    tag = tree[0]
+    if tag == "lit":
+        value = tree[1]
+        if type(value) is bool:
+            return "bool"
+        if type(value) is int:
+            if not INT64[0] <= value <= INT64[1]:
+                raise CelError(f"{value} is outside the 64-bit integer range")
+            return "int"
+        return "string"
+    if tag == "id":
+        if tree[1] not in kinds:
+            raise CelError(f"{tree[1]} is not a question of the recipe")
+        return kinds[tree[1]]
+    if tag == "list":
+        if not 1 <= len(tree[1]) <= 50:
+            raise CelError("a list needs 1 to 50 values")
+        if any(item[0] != "lit" for item in tree[1]):
+            raise CelError("a list holds only literals")
+        item_kinds = {kind_of(item, kinds) for item in tree[1]}
+        if len(item_kinds) != 1:
+            raise CelError("a list holds values of one type")
+        return f"list({item_kinds.pop()})"
+    op, args = tree[1], tree[2]
+    got = [kind_of(a, kinds) for a in args]
+    if op in ("&&", "||", "!"):
+        if any(k != "bool" for k in got):
+            raise CelError(f"{op} takes true or false")
+        return "bool"
+    if op == "size":
+        if got[0] != "string" and not got[0].startswith("list("):
+            raise CelError(f"size() takes text or a set, not {got[0]}")
+        return "int"
+    if op == "in":
+        if got[1] != f"list({got[0]})":
+            raise CelError(f"in needs a value and a list of the same type, not {got[0]} in {got[1]}")
+        return "bool"
+    if got[0] != got[1]:
+        raise CelError(f"{op} compares {got[0]} with {got[1]}")
+    if got[0].startswith("list("):
+        raise CelError(f"{op} cannot compare sets")
+    if op not in ("==", "!=") and got[0] == "bool":
+        raise CelError(f"{op} cannot order true and false")
+    return "bool"
+
+
+def names_in(tree):
+    if tree[0] == "id":
+        return {tree[1]}
+    if tree[0] == "lit":
+        return set()
+    return set().union(*(names_in(t) for t in (tree[1] if tree[0] == "list" else tree[2])))
+
+
+def _utf16(text):
+    # @bufbuild/cel orders text as JavaScript does, by UTF-16 code units
+    return text.encode("utf-16-be")
+
+
+def _value(tree, bindings):
+    tag = tree[0]
+    if tag == "lit":
+        return tree[1]
+    if tag == "id":
+        return bindings[tree[1]]
+    if tag == "list":
+        return [_value(t, bindings) for t in tree[1]]
+    op, args = tree[1], tree[2]
+    if op == "&&":
+        return _value(args[0], bindings) and _value(args[1], bindings)
+    if op == "||":
+        return _value(args[0], bindings) or _value(args[1], bindings)
+    if op == "!":
+        return not _value(args[0], bindings)
+    if op == "size":
+        return len(_value(args[0], bindings))
+    a, b = (_value(t, bindings) for t in args)
+    if op == "in":
+        return a in b
+    if op == "==":
+        return a == b
+    if op == "!=":
+        return a != b
+    if isinstance(a, str):
+        a, b = _utf16(a), _utf16(b)
+    return {"<": a < b, "<=": a <= b, ">": a > b, ">=": a >= b}[op]
+
+
+def evaluate_condition(text, bindings, kinds):
+    """True or false: the condition `text` with each question id bound to its CEL value (`bindings`) of type `kinds`."""
+    tree = parse_condition(text)
+    if kind_of(tree, kinds) != "bool":
+        raise CelError(f"{text!r} is not true or false")
+    return bool(_value(tree, bindings))
 
 
 def evaluate(world, answers, application_id=None):
     return _Evaluation(world, answers, application_id).run()
+
+
+def question_kinds(recipe):
+    """The CEL type of each question id."""
+    return {q["id"]: KIND[q["type"]] for q in recipe["questions"]}
+
+
+def bindings(world, answers):
+    """Each question id bound to its CEL value for these answers, as every condition sees them (rule 3)."""
+    evaluation = _Evaluation(world, answers, None)
+    return {qid: evaluation.cel_value(qid) for qid in evaluation.questions}
 
 
 class _Evaluation:
@@ -136,23 +481,18 @@ class _Evaluation:
 
     # ---- rule 3: conditions ----
 
-    def holds(self, c):
-        if "all" in c:
-            return all(self.holds(x) for x in c["all"])
-        if "any" in c:
-            return any(self.holds(x) for x in c["any"])
-        if "not" in c:
-            return not self.holds(c["not"])
-        value = self.resolve(c["question"])
-        if "equals" in c:
-            return value is not UNSET and value == c["equals"] and type(value) is type(c["equals"])
-        if "in" in c:
-            return value is not UNSET and any(value == v and type(value) is type(v) for v in c["in"])
-        if "contains" in c:
-            return isinstance(value, list) and c["contains"] in value
-        if "truthy" in c:
-            return truthy(value) == bool(c["truthy"])
-        raise ValueError(f"condition {c}")
+    def kinds(self):
+        return {qid: KIND[q["type"]] for qid, q in self.questions.items()}
+
+    def cel_value(self, qid):
+        """A question's answer as a CEL value (rules 1 and 13); a question with no value (an unset reference, an unanswered or
+        invalid answer, already reported) is the zero value of its type."""
+        value = self.resolve(qid)
+        return ZERO[KIND[self.questions[qid]["type"]]] if value is UNSET else value
+
+    def holds(self, condition):
+        names = names_in(parse_condition(condition)) & set(self.questions)
+        return evaluate_condition(condition, {qid: self.cel_value(qid) for qid in names}, self.kinds())
 
     # ---- the run ----
 

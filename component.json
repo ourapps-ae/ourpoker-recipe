@@ -3,10 +3,10 @@
   "kind": "recipe",
   "identity": {
     "name": "ourapps-ae/ourpoker",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "sourceRevision": "19905b75dbea89fbfd424d67fe26c81aaed0e018",
     "sourceTreeDigest": "0000000000000000000000000000000000000000000000000000000000000000",
-    "licenceStatus": "deferred"
+    "licence": "Apache-2.0"
   },
   "facilities": [
     {
@@ -18,26 +18,26 @@
     "contract": "CONTRACT.md",
     "interfaces": [
       "interfaces/poker-game-adapter.json",
-      "interfaces/required/android-shell.json",
-      "interfaces/required/apple-shell.json",
-      "interfaces/required/card-graphics.json",
-      "interfaces/required/chip-graphics.json",
-      "interfaces/required/controls.json",
-      "interfaces/required/desktop-host.json",
-      "interfaces/required/display-policy.json",
-      "interfaces/required/game-adapter.json",
-      "interfaces/required/guided-tour.json",
-      "interfaces/required/invitations.json",
-      "interfaces/required/language.json",
-      "interfaces/required/media-session.json",
-      "interfaces/required/preferences.json",
-      "interfaces/required/release-pipeline.json",
-      "interfaces/required/server-host.json",
-      "interfaces/required/sound-cues.json",
-      "interfaces/required/table-layout.json",
-      "interfaces/required/theme.json",
-      "interfaces/required/updates.json",
-      "interfaces/required/web-shell.json",
+      "interfaces/required-android-shell.json",
+      "interfaces/required-apple-shell.json",
+      "interfaces/required-card-graphics.json",
+      "interfaces/required-chip-graphics.json",
+      "interfaces/required-controls.json",
+      "interfaces/required-desktop-host.json",
+      "interfaces/required-display-policy.json",
+      "interfaces/required-game-adapter.json",
+      "interfaces/required-guided-tour.json",
+      "interfaces/required-invitations.json",
+      "interfaces/required-language.json",
+      "interfaces/required-media-session.json",
+      "interfaces/required-preferences.json",
+      "interfaces/required-release-pipeline.json",
+      "interfaces/required-server-host.json",
+      "interfaces/required-sound-cues.json",
+      "interfaces/required-table-layout.json",
+      "interfaces/required-theme.json",
+      "interfaces/required-updates.json",
+      "interfaces/required-web-shell.json",
       "suitability.json"
     ],
     "examples": [
@@ -198,6 +198,10 @@
     },
     {
       "path": "LICENCE",
+      "executable": false
+    },
+    {
+      "path": "NOTICE",
       "executable": false
     },
     {
@@ -905,83 +909,83 @@
       "executable": false
     },
     {
-      "path": "interfaces/required/android-shell.json",
+      "path": "interfaces/required-android-shell.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/apple-shell.json",
+      "path": "interfaces/required-apple-shell.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/card-graphics.json",
+      "path": "interfaces/required-card-graphics.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/chip-graphics.json",
+      "path": "interfaces/required-chip-graphics.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/controls.json",
+      "path": "interfaces/required-controls.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/desktop-host.json",
+      "path": "interfaces/required-desktop-host.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/display-policy.json",
+      "path": "interfaces/required-display-policy.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/game-adapter.json",
+      "path": "interfaces/required-game-adapter.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/guided-tour.json",
+      "path": "interfaces/required-guided-tour.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/invitations.json",
+      "path": "interfaces/required-invitations.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/language.json",
+      "path": "interfaces/required-language.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/media-session.json",
+      "path": "interfaces/required-media-session.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/preferences.json",
+      "path": "interfaces/required-preferences.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/release-pipeline.json",
+      "path": "interfaces/required-release-pipeline.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/server-host.json",
+      "path": "interfaces/required-server-host.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/sound-cues.json",
+      "path": "interfaces/required-sound-cues.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/table-layout.json",
+      "path": "interfaces/required-table-layout.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/theme.json",
+      "path": "interfaces/required-theme.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/updates.json",
+      "path": "interfaces/required-updates.json",
       "executable": false
     },
     {
-      "path": "interfaces/required/web-shell.json",
+      "path": "interfaces/required-web-shell.json",
       "executable": false
     },
     {
@@ -2973,128 +2977,128 @@
       "id": "game-adapter",
       "type": "ae/game-adapter",
       "version": "1.0.0",
-      "path": "interfaces/required/game-adapter.json"
+      "path": "interfaces/required-game-adapter.json"
     },
     {
       "id": "web-shell",
       "type": "ae/web-shell",
       "version": "1.0.0",
-      "path": "interfaces/required/web-shell.json",
+      "path": "interfaces/required-web-shell.json",
       "optional": true
     },
     {
       "id": "apple-shell",
       "type": "ae/apple-shell",
       "version": "1.0.0",
-      "path": "interfaces/required/apple-shell.json",
+      "path": "interfaces/required-apple-shell.json",
       "optional": true
     },
     {
       "id": "android-shell",
       "type": "ae/android-shell",
       "version": "1.0.0",
-      "path": "interfaces/required/android-shell.json",
+      "path": "interfaces/required-android-shell.json",
       "optional": true
     },
     {
       "id": "desktop-host",
       "type": "ae/desktop-host",
       "version": "1.0.0",
-      "path": "interfaces/required/desktop-host.json",
+      "path": "interfaces/required-desktop-host.json",
       "optional": true
     },
     {
       "id": "server-host",
       "type": "ae/server-host",
       "version": "1.0.0",
-      "path": "interfaces/required/server-host.json"
+      "path": "interfaces/required-server-host.json"
     },
     {
       "id": "release-pipeline",
       "type": "ae/release-pipeline",
       "version": "1.0.0",
-      "path": "interfaces/required/release-pipeline.json"
+      "path": "interfaces/required-release-pipeline.json"
     },
     {
       "id": "invitations",
       "type": "ae/invitations",
       "version": "1.0.0",
-      "path": "interfaces/required/invitations.json"
+      "path": "interfaces/required-invitations.json"
     },
     {
       "id": "display-policy",
       "type": "ae/display-policy",
       "version": "1.0.0",
-      "path": "interfaces/required/display-policy.json"
+      "path": "interfaces/required-display-policy.json"
     },
     {
       "id": "media-session",
       "type": "ae/media-session",
       "version": "1.0.0",
-      "path": "interfaces/required/media-session.json",
+      "path": "interfaces/required-media-session.json",
       "optional": true
     },
     {
       "id": "table-layout",
       "type": "ae/table-layout",
       "version": "1.0.0",
-      "path": "interfaces/required/table-layout.json"
+      "path": "interfaces/required-table-layout.json"
     },
     {
       "id": "card-graphics",
       "type": "ae/card-graphics",
       "version": "1.0.0",
-      "path": "interfaces/required/card-graphics.json"
+      "path": "interfaces/required-card-graphics.json"
     },
     {
       "id": "chip-graphics",
       "type": "ae/chip-graphics",
       "version": "1.0.0",
-      "path": "interfaces/required/chip-graphics.json"
+      "path": "interfaces/required-chip-graphics.json"
     },
     {
       "id": "sound-cues",
       "type": "ae/sound-cues",
       "version": "1.0.0",
-      "path": "interfaces/required/sound-cues.json"
+      "path": "interfaces/required-sound-cues.json"
     },
     {
       "id": "guided-tour",
       "type": "ae/guided-tour",
       "version": "1.0.0",
-      "path": "interfaces/required/guided-tour.json",
+      "path": "interfaces/required-guided-tour.json",
       "optional": true
     },
     {
       "id": "updates",
       "type": "ae/updates",
       "version": "1.0.0",
-      "path": "interfaces/required/updates.json",
+      "path": "interfaces/required-updates.json",
       "optional": true
     },
     {
       "id": "controls",
       "type": "ae/controls",
       "version": "1.0.0",
-      "path": "interfaces/required/controls.json"
+      "path": "interfaces/required-controls.json"
     },
     {
       "id": "preferences",
       "type": "ae/preferences",
       "version": "1.0.0",
-      "path": "interfaces/required/preferences.json"
+      "path": "interfaces/required-preferences.json"
     },
     {
       "id": "language",
       "type": "ae/language",
       "version": "1.0.0",
-      "path": "interfaces/required/language.json"
+      "path": "interfaces/required-language.json"
     },
     {
       "id": "theme",
       "type": "ae/theme",
       "version": "1.0.0",
-      "path": "interfaces/required/theme.json"
+      "path": "interfaces/required-theme.json"
     }
   ],
   "visual": {

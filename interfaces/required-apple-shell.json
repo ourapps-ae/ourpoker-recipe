@@ -1,0 +1,878 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/apple-shell",
+    "version": "1.0.0",
+    "description": "Apple application shell for iPhone, iPad, Mac (Catalyst) and Apple TV. Methods tagged typescript are exported functions of apple/render.ts run at build time under Node; methods tagged swift are public Swift API in apple/Sources compiled into the application.",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "methods": [
+    {
+      "name": "renderApple",
+      "description": "Renders project.yml, the Info.plist files, the Mac Catalyst entitlements, export options and the Apple TV icon set for the Apple targets named in settings.targets; returns no files and a message when none is named.",
+      "params": [
+        {
+          "name": "settings",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/AppleShellSettings"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/AppleRenderOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "render",
+        "schema": {
+          "$ref": "#/components/schemas/AppleRender"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/SettingsError"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "writeApple",
+      "description": "Writes each file under directory, creating folders as needed. Throws the file system's error when a write fails.",
+      "params": [
+        {
+          "name": "directory",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "files",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Relative path to file text."
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "validateSettings",
+      "description": "Checks the settings against the collected grammars and plans the targets and deployment versions.",
+      "params": [
+        {
+          "name": "settings",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/AppleShellSettings"
+          }
+        }
+      ],
+      "result": {
+        "name": "resolved",
+        "schema": {
+          "$ref": "#/components/schemas/ResolvedAppleSettings"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/SettingsError"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "parseTargets",
+      "description": "The Apple targets named in the recipe's target list, in the order iphone, ipad, mac, tv; empty when only web, android or windows are named. Unknown, repeated or no targets are errors.",
+      "params": [
+        {
+          "name": "value",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "targets",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Target"
+          },
+          "uniqueItems": true
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/SettingsError"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "parseDeploymentTargets",
+      "description": "Minimum versions per platform from text such as \"ios17 macos14_2\"; platforms not named take the defaults.",
+      "params": [
+        {
+          "name": "value",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "deployment",
+        "schema": {
+          "$ref": "#/components/schemas/DeploymentTargets"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/SettingsError"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "ShellConfiguration.init",
+      "description": "Creates a ShellConfiguration; every argument but displayName has a default.",
+      "params": [
+        {
+          "name": "displayName",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "tint",
+          "required": false,
+          "schema": {
+            "description": "SwiftUI Color."
+          }
+        },
+        {
+          "name": "colourScheme",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/ColorScheme"
+          }
+        },
+        {
+          "name": "becameActive",
+          "required": false,
+          "schema": {
+            "description": "Function () -> Void."
+          }
+        },
+        {
+          "name": "wentToBackground",
+          "required": false,
+          "schema": {
+            "description": "Function () -> Void."
+          }
+        }
+      ],
+      "result": {
+        "name": "configuration",
+        "schema": {
+          "$ref": "#/components/schemas/ShellConfiguration"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "ApplicationShell.init",
+      "description": "The application's one window (a SwiftUI Scene) on every Apple family: applies the tint and colour scheme to root() and calls becameActive and wentToBackground as the scene phase changes. The application's @main App body is ApplicationShell(configuration) { RootView() }.",
+      "params": [
+        {
+          "name": "configuration",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ShellConfiguration"
+          }
+        },
+        {
+          "name": "root",
+          "required": true,
+          "schema": {
+            "description": "Function () -> some View (a @ViewBuilder closure)."
+          }
+        }
+      ],
+      "result": {
+        "name": "scene",
+        "schema": {
+          "description": "SwiftUI Scene."
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "Platform.family",
+      "description": "The family the application runs on.",
+      "params": [],
+      "result": {
+        "name": "family",
+        "schema": {
+          "$ref": "#/components/schemas/PlatformFamily"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "Platform.traits",
+      "description": "The traits of the running family.",
+      "params": [],
+      "result": {
+        "name": "traits",
+        "schema": {
+          "$ref": "#/components/schemas/PlatformTraits"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "PlatformTraits.traits(for:)",
+      "description": "The traits of a family.",
+      "params": [
+        {
+          "name": "family",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PlatformFamily"
+          }
+        }
+      ],
+      "result": {
+        "name": "traits",
+        "schema": {
+          "$ref": "#/components/schemas/PlatformTraits"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "ShellSettings.current",
+      "description": "The settings read from the main bundle's Info.plist and the standard user defaults.",
+      "params": [],
+      "result": {
+        "name": "settings",
+        "schema": {
+          "$ref": "#/components/schemas/ShellSettings"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "ShellSettings.init",
+      "description": "Reads settings from an Info.plist dictionary and optional user defaults.",
+      "params": [
+        {
+          "name": "info",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": {},
+            "description": "Info.plist dictionary."
+          }
+        },
+        {
+          "name": "defaults",
+          "required": false,
+          "schema": {
+            "description": "UserDefaults whose serverURL value replaces the built-in server address."
+          }
+        },
+        {
+          "name": "fallbackName",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "description": "Used when the dictionary names no application; defaults to empty."
+          }
+        }
+      ],
+      "result": {
+        "name": "settings",
+        "schema": {
+          "$ref": "#/components/schemas/ShellSettings"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "View.shellStatusBarHidden",
+      "description": "Hides the status bar on iOS; no change elsewhere.",
+      "params": [
+        {
+          "name": "view",
+          "required": true,
+          "schema": {
+            "description": "SwiftUI View the modifier applies to."
+          }
+        }
+      ],
+      "result": {
+        "name": "view",
+        "schema": {
+          "description": "SwiftUI View."
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "View.shellNameInput",
+      "description": "Text field style for typed names: rounded border with word capitalisation on iOS, rounded border on macOS, no change on tvOS.",
+      "params": [
+        {
+          "name": "view",
+          "required": true,
+          "schema": {
+            "description": "SwiftUI View the modifier applies to."
+          }
+        }
+      ],
+      "result": {
+        "name": "view",
+        "schema": {
+          "description": "SwiftUI View."
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "View.shellButtonStyle",
+      "description": "Bordered buttons on tvOS, plain elsewhere.",
+      "params": [
+        {
+          "name": "view",
+          "required": true,
+          "schema": {
+            "description": "SwiftUI View the modifier applies to."
+          }
+        }
+      ],
+      "result": {
+        "name": "view",
+        "schema": {
+          "description": "SwiftUI View."
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    },
+    {
+      "name": "View.shellExitCommand",
+      "description": "Runs action when the remote's Menu button is pressed on tvOS; no change elsewhere.",
+      "params": [
+        {
+          "name": "view",
+          "required": true,
+          "schema": {
+            "description": "SwiftUI View the modifier applies to."
+          }
+        },
+        {
+          "name": "action",
+          "required": true,
+          "schema": {
+            "description": "Function () -> Void."
+          }
+        }
+      ],
+      "result": {
+        "name": "view",
+        "schema": {
+          "description": "SwiftUI View."
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "schemas": {
+      "AppleShellSettings": {
+        "type": "object",
+        "properties": {
+          "bundleIdentifier": {
+            "type": "string",
+            "description": "Lower-case words separated by dots (qualified grammar).",
+            "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Name under the icon (label grammar).",
+            "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+          },
+          "targets": {
+            "type": "string",
+            "description": "The recipe's client targets, lower case, separated by spaces: web, ios, android, macos, windows, tvos, each at most once. ios builds iPhone and iPad, macos builds Mac (Catalyst), tvos builds Apple TV; web, android and windows are ignored.",
+            "pattern": "^\\s*(web|ios|android|macos|windows|tvos)(\\s+(web|ios|android|macos|windows|tvos))*\\s*$"
+          },
+          "deploymentTargets": {
+            "type": "string",
+            "description": "Platform and major version with optional minor after an underscore, separated by spaces, for example \"ios17 tvos17 macos14_2\"; each platform at most once; missing platforms take ios 17.0, tvos 17.0, macos 14.0.",
+            "pattern": "^\\s*((ios|tvos|macos)[0-9]{1,2}(_[0-9]{1,2})?(\\s+|$))*$"
+          },
+          "scheme": {
+            "type": "string",
+            "description": "Xcode scheme and source folder name (identifier grammar).",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+          }
+        },
+        "required": [
+          "bundleIdentifier",
+          "displayName",
+          "targets",
+          "scheme"
+        ],
+        "additionalProperties": false
+      },
+      "ProjectPackage": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Identifier grammar.",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+          },
+          "url": {
+            "type": "string",
+            "description": "https address of the Swift package.",
+            "pattern": "^https://[A-Za-z0-9./_-]+$"
+          },
+          "from": {
+            "type": "string",
+            "description": "Lowest version.",
+            "pattern": "^[0-9][0-9.]*$"
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "from"
+        ],
+        "additionalProperties": false
+      },
+      "AppleRenderOptions": {
+        "type": "object",
+        "properties": {
+          "componentSources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Plain relative path.",
+              "pattern": "^(\\.\\./)*[A-Za-z0-9_][A-Za-z0-9_./-]*$"
+            },
+            "description": "Source folders (relative to the project file) of the components compiled into the application."
+          },
+          "packages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectPackage"
+            }
+          },
+          "serverAddress": {
+            "type": "string",
+            "description": "Written into Info.plist under ShellServerAddress.",
+            "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+          },
+          "xcodeVersion": {
+            "type": "string",
+            "description": "Defaults to 26.0."
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "portrait",
+              "all"
+            ],
+            "description": "iPhone orientations; defaults to portrait."
+          },
+          "appCategory": {
+            "type": "string",
+            "description": "Defaults to public.app-category.entertainment.",
+            "pattern": "^public\\.app-category\\.[a-z-]+$"
+          },
+          "preGenCommand": {
+            "type": "string",
+            "description": "Command XcodeGen runs before generating.",
+            "pattern": "^[A-Za-z0-9_./ -]+$"
+          },
+          "cameraUsage": {
+            "type": "string",
+            "description": "NSCameraUsageDescription text."
+          },
+          "microphoneUsage": {
+            "type": "string",
+            "description": "NSMicrophoneUsageDescription text."
+          },
+          "backgroundModes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z-]+$"
+            },
+            "description": "UIBackgroundModes; defaults to [audio]."
+          },
+          "signingPrefix": {
+            "type": "string",
+            "description": "Prefix of the environment variables that carry the signing team and profile names; defaults to the scheme in capitals.",
+            "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "Target": {
+        "type": "string",
+        "enum": [
+          "iphone",
+          "ipad",
+          "mac",
+          "tv"
+        ]
+      },
+      "DeploymentTargets": {
+        "type": "object",
+        "properties": {
+          "ios": {
+            "type": "string",
+            "description": "Major and minor version, for example 17.0.",
+            "pattern": "^[0-9]{1,2}\\.[0-9]{1,2}$"
+          },
+          "tvos": {
+            "type": "string",
+            "description": "Major and minor version, for example 17.0.",
+            "pattern": "^[0-9]{1,2}\\.[0-9]{1,2}$"
+          },
+          "macos": {
+            "type": "string",
+            "description": "Major and minor version, for example 17.0.",
+            "pattern": "^[0-9]{1,2}\\.[0-9]{1,2}$"
+          }
+        },
+        "required": [
+          "ios",
+          "tvos",
+          "macos"
+        ],
+        "additionalProperties": false
+      },
+      "Plan": {
+        "type": "object",
+        "properties": {
+          "targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Target"
+            },
+            "description": "Apple targets in the order iphone, ipad, mac, tv."
+          },
+          "application": {
+            "type": "boolean",
+            "description": "True when an iPhone, iPad or Mac target is built."
+          },
+          "tv": {
+            "type": "boolean",
+            "description": "True when an Apple TV target is built."
+          },
+          "destinations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "iOS",
+                "macCatalyst"
+              ]
+            }
+          },
+          "deviceFamily": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "1,2"
+            ],
+            "description": "TARGETED_DEVICE_FAMILY."
+          }
+        },
+        "required": [
+          "targets",
+          "application",
+          "tv",
+          "destinations",
+          "deviceFamily"
+        ],
+        "additionalProperties": false
+      },
+      "ResolvedAppleSettings": {
+        "type": "object",
+        "properties": {
+          "bundleIdentifier": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+          },
+          "displayName": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+          },
+          "scheme": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/Plan"
+          },
+          "deployment": {
+            "$ref": "#/components/schemas/DeploymentTargets"
+          }
+        },
+        "required": [
+          "bundleIdentifier",
+          "displayName",
+          "scheme",
+          "plan",
+          "deployment"
+        ],
+        "additionalProperties": false
+      },
+      "AppleRender": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Output path relative to the Apple project folder to file text; empty when no target is an Apple one."
+          },
+          "message": {
+            "type": "string",
+            "description": "One line for the developer saying what was written, or why nothing was."
+          }
+        },
+        "required": [
+          "files",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "ColorScheme": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "light",
+              "dark"
+            ],
+            "description": "SwiftUI ColorScheme; null follows the system."
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ShellConfiguration": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "Window title."
+          },
+          "tint": {
+            "description": "SwiftUI Color applied as the tint of every view; the theme's accent colour. Defaults to .accentColor."
+          },
+          "colourScheme": {
+            "$ref": "#/components/schemas/ColorScheme"
+          },
+          "becameActive": {
+            "description": "Function () -> Void, called when the scene becomes active; defaults to nothing."
+          },
+          "wentToBackground": {
+            "description": "Function () -> Void, called when the scene goes to the background; defaults to nothing."
+          }
+        },
+        "required": [
+          "displayName"
+        ],
+        "additionalProperties": false,
+        "description": "Swift struct ShellConfiguration."
+      },
+      "PlatformFamily": {
+        "type": "string",
+        "enum": [
+          "phone",
+          "pad",
+          "mac",
+          "tv"
+        ]
+      },
+      "PlatformTraits": {
+        "type": "object",
+        "properties": {
+          "uprightBoard": {
+            "type": "boolean",
+            "description": "The board and name plates stay upright instead of rotating toward the viewer (mac, tv)."
+          },
+          "hidesStatusBar": {
+            "type": "boolean",
+            "description": "Every family but tv."
+          },
+          "usesFocusNavigation": {
+            "type": "boolean",
+            "description": "Moves with the focus engine and a remote (tv)."
+          },
+          "showsCornerHelp": {
+            "type": "boolean",
+            "description": "A help control can sit in a screen corner (every family but tv)."
+          },
+          "capitalisesTypedNames": {
+            "type": "boolean",
+            "description": "Every family but tv."
+          },
+          "plainButtons": {
+            "type": "boolean",
+            "description": "Every family but tv."
+          },
+          "handlesExitCommand": {
+            "type": "boolean",
+            "description": "The remote's Menu button steps back one level (tv)."
+          }
+        },
+        "required": [
+          "uprightBoard",
+          "hidesStatusBar",
+          "usesFocusNavigation",
+          "showsCornerHelp",
+          "capitalisesTypedNames",
+          "plainButtons",
+          "handlesExitCommand"
+        ],
+        "additionalProperties": false,
+        "description": "Swift struct PlatformTraits."
+      },
+      "ShellSettings": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "CFBundleDisplayName, else CFBundleName, else the fallback name."
+          },
+          "bundleIdentifier": {
+            "type": "string",
+            "description": "CFBundleIdentifier, else empty."
+          },
+          "serverAddress": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The serverURL user default when set and not empty, else ShellServerAddress from Info.plist when not empty, else null."
+          }
+        },
+        "required": [
+          "displayName",
+          "bundleIdentifier",
+          "serverAddress"
+        ],
+        "additionalProperties": false,
+        "description": "Swift struct ShellSettings, read from Info.plist."
+      }
+    },
+    "errors": {
+      "SettingsError": {
+        "code": 1,
+        "message": "SettingsError",
+        "data": {
+          "type": "string",
+          "description": "Names the setting or option that broke its grammar."
+        }
+      }
+    }
+  }
+}

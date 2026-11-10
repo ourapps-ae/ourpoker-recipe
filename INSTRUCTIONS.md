@@ -1,19 +1,19 @@
 # OurPoker recipe: instructions
 
-Package `ourapps-ae/ourpoker` 0.3.3. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts. `recipe.json` is the source of truth; this file explains how to use it.
+Package `ourapps-ae/ourpoker` 0.4.0. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts. `recipe.json` is the source of truth; this file explains how to use it.
 
 ## 1. For the agent
 
 ### Answering
 
-Answer from the person's description whatever it settles. Ask the person only what the description leaves open and the table below marks "ask". Never invent a secret, an account name, an address or a hosting account. An answer must be an allowed option or inside the range given in `recipe.json`; the defaults are the paper's house rules. A question with `askWhen` is asked only when its condition holds; otherwise it takes its default and any answer given for it is ignored.
+Answer from the person's description whatever it settles. Ask the person only what the description leaves open and the table below marks "ask". Never invent a secret, an account name, an address or a hosting account. An answer must be an allowed option or inside the range given in `recipe.json`; the defaults are the paper's house rules. A question with `askWhen` is asked only when its condition holds; otherwise it takes its default and any answer given for it is ignored. Conditions (`askWhen`, `includedWhen`) are CEL (Common Expression Language) expressions over the answers: each question id is a variable holding its answer, a set is a list of text, so `'web' in targets` is true when the web is a target. The "asked when" column gives each condition as written in `recipe.json`.
 
 Ask in this order. A question only matters if the earlier ones left it open.
 
 | # | id | type, allowed answers | asked when | default | infer from the request | ask the person when |
 |---|---|---|---|---|---|---|
 | 1 | `targets` | set of `web ios android macos windows tvos` | always | all six | "phones" is ios and android; "television" is tvos; "computers" is macos and windows; "browser" is web | no device is named |
-| 2 | `webAddress` | text, an http or https address | `targets` contains `web` | `http://localhost:5173` | the developer's own address | the web version is to be served somewhere other than this machine |
+| 2 | `webAddress` | text, an http or https address | `'web' in targets` | `http://localhost:5173` | the developer's own address | the web version is to be served somewhere other than this machine |
 | 3 | `bundleId` | text, for example `com.yourname.poker` | always | empty: the application derives `app.ourapps.ourpoker` | a name the developer gives | never |
 | 4 | `scale` | `small` `medium` `large` | always | small | a dozen friends once a week is small; a club or a few dozen playing daily is medium; 100 or more playing continuously is large | the group size is not stated |
 | 5 | `languages` | set of `en fr de es` | always | all four | the languages named | never |
@@ -25,17 +25,17 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 11 | `decisionSeconds` | integer 5 to 300 | always | 30 (then check or fold) | a pace named | never |
 | 12 | `computerPlayers` | `none` `on-request` `fill-empty` | always | on-request | "people only" is none; "full tables" is fill-empty | never |
 | 13 | `video` | yes or no | always | yes | "no video", or everyone in one room, is no | never |
-| 14 | `videoServiceUrl` | text, an address (empty to set it later) | `video` is yes | empty | the developer's LiveKit address | video is on |
-| 15 | `videoKey` | secret reference name | `video` is yes | none | never a value | video is on |
-| 16 | `videoSecret` | secret reference name | `video` is yes | none | never a value | video is on |
+| 14 | `videoServiceUrl` | text, an address (empty to set it later) | `video` | empty | the developer's LiveKit address | video is on |
+| 15 | `videoKey` | secret reference name | `video` | none | never a value | video is on |
+| 16 | `videoSecret` | secret reference name | `video` | none | never a value | video is on |
 | 17 | `lessons` | yes or no | always | yes | "everyone already knows the game" is no | never |
 | 18 | `server` | `cloudflare` `own-hardware` | always | none | nothing: ask | always, unless the person already named the provider |
-| 19 | `hostingAccount` | secret reference name (lowercase letters, digits, hyphens) | `server` is `cloudflare` | none | never a value | a hosting provider is chosen |
+| 19 | `hostingAccount` | secret reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | a hosting provider is chosen |
 | 20 | `updates` | yes or no | always | no | updates or keeping apps current is yes | never |
-| 21 | `storeInvitation` | text, an address (empty to set it later) | `updates` is yes | empty | the developer's ourapps.app invitation | updates are on |
-| 22 | `storeCredentials` | secret reference name | `updates` is yes, or `targets` contains `ios` | none | never a value | updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
-| 23 | `androidSigning` | secret reference name | `targets` contains `android` | none | never a value | Android is a target |
-| 24 | `webDeploy` | secret reference name | `targets` contains `web` | none | never a value | the web is a target |
+| 21 | `storeInvitation` | text, an address (empty to set it later) | `updates` | empty | the developer's ourapps.app invitation | updates are on |
+| 22 | `storeCredentials` | secret reference name | `updates \|\| 'ios' in targets` | none | never a value | updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
+| 23 | `androidSigning` | secret reference name | `'android' in targets` | none | never a value | Android is a target |
+| 24 | `webDeploy` | secret reference name | `'web' in targets` | none | never a value | the web is a target |
 
 ### What each answer changes
 
@@ -61,7 +61,7 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `updates` yes | `store-update` | `application.updatesEnabled`; `storeInvitation` sets `store-update.inviteAddress` and `application.inviteAddress` |
 | `storeCredentials`, `androidSigning`, `webDeploy` | none | `ourapps-release.storeCredentials`, `.androidSigning`, `.webDeploy` |
 
-A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `apple-host` is in when `targets` contains any of `ios`, `macos`, `tvos`. `computer-players` and `poker-strategy` are out when `computerPlayers` is `none` (turn-engine's `computer-players` requirement is optional, and `make_recipe.py` asserts it). The application's files that import an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it (rule 25); files of the core that import those modules are not conditional (INTEGRATION-GAPS.md G10.4).
+A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `apple-host` is in when `'ios' in targets || 'macos' in targets || 'tvos' in targets`. `computer-players` and `poker-strategy` are in when `computerPlayers != 'none'` (turn-engine's `computer-players` requirement is optional, and `make_recipe.py` asserts it). The application's files that import an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it (rule 25); files of the core that import those modules are not conditional (INTEGRATION-GAPS.md G10.4).
 
 `application.<setting>` names a setting of the recipe's own component (`component.json`). The six that change the house rules (`maximumPlayers`, `startingStack`, `levelSeconds`, `rebuysPerPlayer`, `decisionSeconds`, `computerPlayers`) are written over `rules/texas-holdem-house-rules.json` by the server when it starts, and each component is built from the result; the rules file is the one source of those numbers, and `recipe.json` does not restate any number the rules file states (`rules-settings.rulesFile` is `texas-holdem-house-rules`). `guest-identity` keeps its own defaults, which the application uses too.
 
@@ -121,13 +121,14 @@ PY -B tests/evaluate_recipe_test.py
 PY -B tests/conditional_artefacts_test.py
 PY -B authoring/check_conditional_artefacts.py -v
 (cd ../../ourapps && node scripts/validate-recipe-file.ts ../recipes/ourpoker/recipe.json --components ../components)
+npm install --prefix authoring        (once: @bufbuild/cel for the condition parity test)
 PY -B scripts/make_component.py --render
 PY -B authoring/make_recipe.py
 PY -B authoring/draw_default_design.py
 ```
 
 - `tests/recipe.test.ts` checks consistency only: the recipe passes the ourapps catalogue validator with the components' settings and profiles; every component exists at the named version in `components/`; every setting a question or the configuration sets exists with a matching type and grammar; no secret is in `configuration`; inclusion is by `includedWhen` only; every connection uses ports and types that exist and only optional requirements stay open; every job candidate profile exists; every answer in the answer sets is allowed; the recipe restates no number of the house rules file and sets the application's copy of each answer; the totals in `INTEGRATION-GAPS.md` match its table; the recipe's documents carry no history wording.
-- `authoring/evaluate_recipe.py` is a reference evaluator of the evaluation rules in component-standard.md. It is used only by tests, to show the rules are complete: it turns answers into an aepm application definition and does not assemble, resolve, install or run anything. `tests/evaluate_recipe_test.py` runs it on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code.
+- `authoring/evaluate_recipe.py` is a reference evaluator of the evaluation rules in component-standard.md. It is used only by tests, to show the rules are complete: it turns answers into an aepm application definition and does not assemble, resolve, install or run anything. `tests/evaluate_recipe_test.py` runs it on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code. Its CEL parser accepts exactly the subset the standard allows; the test evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination, and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `../../ourapps`, or from the checkout named by `OURAPPS`.
 - `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
 - `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. Read it before assembling.
 

@@ -1,34 +1,2873 @@
 {
-  "id": "poker-game-adapter",
-  "type": "ae/game-adapter",
-  "version": "1.0.0",
-  "operations": {
-    "pokerAdapter": {
-      "arguments": [
-        "links:{inviteUrl:string|null,updateUrl:string|null}"
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/game-adapter",
+    "version": "1.0.0",
+    "description": "The game adapter realtime-rooms calls (recipe.json connects this port to realtime-rooms' `game` requirement): turn-engine's GameAdapter over the recipe's parts (server/src/parts.ts: holdem-rules, seating, game-clock, private-views, presence, tournament, computer players, round-history, the house rules), whose view answers in the poker wire view the web, Apple and Android clients decode. The application's own `game-adapter` requirement takes turn-engine's adapter, which pokerAdapter wraps. Methods named `GameAdapter.<name>` are members of the object pokerAdapter returns; every one but view is turn-engine's. TypeScript, `implementation/server/src/adapter.ts` (wire.ts, contract.ts)."
+  },
+  "methods": [
+    {
+      "name": "pokerAdapter",
+      "description": "The adapter: turn-engine's createGameAdapter(parts, engineSettings) with view mapped by toWireView.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "links",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/LinkExtras"
+          }
+        }
       ],
-      "returns": "GameAdapter (turn-engine) whose view() answers in the poker wire view"
+      "result": {
+        "name": "adapter",
+        "schema": {
+          "$ref": "#/components/schemas/PokerGameAdapter"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/BadSettings"
+        }
+      ]
     },
-    "toWireView": {
-      "arguments": [
-        "view:EngineView",
-        "links:LinkExtras"
+    {
+      "name": "toWireView",
+      "description": "The poker wire view from the engine's view: phases renamed, the poker part of the game copied out, the best hand worked out for every face-up hand, the viewer's odds when asked, prompts that name the winner, and the links.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "view",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineView"
+          }
+        },
+        {
+          "name": "links",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/LinkExtras"
+          }
+        },
+        {
+          "name": "deps",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/WireDeps"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/Options"
+          },
+          "description": "Defaults to {}; odds true adds the odds rows."
+        }
       ],
-      "returns": "View (server/src/contract.ts)"
+      "result": {
+        "name": "view",
+        "schema": {
+          "$ref": "#/components/schemas/View"
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.create",
+      "description": "A new room: a lobby.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "now",
+          "required": true,
+          "schema": {
+            "type": "number",
+            "description": "Epoch milliseconds."
+          }
+        }
+      ],
+      "result": {
+        "name": "state",
+        "schema": {
+          "$ref": "#/components/schemas/EngineState"
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.restore",
+      "description": "A saved state, checked.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "saved",
+          "required": true,
+          "schema": {}
+        },
+        {
+          "name": "schema",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "const": 1
+          },
+          "description": "The state schema number; only 1 is accepted."
+        }
+      ],
+      "result": {
+        "name": "state",
+        "schema": {
+          "$ref": "#/components/schemas/EngineState"
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/UnsupportedState"
+        }
+      ]
+    },
+    {
+      "name": "GameAdapter.options",
+      "description": "Per-connection options: one boolean per game-rules optionNames entry; true or \"1\" switches it on.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "input",
+          "required": true,
+          "schema": {}
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": true
+                },
+                "value": {
+                  "$ref": "#/components/schemas/Options"
+                }
+              },
+              "required": [
+                "ok",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": false
+                },
+                "error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "required": [
+                "ok",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.members",
+      "description": "Seated people and computers in seat order.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        }
+      ],
+      "result": {
+        "name": "members",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.summary",
+      "description": "What a room list shows.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        }
+      ],
+      "result": {
+        "name": "summary",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "$ref": "#/components/schemas/Status"
+            },
+            "playerCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "names": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "status",
+            "playerCount",
+            "names"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.clearSpectators",
+      "description": "True for an empty lobby.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        }
+      ],
+      "result": {
+        "name": "clear",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.join",
+      "description": "A person connects. rejoining: marks them seen and, in a running game, returns them from sitting out. A new person in a lobby sits down; in a game they watch.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        },
+        {
+          "name": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "rejoining",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "deps",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Deps"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": true
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "$ref": "#/components/schemas/EngineState"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "player",
+                        "spectator"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "role"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "ok",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": false
+                },
+                "error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "required": [
+                "ok",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.parseAction",
+      "description": "Check a wire action. badRequest for anything malformed. requiresVersion is false and leaves true only for leave.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "input",
+          "required": true,
+          "schema": {}
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": true
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "$ref": "#/components/schemas/EngineAction"
+                    },
+                    "requiresVersion": {
+                      "type": "boolean"
+                    },
+                    "leaves": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "action",
+                    "requiresVersion",
+                    "leaves"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "ok",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": false
+                },
+                "error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "required": [
+                "ok",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.apply",
+      "description": "Apply an action. A display may do nothing; a spectator may only leave or cancel.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        },
+        {
+          "name": "actor",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Actor"
+          }
+        },
+        {
+          "name": "action",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineAction"
+          }
+        },
+        {
+          "name": "deps",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Deps"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": true
+                },
+                "value": {
+                  "$ref": "#/components/schemas/EngineState"
+                }
+              },
+              "required": [
+                "ok",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": false
+                },
+                "error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "required": [
+                "ok",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/DefaultMoveRefused"
+        },
+        {
+          "$ref": "#/components/errors/NoMoveAccepted"
+        },
+        {
+          "$ref": "#/components/errors/NoOutcome"
+        }
+      ]
+    },
+    {
+      "name": "GameAdapter.presence",
+      "description": "A connection event from the room server.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        },
+        {
+          "name": "event",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PresenceEvent"
+          }
+        },
+        {
+          "name": "deps",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Deps"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "$ref": "#/components/schemas/EngineState"
+            },
+            "changed": {
+              "type": "boolean",
+              "description": "True when someone's connection changed in a way clients should see."
+            }
+          },
+          "required": [
+            "state",
+            "changed"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.connection",
+      "description": "A message on one connection: {type: \"hold\", kind: \"look\" | \"learn\" | null}, {type: \"hello\", hold}, or {type: <option name>, on: boolean}.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        },
+        {
+          "name": "actor",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Actor"
+          }
+        },
+        {
+          "name": "message",
+          "required": true,
+          "schema": {}
+        },
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Options"
+          }
+        },
+        {
+          "name": "deps",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Deps"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": true
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "$ref": "#/components/schemas/EngineState"
+                    },
+                    "options": {
+                      "$ref": "#/components/schemas/Options"
+                    },
+                    "changed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "options",
+                    "changed"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "ok",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "ok": {
+                  "const": false
+                },
+                "error": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "required": [
+                "ok",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.advance",
+      "description": "Run the clocks and presence, everything due, then due computer moves, up to 60 in a row.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        },
+        {
+          "name": "deps",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Deps"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "$ref": "#/components/schemas/EngineState"
+            },
+            "changed": {
+              "type": "boolean",
+              "description": "True when anything changed."
+            }
+          },
+          "required": [
+            "state",
+            "changed"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "errors": [
+        {
+          "$ref": "#/components/errors/DefaultMoveRefused"
+        },
+        {
+          "$ref": "#/components/errors/NoMoveAccepted"
+        },
+        {
+          "$ref": "#/components/errors/NoOutcome"
+        }
+      ]
+    },
+    {
+      "name": "GameAdapter.nextWake",
+      "description": "Wall time (epoch milliseconds) at which something next falls due, or null.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        }
+      ],
+      "result": {
+        "name": "at",
+        "schema": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    {
+      "name": "GameAdapter.view",
+      "description": "What one viewer sees, in the poker wire view (toWireView over the engine's view); actor null or a display sees what everyone sees. The odds option adds the viewer's odds rows.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "state",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/EngineState"
+          }
+        },
+        {
+          "name": "actor",
+          "required": true,
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Actor"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Options"
+          }
+        },
+        {
+          "name": "context",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "roomId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "version",
+              "roomId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ],
+      "result": {
+        "name": "view",
+        "schema": {
+          "$ref": "#/components/schemas/View"
+        }
+      }
     }
-  },
-  "exports": {
-    "server/src/adapter.ts": [
-      "pokerAdapter"
-    ],
-    "server/src/wire.ts": [
-      "toWireView"
-    ],
-    "server/src/contract.ts": [
-      "CONTRACT_VERSION=1",
-      "View",
-      "Action"
-    ]
-  },
-  "note": "recipe.json connects this port to realtime-rooms' `game` requirement; the application's own `game-adapter` requirement takes turn-engine's adapter, which pokerAdapter wraps."
+  ],
+  "components": {
+    "schemas": {
+      "Status": {
+        "type": "string",
+        "enum": [
+          "lobby",
+          "running",
+          "completed",
+          "cancelled"
+        ]
+      },
+      "ErrorCode": {
+        "type": "string",
+        "enum": [
+          "badName",
+          "badRequest",
+          "badToken",
+          "roomFull",
+          "staleVersion",
+          "notYourTurn",
+          "wrongPhase",
+          "notEnoughPlayers",
+          "badAmount",
+          "badTarget",
+          "notAllowed",
+          "paused",
+          "unknownPlayer"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "message": {
+            "type": "string",
+            "description": "English text for the code."
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              400,
+              409,
+              422
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "Deps": {
+        "type": "object",
+        "description": "Injected time, randomness and ids.",
+        "properties": {
+          "now": {
+            "description": "A function now(): number, epoch milliseconds."
+          },
+          "rng": {
+            "description": "A function rng(): number, in [0, 1)."
+          },
+          "newId": {
+            "description": "A function newId(): string."
+          }
+        },
+        "required": [
+          "now",
+          "rng",
+          "newId"
+        ]
+      },
+      "Actor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "player",
+              "spectator",
+              "display"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "role"
+        ],
+        "additionalProperties": false
+      },
+      "PresenceEvent": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "request-seen"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "live-members"
+              },
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "type",
+              "ids"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "away"
+              },
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "last-connection-close"
+              },
+              "id": {
+                "type": "string"
+              },
+              "deliberate": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "id",
+              "deliberate"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Options": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "boolean"
+        },
+        "description": "Option name (game-rules optionNames) to on or off."
+      },
+      "EngineAction": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "start",
+                  "addBot",
+                  "leave",
+                  "sitOut",
+                  "return",
+                  "pause",
+                  "resume",
+                  "cancel",
+                  "newGame"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "kick"
+              },
+              "playerId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "playerId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "rebuy"
+              },
+              "accept": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "accept"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "move"
+              },
+              "move": {
+                "description": "The game's move, from its parseMove."
+              },
+              "needsTurn": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "move",
+              "needsTurn"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Schedule": {
+        "type": "object",
+        "properties": {
+          "actorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "settleUntil": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "deadline": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "autoAt": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "overAt": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "event": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lastActorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "actorId",
+          "settleUntil",
+          "deadline",
+          "autoAt",
+          "overAt",
+          "event",
+          "lastActorId"
+        ],
+        "additionalProperties": false,
+        "description": "When the actor's turn is timed; times are action-clock milliseconds."
+      },
+      "Slot": {
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "round": {
+            "description": "The game's round, opaque."
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "acting",
+              "auto",
+              "over"
+            ]
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/Schedule"
+          }
+        },
+        "required": [
+          "no",
+          "level",
+          "round",
+          "stage",
+          "schedule"
+        ],
+        "additionalProperties": false
+      },
+      "EngineState": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "const": 1
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "gameNumber": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "seats": {
+            "description": "seating's state, opaque to the engine (JSON)."
+          },
+          "presence": {
+            "description": "presence's state, opaque to the engine (JSON)."
+          },
+          "clock": {
+            "description": "game-clock's state, opaque to the engine (JSON)."
+          },
+          "tournament": {
+            "description": "tournament's state, opaque to the engine (JSON)."
+          },
+          "computers": {
+            "description": "computer-players's state, opaque to the engine (JSON)."
+          },
+          "history": {
+            "description": "round-history's state, opaque to the engine (JSON)."
+          },
+          "roundNo": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "slot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Slot"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "carry": {
+            "description": "The game's carry between rounds, or null."
+          },
+          "lastResult": {
+            "description": "The last round's result for clients, or null."
+          },
+          "lastActionAt": {
+            "type": "number"
+          },
+          "endedAt": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "schema",
+          "status",
+          "gameNumber",
+          "seats",
+          "presence",
+          "clock",
+          "tournament",
+          "computers",
+          "history",
+          "roundNo",
+          "slot",
+          "carry",
+          "lastResult",
+          "lastActionAt",
+          "endedAt"
+        ],
+        "additionalProperties": false
+      },
+      "EngineLegal": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "boolean"
+          },
+          "addBot": {
+            "type": "boolean"
+          },
+          "kick": {
+            "type": "boolean"
+          },
+          "leave": {
+            "type": "boolean"
+          },
+          "sitOut": {
+            "type": "boolean"
+          },
+          "return": {
+            "type": "boolean"
+          },
+          "rebuy": {
+            "type": "boolean"
+          },
+          "pause": {
+            "type": "boolean"
+          },
+          "resume": {
+            "type": "boolean"
+          },
+          "cancel": {
+            "type": "boolean"
+          },
+          "newGame": {
+            "type": "boolean"
+          },
+          "game": {
+            "description": "The game's own legal moves for this viewer (game-rules legal)."
+          }
+        },
+        "required": [
+          "start",
+          "addBot",
+          "kick",
+          "leave",
+          "sitOut",
+          "return",
+          "rebuy",
+          "pause",
+          "resume",
+          "cancel",
+          "newGame",
+          "game"
+        ],
+        "additionalProperties": false
+      },
+      "PlayerRow": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seat": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "isBot": {
+            "type": "boolean"
+          },
+          "isHost": {
+            "type": "boolean"
+          },
+          "stack": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out"
+            ]
+          },
+          "place": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "sittingOut": {
+            "type": "boolean"
+          },
+          "rebuysUsed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "game": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "The game's record for this player as this viewer may see it (private-views)."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "seat",
+          "isBot",
+          "isHost",
+          "stack",
+          "status",
+          "place",
+          "connected",
+          "sittingOut",
+          "rebuysUsed",
+          "game"
+        ],
+        "additionalProperties": false
+      },
+      "RoundView": {
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "acting",
+              "auto",
+              "over"
+            ]
+          },
+          "actorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "remainingMs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "Left on a person's countdown (none of the settle), the next automatic step or the result pause."
+          },
+          "settleMs": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "event": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lastActorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "no",
+          "level",
+          "stage",
+          "actorId",
+          "remainingMs",
+          "settleMs",
+          "event",
+          "lastActorId"
+        ],
+        "additionalProperties": false
+      },
+      "EngineView": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "gameNumber": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "you": {
+            "type": "string"
+          },
+          "display": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "lobby",
+              "acting",
+              "auto",
+              "over",
+              "offers",
+              "completed",
+              "cancelled"
+            ]
+          },
+          "pauseReasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "holds": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "playerId": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "look",
+                    "learn"
+                  ]
+                }
+              },
+              "required": [
+                "playerId",
+                "kind"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "hostId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerRow"
+            }
+          },
+          "round": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoundView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "game": {
+            "description": "The game's public view for this viewer (game-rules publicView), or null."
+          },
+          "lastResult": {
+            "description": "The last round's result, or null."
+          },
+          "clock": {
+            "description": "The level schedule's description (tournament clockInfo), or null."
+          },
+          "rebuyOffers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "playerId": {
+                  "type": "string"
+                },
+                "remainingMs": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "playerId",
+                "remainingMs"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "winnerId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "round-history list entries."
+          },
+          "legal": {
+            "$ref": "#/components/schemas/EngineLegal"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "English text."
+          },
+          "promptKey": {
+            "type": "string"
+          },
+          "promptArgs": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        "required": [
+          "version",
+          "roomId",
+          "gameNumber",
+          "you",
+          "display",
+          "status",
+          "phase",
+          "pauseReasons",
+          "holds",
+          "hostId",
+          "players",
+          "round",
+          "game",
+          "lastResult",
+          "clock",
+          "rebuyOffers",
+          "winnerId",
+          "history",
+          "legal",
+          "prompt",
+          "promptKey",
+          "promptArgs"
+        ],
+        "additionalProperties": false
+      },
+      "Card": {
+        "type": "string",
+        "pattern": "^[2-9TJQKA][cdhs]$",
+        "description": "Rank 2-9, T, J, Q, K, A then suit c, d, h, s, for example As or Td."
+      },
+      "Street": {
+        "type": "string",
+        "enum": [
+          "preflop",
+          "flop",
+          "turn",
+          "river"
+        ]
+      },
+      "Phase": {
+        "type": "string",
+        "enum": [
+          "lobby",
+          "betting",
+          "runout",
+          "handOver",
+          "rebuy",
+          "completed",
+          "cancelled"
+        ],
+        "description": "running splits into betting, runout (everyone left is all-in, board being dealt), handOver (result on show) and rebuy (offers pending)."
+      },
+      "PauseReason": {
+        "type": "string",
+        "enum": [
+          "hostAbsent",
+          "allOffline",
+          "manual"
+        ]
+      },
+      "Action": {
+        "description": "What a client sends; parseAction reads it.",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "start"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "addBot"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "leave"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "sitOut"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "return"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "fold"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "check"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "call"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "pause"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "resume"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "cancel"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "newGame"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "kick"
+              },
+              "playerId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "playerId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "bet"
+              },
+              "to": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "The total for the street."
+              }
+            },
+            "required": [
+              "type",
+              "to"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "rebuy"
+              },
+              "accept": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "accept"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "show"
+              },
+              "cards": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "required": [
+              "type",
+              "cards"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "LastAction": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "blind",
+              "fold",
+              "check",
+              "call",
+              "bet",
+              "raise",
+              "allIn"
+            ]
+          },
+          "amount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "auto": {
+            "type": "boolean",
+            "description": "True when the server acted for an absent or timed-out player."
+          }
+        },
+        "required": [
+          "kind",
+          "amount",
+          "auto"
+        ],
+        "additionalProperties": false
+      },
+      "OddsCard": {
+        "description": "A card of a possible hand, in reading order: a known card (code) from the viewer's hand or the board, or one still to come (from needed, code null) known by rank, suit, both or neither. Spare cards are kickers.",
+        "type": "object",
+        "properties": {
+          "code": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Card"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rank": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "suit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "from": {
+            "type": "string",
+            "enum": [
+              "hole",
+              "board",
+              "needed"
+            ]
+          },
+          "spare": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "rank",
+          "suit",
+          "from",
+          "spare"
+        ],
+        "additionalProperties": false
+      },
+      "PlayerView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seat": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "isBot": {
+            "type": "boolean"
+          },
+          "isHost": {
+            "type": "boolean"
+          },
+          "stack": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "bet": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Chips in front of the player this street."
+          },
+          "totalIn": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Chips put in this hand."
+          },
+          "inHand": {
+            "type": "boolean"
+          },
+          "folded": {
+            "type": "boolean"
+          },
+          "allIn": {
+            "type": "boolean"
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Card"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "description": "null entries are face down; the viewer's own cards and shown cards carry the card."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out"
+            ]
+          },
+          "place": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "sittingOut": {
+            "type": "boolean"
+          },
+          "rebuysUsed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "lastAction": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LastAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hand": {
+            "anyOf": [
+              {
+                "description": "Best five-card hand once the cards are shown; name is English, category and ranks (0 a two, 12 an ace) let a client build its own text.",
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  },
+                  "ranks": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 12
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "best": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/OddsCard"
+                    }
+                  }
+                },
+                "required": [
+                  "category",
+                  "ranks",
+                  "name",
+                  "best"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "seat",
+          "isBot",
+          "isHost",
+          "stack",
+          "bet",
+          "totalIn",
+          "inHand",
+          "folded",
+          "allIn",
+          "cards",
+          "status",
+          "place",
+          "connected",
+          "sittingOut",
+          "rebuysUsed",
+          "lastAction",
+          "hand"
+        ],
+        "additionalProperties": false
+      },
+      "PotView": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "eligible": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "amount",
+          "eligible"
+        ],
+        "additionalProperties": false
+      },
+      "HandView": {
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sb": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "bb": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "button": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sbSeat": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "bbSeat": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "street": {
+            "$ref": "#/components/schemas/Street"
+          },
+          "board": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            }
+          },
+          "pots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PotView"
+            }
+          },
+          "potTotal": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Chips wagered this hand that are not yet in a pot."
+          },
+          "currentBet": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "actorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "remainingMs": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Milliseconds left on a human actor's clock (with the settle), the next runout card or the result pause; frozen while paused; null for a computer player or a skipped player."
+          },
+          "settleMs": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Settle still to run before the actor's clock starts; null outside betting."
+          },
+          "event": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "deal",
+              "flop",
+              "turn",
+              "river",
+              "action",
+              null
+            ]
+          },
+          "lastActorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "no",
+          "level",
+          "sb",
+          "bb",
+          "button",
+          "sbSeat",
+          "bbSeat",
+          "street",
+          "board",
+          "pots",
+          "potTotal",
+          "currentBet",
+          "actorId",
+          "remainingMs",
+          "settleMs",
+          "event",
+          "lastActorId"
+        ],
+        "additionalProperties": false
+      },
+      "WinnerView": {
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "handName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "playerId",
+          "amount",
+          "handName"
+        ],
+        "additionalProperties": false
+      },
+      "HistoryEntry": {
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "winners": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "playerId": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "playerId",
+                "amount"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "voided": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "no",
+          "level",
+          "winners",
+          "voided"
+        ],
+        "additionalProperties": false
+      },
+      "ShowdownView": {
+        "description": "How the main pot was won when cards were shown.",
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "combination",
+              "kicker",
+              "draw"
+            ]
+          },
+          "winners": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "kickers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": "Per hand, how many kickers its shown cards include after the combination."
+          }
+        },
+        "required": [
+          "kind",
+          "winners",
+          "kickers"
+        ],
+        "additionalProperties": false
+      },
+      "HandResultView": {
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "board": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            }
+          },
+          "pots": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "winners": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WinnerView"
+                  }
+                }
+              },
+              "required": [
+                "amount",
+                "winners"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "uncontested": {
+            "type": "boolean"
+          },
+          "voided": {
+            "type": "boolean"
+          },
+          "showdown": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ShowdownView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "holdMs": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "How long the result stays up, from the end of the hand."
+          }
+        },
+        "required": [
+          "no",
+          "board",
+          "pots",
+          "uncontested",
+          "voided",
+          "showdown",
+          "holdMs"
+        ],
+        "additionalProperties": false
+      },
+      "ClockView": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sb": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "bb": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextSb": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextBb": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextLevelInMs": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Unpaused milliseconds until the next level."
+          },
+          "levelDurationMs": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "level",
+          "sb",
+          "bb",
+          "nextSb",
+          "nextBb",
+          "nextLevelInMs",
+          "levelDurationMs"
+        ],
+        "additionalProperties": false
+      },
+      "RebuyOfferView": {
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string"
+          },
+          "remainingMs": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "playerId",
+          "remainingMs"
+        ],
+        "additionalProperties": false
+      },
+      "OddsRow": {
+        "description": "One way the viewer's hand can finish.",
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "1 is a royal flush."
+          },
+          "probability": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Chance the needed cards turn up by the river; 1 for the hand already made."
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OddsCard"
+            }
+          },
+          "more": {
+            "type": "boolean",
+            "description": "A row that groups rarer ways and shows no cards."
+          }
+        },
+        "required": [
+          "category",
+          "rank",
+          "probability",
+          "cards",
+          "more"
+        ],
+        "additionalProperties": false
+      },
+      "Legal": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "boolean"
+          },
+          "addBot": {
+            "type": "boolean"
+          },
+          "kick": {
+            "type": "boolean"
+          },
+          "leave": {
+            "type": "boolean"
+          },
+          "sitOut": {
+            "type": "boolean"
+          },
+          "return": {
+            "type": "boolean"
+          },
+          "fold": {
+            "type": "boolean"
+          },
+          "check": {
+            "type": "boolean"
+          },
+          "call": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "Chips to call, or null; may be less than the current bet when the player would be all-in."
+          },
+          "bet": {
+            "anyOf": [
+              {
+                "description": "Range for a bet or raise as the street total; max is all-in.",
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "max": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "opening": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "min",
+                  "max",
+                  "opening"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rebuy": {
+            "type": "boolean"
+          },
+          "show": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "pause": {
+            "type": "boolean"
+          },
+          "resume": {
+            "type": "boolean"
+          },
+          "cancel": {
+            "type": "boolean"
+          },
+          "newGame": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "start",
+          "addBot",
+          "kick",
+          "leave",
+          "sitOut",
+          "return",
+          "fold",
+          "check",
+          "call",
+          "bet",
+          "rebuy",
+          "show",
+          "pause",
+          "resume",
+          "cancel",
+          "newGame"
+        ],
+        "additionalProperties": false
+      },
+      "View": {
+        "description": "The poker wire view every client decodes (server/src/contract.ts).",
+        "type": "object",
+        "properties": {
+          "contractVersion": {
+            "const": 1,
+            "description": "CONTRACT_VERSION; changes only when the wire contract changes."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "gameNumber": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "roomId": {
+            "type": "string"
+          },
+          "you": {
+            "type": "string",
+            "description": "The viewer's player id; empty for a display."
+          },
+          "holds": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "playerId": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "look",
+                    "learn"
+                  ]
+                }
+              },
+              "required": [
+                "playerId",
+                "kind"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Players holding the play clock; while any hold is on, every countdown stands still."
+          },
+          "display": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/Phase"
+          },
+          "pauseReasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PauseReason"
+            }
+          },
+          "hostId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerView"
+            }
+          },
+          "hand": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HandView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastResult": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HandResultView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "clock": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClockView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rebuyOffers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RebuyOfferView"
+            }
+          },
+          "winnerId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryEntry"
+            }
+          },
+          "odds": {
+            "description": "Only when the odds option is on and the viewer holds cards in a live hand.",
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OddsRow"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "legal": {
+            "$ref": "#/components/schemas/Legal"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "promptKey": {
+            "type": "string"
+          },
+          "promptArgs": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          },
+          "inviteUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updateUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "contractVersion",
+          "version",
+          "gameNumber",
+          "roomId",
+          "you",
+          "holds",
+          "display",
+          "status",
+          "phase",
+          "pauseReasons",
+          "hostId",
+          "players",
+          "hand",
+          "lastResult",
+          "clock",
+          "rebuyOffers",
+          "winnerId",
+          "history",
+          "odds",
+          "legal",
+          "prompt",
+          "promptKey",
+          "promptArgs",
+          "inviteUrl",
+          "updateUrl"
+        ],
+        "additionalProperties": false
+      },
+      "LinkExtras": {
+        "description": "Links copied into every view.",
+        "type": "object",
+        "properties": {
+          "inviteUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updateUrl": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "inviteUrl",
+          "updateUrl"
+        ],
+        "additionalProperties": false
+      },
+      "WireDeps": {
+        "type": "object",
+        "description": "What the wire view needs besides the engine's view: evaluate(cards) the best hand (poker-hand-ranking), shownCards(hole, board, kickers) and oddsRows(hole, board) (poker-odds), and levelDurationMs (level-schedule)."
+      },
+      "PokerGameAdapter": {
+        "type": "object",
+        "description": "turn-engine's GameAdapter over this recipe's parts with view replaced; its members are the `GameAdapter.<name>` methods."
+      }
+    },
+    "errors": {
+      "BadSettings": {
+        "code": 1001,
+        "message": "turn-engine: decisionSeconds (1 or more, or null), settleMs (0 or more), staleMinutes, standingsSeconds and lobbyDropSeconds (1 or more) must be whole numbers",
+        "data": {
+          "thrown": "Error"
+        }
+      },
+      "UnsupportedState": {
+        "code": 1002,
+        "message": "Unsupported game state.",
+        "data": {
+          "thrown": "Error"
+        }
+      },
+      "DefaultMoveRefused": {
+        "code": 1003,
+        "message": "turn-engine: the game's default move was refused: <code>",
+        "data": {
+          "thrown": "Error"
+        }
+      },
+      "NoMoveAccepted": {
+        "code": 1004,
+        "message": "turn-engine: neither the strategy's move nor the game's default move was accepted for <id>",
+        "data": {
+          "thrown": "Error"
+        }
+      },
+      "NoOutcome": {
+        "code": 1005,
+        "message": "turn-engine: the game reported the round over without an outcome",
+        "data": {
+          "thrown": "Error"
+        }
+      }
+    }
+  }
 }

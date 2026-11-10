@@ -1,0 +1,1108 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/card-graphics",
+    "version": "1.0.0",
+    "description": "Playing card faces, backs and empty slots, with deal and flip animation, for a 52 card pack. When the application ships artwork it names the files card-back-<theme>.png and card-<theme>-jack.png, -queen.png and -king.png; artFor says where each is, or null to draw in code. Web: implementation/web/card-model.ts, cards.ts and cards.css (reads the theme's --paper, --paper-accent, --on-primary and --primary). Apple: CardModel and SwiftUI views in PlayingCard.swift. Android: CardModel and Compose functions in package ae.cards."
+  },
+  "methods": [
+    {
+      "name": "parseCard",
+      "description": "Rank, suit and colour of a card code, or null for anything that is not one. Swift: CardModel.parse(_:). Kotlin: CardModel.parse(code).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "code",
+          "required": true,
+          "schema": {}
+        }
+      ],
+      "result": {
+        "name": "card",
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/ParsedCard"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "allCards",
+      "description": "Every card of a 52 card pack in rank then suit order. Swift: CardModel.allCards(). Kotlin: CardModel.allCards().",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "cards",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/CardCode"
+          },
+          "minItems": 52,
+          "maxItems": 52,
+          "uniqueItems": true
+        }
+      }
+    },
+    {
+      "name": "normaliseSettings",
+      "description": "The settings with defaults filled in, checked. Web only; Swift and Kotlin CardSettings are typed and default the same.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "input",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PartialCardSettings"
+          }
+        }
+      ],
+      "result": {
+        "name": "settings",
+        "schema": {
+          "$ref": "#/components/schemas/CardSettings"
+        }
+      },
+      "errors": [
+        {
+          "code": 2,
+          "message": "backStyle must be one of stripes, plain, art"
+        },
+        {
+          "code": 3,
+          "message": "cornerStyle must be one of rounded, soft, square"
+        },
+        {
+          "code": 4,
+          "message": "cardWidth must be between 8 and 600"
+        }
+      ]
+    },
+    {
+      "name": "cardMetrics",
+      "description": "Size of a card of this width: height 1.4 times the width, a unit of a tenth of it, and the corner radius. Swift: CardModel.metrics(width:corner:). Kotlin: CardModel.metrics(width, corner).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "width",
+          "required": true,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        {
+          "name": "corner",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/CornerStyle",
+            "default": "rounded"
+          }
+        }
+      ],
+      "result": {
+        "name": "metrics",
+        "schema": {
+          "$ref": "#/components/schemas/Metrics"
+        }
+      }
+    },
+    {
+      "name": "faceModel",
+      "description": "How to draw a card: a back (with art unless backStyle is stripes or plain) or a face with its corner index and centre (court picture, ace pip, laid out pips, or the rank). Swift: CardModel.faceModel(_:theme:backStyle:artFor:rankLabel:) returning nil for a code that is not a card. Kotlin: CardModel.faceModel(code, theme, backStyle, artFor, rankLabel), likewise.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "code",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/MaybeCard"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "theme": {
+                "type": "string",
+                "default": "default"
+              },
+              "artFor": {
+                "description": "A function supplied by the caller: (name: string) => string | null, the picture for card-back-<theme>.png or card-<theme>-jack.png, -queen.png, -king.png, or null to draw in code. It is called, not serialised."
+              },
+              "rankLabel": {
+                "description": "A function supplied by the caller: (rank: string) => string, a rank in the player's language (J is V in French). It is called, not serialised."
+              },
+              "backStyle": {
+                "$ref": "#/components/schemas/BackStyle"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "model",
+        "schema": {
+          "$ref": "#/components/schemas/FaceModel"
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "not a card: <code>"
+        }
+      ]
+    },
+    {
+      "name": "centreBox",
+      "description": "The central box as fractions of the card: larger for court pictures. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "width",
+          "required": true,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        {
+          "name": "hasCourt",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        }
+      ],
+      "result": {
+        "name": "box",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "left",
+            "top",
+            "width",
+            "height"
+          ],
+          "properties": {
+            "left": {
+              "type": "number"
+            },
+            "top": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "dealPlan",
+      "description": "Dealing timing: each card leaves the deck gapMs after the one before and takes dealMs to arrive (350 and 340 give three cards a second). Swift: CardModel.dealPlan(count:dealMs:gapMs:startMs:). Kotlin: CardModel.dealPlan(count, dealMs, gapMs, startMs).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "count",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "dealMs": {
+                "type": "number",
+                "default": 350
+              },
+              "gapMs": {
+                "type": "number",
+                "default": 340
+              },
+              "startMs": {
+                "type": "number",
+                "default": 0
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "steps",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/DealStep"
+          }
+        }
+      }
+    },
+    {
+      "name": "dealRounds",
+      "description": "Dealing round the table: rounds times through the seats in order, each card with its seat and timing. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "seats",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        {
+          "name": "rounds",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "dealMs": {
+                "type": "number",
+                "default": 350
+              },
+              "gapMs": {
+                "type": "number",
+                "default": 340
+              },
+              "startMs": {
+                "type": "number",
+                "default": 0
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "steps",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SeatDealStep"
+          }
+        }
+      }
+    },
+    {
+      "name": "flipState",
+      "description": "Turning a card over at progress 0 to 1 (clamped): the card narrows to an edge, then shows its other side widening. Swift: CardModel.flipState(_:). Kotlin: CardModel.flipState(progress).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "progress",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "state",
+        "schema": {
+          "$ref": "#/components/schemas/FlipState"
+        }
+      }
+    },
+    {
+      "name": "cardClasses",
+      "description": "The class names a face model becomes (card, back or face, red, art, plain, dim, tappable glow). Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "model",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/FaceModel"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "dim": {
+                "type": "boolean"
+              },
+              "tappable": {
+                "type": "boolean"
+              },
+              "backStyle": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "className",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "cardEl",
+      "description": "A playing card element, face down for null; height 1.4 times the width, sizes inside in em; colours from the theme's --paper, --paper-accent, --on-primary and --primary (cards.css). Swift: PlayingCard(code:width:dim:tappable:onTap:) reading CardStyle from .cardStyle(_:) (settings, theme colours, artTheme, image lookup, rankLabel). Kotlin: PlayingCard(code, width, dim, tappable, onClick, modifier) reading LocalCardStyle (settings, colours, artTheme, hasArt, painter, rankLabel).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "code",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/MaybeCard"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/CardOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "not a card: <code>"
+        },
+        {
+          "code": 2,
+          "message": "backStyle must be one of stripes, plain, art"
+        },
+        {
+          "code": 3,
+          "message": "cornerStyle must be one of rounded, soft, square"
+        },
+        {
+          "code": 4,
+          "message": "cardWidth must be between 8 and 600"
+        }
+      ]
+    },
+    {
+      "name": "cardSlot",
+      "description": "An empty dashed place for a card, such as a board slot. Swift: CardSlot(width:). Kotlin: CardSlot(width).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "width",
+          "required": true,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        {
+          "name": "corner",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/CornerStyle",
+            "default": "rounded"
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "dealStyle",
+      "description": "The animation-delay and animation-duration CSS for a deal step. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "step",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/DealStep"
+          }
+        }
+      ],
+      "result": {
+        "name": "style",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "animationDelay",
+            "animationDuration"
+          ],
+          "properties": {
+            "animationDelay": {
+              "type": "string",
+              "pattern": "^-?[0-9.e+-]+ms$"
+            },
+            "animationDuration": {
+              "type": "string",
+              "pattern": "^-?[0-9.e+-]+ms$"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "dealInto",
+      "description": "Marks a card element as arriving from the deck: from is the offset in pixels it starts from relative to where it lands. Returns the same element. Swift: DealtCard(code:width:step:from:). Kotlin: DealtCard(code, step, fromX, fromY, width).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "node",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Element"
+          }
+        },
+        {
+          "name": "step",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/DealStep"
+          }
+        },
+        {
+          "name": "from",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dx",
+              "dy"
+            ],
+            "properties": {
+              "dx": {
+                "type": "number"
+              },
+              "dy": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "flippingCard",
+      "description": "A card that shows from (usually face down) and turns to to; the face swaps at the half turn (durationMs, default 400). Web: returns the element and a flip function. Swift: FlippingCard(from:to:width:flipped:durationMs:), turning when flipped becomes true. Kotlin: FlippingCard(from, to, flipped, width, durationMs).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "from",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/MaybeCard"
+          }
+        },
+        {
+          "name": "to",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/MaybeCard"
+          }
+        },
+        {
+          "name": "options",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/FlipOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "card",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "element",
+            "flip"
+          ],
+          "properties": {
+            "element": {
+              "$ref": "#/components/schemas/Element"
+            },
+            "flip": {
+              "description": "A function supplied by the caller: () => void. It is called, not serialised."
+            }
+          }
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "not a card: <code>"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "schemas": {
+      "CardCode": {
+        "type": "string",
+        "pattern": "^[23456789TJQKA][cdhs]$",
+        "description": "A rank (2 to 9, T, J, Q, K, A) then a suit (c, d, h, s), such as Ah or Td."
+      },
+      "MaybeCard": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/CardCode"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "A card, or null for a card face down."
+      },
+      "BackStyle": {
+        "type": "string",
+        "enum": [
+          "stripes",
+          "plain",
+          "art"
+        ],
+        "description": "Swift: BackStyle .stripes, .plain, .art. Kotlin: BackStyle STRIPES, PLAIN, ART."
+      },
+      "CornerStyle": {
+        "type": "string",
+        "enum": [
+          "rounded",
+          "soft",
+          "square"
+        ],
+        "description": "Corner radius 0.08, 0.14 or 0.02 of the card width. Swift: CornerStyle. Kotlin: CornerStyle ROUNDED, SOFT, SQUARE."
+      },
+      "CardSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "backStyle",
+          "cornerStyle",
+          "cardWidth"
+        ],
+        "properties": {
+          "backStyle": {
+            "$ref": "#/components/schemas/BackStyle"
+          },
+          "cornerStyle": {
+            "$ref": "#/components/schemas/CornerStyle"
+          },
+          "cardWidth": {
+            "type": "number",
+            "minimum": 8,
+            "maximum": 600,
+            "description": "Pixels (points on Apple, Dp on Android)."
+          }
+        },
+        "description": "The installer settings; DEFAULT_SETTINGS is stripes, rounded, 56. Swift and Kotlin: CardSettings."
+      },
+      "PartialCardSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "backStyle": {
+            "$ref": "#/components/schemas/BackStyle"
+          },
+          "cornerStyle": {
+            "$ref": "#/components/schemas/CornerStyle"
+          },
+          "cardWidth": {
+            "type": "number"
+          }
+        }
+      },
+      "ParsedCard": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rank",
+          "suit",
+          "red"
+        ],
+        "properties": {
+          "rank": {
+            "type": "string",
+            "enum": [
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "T",
+              "J",
+              "Q",
+              "K",
+              "A"
+            ]
+          },
+          "suit": {
+            "type": "string",
+            "enum": [
+              "c",
+              "d",
+              "h",
+              "s"
+            ]
+          },
+          "red": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Metrics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "width",
+          "height",
+          "unit",
+          "radius"
+        ],
+        "properties": {
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "integer",
+            "description": "width times 1.4, rounded."
+          },
+          "unit": {
+            "type": "number",
+            "description": "A tenth of the width."
+          },
+          "radius": {
+            "type": "number"
+          }
+        }
+      },
+      "Pip": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y",
+          "flip",
+          "small"
+        ],
+        "properties": {
+          "x": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "y": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "flip": {
+            "type": "boolean",
+            "description": "Printed upside down (lower half)."
+          },
+          "small": {
+            "type": "boolean",
+            "description": "9 and 10 pips are smaller."
+          }
+        }
+      },
+      "Centre": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "art"
+            ],
+            "properties": {
+              "type": {
+                "const": "court"
+              },
+              "art": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "pip"
+            ],
+            "properties": {
+              "type": {
+                "const": "ace"
+              },
+              "pip": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "pips"
+            ],
+            "properties": {
+              "type": {
+                "const": "pips"
+              },
+              "pips": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Pip"
+                },
+                "minItems": 2,
+                "maxItems": 10
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "text"
+            ],
+            "properties": {
+              "type": {
+                "const": "rank"
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "description": "What fills the central box. Swift: CardCentre .court(art:), .ace(pip:), .pips, .rank. Kotlin: CardCentre.Court, Ace, Pips, Rank."
+      },
+      "FaceModel": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "art"
+            ],
+            "properties": {
+              "kind": {
+                "const": "back"
+              },
+              "art": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "red",
+              "rank",
+              "rankText",
+              "pip",
+              "ten",
+              "centre"
+            ],
+            "properties": {
+              "kind": {
+                "const": "face"
+              },
+              "red": {
+                "type": "boolean"
+              },
+              "rank": {
+                "type": "string",
+                "enum": [
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "T",
+                  "J",
+                  "Q",
+                  "K",
+                  "A"
+                ]
+              },
+              "rankText": {
+                "type": "string"
+              },
+              "pip": {
+                "type": "string",
+                "enum": [
+                  "♣",
+                  "♦",
+                  "♥",
+                  "♠"
+                ]
+              },
+              "ten": {
+                "type": "boolean"
+              },
+              "centre": {
+                "$ref": "#/components/schemas/Centre"
+              }
+            }
+          }
+        ],
+        "description": "How to draw a card. Swift: FaceModel .back(art:) or .face(red:rank:rankText:pip:ten:centre:). Kotlin: FaceModel.Back or FaceModel.Face."
+      },
+      "DealStep": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "delayMs",
+          "durationMs",
+          "endMs"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "delayMs": {
+            "type": "number"
+          },
+          "durationMs": {
+            "type": "number"
+          },
+          "endMs": {
+            "type": "number"
+          }
+        },
+        "description": "Swift: CardModel.DealStep. Kotlin: DealStep."
+      },
+      "SeatDealStep": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "delayMs",
+          "durationMs",
+          "endMs",
+          "seat"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "delayMs": {
+            "type": "number"
+          },
+          "durationMs": {
+            "type": "number"
+          },
+          "endMs": {
+            "type": "number"
+          },
+          "seat": {
+            "type": "integer"
+          }
+        }
+      },
+      "FlipState": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "showing",
+          "scaleX"
+        ],
+        "properties": {
+          "showing": {
+            "type": "string",
+            "enum": [
+              "from",
+              "to"
+            ]
+          },
+          "scaleX": {
+            "type": "number",
+            "minimum": -1,
+            "maximum": 1
+          }
+        },
+        "description": "Swift: a (showingTo:, scaleX:) tuple. Kotlin: Pair(showingTo, scaleX)."
+      },
+      "PipLayout": {
+        "type": "object",
+        "propertyNames": {
+          "enum": [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "T"
+          ]
+        },
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "items": false,
+            "minItems": 2
+          }
+        },
+        "description": "PIPS (web), CardModel.pips (Swift), CardModel.PIPS (Kotlin): pip centres in the central box by rank, as [x, y] fractions."
+      },
+      "CardOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "settings": {
+            "$ref": "#/components/schemas/PartialCardSettings"
+          },
+          "width": {
+            "type": "number",
+            "description": "Pixels; defaults to the settings' cardWidth."
+          },
+          "theme": {
+            "type": "string",
+            "default": "default",
+            "description": "The artwork theme name used in file names."
+          },
+          "artFor": {
+            "description": "A function supplied by the caller: (name: string) => string | null, the picture for card-back-<theme>.png or card-<theme>-jack.png, -queen.png, -king.png, or null to draw in code. It is called, not serialised."
+          },
+          "rankLabel": {
+            "description": "A function supplied by the caller: (rank: string) => string, a rank in the player's language (J is V in French). It is called, not serialised."
+          },
+          "dim": {
+            "type": "boolean"
+          },
+          "tappable": {
+            "type": "boolean",
+            "description": "Adds the pulsing glow."
+          },
+          "onClick": {
+            "description": "A function supplied by the caller: () => void. It is called, not serialised."
+          }
+        },
+        "description": "Web cardEl options."
+      },
+      "FlipOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "settings": {
+            "$ref": "#/components/schemas/PartialCardSettings"
+          },
+          "width": {
+            "type": "number",
+            "description": "Pixels; defaults to the settings' cardWidth."
+          },
+          "theme": {
+            "type": "string",
+            "default": "default",
+            "description": "The artwork theme name used in file names."
+          },
+          "artFor": {
+            "description": "A function supplied by the caller: (name: string) => string | null, the picture for card-back-<theme>.png or card-<theme>-jack.png, -queen.png, -king.png, or null to draw in code. It is called, not serialised."
+          },
+          "rankLabel": {
+            "description": "A function supplied by the caller: (rank: string) => string, a rank in the player's language (J is V in French). It is called, not serialised."
+          },
+          "dim": {
+            "type": "boolean"
+          },
+          "tappable": {
+            "type": "boolean",
+            "description": "Adds the pulsing glow."
+          },
+          "onClick": {
+            "description": "A function supplied by the caller: () => void. It is called, not serialised."
+          },
+          "durationMs": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 400
+          }
+        },
+        "description": "CardOptions plus durationMs."
+      },
+      "Element": {
+        "type": "object",
+        "description": "A DOM HTMLElement."
+      }
+    }
+  }
+}

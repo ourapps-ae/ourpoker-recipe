@@ -2030,7 +2030,7 @@
       "name": "OurPoker",
       "kind": "application",
       "status": "example",
-      "revision": "0.3.0",
+      "revision": "0.4.0",
       "ports": [
         {
           "id": "game-adapter",
