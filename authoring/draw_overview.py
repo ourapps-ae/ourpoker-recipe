@@ -15,7 +15,7 @@ def dot_source(design, groups, version):
     present = {i["id"] for i in design["instances"] if i["id"] != "application"}
     lines = [
         "digraph recipe {",
-        f'  graph [rankdir=TB, bgcolor="{BACKGROUND}", fontname="Helvetica", fontcolor="{TEXT}", compound=true, nodesep=0.25, ranksep=0.8, pad=0.4, '
+        f'  graph [rankdir=LR, bgcolor="{BACKGROUND}", fontname="Helvetica", fontcolor="{TEXT}", compound=true, nodesep=0.18, ranksep=0.7, pad=0.4, '
         f'labelloc=t, fontsize=26, label=<<b>OurPoker {version}: the {sum(len(s) for _, s in groups)} components of the recipe</b><br/>'
         f'<font point-size="15" color="{MUTED}">Each box is one component. An arrow runs from the component that provides an interface to the one that uses it, under the default answers.</font>>];',
         f'  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=15, fontcolor="{TEXT}", fillcolor="#1d2a3d", color="#5b7aa3", penwidth=1.3, margin="0.18,0.08", height=0.42];',
