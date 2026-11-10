@@ -485,8 +485,8 @@ describe("live connections", () => {
     }
   });
 
-  it("allows the web app's own origins from WEB_ORIGINS, exactly", () => {
-    const web = "https://mcinpoker-web.example.workers.dev, https://poker.example";
+  it("allows the web app's own origins from a space-separated list, exactly", () => {
+    const web = "https://mcinpoker-web.example.workers.dev https://poker.example";
     expect(allowed("https://mcinpoker-web.example.workers.dev", web)).toBe(true);
     expect(allowed("https://poker.example", web)).toBe(true);
     expect(allowed("https://mcinpoker-web.other.workers.dev", web)).toBe(false);

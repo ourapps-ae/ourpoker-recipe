@@ -30,12 +30,12 @@ import component_imports  # noqa: E402
 import make_recipe  # noqa: E402
 
 NAME = "ourapps-ae/ourpoker"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 TITLE = "OurPoker"
 SOURCE_REVISION = "19905b75dbea89fbfd424d67fe26c81aaed0e018"
 KOTLIN = "app/ourapps/ourpoker"
 
-NOT_PACKAGED_TOP = {".git", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "releases", "REVIEW.md"}
+NOT_PACKAGED_TOP = {".git", ".gitignore", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "releases", "REVIEW.md"}
 SKIPPED = {".DS_Store", "__pycache__"}
 
 COLLECT = [

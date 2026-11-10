@@ -12,7 +12,7 @@ final class HomeButtonsUITests: XCTestCase {
 
     func testBeginnerChoiceCanSkipGuidesAndResetBringsThemBack() throws {
         let app = XCUIApplication()
-        app.launchArguments = ["-name", "UITester", "-lang", "en", "-beginner", "ask", "-tut.home", "NO"]
+        app.launchArguments = ["-name", "UITester", "-lang", "en", "-beginner", "ask"]
         try launchIsolated(app)
         let experienced = app.buttons["No, I know how to play"]
         XCTAssertTrue(experienced.waitForExistence(timeout: 10))
@@ -43,8 +43,8 @@ final class HomeButtonsUITests: XCTestCase {
     private func launch(guidesSeen: Bool) throws -> XCUIApplication {
         let app = XCUIApplication()
         // Values in the arguments domain win over the app's saved settings for this launch.
-        app.launchArguments = ["-name", "UITester", "-lang", "en", "-AppleLanguages", "(en)", "-beginner", "YES"]
-        app.launchArguments += ["-tut.home", guidesSeen ? "YES" : "NO"]
+        app.launchArguments = ["-name", "UITester", "-lang", "en", "-AppleLanguages", "(en)", "-beginner", "true"]
+        if guidesSeen { app.launchArguments += ["-tut.home", "true"] }
         try launchIsolated(app)
         return app
     }

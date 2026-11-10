@@ -8,45 +8,45 @@ Everything is local and uncommitted; nothing is pushed or published. Paths are f
 
 | component | version | one line |
 |---|---|---|
-| web-host | 0.2.0 | Installable web application shell |
-| apple-host | 0.3.0 | SwiftUI shell for iPhone, iPad, Mac and Apple TV; reads ios, macos, tvos from the device list |
-| android-host | 0.2.0 | Android Compose application shell |
-| windows-desktop | 0.3.1 | Configured Electron host with local assets and capture/navigation policies |
-| server-host | 0.3.0 | Room service hosting on Cloudflare or own hardware; renders `host-settings.ts` |
-| ourapps-release | 0.2.0 | Build, sign and publish client targets to ourapps.app; store credentials optional |
-| store-update | 0.3.0 | Store update check |
-| realtime-rooms | 0.4.0 | Persistent private game rooms and native transports |
-| room-directory | 0.2.0 | Room list, live change announcements, join by code |
-| guest-identity | 0.3.0 | Guest names, private tokens, rotation, device-side storage |
-| presence | 0.2.0 | Present and absent tracking, pause and abandon rules |
-| invitations | 0.1.0 | Invitation codes, links, parsing, sharing |
-| private-views | 0.2.0 | Per-viewer redaction and client view helpers |
-| display-mode | 0.3.1 | Mode publication and display capability restrictions |
-| video-calls | 0.3.1 | Signed room grants and browser, Apple and Android media |
-| preferences | 0.1.0 | Per-device language, sound, camera and microphone choices |
-| turn-engine | 0.3.0 | Lobby, start, round cycle, rebuys, completion; computer players optional |
-| game-clock | 0.2.0 | Frozen-while-paused clocks, deadlines, countdowns |
-| seating | 0.2.0 | Join, leave, lowest free seat, table checks |
-| fair-shuffle | 0.2.0 | Seedable or cryptographic random numbers and shuffles |
-| card-deck | 0.2.0 | Create, shuffle, deal, burn cards |
-| computer-players | 0.3.0 | One computer player on request, or fill every empty seat |
-| chip-ledger | 0.3.0 | Stacks, bets, pots, side pots, odd chips, audit |
-| level-schedule | 0.2.0 | Blind level for a clock reading |
-| tournament | 0.2.0 | Starting stacks issued through the ledger, rebuys |
-| round-history | 0.2.0 | Append rounds, keep the newest N, query and export |
-| rules-settings | 0.2.0 | Load and validate a rules file, read rules by path |
-| poker-hand-ranking | 0.2.0 | Evaluate, compare and name poker hands |
-| poker-odds | 0.2.0 | Hand improvement and winning chances |
-| holdem-rules | 0.2.0 | Hold'em rounds for a turn engine |
-| poker-strategy | 0.2.0 | Fold, check, call or bet for a computer player |
-| theme | 0.2.0 | Design tokens and animated background |
-| controls | 0.2.0 | Buttons, toggles, panels, banners, dialogs, help pages |
-| table-layout | 0.2.0 | Seat, card, stake positions for 2 to 9 seats |
-| card-graphics | 0.2.0 | Card faces, backs, dealing, flipping |
-| chip-graphics | 0.2.0 | Chip piles, bets, winnings in motion |
-| sound-cues | 0.2.0 | Sound cues for events, mute by preference |
-| guided-tour | 0.2.0 | Lessons that ring an element, shown once each |
-| translations | 0.3.0 | Languages (en, fr, de, es) for every client |
+| web-host | 0.3.0 | Installable web application shell |
+| apple-host | 0.4.0 | SwiftUI shell for iPhone, iPad, Mac and Apple TV; reads ios, macos, tvos from the device list |
+| android-host | 0.3.0 | Android Compose application shell |
+| windows-desktop | 0.4.0 | Configured Electron host with local assets and capture/navigation policies |
+| server-host | 0.4.0 | Room service hosting on Cloudflare or own hardware; renders `host-settings.ts` |
+| ourapps-release | 0.3.0 | Build, sign and publish client targets to ourapps.app; store credentials optional |
+| store-update | 0.4.0 | Store update check |
+| realtime-rooms | 0.5.0 | Persistent private game rooms and native transports |
+| room-directory | 0.3.0 | Room list, live change announcements, join by code |
+| guest-identity | 0.4.0 | Guest names, private tokens, rotation, device-side storage |
+| presence | 0.3.0 | Present and absent tracking, pause and abandon rules |
+| invitations | 0.1.1 | Invitation codes, links, parsing, sharing |
+| private-views | 0.3.0 | Per-viewer redaction and client view helpers |
+| display-mode | 0.4.0 | Mode publication and display capability restrictions |
+| video-calls | 0.4.0 | Signed room grants and browser, Apple and Android media |
+| preferences | 0.1.1 | Per-device language, sound, camera and microphone choices |
+| turn-engine | 0.4.0 | Lobby, start, round cycle, rebuys, completion; computer players optional |
+| game-clock | 0.3.0 | Caller-driven clocks, decision and thinking deadlines, timeouts, client countdowns |
+| seating | 0.3.0 | Join, leave, lowest free seat, table checks |
+| fair-shuffle | 0.3.0 | Seedable or cryptographic random numbers and shuffles |
+| card-deck | 0.3.0 | Create, shuffle, deal, burn cards |
+| computer-players | 0.4.0 | One computer player on request, or fill every empty seat |
+| chip-ledger | 0.4.0 | Stacks, bets, pots, side pots, odd chips, audit |
+| level-schedule | 0.3.0 | Blind level for a clock reading |
+| tournament | 0.3.0 | Starting stacks issued through the ledger, rebuys |
+| round-history | 0.3.0 | Append rounds, keep the newest N, query and export |
+| rules-settings | 0.3.0 | Load and validate a rules file, read rules by path |
+| poker-hand-ranking | 0.3.0 | Evaluate, compare and name poker hands |
+| poker-odds | 0.3.0 | Hand improvement and winning chances |
+| holdem-rules | 0.3.0 | Hold'em rounds for a turn engine |
+| poker-strategy | 0.3.0 | Fold, check, call or bet for a computer player |
+| theme | 0.3.0 | Design tokens and animated background |
+| controls | 0.3.0 | Buttons, toggles, panels, banners, dialogs, help pages |
+| table-layout | 0.3.0 | Seat, card, stake positions for 2 to 9 seats |
+| card-graphics | 0.3.0 | Card faces, backs, dealing, flipping |
+| chip-graphics | 0.3.0 | Chip piles, bets, winnings in motion |
+| sound-cues | 0.3.0 | Sound cues for events, mute by preference |
+| guided-tour | 0.3.0 | Lessons that ring an element, shown once each |
+| translations | 0.4.0 | Languages (en, fr, de, es) for every client |
 
 **Recipe** `recipes/ourpoker/` (package `ourapps-ae/ourpoker` 0.2.0): `recipe.json` (24 questions, 39 components, 65 connections, 3 jobs, 3 scale bands, 9 answer sets plus the default); the application-specific component (screen flow, house rules, text, lessons, art, wiring, end-to-end specs; 265 artefacts, 34 conditional); `page/` drawings; `INSTRUCTIONS.md`; `INTEGRATION-GAPS.md` (118 gaps).
 

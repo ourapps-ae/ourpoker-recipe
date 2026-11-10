@@ -4,7 +4,7 @@ const adapter = pokerAdapter({ inviteUrl: null, updateUrl: null });
 const deps = { now: () => 1000, rng: () => 0.42, newId: () => "test" };
 function value<T>(r: { ok: true; value: T } | { ok: false }): T { if (!r.ok) throw new Error("Unexpected failure"); return r.value; }
 
-it("rejects incompatible persisted states and restores a saved one unchanged", () => {
+it("rejects persisted states of another version and restores a saved one exactly", () => {
   expect(() => adapter.restore({}, 1)).toThrow();
   expect(() => adapter.restore(adapter.create(1000), 2)).toThrow();
   const s = adapter.create(1000);

@@ -17,7 +17,7 @@ export const Room = host.objectClass(RoomBase);
 export const Directory = host.objectClass(DirectoryBase);
 export const allowed = (origin: string | null, webOrigins = ""): origin is string => {
   if (!origin) return false;
-  return host.settings.allowedOrigins.includes(origin) || originPatterns.some((p) => p.test(origin)) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) || webOrigins.split(",").map((s) => s.trim()).includes(origin);
+  return host.settings.allowedOrigins.includes(origin) || originPatterns.some((p) => p.test(origin)) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) || webOrigins.split(" ").includes(origin);
 };
 
 const worker = createWorker(host.roomsSettings(settings.applicationId), ROOM_IDS, async (request, bindings) => {

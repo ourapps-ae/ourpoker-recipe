@@ -1,7 +1,7 @@
 {
   "format": 1,
   "name": "ourapps-ae/ourpoker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "title": "OurPoker",
   "summary": "A complete Texas hold'em game for two to nine players: phones, tablets, computers, the web and a television as a shared table, optional video, computer players, lessons, rebuys and rising blinds.",
   "category": "games",
@@ -30,7 +30,7 @@
     {
       "id": "web-host",
       "name": "ourapps-ae/web-host",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
@@ -46,7 +46,7 @@
     {
       "id": "apple-host",
       "name": "ourapps-ae/apple-host",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {
         "bundleIdentifier": "app.ourapps.ourpoker",
         "displayName": "OurPoker",
@@ -72,7 +72,7 @@
     {
       "id": "android-host",
       "name": "ourapps-ae/android-host",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "packageId": "app.ourapps.ourpoker",
         "applicationName": "OurPoker"
@@ -85,7 +85,7 @@
     {
       "id": "windows-desktop",
       "name": "ourapps-ae/windows-desktop",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": {
         "question": "targets",
@@ -95,7 +95,7 @@
     {
       "id": "server-host",
       "name": "ourapps-ae/server-host",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {
         "roomPrefix": "ourpoker-"
       },
@@ -104,7 +104,7 @@
     {
       "id": "ourapps-release",
       "name": "ourapps-ae/ourapps-release",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
@@ -115,7 +115,7 @@
     {
       "id": "store-update",
       "name": "ourapps-ae/store-update",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": {
         "question": "updates",
@@ -125,28 +125,28 @@
     {
       "id": "realtime-rooms",
       "name": "ourapps-ae/realtime-rooms",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "room-directory",
       "name": "ourapps-ae/room-directory",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "guest-identity",
       "name": "ourapps-ae/guest-identity",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "presence",
       "name": "ourapps-ae/presence",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "awayAfterSeconds": 30,
         "dropAfterSeconds": 1800,
@@ -157,7 +157,7 @@
     {
       "id": "invitations",
       "name": "ourapps-ae/invitations",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "configuration": {
         "codeLength": 6
       },
@@ -166,21 +166,21 @@
     {
       "id": "private-views",
       "name": "ourapps-ae/private-views",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "display-mode",
       "name": "ourapps-ae/display-mode",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "video-calls",
       "name": "ourapps-ae/video-calls",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": {
         "question": "video",
@@ -190,7 +190,7 @@
     {
       "id": "preferences",
       "name": "ourapps-ae/preferences",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "configuration": {
         "defaultSound": true,
         "defaultMicrophoneOn": true,
@@ -201,7 +201,7 @@
     {
       "id": "turn-engine",
       "name": "ourapps-ae/turn-engine",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {
         "settleMs": 4000,
         "staleMinutes": 30,
@@ -213,16 +213,14 @@
     {
       "id": "game-clock",
       "name": "ourapps-ae/game-clock",
-      "version": "0.2.0",
-      "configuration": {
-        "pauseFreezes": true
-      },
+      "version": "0.3.0",
+      "configuration": {},
       "includedWhen": null
     },
     {
       "id": "seating",
       "name": "ourapps-ae/seating",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "hostRemovesPeople": false
       },
@@ -231,7 +229,7 @@
     {
       "id": "fair-shuffle",
       "name": "ourapps-ae/fair-shuffle",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "source": "secure"
       },
@@ -240,7 +238,7 @@
     {
       "id": "card-deck",
       "name": "ourapps-ae/card-deck",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "decks": 1,
         "jokers": false
@@ -250,7 +248,7 @@
     {
       "id": "computer-players",
       "name": "ourapps-ae/computer-players",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {
         "names": "Robin Sam Alex Jordan Casey Morgan Taylor Riley",
         "thinkMinMs": 300,
@@ -268,21 +266,21 @@
     {
       "id": "chip-ledger",
       "name": "ourapps-ae/chip-ledger",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "level-schedule",
       "name": "ourapps-ae/level-schedule",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "tournament",
       "name": "ourapps-ae/tournament",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "tiebreak": "stackAtDeal"
       },
@@ -291,7 +289,7 @@
     {
       "id": "round-history",
       "name": "ourapps-ae/round-history",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "maxRounds": 50
       },
@@ -300,7 +298,7 @@
     {
       "id": "rules-settings",
       "name": "ourapps-ae/rules-settings",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "rulesFile": "texas-holdem-house-rules",
         "strict": true
@@ -310,14 +308,14 @@
     {
       "id": "poker-hand-ranking",
       "name": "ourapps-ae/poker-hand-ranking",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "poker-odds",
       "name": "ourapps-ae/poker-odds",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "sampleBoards": 2000,
         "cacheSize": 500
@@ -327,7 +325,7 @@
     {
       "id": "holdem-rules",
       "name": "ourapps-ae/holdem-rules",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "revealAtRunout": true
       },
@@ -336,7 +334,7 @@
     {
       "id": "poker-strategy",
       "name": "ourapps-ae/poker-strategy",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "difficulty": 2,
         "aggression": 50
@@ -351,28 +349,28 @@
     {
       "id": "theme",
       "name": "ourapps-ae/theme",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "controls",
       "name": "ourapps-ae/controls",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "table-layout",
       "name": "ourapps-ae/table-layout",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "card-graphics",
       "name": "ourapps-ae/card-graphics",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "cornerStyle": "rounded",
         "cardWidth": 56
@@ -382,7 +380,7 @@
     {
       "id": "chip-graphics",
       "name": "ourapps-ae/chip-graphics",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "denominations": "casino 5000 1000 500 100 25 5 1",
         "chipColours": "casino"
@@ -392,7 +390,7 @@
     {
       "id": "sound-cues",
       "name": "ourapps-ae/sound-cues",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {
         "soundManifest": "sounds",
         "defaultMuted": false
@@ -402,7 +400,7 @@
     {
       "id": "guided-tour",
       "name": "ourapps-ae/guided-tour",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "configuration": {},
       "includedWhen": {
         "question": "lessons",
@@ -412,7 +410,7 @@
     {
       "id": "translations",
       "name": "ourapps-ae/translations",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "configuration": {},
       "includedWhen": null
     }

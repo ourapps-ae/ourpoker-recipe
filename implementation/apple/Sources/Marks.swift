@@ -38,7 +38,7 @@ struct SeatNumber: View {
 
 // The computer-player icon with a small plus in the corner.
 struct AddBotIcon: View {
+    let tint: Color
     var size: CGFloat = 24
-    @Environment(\.controlsTheme) private var theme
-    var body: some View { BadgedIcon(path: IconPath.robot, tint: Color(theme.colour.primary), badge: "plus", size: size) }
+    var body: some View { BadgedIcon(path: IconPath.robot, tint: tint, badge: "plus", size: size) }
 }

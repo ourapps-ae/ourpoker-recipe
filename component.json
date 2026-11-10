@@ -3,7 +3,7 @@
   "kind": "recipe",
   "identity": {
     "name": "ourapps-ae/ourpoker",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "sourceRevision": "19905b75dbea89fbfd424d67fe26c81aaed0e018",
     "sourceTreeDigest": "0000000000000000000000000000000000000000000000000000000000000000",
     "licenceStatus": "deferred"

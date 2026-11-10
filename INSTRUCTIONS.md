@@ -1,6 +1,6 @@
 # OurPoker recipe: instructions
 
-Package `ourapps-ae/ourpoker` 0.2.0. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts. `recipe.json` is the source of truth; this file explains how to use it.
+Package `ourapps-ae/ourpoker` 0.3.0. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts. `recipe.json` is the source of truth; this file explains how to use it.
 
 ## 1. For the agent
 
@@ -43,7 +43,7 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 
 | Answer | Components included | Settings set |
 |---|---|---|
-| `targets` contains `web` / `ios`, `macos` or `tvos` / `android` / `windows` | `web-host` / `apple-host` / `android-host` / `windows-desktop` | `ourapps-release.targets` and `apple-host.targets` get the whole list joined by spaces (apple-host 0.3.0 reads `ios`, `macos` and `tvos` from the list and ignores the other devices) |
+| `targets` contains `web` / `ios`, `macos` or `tvos` / `android` / `windows` | `web-host` / `apple-host` / `android-host` / `windows-desktop` | `ourapps-release.targets` and `apple-host.targets` get the whole list joined by single spaces, lower case (apple-host reads `ios`, `macos` and `tvos` from the list and ignores the other devices) |
 | `webAddress` | none | `web-host.webAddress`, `application.webAddress`, `server-host.allowedOrigins`, `invitations.inviteAddress` |
 | `bundleId` | none | `apple-host.bundleIdentifier`, `android-host.packageId`, `ourapps-release.bundleIdentifier`, `application.packageId` (all `app.ourapps.ourpoker` when empty) |
 | `scale` | none directly (see "Scale and profiles") | none |
@@ -61,7 +61,7 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `updates` yes | `store-update` | `application.updatesEnabled`; `storeInvitation` sets `store-update.inviteAddress` and `application.inviteAddress` |
 | `storeCredentials`, `androidSigning`, `webDeploy` | none | `ourapps-release.storeCredentials`, `.androidSigning`, `.webDeploy` |
 
-A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `apple-host` is in when `targets` contains any of `ios`, `macos`, `tvos`. `computer-players` and `poker-strategy` are out when `computerPlayers` is `none` (turn-engine 0.3.0 makes its `computer-players` requirement optional, and `make_recipe.py` asserts it). The application's files that import an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it (rule 25); files of the core that import those modules are not conditional, see INTEGRATION-GAPS.md G10.4.
+A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `apple-host` is in when `targets` contains any of `ios`, `macos`, `tvos`. `computer-players` and `poker-strategy` are out when `computerPlayers` is `none` (turn-engine's `computer-players` requirement is optional, and `make_recipe.py` asserts it). The application's files that import an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it (rule 25); files of the core that import those modules are not conditional (INTEGRATION-GAPS.md G10.4).
 
 `application.<setting>` names a setting of the recipe's own component (`component.json`). The six that change the house rules (`maximumPlayers`, `startingStack`, `levelSeconds`, `rebuysPerPlayer`, `decisionSeconds`, `computerPlayers`) are written over `rules/texas-holdem-house-rules.json` by the server when it starts, and each component is built from the result; the rules file is the one source of those numbers, and `recipe.json` does not restate any number the rules file states (`rules-settings.rulesFile` is `texas-holdem-house-rules`). `guest-identity` keeps its own defaults, which the application uses too.
 
@@ -83,7 +83,7 @@ Changing `scale` later swaps components that keep data with a migration (paper S
 
 ### Settings fixed by the recipe
 
-Names and identifiers fixed in `recipe.json`: application id `ourpoker`, bundle and package identifier `app.ourapps.ourpoker` unless `bundleId` is answered. No address is fixed: the web address, video service address and store invitation come from questions. `application.serverAddress` keeps its local default (`http://localhost:8788`): the server's address is known only after the first deploy. Never guess a domain.
+Names and identifiers fixed in `recipe.json`: application id `ourpoker`, bundle and package identifier `app.ourapps.ourpoker` unless `bundleId` is answered. No address is fixed: the web address, video service address and store invitation come from questions. `application.serverAddress` has its local default (`http://localhost:8788`): the server's address is known only after the first deploy. Never guess a domain.
 
 ## 2. For the developer
 
@@ -126,10 +126,10 @@ PY -B authoring/make_recipe.py
 PY -B authoring/draw_default_design.py
 ```
 
-- `tests/recipe.test.ts` checks consistency only: the recipe passes the ourapps catalogue validator with the components' settings and profiles; every component exists at the named version in `components/`; every setting a question or the configuration sets exists with a matching type and grammar; no secret is in `configuration`; inclusion is by `includedWhen` only; every connection uses ports and types that exist and only optional requirements stay open; every job candidate profile exists; every answer in the answer sets is allowed; the recipe restates no number of the house rules file and sets the application's copy of each answer; the totals in `INTEGRATION-GAPS.md` match its tables.
+- `tests/recipe.test.ts` checks consistency only: the recipe passes the ourapps catalogue validator with the components' settings and profiles; every component exists at the named version in `components/`; every setting a question or the configuration sets exists with a matching type and grammar; no secret is in `configuration`; inclusion is by `includedWhen` only; every connection uses ports and types that exist and only optional requirements stay open; every job candidate profile exists; every answer in the answer sets is allowed; the recipe restates no number of the house rules file and sets the application's copy of each answer; the totals in `INTEGRATION-GAPS.md` match its table; the recipe's documents carry no history wording.
 - `authoring/evaluate_recipe.py` is a reference evaluator of the evaluation rules in component-standard.md. It is used only by tests, to show the rules are complete: it turns answers into an aepm application definition and does not assemble, resolve, install or run anything. `tests/evaluate_recipe_test.py` runs it on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code.
 - `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
-- `INTEGRATION-GAPS.md` is the final status of every gap found between the components and the recipe, the decisions taken, and what is not built. Read it before assembling.
+- `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. Read it before assembling.
 
 ### What the test answer sets cover
 

@@ -170,7 +170,7 @@ export type OddsRow = {
   rank: number;
   probability: number;
   cards: OddsCard[];
-  // Rarer ways lumped together, with no cards to show; not sent any more, kept for older clients.
+  // poker-odds' flag for a row that groups rarer ways and shows no cards.
   more: boolean;
 };
 

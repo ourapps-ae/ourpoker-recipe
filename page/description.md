@@ -36,7 +36,7 @@ An agent answers them from your description and asks you only what it cannot inf
 ## What the answers choose
 
 - Devices include or leave out the web, Apple, Android and Windows hosts.
-- Lessons, video and updates each include or leave out their component. Computer players are always in the design and the answer sets their mode (none, on request or fill empty), because the turn engine requires them.
+- Lessons, video and updates each include or leave out their component. Computer players are in the design unless the answer is none; the answer sets their mode (on request or fill empty) and none leaves out computer-players and poker-strategy.
 - The scale answer chooses, per job, the cheapest candidate whose declared load covers it: small and medium use Cloudflare's free tier and LiveKit's free plan; large uses the paid Cloudflare plan and LiveKit's Ship plan. Your own hardware is the other server choice.
 - Chips, level length, rebuys, decision time and player count set the settings of the components that own them and the matching numbers of the house rules file, with no code change.
 
@@ -59,4 +59,4 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.2.0 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run (no assembler exists). The files of the application that import an optional component are installed only with it, but the application's core still imports some of them, so designs without video, lessons, updates or web are not yet buildable; the status of every gap is in `INTEGRATION-GAPS.md`.
+Version 0.3.0 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run (no assembler exists). The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.

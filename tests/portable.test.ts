@@ -163,7 +163,7 @@ test("every art file the web manifest lists exists", () => {
 test("the manifest lists every packaged file, and every artefact has a source and a unique destination", { skip: !existsSync(join(root, "component.json")) && "no component.json beside the tests" }, () => {
   const manifest = json("component.json");
   const listed = manifest.files.map((f: { path: string }) => f.path);
-  const unpackaged = new Set([".git", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "REVIEW.md"]);
+  const unpackaged = new Set([".git", ".gitignore", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "REVIEW.md"]);
   const onDisk = walk(root).filter((f) => !unpackaged.has(f.split("/")[0]));
   assert.deepEqual([...listed].sort(), onDisk.sort());
   const destinations = new Set<string>();

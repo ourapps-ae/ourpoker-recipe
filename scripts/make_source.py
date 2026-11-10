@@ -17,11 +17,11 @@ A = "ios/OurPoker/Sources/"
 K = "android/app/src/main/java/app/ourapps/ourpoker/"
 
 server = {
-    "adapter.ts": (S + "adapter.ts 1-109", "The room's lobby, join, apply, advance and view moved to turn-engine; what stays wraps its view in the poker wire view and gives it the hand text and odds."),
-    "contract.ts": (S + "contract.ts 1-257", "Wire types the four clients decode; unchanged."),
-    "directory.ts": (S + "directory.ts 1-3", "The room list class, over room-directory's createDirectoryClass (realtime-rooms 0.3.0 no longer ships one)."),
+    "adapter.ts": (S + "adapter.ts 1-109", "The room's lobby, join, apply, advance and view moved to turn-engine; the rest wraps its view in the poker wire view and gives it the hand text and odds."),
+    "contract.ts": (S + "contract.ts 1-257", "Wire types the four clients decode."),
+    "directory.ts": (S + "directory.ts 1-3", "The room list class, over room-directory's createDirectoryClass."),
     "host-settings": ("not present", "Not in this package: aepm renders components/server-host/server/host-settings.ts from server-host's settings, and index.ts imports it."),
-    "index.ts": (S + "index.ts 1-28", "Worker entry over server-host and realtime-rooms; update and video routes stay."),
+    "index.ts": (S + "index.ts 1-28", "Worker entry over server-host and realtime-rooms; with the update and video routes."),
     "parts.ts": (S + "engine.ts 9-38, 209-250, 980-1005; bot.ts 1-60", "Selects the component for each turn-engine part through its own interface (game-clock, private-views, presence, round-history, chip-ledger, level-schedule, holdem-rules, tournament, computer-players, poker-strategy) and builds each from the house rules."),
     "room.ts": (S + "room.ts 1-20", "The room class with the invitation links added to its view; it takes guest-identity's identity as `services.identity`."),
     "rules.ts": (S + "rules.ts 1-29", "Loads the house rules file, writes the design's answers over six of its values, checks it with the rules-settings checker and gives rules-settings' reader."),
@@ -69,7 +69,7 @@ apple = {
     "LiveMessage.swift": ("LiveMessage.swift 1-8", ""),
     "LobbyScreen.swift": ("LobbyScreen.swift 1-84", ""),
     "Marks.swift": ("Cards.swift 160-191, IconButtons.swift 90-115", "Legend line, application mark, lobby badge."),
-    "MediaToggles.swift": ("MediaToggles.swift 1-72", "GAP: video-calls has the session, not the toggle strip."),
+    "MediaToggles.swift": ("MediaToggles.swift 1-72", "GAP: G9.4 video-calls has the session, not the toggle strip."),
     "Model.swift": ("Model.swift 1-300", "Wire model."),
     "NameScreen.swift": ("NameScreen.swift 1-36", ""),
     "OurPokerApp.swift": ("OurPokerApp.swift 1-135", "Entry inside the apple-host's window."),
@@ -110,7 +110,7 @@ android = {
 }
 
 desktop = {
-    "package.json": ("desktop/package.json 1-21", "Name templated; electron versions unchanged."),
+    "package.json": ("desktop/package.json 1-21", "Name templated."),
     "scripts/build.cjs": ("desktop/scripts/build.cjs 1-4", ""),
     "scripts/package.cjs": ("desktop/scripts/package.cjs 1-93", "Unsigned Windows installer settings."),
     "src/configuration.cjs": ("desktop/src/main.cjs 1-12, verify.cjs", "The windows-desktop configuration document, shared by main and verify."),
@@ -158,15 +158,15 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 
 | File | Lines | Origin | Notes |
 |---|---|---|---|
-| `rules/texas-holdem-house-rules.json` | {lines("rules/texas-holdem-house-rules.json")} | rules/texas-holdem-house-rules.json 1-226 | Unchanged. |
-| `rules/texas-holdem-house-rules.md` | {lines("rules/texas-holdem-house-rules.md")} | rules/texas-holdem-house-rules.md 1-161 | Unchanged. |
+| `rules/texas-holdem-house-rules.json` | {lines("rules/texas-holdem-house-rules.json")} | rules/texas-holdem-house-rules.json 1-226 | The house rules file. |
+| `rules/texas-holdem-house-rules.md` | {lines("rules/texas-holdem-house-rules.md")} | rules/texas-holdem-house-rules.md 1-161 | The house rules in prose. |
 | `rules/texas-holdem-house-rules.schema.json` | {lines("rules/texas-holdem-house-rules.schema.json")} | new | The schema rules-settings checks the file with. |
-| `locales/strings.json` | {lines("locales/strings.json")} | i18n/strings.json 1-1472 | Unchanged: key to en, fr, de, es; the translations generator makes each platform's resources from it. |
+| `locales/strings.json` | {lines("locales/strings.json")} | i18n/strings.json 1-1472 | Key to en, fr, de, es; the translations generator makes each platform's resources from it. |
 | `locales/lessons.json` | {lines("locales/lessons.json")} | web/src/guide.ts 1-159, android ui/Guide.kt 90-105, ios Guide.swift | Lessons as data for guided-tour: ids, screens, steps naming string keys and anchors. |
 | `assets/ASSETS.json` | {lines("assets/ASSETS.json")} | new | The asset list; `tests/portable.test.ts` checks it against the files. |
 | `assets/art/`, `assets/web/art/` | 13 + 12 files | art/, web/public/art/ | Placeholder pictures (64 px squares) and the 1024 px icon; the source repository ships no other artwork. |
 | `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, myTurn and lowTime events). |
-| `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files stay with apple-host (it writes them); only the TV images are mapped. |
+| `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files belong to apple-host (it writes them); only the TV images are mapped. |
 
 ## Tests (end-to-end specs)
 

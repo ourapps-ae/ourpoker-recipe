@@ -8,11 +8,11 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 
 | File | Lines | Origin (OurPoker/recipe) | Notes |
 |---|---|---|---|
-| `implementation/server/src/adapter.ts` | 18 | server/src/adapter.ts 1-109 | The room's lobby, join, apply, advance and view moved to turn-engine; what stays wraps its view in the poker wire view and gives it the hand text and odds. |
-| `implementation/server/src/contract.ts` | 257 | server/src/contract.ts 1-257 | Wire types the four clients decode; unchanged. |
-| `implementation/server/src/directory.ts` | 6 | server/src/directory.ts 1-3 | The room list class, over room-directory's createDirectoryClass (realtime-rooms 0.3.0 no longer ships one). |
+| `implementation/server/src/adapter.ts` | 18 | server/src/adapter.ts 1-109 | The room's lobby, join, apply, advance and view moved to turn-engine; the rest wraps its view in the poker wire view and gives it the hand text and odds. |
+| `implementation/server/src/contract.ts` | 257 | server/src/contract.ts 1-257 | Wire types the four clients decode. |
+| `implementation/server/src/directory.ts` | 6 | server/src/directory.ts 1-3 | The room list class, over room-directory's createDirectoryClass. |
 | `implementation/server/src/host-settings` | - | not present | Not in this package: aepm renders components/server-host/server/host-settings.ts from server-host's settings, and index.ts imports it. |
-| `implementation/server/src/index.ts` | 28 | server/src/index.ts 1-28 | Worker entry over server-host and realtime-rooms; update and video routes stay. |
+| `implementation/server/src/index.ts` | 28 | server/src/index.ts 1-28 | Worker entry over server-host and realtime-rooms; with the update and video routes. |
 | `implementation/server/src/parts.ts` | 75 | server/src/engine.ts 9-38, 209-250, 980-1005; bot.ts 1-60 | Selects the component for each turn-engine part through its own interface (game-clock, private-views, presence, round-history, chip-ledger, level-schedule, holdem-rules, tournament, computer-players, poker-strategy) and builds each from the house rules. |
 | `implementation/server/src/room.ts` | 21 | server/src/room.ts 1-20 | The room class with the invitation links added to its view; it takes guest-identity's identity as `services.identity`. |
 | `implementation/server/src/rules.ts` | 28 | server/src/rules.ts 1-29 | Loads the house rules file, writes the design's answers over six of its values, checks it with the rules-settings checker and gives rules-settings' reader. |
@@ -70,7 +70,7 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 | `implementation/apple/Sources/LiveMessage.swift` | 8 | LiveMessage.swift 1-8 |  |
 | `implementation/apple/Sources/LobbyScreen.swift` | 84 | LobbyScreen.swift 1-84 |  |
 | `implementation/apple/Sources/Marks.swift` | 44 | Cards.swift 160-191, IconButtons.swift 90-115 | Legend line, application mark, lobby badge. |
-| `implementation/apple/Sources/MediaToggles.swift` | 57 | MediaToggles.swift 1-72 | GAP: video-calls has the session, not the toggle strip. |
+| `implementation/apple/Sources/MediaToggles.swift` | 57 | MediaToggles.swift 1-72 | GAP: G9.4 video-calls has the session, not the toggle strip. |
 | `implementation/apple/Sources/Model.swift` | 278 | Model.swift 1-300 | Wire model. |
 | `implementation/apple/Sources/NameScreen.swift` | 36 | NameScreen.swift 1-36 |  |
 | `implementation/apple/Sources/OurPokerApp.swift` | 18 | OurPokerApp.swift 1-135 | Entry inside the apple-host's window. |
@@ -119,7 +119,7 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 
 | File | Lines | Origin (OurPoker/recipe) | Notes |
 |---|---|---|---|
-| `implementation/desktop/package.json` | 19 | desktop/package.json 1-21 | Name templated; electron versions unchanged. |
+| `implementation/desktop/package.json` | 19 | desktop/package.json 1-21 | Name templated. |
 | `implementation/desktop/scripts/build.cjs` | 4 | desktop/scripts/build.cjs 1-4 |  |
 | `implementation/desktop/scripts/package.cjs` | 93 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings. |
 | `implementation/desktop/src/configuration.cjs` | 13 | desktop/src/main.cjs 1-12, verify.cjs | The windows-desktop configuration document, shared by main and verify. |
@@ -131,15 +131,15 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 
 | File | Lines | Origin | Notes |
 |---|---|---|---|
-| `rules/texas-holdem-house-rules.json` | 226 | rules/texas-holdem-house-rules.json 1-226 | Unchanged. |
-| `rules/texas-holdem-house-rules.md` | 161 | rules/texas-holdem-house-rules.md 1-161 | Unchanged. |
+| `rules/texas-holdem-house-rules.json` | 226 | rules/texas-holdem-house-rules.json 1-226 | The house rules file. |
+| `rules/texas-holdem-house-rules.md` | 161 | rules/texas-holdem-house-rules.md 1-161 | The house rules in prose. |
 | `rules/texas-holdem-house-rules.schema.json` | 98 | new | The schema rules-settings checks the file with. |
-| `locales/strings.json` | 1472 | i18n/strings.json 1-1472 | Unchanged: key to en, fr, de, es; the translations generator makes each platform's resources from it. |
+| `locales/strings.json` | 1472 | i18n/strings.json 1-1472 | Key to en, fr, de, es; the translations generator makes each platform's resources from it. |
 | `locales/lessons.json` | 248 | web/src/guide.ts 1-159, android ui/Guide.kt 90-105, ios Guide.swift | Lessons as data for guided-tour: ids, screens, steps naming string keys and anchors. |
 | `assets/ASSETS.json` | 426 | new | The asset list; `tests/portable.test.ts` checks it against the files. |
 | `assets/art/`, `assets/web/art/` | 13 + 12 files | art/, web/public/art/ | Placeholder pictures (64 px squares) and the 1024 px icon; the source repository ships no other artwork. |
 | `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, myTurn and lowTime events). |
-| `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files stay with apple-host (it writes them); only the TV images are mapped. |
+| `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files belong to apple-host (it writes them); only the TV images are mapped. |
 
 ## Tests (end-to-end specs)
 
@@ -153,7 +153,7 @@ Copied from the source and mapped back to the application layout by the artefact
 | `tests/e2e/apple/*` (6) | 339 | ios/OurPokerTests/{Contract,Session,Guide,ChallengeLayout}Tests.swift, OurPokerUITests/HomeButtonsUITests.swift, VerificationSupport/ServerAddress.swift |
 | `tests/e2e/android/*` (3) | 190 | android app/src/test FixturesTest.kt, SoundSettingTest.kt; androidTest FixtureScreenTest.kt (strings looked up by name) |
 | `tests/fixtures/*.json` (15) | 3575 | server/fixtures/* |
-| `tests/portable.test.ts` | 212 | new |
+| `tests/portable.test.ts` | 213 | new |
 | `examples/configuration.ts` | 46 | new |
 
 ## Moved to components

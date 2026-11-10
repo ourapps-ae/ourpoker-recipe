@@ -92,7 +92,7 @@ test("recipe.json passes the ourapps catalogue validator, with the components' s
   const result = validateRecipe(recipe, validatorContext());
   assert.ok(result.ok, result.ok ? "" : result.errors.join("\n"));
   assert.equal(recipe.name, "ourapps-ae/ourpoker");
-  assert.equal(recipe.version, "0.2.0");
+  assert.equal(recipe.version, "0.3.0");
   assert.equal(recipe.components.length, 39);
   assert.equal(recipe.questions.length, 24);
 });
@@ -408,7 +408,7 @@ test("computer players are a choice mapped to the component's mode; video and up
   assert.deepEqual([q.type, q.options, q.default], ["choice", ["none", "on-request", "fill-empty"], "on-request"]);
   assert.equal(q.effects[0].sets["computer-players.mode"], "$answer");
   const all = everyQuestionEffect().map(([, target]) => target);
-  for (const gone of ["computer-players.enabled", "computer-players.fillEmptySeats", "computer-players.takeOverAbsent", "video-calls.enabled", "store-update.enabled"]) assert.ok(!all.includes(gone), `${gone} is no longer set`);
+  for (const gone of ["computer-players.enabled", "computer-players.fillEmptySeats", "computer-players.takeOverAbsent", "video-calls.enabled", "store-update.enabled"]) assert.ok(!all.includes(gone), `${gone} is not set`);
   assert.equal(byId.get("computer-players")!.configuration.names, "Robin Sam Alex Jordan Casey Morgan Taylor Riley");
   assert.equal(manifests.get("computer-players")!.collect.find((s: Obj) => s.id === "mode").default, "on-request");
 });
@@ -433,44 +433,42 @@ test("artefact `component` marks name only components the recipe can leave out",
   for (const a of marked) assert.ok(optional.has(a.component), `${a.source}: ${a.component} is not conditional`);
 });
 
-test("INTEGRATION-GAPS.md totals match its tables, every closed row says what closed it, and nothing is left undecided", () => {
+test("INTEGRATION-GAPS.md lists only open and deferred items, and its totals match its table", () => {
   const text = readFileSync(join(root, "INTEGRATION-GAPS.md"), "utf8");
+  assert.ok(text.startsWith("# OurPoker integration status"));
   const rows = text.split("\n").filter((line) => /^\| G\d+\.\d+ \|/.test(line));
   const SEVERITIES = ["blocks assembly", "needs adapter", "cosmetic"];
-  const STATUSES = ["closed", "deferred", "open"];
-  const status: Record<string, number> = { closed: 0, deferred: 0, open: 0 };
+  const STATUSES = ["deferred", "open"];
+  const status: Record<string, number> = { deferred: 0, open: 0 };
   const severity: Record<string, number> = { "blocks assembly": 0, "needs adapter": 0, cosmetic: 0 };
-  const perSection: Record<string, Record<string, number>> = {};
   const ids = new Set<string>();
   for (const row of rows) {
     const cells = row.split(/(?<!\\)\|/).map((c) => c.trim());
     assert.equal(cells.length, 10, `row has 8 columns: ${row.slice(0, 80)}`);
-    const [id, sev, state, note, owner] = [cells[1], cells[5], cells[6], cells[7], cells[8]];
+    const [id, sev, state, remains, owner] = [cells[1], cells[5], cells[6], cells[7], cells[8]];
     assert.ok(SEVERITIES.includes(sev), `${id}: unknown severity ${sev}`);
-    assert.ok(STATUSES.includes(state), `${id}: unknown status ${state} (decision-needed is not allowed: decisions are taken)`);
+    assert.ok(STATUSES.includes(state), `${id}: status ${state} is not open or deferred`);
     assert.ok(!ids.has(id), `${id} is used twice`);
     ids.add(id);
-    assert.ok(note.length > 0 && owner.length > 0, `${id}: closed-by note and component to change are filled`);
-    if (state === "closed") assert.match(note, /\d+\.\d+\.\d+|no action needed|recipe|application/, `${id}: a closed row names the version, the recipe or the application that closed it`);
-    else severity[sev] += 1;
+    assert.ok(remains.length > 0 && owner.length > 0, `${id}: what remains and the component to change are filled`);
+    severity[sev] += 1;
     status[state] += 1;
-    const section = id.slice(1).split(".")[0];
-    perSection[section] ??= { closed: 0, deferred: 0, open: 0 };
-    perSection[section][state] += 1;
   }
-  const total = text.match(/Total (\d+) gaps: closed (\d+), deferred (\d+), open (\d+), decision-needed (\d+)\./);
+  const total = text.match(/Total (\d+) open items: open (\d+), deferred (\d+)\./);
   assert.ok(total, "the Total line is present");
-  assert.deepEqual([rows.length, status.closed, status.deferred, status.open, 0], total.slice(1).map(Number));
+  assert.deepEqual([rows.length, status.open, status.deferred], total.slice(1).map(Number));
   const bySeverity = text.match(/blocks assembly (\d+), needs adapter (\d+), cosmetic (\d+)\./);
   assert.ok(bySeverity, "the severity line is present");
   assert.deepEqual([severity["blocks assembly"], severity["needs adapter"], severity.cosmetic], bySeverity.slice(1).map(Number));
-  let sections = 0;
-  for (const line of text.split("\n").filter((l) => /^\| \d+ \| \d+ \| \d+ \| \d+ \| \d+ \|$/.test(l))) {
-    const [section, closed, deferred, open, decision] = line.split("|").slice(1, 6).map((c) => c.trim());
-    assert.deepEqual([perSection[section].closed, perSection[section].deferred, perSection[section].open, 0], [closed, deferred, open, decision].map(Number), `section ${section}`);
-    sections += 1;
-  }
-  assert.equal(sections, Object.keys(perSection).length, "every section has a count row");
-  for (const heading of ["## Decisions taken", "## Final status", "## What is not specified or built"]) assert.ok(text.includes(heading), heading);
+  for (const heading of ["## Open items", "## Decisions", "## What is not specified or built"]) assert.ok(text.includes(heading), heading);
   assert.match(text, /Nothing here runs a recipe/);
+});
+
+test("the recipe's documents state what is: no history and no compatibility wording", () => {
+  const documents = ["AGENTS.md", "CONTRACT.md", "SOURCE.md", "INTEGRATION-GAPS.md", "REVIEW.md", "INSTRUCTIONS.md", "page/description.md", ".opencode/knowledge/00-index.md", ".opencode/knowledge/workflow.md"];
+  const banned = /backward|compatib|legacy|no longer|no more|formerly|previously|unchanged|retained|still works|closed by|since \d|first version|\bolder |not sent any more/i;
+  for (const file of documents) {
+    const text = readFileSync(join(root, file), "utf8");
+    for (const [index, line] of text.split("\n").entries()) assert.ok(!banned.test(line), `${file}:${index + 1}: ${line.slice(0, 100)}`);
+  }
 });

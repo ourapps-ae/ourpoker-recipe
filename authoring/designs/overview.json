@@ -10,7 +10,7 @@
       "name": "Delivery and hosts (6 components)",
       "kind": "application",
       "status": "example",
-      "revision": "0.2.0",
+      "revision": "0.3.0",
       "ports": [
         {
           "id": "web-host-theme",
@@ -70,7 +70,7 @@
       "name": "Rooms, people and sessions (9 components)",
       "kind": "application",
       "status": "example",
-      "revision": "0.2.0",
+      "revision": "0.3.0",
       "ports": [
         {
           "id": "realtime-rooms-session",
@@ -128,7 +128,7 @@
       "name": "Turn-based game framework (11 components)",
       "kind": "application",
       "status": "example",
-      "revision": "0.2.0",
+      "revision": "0.3.0",
       "ports": [
         {
           "id": "turn-engine-game-rules",
@@ -220,7 +220,7 @@
       "name": "Poker (4 components)",
       "kind": "application",
       "status": "example",
-      "revision": "0.2.0",
+      "revision": "0.3.0",
       "ports": [
         {
           "id": "holdem-rules-game-rules",
@@ -306,7 +306,7 @@
       "name": "Interface and presentation (8 components)",
       "kind": "application",
       "status": "example",
-      "revision": "0.2.0",
+      "revision": "0.3.0",
       "ports": [
         {
           "id": "theme-theme",
