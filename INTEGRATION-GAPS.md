@@ -1,4 +1,4 @@
-# OurPoker integration status (recipe 0.4.0)
+# OurPoker integration status (recipe 0.4.1)
 
 Open items between the 39 components and the recipe, and the decisions that shape it. Status is `open` (work remains, owner named) or `deferred` (consciously left, with the reason). Nothing here is waiting for a decision: the decisions are under "Decisions".
 
