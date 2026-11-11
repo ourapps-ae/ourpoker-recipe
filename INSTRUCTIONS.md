@@ -15,15 +15,15 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 1 | `targets` | set of `web ios android macos windows tvos` | always | all six | "phones" is ios and android; "television" is tvos; "computers" is macos and windows; "browser" is web | no device is named |
 | 2 | `webAddress` | text, an https address, or `http://localhost` with a port | `'web' in targets` | `http://localhost:5173` | the developer's own address | the web version is to be served somewhere other than this machine (the server refuses a plain http origin other than localhost) |
 | 3 | `bundleId` | text, for example `com.yourname.poker` | always | empty: the application derives `app.ourapps.ourpoker` | a name the developer gives | never |
-| 4 | `scale` | `small` `medium` `large` | always | small | the people using it, not the seats at one table: a dozen friends once a week is small; a club or a few dozen playing daily is medium; 100 or more playing continuously is large | the group size is not stated |
+| 4 | `scale` | `small` `medium` `large` | always | small | the most people playing at the same time, not the seats at one table: up to 10 is small (9 friends); 11 to 100 is medium (a dozen or 15 friends, a club); 101 to 1,000 is large (a company event) | the group size is not stated |
 | 5 | `languages` | set of `en fr de es` | always | all four | the languages named | never |
-| 6 | `look` | `night` `lounge` | always | night | dark or warm style words | never |
+| 6 | `look` | `night` `lounge` | always | night | dark or warm style words: the look of the whole application on every device (both rooms, every screen, the felt and the card backs) | never |
 | 7 | `players` | integer 2 to 9 | always | 9 | seats at one table; the game has two tables (rooms Casino and Home, both in the room list), so a larger group splits across them: about a dozen is 9 (or 6 for two even tables); once a game runs, newcomers watch | never |
 | 8 | `startingChips` | integer 100 to 1000000 | always | 5000 | the number named | never |
 | 9 | `levelSeconds` | integer 60 to 3600 | always | 600 | minutes converted to seconds | never |
 | 10 | `rebuys` | integer 0 to 5 | always | 1 (until level 3) | "no rebuys" is 0 | never |
 | 11 | `decisionSeconds` | integer 5 to 300 | always | 30 (then check or fold) | a pace named | never |
-| 12 | `computerPlayers` | `none` `on-request` `fill-empty` | always | on-request | "people only" is none; "full tables" is fill-empty | never |
+| 12 | `computerPlayers` | `none` `on-request` `fill-empty` | always | on-request | "people only" is none; "full tables" or playing alone against the computer is fill-empty (one person presses Start and computers take every empty seat) | never |
 | 13 | `video` | yes or no | always | yes | "no video", or everyone in one room, is no | never |
 | 14 | `videoServiceUrl` | text, an address (empty to set it later) | `video` | empty | the developer's LiveKit address | video is on |
 | 15 | `videoKey` | secret reference name | `video && publish` | none | never a value | video is on and builds are published (locally the server reads `LIVEKIT_*` from its environment) |
@@ -50,13 +50,13 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `bundleId` | none | `apple-host.bundleIdentifier`, `android-host.packageId`, `ourapps-release.bundleIdentifier`, `application.packageId` (all `app.ourapps.ourpoker` when empty) |
 | `scale` | none directly (see "Scale and profiles") | none |
 | `languages` | none | `translations.languages` and `application.languages`, the chosen languages joined by spaces (for example `en fr`): the web client offers only these, and the Apple and Android projects carry only these languages' text |
-| `look` | none | `theme.themeName`; `card-graphics.backStyle` (night: stripes, lounge: plain) |
+| `look` | none | `theme.themeName`, `application.look` (the theme of both rooms and every screen on every client); `card-graphics.backStyle`, `application.cardBack` (night: striped card backs, lounge: plain) |
 | `players` | none | `seating.maximumPlayers`, `holdem-rules.seats`, `chip-ledger.seats`, `room-directory.roomCapacity`, `application.maximumPlayers` |
 | `startingChips` | none | `tournament.startingStack`, `tournament.rebuyStack`, `application.startingStack` (not chip-ledger's `startingStack`: the tournament issues the chips) |
 | `levelSeconds` | none | `level-schedule.levelSeconds`, `application.levelSeconds` |
 | `rebuys` | none | `tournament.rebuysPerPlayer`, `application.rebuysPerPlayer` (0 removes rebuy offers) |
 | `decisionSeconds` | none | `game-clock.decisionSeconds`, `turn-engine.decisionSeconds`, `application.decisionSeconds` |
-| `computerPlayers` | `none` leaves out `computer-players` and `poker-strategy` (turn-engine's requirement is optional) | `computer-players.mode`, `application.computerPlayers` |
+| `computerPlayers` | `none` leaves out `computer-players` and `poker-strategy` (turn-engine's requirement is optional) | `computer-players.mode`, `application.computerPlayers`; with `fill-empty` one person may press Start alone and computers take every empty seat |
 | `video` yes | `video-calls` | none; `videoServiceUrl` sets `video-calls.serviceUrl`; `videoKey` and `videoSecret` set `video-calls.keyReference` and `video-calls.secretReference` |
 | `lessons` yes | `guided-tour` | none |
 | `server` | none | none directly: it restricts the `server` and `realtime` jobs (see "Scale and profiles"); `hostingAccount` sets `server-host.accountReference` |
@@ -77,11 +77,11 @@ The `scale` answer picks a band; the band's load (`concurrentPeople`, `requestsP
 
 | Band | People at once | Requests a day | Stored MB | `server` job (Cloudflare answered) | `realtime` job | `video` job |
 |---|---|---|---|---|---|---|
-| small | 10 | 2,000 | 100 | `cloudflare-free` | `free` | `free` |
-| medium | 100 | 50,000 | 1,000 | `cloudflare-free` | `free` | `free` (covers 100 at once exactly) |
-| large | 1,000 | 1,000,000 | 10,000 | `cloudflare-paid` | `paid` | `paid` (1,000 at once; `scale` covers 5,000) |
+| small: up to 10 at the same time (9 friends) | 10 | 2,000 | 100 | `cloudflare-free` | `free` | `free` |
+| medium: 11 to 100 (12 or 15 friends, a club) | 100 | 50,000 | 1,000 | `cloudflare-free` | `free` | `free` (covers 100 at once exactly) |
+| large: 101 to 1,000 (a company event) | 1,000 | 1,000,000 | 10,000 | `cloudflare-paid` | `paid` | `paid` (1,000 at once; `scale` covers 5,000) |
 
-With `server` = `own-hardware` the `server` and `realtime` jobs resolve to the `own-hardware` profiles at every band (no cost, no declared limits).
+With `server` = `own-hardware` the `server` and `realtime` jobs resolve to the `own-hardware` profiles at every band (no cost, no declared limits): the scale then changes only the video plan, or nothing but the record in the design when video is off.
 
 Changing `scale` later swaps components that keep data with a migration (each such component's `migration.json`); do not rebuild from scratch.
 
@@ -205,7 +205,7 @@ npm run typecheck
 npm run dev              # http://localhost:5173; or `npm run build` then `npx vite preview --port 5173`
 ```
 
-Open http://localhost:5173. The web client calls the design's `serverAddress` (default `http://localhost:8788`); `VITE_SERVER=<address> npm run build` builds it against another server. With video in the design the server reads `LIVEKIT_URL`, `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET` from its environment (a LiveKit account); without them every other part works and video stays off.
+Open the address Vite prints (`http://localhost:5173`, or the next free port when that one is taken); the server accepts the web client from any localhost or 127.0.0.1 port. The web client calls the design's `serverAddress` (default `http://localhost:8788`); `VITE_SERVER=<address> npm run build` builds it against another server. With video in the design the server reads `LIVEKIT_URL`, `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET` from its environment (a LiveKit account); without them every other part works and video stays off.
 
 ### Own hardware
 
@@ -293,7 +293,7 @@ PY authoring/draw_default_design.py
 - `tests/evaluate_recipe_test.py` runs aepm's evaluator (`aepm.recipe`, the same code as `aepm design`) on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code, and validates each design with aepm's definition validator. It evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination with aepm's CEL subset and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `OURAPPS`.
 - `tests/conditional_artefacts_test.py` and `authoring/check_conditional_artefacts.py` check, for every answer set, that the files aepm installs reach no component the design leaves out, that every stand-in replaces a marked module at its destination, and that every relative import of an installed file is installed.
 - `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
-- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `browser-only-no-extras`, `book-club`, `native-no-lessons`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with Gradle where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm.
+- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with Gradle where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm.
 - `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. 
 
 ### What the test answer sets cover
@@ -312,6 +312,8 @@ PY authoring/draw_default_design.py
 | `no-computers` | `web` and `android`; computer players none | `computer-players.mode` none |
 | `web-own-hardware` | `web` only; `own-hardware`; `en`, `fr`; computer players none; no video or lessons | a web and Node server design with every optional module replaced by its stand-in |
 | `native-no-lessons` | `ios`, `android`, `tvos`; `en`, `fr`; no lessons; updates on, with an invitation | native clients with video and updates and the lessons' stand-ins |
+| `fill-empty-own-hardware` | `web`; `en`; no video or lessons; own hardware; fill-empty; 8 players | one person starts alone and computers fill the table |
+| `lounge-web-ios` | `web`, `ios`; medium; `en`, `fr`; lounge; 8 players; fill-empty; no video; own hardware | the lounge look on web and iPhone |
 | `local-web` | only `targets` `web`, `scale` small, `languages` `en`, `video` no, `server` `own-hardware` | the shortest answers for a local web and Node design: no reference is asked |
 | `windows-only` | `windows` only; `own-hardware`; no video; a deployed server address | Windows alone keeps `web-host`, whose web project the Windows build packs |
 

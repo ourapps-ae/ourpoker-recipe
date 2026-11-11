@@ -1,7 +1,7 @@
 import SwiftUI
 
-// One look per room: a theme from the theme component and a scene picture behind it (art/scene-<room>-back.jpg)
-// with figures in front (scene-<room>-front.png). The art is this application's; the drawing is the theme's.
+// Both rooms wear the design's look (ApplicationSettings.look, a theme of the theme component). A scene picture added to the
+// Art folder (scene-<room>-back.jpg, scene-<room>-front.png) is drawn behind and in front; the recipe ships none.
 
 // Artwork from the bundle's Art folder (a folder reference, so the directory survives), or nil when
 // the file is absent. Cached: the table asks for the same pictures on every frame.
@@ -50,8 +50,8 @@ struct RoomLook {
 }
 
 private let looks: [String: RoomLook] = [
-    "casino": RoomLook(id: "casino", theme: .named("night"), anchor: 0.5, fronts: [SceneFront(at: .bottomRight, h: 0.68, maxW: 1)]),
-    "home": RoomLook(id: "home", theme: .named("lounge"), anchor: 1, fronts: [SceneFront(at: .bottomRight, h: 0.6, maxW: 1)]),
+    "casino": RoomLook(id: "casino", theme: .named(ApplicationSettings.look), anchor: 0.5, fronts: [SceneFront(at: .bottomRight, h: 0.68, maxW: 1)]),
+    "home": RoomLook(id: "home", theme: .named(ApplicationSettings.look), anchor: 1, fronts: [SceneFront(at: .bottomRight, h: 0.6, maxW: 1)]),
 ]
 
 func themeFor(_ roomId: String?) -> RoomLook { looks[roomId ?? ""] ?? looks["casino"]! }
@@ -77,8 +77,9 @@ extension EnvironmentValues {
 // The styles every screen reads from the environment: the controls' and the cards' look and the chips'.
 extension View {
     func pokerStyles() -> some View {
-        let night = ThemeSet.named("night")
-        let cards = CardStyle(colours: night, artTheme: "casino", image: { Art.cardImage($0) }, rankLabel: { "TJQKA".contains($0) ? L("rank_\($0)") : String($0) })
-        return self.controlsTheme(night).cardStyle(cards).chipStyle(ChipStyle())
+        let theme = ThemeSet.named(ApplicationSettings.look)
+        let settings = CardSettings(backStyle: BackStyle(rawValue: ApplicationSettings.cardBack) ?? .stripes)
+        let cards = CardStyle(settings: settings, colours: theme, artTheme: "casino", image: { Art.cardImage($0) }, rankLabel: { "TJQKA".contains($0) ? L("rank_\($0)") : String($0) })
+        return self.controlsTheme(theme).cardStyle(cards).chipStyle(ChipStyle())
     }
 }

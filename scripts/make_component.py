@@ -61,6 +61,9 @@ COLLECT = [
     ("rebuysPerPlayer", "integer", "integer", 1),
     ("decisionSeconds", "integer", "integer", 30),
     ("computerPlayers", "string", "slug", "on-request"),
+    # The look answer (a theme name) and its card back, for every client: both rooms and every screen.
+    ("look", "string", "slug", "night"),
+    ("cardBack", "string", "identifier", "stripes"),
     # The languages answer, space-separated: the native projects carry only these.
     ("languages", "string", "label", "en fr de es"),
 ]

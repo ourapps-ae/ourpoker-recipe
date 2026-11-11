@@ -432,7 +432,7 @@
     "bands": [
       {
         "id": "small",
-        "label": "small: fewer than 10 people, occasional use",
+        "label": "small: up to 10 people at the same time",
         "load": {
           "concurrentPeople": 10,
           "requestsPerDay": 2000,
@@ -441,7 +441,7 @@
       },
       {
         "id": "medium",
-        "label": "medium: up to 100 people, daily use",
+        "label": "medium: 11 to 100 people at the same time",
         "load": {
           "concurrentPeople": 100,
           "requestsPerDay": 50000,
@@ -450,7 +450,7 @@
       },
       {
         "id": "large",
-        "label": "large: 100 or more people, continuous use",
+        "label": "large: 101 to 1,000 people at the same time",
         "load": {
           "concurrentPeople": 1000,
           "requestsPerDay": 1000000,
@@ -527,8 +527,8 @@
     },
     {
       "id": "scale",
-      "ask": "How many people will use it, and how often?",
-      "askAgent": "Choose from the number of people using it and how often, not the seats at one table: a dozen friends meeting weekly is small; a club or a few dozen people playing daily is medium; 100 or more people playing continuously is large.",
+      "ask": "How many people will play at the same time, at most?",
+      "askAgent": "Count people at the same time, not seats at one table: up to 10 is small (9 friends); 11 to 100 is medium (a dozen or 15 friends, a club); over 100 is large. With own-hardware it changes only the video plan, or nothing but the record when video is off.",
       "type": "choice",
       "options": [
         "small",
@@ -566,8 +566,8 @@
     },
     {
       "id": "look",
-      "ask": "Which look should the game have?",
-      "askAgent": "Pick night (dark) or lounge (warm) from any style the request gives; otherwise keep night.",
+      "ask": "Which look should the game have: night (dark green felt, gold, striped card backs) or lounge (warm brown, plain card backs)?",
+      "askAgent": "The look of the whole application on every device: both rooms, every screen, the felt and the card backs. Pick night (dark) or lounge (warm) from any style the request gives; otherwise keep night.",
       "type": "choice",
       "options": [
         "night",
@@ -579,6 +579,13 @@
           "sets": {
             "theme.themeName": "$answer",
             "card-graphics.backStyle": {
+              "map": {
+                "night": "stripes",
+                "lounge": "plain"
+              }
+            },
+            "application.look": "$answer",
+            "application.cardBack": {
               "map": {
                 "night": "stripes",
                 "lounge": "plain"
@@ -680,8 +687,8 @@
     },
     {
       "id": "computerPlayers",
-      "ask": "Should computer players be available? none: never; on-request: a person adds one and one plays for someone who is away; fill-empty: also fills every empty seat when the game starts.",
-      "askAgent": "on-request unless the request says people only (none) or asks for full tables (fill-empty).",
+      "ask": "Computer players? none: never; on-request: a person adds them, and one plays for anyone away; fill-empty: as on-request, and when one person (or more) presses Start, computers take every empty seat.",
+      "askAgent": "on-request unless the request says people only (none) or asks for full tables or playing alone against the computer (fill-empty: one person can press Start alone and the table fills).",
       "type": "choice",
       "options": [
         "none",
@@ -1937,6 +1944,41 @@
           "languages": [
             "en"
           ],
+          "video": false,
+          "server": "own-hardware"
+        }
+      },
+      {
+        "id": "fill-empty-own-hardware",
+        "answers": {
+          "targets": [
+            "web"
+          ],
+          "languages": [
+            "en"
+          ],
+          "video": false,
+          "lessons": false,
+          "server": "own-hardware",
+          "computerPlayers": "fill-empty",
+          "players": 8
+        }
+      },
+      {
+        "id": "lounge-web-ios",
+        "answers": {
+          "targets": [
+            "web",
+            "ios"
+          ],
+          "scale": "medium",
+          "languages": [
+            "en",
+            "fr"
+          ],
+          "look": "lounge",
+          "players": 8,
+          "computerPlayers": "fill-empty",
           "video": false,
           "server": "own-hardware"
         }

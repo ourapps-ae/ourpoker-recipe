@@ -1,14 +1,15 @@
 import SwiftUI
 
-// The colours the screens draw with. Values are the theme component's night tokens (components/theme).
+// The colours the screens draw with: the tokens of the design's look (ApplicationSettings.look, a theme of the theme component).
 enum Palette {
-    static let gold = Color(red: 0.88, green: 0.70, blue: 0.35)
-    static let table = Color(red: 0.07, green: 0.04, blue: 0.06)
+    private static let look = ThemeSet.named(ApplicationSettings.look)
+    static let gold = Color(look.colour.primary)
+    static let table = Color(look.colour.background)
     static let surface = Color(red: 0.15, green: 0.14, blue: 0.12)
-    static let cardFace = Color(red: 0.965, green: 0.945, blue: 0.894)
-    static let cardRed = Color(red: 0.75, green: 0.15, blue: 0.18)
-    static let ink = Color(red: 0.11, green: 0.10, blue: 0.09)
-    static let feltEdge = Color(red: 0.29, green: 0.18, blue: 0.11)
-    static let danger = Color(red: 1, green: 0.42, blue: 0.42)
-    static let good = Color(red: 0.22, green: 0.71, blue: 0.29)
+    static let cardFace = Color(look.colour.paper)
+    static let cardRed = Color(look.colour.paperAccent)
+    static let ink = Color(look.colour.onPrimary)
+    static let feltEdge = Color(look.colour.tableEdge)
+    static let danger = Color(look.colour.danger)
+    static let good = Color(look.colour.good)
 }

@@ -144,6 +144,17 @@ EXPECTED["local-web"] = dict(
               "ourapps-release": {"targets": "web", "webDeploy": None, "storeCredentials": None},
               "application": {"inviteAddress": "http://localhost:5173", "serverAddress": "http://localhost:8788"}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
+EXPECTED["fill-empty-own-hardware"] = dict(
+    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
+    settings={"computer-players": {"mode": "fill-empty"}, "application": {"computerPlayers": "fill-empty", "maximumPlayers": 8, "look": "night", "cardBack": "stripes"},
+              "seating": {"maximumPlayers": 8}, "server-host": {"provider": "own-hardware"}},
+    selections={"server": "own-hardware", "realtime": "own-hardware"})
+# The second dry run's answers: the lounge look reaches the theme, the card backs and the application.
+EXPECTED["lounge-web-ios"] = dict(
+    out={"android-host", "windows-desktop", "store-update", "video-calls"},
+    settings={"theme": {"themeName": "lounge"}, "card-graphics": {"backStyle": "plain"}, "application": {"look": "lounge", "cardBack": "plain", "computerPlayers": "fill-empty", "maximumPlayers": 8},
+              "apple-host": {"targets": "web ios"}, "translations": {"languages": "en fr"}},
+    selections={"server": "own-hardware", "realtime": "own-hardware"})
 EXPECTED["web-own-hardware"] = dict(
     out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
     settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en fr"},

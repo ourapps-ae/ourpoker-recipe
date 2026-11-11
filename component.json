@@ -2099,6 +2099,22 @@
       "type": "string"
     },
     {
+      "default": "night",
+      "grammar": "slug",
+      "id": "look",
+      "required": true,
+      "secret": false,
+      "type": "string"
+    },
+    {
+      "default": "stripes",
+      "grammar": "identifier",
+      "id": "cardBack",
+      "required": true,
+      "secret": false,
+      "type": "string"
+    },
+    {
       "default": "en fr de es",
       "grammar": "label",
       "id": "languages",

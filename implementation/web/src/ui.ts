@@ -8,6 +8,7 @@ import { pileEl as drawPile } from "../../components/chip-graphics/web/chips";
 import { PLACED } from "../../components/table-layout/web/placed-seats";
 import { clockwiseTarget, relativeSeat, ringPoint, seatAngle, tableCardWidth } from "../../components/table-layout/web/layout";
 import { L } from "./i18n";
+import { look } from "./configuration";
 
 export { h, icon, mmss, PLACED, clockwiseTarget, relativeSeat, ringPoint, seatAngle, tableCardWidth };
 export type { IconName };
@@ -41,7 +42,7 @@ const rankText = (rank: string) => L(`rank_${rank}`);
 
 // A playing card at `width` px: null is face down.
 export function cardEl(code: string | null, width: number, opts: { dim?: boolean; onClick?: () => void; tappable?: boolean } = {}): HTMLElement {
-  return drawCard(code, { width, theme: cardTheme, artFor, rankLabel: rankText, ...opts });
+  return drawCard(code, { width, theme: cardTheme, artFor, rankLabel: rankText, settings: { backStyle: look.cardBack }, ...opts });
 }
 
 // A pile of chips for an amount; `size` is the chip diameter in px.

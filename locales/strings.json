@@ -450,16 +450,16 @@
     "es": "El nombre debe tener de 1 a 20 caracteres simples y no estar ya en uso."
   },
   "err_nameTaken": {
-    "en": "That name is in use at this table. Choose another name.",
-    "fr": "Ce nom est déjà utilisé à cette table. Choisissez-en un autre.",
-    "de": "Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen Namen.",
-    "es": "Ese nombre ya se usa en esta mesa. Elige otro nombre."
+    "en": "That name is in use at this table. Choose another name, or wait: a seat left by a closed app is freed one minute after it closed while the table waits, or when the game ends.",
+    "fr": "Ce nom est déjà utilisé à cette table. Choisissez-en un autre, ou attendez : une place laissée par une appli fermée se libère une minute après sa fermeture tant que la table attend, ou à la fin de la partie.",
+    "de": "Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen oder warte: Ein Platz, den eine geschlossene App hinterlässt, wird eine Minute nach dem Schließen frei, solange der Tisch wartet, oder am Ende des Spiels.",
+    "es": "Ese nombre ya se usa en esta mesa. Elige otro o espera: un asiento que deja una app cerrada se libera un minuto después de cerrarla mientras la mesa espera, o al terminar la partida."
   },
   "room_name_taken": {
-    "en": "Your name is in use at this table",
-    "fr": "Votre nom est déjà utilisé à cette table",
-    "de": "Dein Name wird an diesem Tisch schon verwendet",
-    "es": "Tu nombre ya se usa en esta mesa"
+    "en": "Your name is in use at this table. A seat left by a closed app is freed one minute after it closed while the table waits, or when the game ends.",
+    "fr": "Votre nom est déjà utilisé à cette table. Une place laissée par une appli fermée se libère une minute après sa fermeture tant que la table attend, ou à la fin de la partie.",
+    "de": "Dein Name wird an diesem Tisch schon verwendet. Ein Platz, den eine geschlossene App hinterlässt, wird eine Minute nach dem Schließen frei, solange der Tisch wartet, oder am Ende des Spiels.",
+    "es": "Tu nombre ya se usa en esta mesa. Un asiento que deja una app cerrada se libera un minuto después de cerrarla mientras la mesa espera, o al terminar la partida."
   },
   "err_roomFull": {
     "en": "The room is full.",
@@ -850,6 +850,12 @@
     "fr": "N'importe qui peut lancer la partie.",
     "de": "Jeder kann das Spiel starten.",
     "es": "Cualquiera puede empezar la partida."
+  },
+  "p_lobbyFill": {
+    "en": "Start the game: computer players take the {n} empty seats.",
+    "fr": "Lancez la partie : des joueurs ordinateur prennent les {n} places libres.",
+    "de": "Starte das Spiel: Computerspieler nehmen die {n} freien Plätze ein.",
+    "es": "Empieza la partida: jugadores de ordenador ocupan los {n} asientos libres."
   },
   "p_champion": {
     "en": "{name} wins the tournament.",

@@ -75,8 +75,8 @@
     <string name="table_reset">Your seat is gone. The table was reset or you were away too long.</string>
     <string name="network_error">Cannot reach the server.</string>
     <string name="err_badName">Name must be 1 to 20 plain characters and not already taken.</string>
-    <string name="err_nameTaken">That name is in use at this table. Choose another name.</string>
-    <string name="room_name_taken">Your name is in use at this table</string>
+    <string name="err_nameTaken">That name is in use at this table. Choose another name, or wait: a seat left by a closed app is freed one minute after it closed while the table waits, or when the game ends.</string>
+    <string name="room_name_taken">Your name is in use at this table. A seat left by a closed app is freed one minute after it closed while the table waits, or when the game ends.</string>
     <string name="err_roomFull">The room is full.</string>
     <string name="err_staleVersion">The table has changed.</string>
     <string name="err_notYourTurn">It is not your turn.</string>
@@ -142,6 +142,7 @@
     <string name="p_lobbyWaiting">Waiting for %1$s more players.</string>
     <string name="p_lobbyWaitingOne">Waiting for %1$s more player.</string>
     <string name="p_lobbyReady">Anyone can start the game.</string>
+    <string name="p_lobbyFill">Start the game: computer players take the %1$s empty seats.</string>
     <string name="p_champion">%1$s wins the tournament.</string>
     <string name="p_completedTie">The tournament is over.</string>
     <string name="p_cancelled">The game was ended. No winner.</string>

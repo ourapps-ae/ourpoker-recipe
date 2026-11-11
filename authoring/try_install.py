@@ -20,7 +20,7 @@ passed. Then, per answers: evaluates the design with aepm's evaluator (aepm.reci
 Usage (from the recipe folder; python 3.12, node 26.5.0, Chrome):
   PYTHONPATH=<aepm checkout> python3.12 -B authoring/try_install.py [ANSWERS ...] [--components DIR] [--work DIR] [--chrome PATH]
 ANSWERS is an answer-set id of recipe.json (`default` for its default answers) or a path to an answers JSON file;
-without ANSWERS: default, browser-only-no-extras, book-club and native-no-lessons. The work folder (default: a new temporary folder) keeps
+without ANSWERS: default, local-web, fill-empty-own-hardware and lounge-web-ios. The work folder (default: a new temporary folder) keeps
 the store, identities, installed applications and logs; report.json there holds every result. Exit status 0 when every step passed.
 """
 import argparse
@@ -46,7 +46,7 @@ import recipe_world  # noqa: E402
 from aepm.trust import publish_release, publish_review  # noqa: E402
 from aepm.io import load, write  # noqa: E402
 
-DEFAULT_ANSWERS = ["default", "browser-only-no-extras", "book-club", "native-no-lessons"]
+DEFAULT_ANSWERS = ["default", "local-web", "fill-empty-own-hardware", "lounge-web-ios"]
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 
@@ -365,9 +365,12 @@ await evaluate("document.querySelector('[data-install-banner],[data-ourapps-inst
 await pause(500);
 await shoot("lobby");
 const lobbyPrompt = await evaluate("document.querySelector('[data-guide=start]').title");
-// A second player: a computer player where the design has them, otherwise a person joining over the server's API.
+// A second player: none with fill-empty (Start is offered to one person and the computers fill the table), a computer player
+// where the design has them, otherwise a person joining over the server's API.
 let second;
-if (await evaluate("!!document.querySelector('[data-guide=addBot]')")) {
+if (await evaluate("!document.querySelector('[data-guide=start]').disabled")) {
+  second = "computers filling the table when one person pressed Start";
+} else if (await evaluate("!!document.querySelector('[data-guide=addBot]')")) {
   await evaluate("document.querySelector('[data-guide=addBot]').click()");
   second = "a computer player";
 } else {
@@ -380,6 +383,8 @@ await wait("!!document.querySelector('[data-guide=start]') && !document.querySel
 await evaluate("document.querySelector('[data-guide=start]').click()");
 // The hand is dealt when this browser's own two cards show face up.
 await wait("document.querySelectorAll('.mycards .handcard .card:not(.back)').length === 2", "own cards dealt", 30000);
+const atTable = await evaluate("document.querySelectorAll('.seatwrap').length");
+second += ` (${atTable} at the table)`;
 await pause(1500);
 await evaluate("document.querySelector('[data-install-banner],[data-ourapps-install]')?.remove()");
 await shoot("table");

@@ -2183,25 +2183,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "That name is in use at this table. Choose another name."
+            "value": "That name is in use at this table. Choose another name, or wait: a seat left by a closed app is freed one minute after it closed while the table waits, or when the game ends."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ce nom est déjà utilisé à cette table. Choisissez-en un autre."
+            "value": "Ce nom est déjà utilisé à cette table. Choisissez-en un autre, ou attendez : une place laissée par une appli fermée se libère une minute après sa fermeture tant que la table attend, ou à la fin de la partie."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen Namen."
+            "value": "Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen oder warte: Ein Platz, den eine geschlossene App hinterlässt, wird eine Minute nach dem Schließen frei, solange der Tisch wartet, oder am Ende des Spiels."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ese nombre ya se usa en esta mesa. Elige otro nombre."
+            "value": "Ese nombre ya se usa en esta mesa. Elige otro o espera: un asiento que deja una app cerrada se libera un minuto después de cerrarla mientras la mesa espera, o al terminar la partida."
           }
         }
       }
@@ -2212,25 +2212,25 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your name is in use at this table"
+            "value": "Your name is in use at this table. A seat left by a closed app is freed one minute after it closed while the table waits, or when the game ends."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Votre nom est déjà utilisé à cette table"
+            "value": "Votre nom est déjà utilisé à cette table. Une place laissée par une appli fermée se libère une minute après sa fermeture tant que la table attend, ou à la fin de la partie."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein Name wird an diesem Tisch schon verwendet"
+            "value": "Dein Name wird an diesem Tisch schon verwendet. Ein Platz, den eine geschlossene App hinterlässt, wird eine Minute nach dem Schließen frei, solange der Tisch wartet, oder am Ende des Spiels."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu nombre ya se usa en esta mesa"
+            "value": "Tu nombre ya se usa en esta mesa. Un asiento que deja una app cerrada se libera un minuto después de cerrarla mientras la mesa espera, o al terminar la partida."
           }
         }
       }
@@ -4116,6 +4116,35 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cualquiera puede empezar la partida."
+          }
+        }
+      }
+    },
+    "p_lobbyFill": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start the game: computer players take the %1$@ empty seats."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancez la partie : des joueurs ordinateur prennent les %1$@ places libres."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starte das Spiel: Computerspieler nehmen die %1$@ freien Plätze ein."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza la partida: jugadores de ordenador ocupan los %1$@ asientos libres."
           }
         }
       }

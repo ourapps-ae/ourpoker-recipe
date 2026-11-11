@@ -68,6 +68,8 @@ export function homeScreen(store: Store, s: State): HTMLElement {
           }))
         : h("div", { class: "muted" }, L(s.roomsDown ? "unreachable" : "looking")),
       rooms && s.roomsDown ? h("div", { class: "muted", style: { marginTop: "8px" } }, L("unreachable")) : null,
+      // The selected room holds this name for another device: say when it is freed.
+      s.mode === "player" && selected && selected.names.includes(s.name) && !store.seatToken(selected.id) ? h("div", { class: "muted", "data-name-taken": "", style: { marginTop: "8px" } }, L("room_name_taken")) : null,
       s.roomsDown && SERVER !== DEFAULT_SERVER ? h("div", { class: "muted", style: { fontSize: "11px" } }, SERVER) : null,
       errorText(s.error) ? h("div", { class: "error", style: { marginTop: "8px" } }, errorText(s.error)) : null,
     ),

@@ -47,7 +47,7 @@
 <!-- n20 -->
 <g id="node21" class="node">
 <title>n20</title>
-<polygon fill="#1a2332" stroke="none" points="1360.25,-432.84 1360.25,-2134.59 1676.5,-2134.59 1676.5,-432.84 1360.25,-432.84"/>
+<polygon fill="#1a2332" stroke="none" points="1360.25,-382.84 1360.25,-2134.59 1676.5,-2134.59 1676.5,-382.84 1360.25,-382.84"/>
 <polygon fill="#594180" stroke="none" points="1362.25,-2070.59 1362.25,-2132.59 1674.5,-2132.59 1674.5,-2070.59 1362.25,-2070.59"/>
 <text xml:space="preserve" text-anchor="start" x="1491" y="-2112.19" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="12.00" fill="#edf2fa">OurPoker</text>
 <text xml:space="preserve" text-anchor="start" x="1422.38" y="-2102.09" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Application&#45;owned code | Example definition</text>
@@ -211,8 +211,10 @@
 <text xml:space="preserve" text-anchor="start" x="1368.25" y="-518.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">rebuysPerPlayer: 1</text>
 <text xml:space="preserve" text-anchor="start" x="1368.25" y="-493.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">decisionSeconds: 30</text>
 <text xml:space="preserve" text-anchor="start" x="1368.25" y="-468.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">computerPlayers: on&#45;request</text>
-<text xml:space="preserve" text-anchor="start" x="1368.25" y="-443.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">languages: en fr de es</text>
-<polygon fill="none" stroke="#6b7d95" points="1360.25,-432.84 1360.25,-2134.59 1676.5,-2134.59 1676.5,-432.84 1360.25,-432.84"/>
+<text xml:space="preserve" text-anchor="start" x="1368.25" y="-443.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">look: night</text>
+<text xml:space="preserve" text-anchor="start" x="1368.25" y="-418.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">cardBack: stripes</text>
+<text xml:space="preserve" text-anchor="start" x="1368.25" y="-393.84" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">languages: en fr de es</text>
+<polygon fill="none" stroke="#6b7d95" points="1360.25,-382.84 1360.25,-2134.59 1676.5,-2134.59 1676.5,-382.84 1360.25,-382.84"/>
 </g>
 <!-- n0&#45;&gt;n20 -->
 <g id="edge16" class="edge">

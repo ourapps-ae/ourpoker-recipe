@@ -19,15 +19,15 @@ Two to nine players at a table, 5,000 chips each, blind levels of 10 minutes tha
 An agent answers them from your description and asks you only what it cannot infer; the server location is always asked. Fourteen are the main questions; twelve follow-ups, most asked only when they apply (a web address, a bundle identifier, the server address after the first deploy, whether builds are published, the video service address, the store invitation, and the references to your hosting account and, only when publishing, your video, store, Android and web deployment secrets). Building and running it on your own machine needs no secret at all.
 
 1. Which devices? (any of web, ios, android, macos, windows, tvos)
-2. How many people, and how often? (small, medium, large)
+2. How many people play at the same time? (small: up to 10; medium: 11 to 100; large: 101 to 1,000)
 3. Which languages? (en, fr, de, es)
-4. Which look? (night, lounge)
+4. Which look? (night: dark green felt and striped card backs; lounge: warm brown and plain card backs; for the whole application)
 5. How many players per table? (2 to 9; a larger group splits across the two tables)
 6. Starting chips? (5,000)
 7. How long is each blind level? (600 seconds)
 8. How many rebuys? (1, until level 3)
 9. Decision time? (30 seconds, then check or fold)
-10. Computer players? (none, on request, or fill empty seats; on request)
+10. Computer players? (none; on request; or fill empty seats, so one person can start alone; on request)
 11. Video and audio between players? (yes)
 12. Lessons for new players? (yes)
 13. Where does the server run? (Cloudflare or your own hardware)
@@ -37,7 +37,7 @@ An agent answers them from your description and asks you only what it cannot inf
 
 - Devices include or leave out the web, Apple, Android and Windows hosts.
 - Lessons, video and updates each include or leave out their component. Computer players are in the design unless the answer is none; the answer sets their mode (on request or fill empty) and none leaves out computer-players and poker-strategy.
-- The scale answer chooses, per job, the cheapest candidate whose declared load covers it: small and medium use Cloudflare's free tier and LiveKit's free plan; large uses the paid Cloudflare plan and LiveKit's Ship plan. Your own hardware is the other server choice.
+- The scale answer chooses, per job, the cheapest candidate whose declared load covers it: small and medium use Cloudflare's free tier and LiveKit's free plan; large uses the paid Cloudflare plan and LiveKit's Ship plan. Your own hardware is the other server choice; with it the scale changes only the video plan.
 - Chips, level length, rebuys, decision time and player count set the settings of the components that own them and the matching numbers of the house rules file, with no code change.
 
 ## What it needs from you
@@ -65,7 +65,7 @@ It takes you through `aepm questions`, `aepm design`, `aepm resolve` and `aepm i
 
 ## Tested answer sets
 
-The default answers, `book-club`, `poker-league`, `company-event`, `company-event-hosted`, `tv-only`, `browser-only-no-extras`, `large-paid-host`, `clinic`, `no-computers`, `web-own-hardware`, `native-no-lessons`, `local-web` and `windows-only`; every combination of devices, video, lessons, updates, publishing, computer players, server and scale is checked to give a complete design.
+The default answers, `book-club`, `poker-league`, `company-event`, `company-event-hosted`, `tv-only`, `browser-only-no-extras`, `large-paid-host`, `clinic`, `no-computers`, `web-own-hardware`, `native-no-lessons`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios` and `windows-only`; every combination of devices, video, lessons, updates, publishing, computer players, server and scale is checked to give a complete design.
 
 ## Status
 

@@ -1430,6 +1430,22 @@
           "default": "on-request"
         },
         {
+          "id": "look",
+          "name": "look",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "night"
+        },
+        {
+          "id": "cardBack",
+          "name": "cardBack",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "stripes"
+        },
+        {
           "id": "languages",
           "name": "languages",
           "type": "string",
@@ -1642,6 +1658,8 @@
         "rebuysPerPlayer": 1,
         "decisionSeconds": 30,
         "computerPlayers": "on-request",
+        "look": "night",
+        "cardBack": "stripes",
         "languages": "en fr de es"
       }
     }

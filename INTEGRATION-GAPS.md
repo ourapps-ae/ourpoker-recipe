@@ -55,6 +55,9 @@ Made without asking so that a complete recipe exists; each is easy to change.
 22. **A seat goes back only with its token.** guest-identity gives a name in use back only to a claim that presents its token; realtime-rooms passes the join request's bearer token, and the clients send the seat token they hold for that room. A fresh device typing a seated name is refused (`nameTaken`) and the room list shows the name as in use.
 23. **Tables.** The game has two tables (rooms Casino and Home), each up to the `players` answer; a larger group splits across them, and once a game runs newcomers watch.
 24. **Artwork.** The recipe ships no court-card, card-back or scene pictures (the source's were single-colour placeholders); card-graphics draws every card and theme draws each room. A developer adds pictures to `web/public/art/` and lists them in its `manifest.json`.
+25. **Look.** The `look` answer is the theme of the whole application on every client: both rooms, every screen, the felt and the card backs (night: striped, lounge: plain). It reaches the clients as `application.look` and `application.cardBack`; the rooms differ only by name.
+26. **Fill-empty.** With `fill-empty`, one person may press Start alone: turn-engine offers Start when the computers would fill enough seats, and they take every empty seat.
+27. **A seat left by a closed app.** In the waiting room it is freed one minute after the app closed (turn-engine's `lobbyDropSeconds`); during a game it is kept, with a computer playing it, so its holder can come back with their device, and freed when the game ends. A game everyone has left for 30 minutes ends. realtime-rooms frees a name as soon as the game lets its seat go.
 
 ## What is not specified or built
 

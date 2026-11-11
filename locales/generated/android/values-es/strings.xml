@@ -75,8 +75,8 @@
     <string name="table_reset">Tu asiento ha desaparecido. La mesa se reinició o estuviste fuera demasiado tiempo.</string>
     <string name="network_error">No se puede conectar con el servidor.</string>
     <string name="err_badName">El nombre debe tener de 1 a 20 caracteres simples y no estar ya en uso.</string>
-    <string name="err_nameTaken">Ese nombre ya se usa en esta mesa. Elige otro nombre.</string>
-    <string name="room_name_taken">Tu nombre ya se usa en esta mesa</string>
+    <string name="err_nameTaken">Ese nombre ya se usa en esta mesa. Elige otro o espera: un asiento que deja una app cerrada se libera un minuto después de cerrarla mientras la mesa espera, o al terminar la partida.</string>
+    <string name="room_name_taken">Tu nombre ya se usa en esta mesa. Un asiento que deja una app cerrada se libera un minuto después de cerrarla mientras la mesa espera, o al terminar la partida.</string>
     <string name="err_roomFull">La sala está llena.</string>
     <string name="err_staleVersion">La mesa ha cambiado.</string>
     <string name="err_notYourTurn">No es tu turno.</string>
@@ -142,6 +142,7 @@
     <string name="p_lobbyWaiting">Esperando a %1$s jugadores más.</string>
     <string name="p_lobbyWaitingOne">Esperando a %1$s jugador más.</string>
     <string name="p_lobbyReady">Cualquiera puede empezar la partida.</string>
+    <string name="p_lobbyFill">Empieza la partida: jugadores de ordenador ocupan los %1$s asientos libres.</string>
     <string name="p_champion">%1$s gana el torneo.</string>
     <string name="p_completedTie">El torneo ha terminado.</string>
     <string name="p_cancelled">La partida se ha terminado. Sin ganador.</string>

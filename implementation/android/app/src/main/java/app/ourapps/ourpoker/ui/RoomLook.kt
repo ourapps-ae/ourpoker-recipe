@@ -1,5 +1,7 @@
 package app.ourapps.ourpoker.ui
 
+import ae.cards.BackStyle
+import ae.cards.CardSettings
 import ae.cards.CardStyle
 import ae.cards.LocalCardStyle
 import ae.theme.BackgroundScene
@@ -17,17 +19,17 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import app.ourapps.ourpoker.AppSettings
 
-// One look per room: a theme from the theme component and a scene picture behind it
-// (scene_<room>_back) with figures in front (scene_<room>_front). The art is this application's
-// (res/drawable-nodpi, from assets/art); the drawing is the theme's.
+// Both rooms wear the design's look (AppSettings.LOOK, a theme of the theme component). A scene picture added to
+// res/drawable-nodpi (scene_<room>_back, scene_<room>_front) is drawn behind and in front; the recipe ships none.
 class RoomLook(val id: String, val theme: ThemeSet, val anchor: Float, val fronts: List<SceneFront>) {
     val felt: Color get() = Color(theme.colour.table)
 }
 
 private val LOOKS = mapOf(
-    "casino" to RoomLook("casino", ThemeSet.named("night"), 0.5f, listOf(SceneFront("br", 0.68f, 1f))),
-    "home" to RoomLook("home", ThemeSet.named("lounge"), 1f, listOf(SceneFront("br", 0.6f, 1f))),
+    "casino" to RoomLook("casino", ThemeSet.named(AppSettings.LOOK), 0.5f, listOf(SceneFront("br", 0.68f, 1f))),
+    "home" to RoomLook("home", ThemeSet.named(AppSettings.LOOK), 1f, listOf(SceneFront("br", 0.6f, 1f))),
 )
 
 fun themeFor(roomId: String?): RoomLook = LOOKS[roomId] ?: LOOKS.getValue("casino")
@@ -53,7 +55,8 @@ fun RoomCards(roomId: String, content: @Composable () -> Unit) {
     val ctx = LocalContext.current
     val style = remember(roomId) {
         CardStyle(
-            colours = ThemeSet.named("night"),
+            settings = CardSettings(backStyle = if (AppSettings.CARD_BACK == "plain") BackStyle.PLAIN else BackStyle.STRIPES),
+            colours = ThemeSet.named(AppSettings.LOOK),
             artTheme = roomId,
             hasArt = { file -> ctx.resources.getIdentifier(file.removeSuffix(".png").replace('-', '_'), "drawable", ctx.packageName) != 0 },
             painter = { file -> painterResource(ctx.resources.getIdentifier(file.removeSuffix(".png").replace('-', '_'), "drawable", ctx.packageName)) },

@@ -31,7 +31,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/web/src/api.ts` | 82 | web/src/api.ts 1-75 | Server address templated. |
 | `implementation/web/src/betting.ts` | 92 | web/src/table.ts 891-1012 | Gestures, hints and the move buttons; amounts from holdem-rules. |
 | `implementation/web/src/board.ts` | 65 | web/src/board.ts 1-67 | The table viewer's screen. |
-| `implementation/web/src/configuration.ts` | 5 | new | The display-mode and video-calls configuration documents, passed in code. |
+| `implementation/web/src/configuration.ts` | 8 | new | The display-mode and video-calls configuration documents, passed in code. |
 | `implementation/web/src/geometry.ts` | 35 | web/src/table.ts 133-212 | Seat, bet and card spots over table-layout. |
 | `implementation/web/src/guide-style.ts` | 2 | new | Imports the guided tour's styles; the only web module besides guide.ts that imports guided-tour. |
 | `implementation/web/src/guide.ts` | 62 | web/src/guide.ts 1-159 | Which lesson each moment asks for; the lessons are data in locales/lessons.json. |
@@ -40,8 +40,8 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/web/src/mode.ts` | 10 | web/src/mode.ts 1-9 | Over display-mode. |
 | `implementation/web/src/odds-panel.ts` | 67 | web/src/table.ts 1023-1081 | The possible-hands panel. |
 | `implementation/web/src/poker.css` | 273 | web/src/style.css 1-359 | Rules only poker needs; the rest moved to theme, controls, card-graphics, chip-graphics, table-layout and guided-tour. |
-| `implementation/web/src/rooms.ts` | 25 | web/src/background.ts 1-181 | The two room looks; the drawing moved to theme. |
-| `implementation/web/src/screens.ts` | 230 | web/src/screens.ts 1-230 | Home, name, lobby, end and help screens. |
+| `implementation/web/src/rooms.ts` | 26 | web/src/background.ts 1-181 | The two room looks; the drawing moved to theme. |
+| `implementation/web/src/screens.ts` | 232 | web/src/screens.ts 1-230 | Home, name, lobby, end and help screens. |
 | `implementation/web/src/shell.ts` | 7 | web/src/main.ts 118-121 | Starts the installable shell; the only web module that imports web-host. |
 | `implementation/web/src/showdown.ts` | 216 | web/src/table.ts 327-523 | Showdown display and where shown hands go. |
 | `implementation/web/src/sound.ts` | 28 | web/src/sound.ts 1-62 | Names the game's sounds over sound-cues. |
@@ -49,7 +49,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/web/src/store.ts` | 314 | web/src/store.ts 1-308 | Client state: join, act, live connection, rooms. |
 | `implementation/web/src/table.ts` | 639 | web/src/table.ts 1-1116 | The poker table screen; seats, cards and chips come from table-layout, card-graphics and chip-graphics. |
 | `implementation/web/src/timers.ts` | 69 | web/src/table.ts 23-88 | Countdown helpers. |
-| `implementation/web/src/ui.ts` | 50 | web/src/dom.ts 1-95, icons.ts 1-50, chips.ts 1-54, layout.ts 1-11 | Thin names over controls, card-graphics and chip-graphics. |
+| `implementation/web/src/ui.ts` | 51 | web/src/dom.ts 1-95, icons.ts 1-50, chips.ts 1-54, layout.ts 1-11 | Thin names over controls, card-graphics and chip-graphics. |
 | `implementation/web/src/update.ts` | 18 | web/src/update.ts 1-18 | Update check over store-update. |
 | `implementation/web/src/video.ts` | 2 | new | Re-exports the video session; the only web module that imports video-calls. |
 
@@ -84,7 +84,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 
 | File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
-| `implementation/apple/Sources/ApplicationSettings.swift` | 5 | ApplicationSettings.swift 1-3 | Template: whether updates are offered. |
+| `implementation/apple/Sources/ApplicationSettings.swift` | 8 | ApplicationSettings.swift 1-3 | Template: whether updates are offered. |
 | `implementation/apple/Sources/Lessons.swift` | 37 | TableModel.swift 43-48, Guide.swift 160-175 | The lessons over guided-tour; the only application file that names it. |
 | `implementation/apple/Sources/Updates.swift` | 6 | new | The update check's version comparison over store-update; the only application file that names it. |
 | `implementation/apple/Sources/Video.swift` | 3 | new | The video session under the application's name (video-calls' `VideoSession`). |
@@ -101,8 +101,8 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/apple/Sources/Model.swift` | 278 | Model.swift 1-300 | Wire model. |
 | `implementation/apple/Sources/NameScreen.swift` | 36 | NameScreen.swift 1-36 |  |
 | `implementation/apple/Sources/OurPokerApp.swift` | 18 | OurPokerApp.swift 1-135 | Entry inside the apple-host's window. |
-| `implementation/apple/Sources/Palette.swift` | 14 | Cards.swift 40-52 | Night tokens. |
-| `implementation/apple/Sources/RoomLook.swift` | 84 | PokerBackground.swift 1-217 | Two room looks over theme; the drawing moved to theme. |
+| `implementation/apple/Sources/Palette.swift` | 15 | Cards.swift 40-52 | Night tokens. |
+| `implementation/apple/Sources/RoomLook.swift` | 85 | PokerBackground.swift 1-217 | Two room looks over theme; the drawing moved to theme. |
 | `implementation/apple/Sources/RootView.swift` | 106 | OurPokerApp.swift 1-135 | The screen flow. |
 | `implementation/apple/Sources/SeatScreen.swift` | 54 | SeatScreen.swift 1-54 |  |
 | `implementation/apple/Sources/Strings.swift` | 92 | Strings.swift 1-101 | Over translations. |
@@ -121,8 +121,8 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `Updates.kt` | 4 | new | The update check's version comparison over store-update. |
 | `Video.kt` | 6 | new | The video session and room under the application's names (video-calls' `VideoSession`, LiveKit's `Room`). |
 | `ui/Lessons.kt` | 40 | TableViewModel.kt 87-92, ui/Guide.kt 170-184 | The lessons over guided-tour; the only application file that names it. |
-| `AppSettings.kt` | 10 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
-| `MainActivity.kt` | 106 | MainActivity.kt 1-137 | Subclass of the android-host's ShellActivity; screen flow. |
+| `AppSettings.kt` | 13 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
+| `MainActivity.kt` | 107 | MainActivity.kt 1-137 | Subclass of the android-host's ShellActivity; screen flow. |
 | `Sound.kt` | 57 | Sound.kt 1-53 | Over the sound-cues player and preferences. |
 | `TableViewModel.kt` | 482 | TableViewModel.kt 1-493 | Lessons through the guided-tour component. |
 | `net/Model.kt` | 212 | net/Model.kt 1-212 | Wire model. |
@@ -136,7 +136,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `ui/MediaToggles.kt` | 85 | ui/MediaToggles.kt 1-85 |  |
 | `ui/NameScreen.kt` | 62 | ui/NameScreen.kt 1-62 |  |
 | `ui/Palette.kt` | 12 | ui/Cards.kt 48-51, ui/Panels.kt 18 | Night tokens. |
-| `ui/RoomLook.kt` | 64 | ui/PokerBackground.kt 1-165, ui/Cards.kt 90-102 | Two room looks over theme and card-graphics. |
+| `ui/RoomLook.kt` | 67 | ui/PokerBackground.kt 1-165, ui/Cards.kt 90-102 | Two room looks over theme and card-graphics. |
 | `ui/SeatScreen.kt` | 87 | ui/SeatScreen.kt 1-85 | Video tile of a seat. |
 | `ui/Strings.kt` | 73 | ui/Strings.kt 1-68 | Text by name; strings.xml is generated from locales/strings.json. |
 | `ui/TableEffects.kt` | 463 | ui/Chips.kt 105-514 | Spots over table-layout; flights, showdown layout. |
@@ -165,7 +165,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `rules/texas-holdem-house-rules.json` | 226 | rules/texas-holdem-house-rules.json 1-226 | The house rules file. |
 | `rules/texas-holdem-house-rules.md` | 161 | rules/texas-holdem-house-rules.md 1-161 | The house rules in prose. |
 | `rules/texas-holdem-house-rules.schema.json` | 98 | new | The schema rules-settings checks the file with. |
-| `locales/strings.json` | 1544 | i18n/strings.json 1-1472 | Key to en, fr, de, es; the translations generator makes each platform's resources from it. |
+| `locales/strings.json` | 1550 | i18n/strings.json 1-1472 | Key to en, fr, de, es; the translations generator makes each platform's resources from it. |
 | `locales/lessons.json` | 248 | web/src/guide.ts 1-159, android ui/Guide.kt 90-105, ios Guide.swift | Lessons as data for guided-tour: ids, screens, steps naming string keys and anchors. |
 | `assets/ASSETS.json` | 306 | new | The asset list; `tests/portable.test.ts` checks it against the files. |
 | `assets/art/icon.png`, `assets/web/manifest.json` | 1 file, an empty list | art/, web/public/art/manifest.json | The 1024 px icon; the source's court-card, card-back and scene pictures were single-colour placeholders and are not shipped, so cards and rooms are drawn by card-graphics and theme. A developer adds pictures to `web/public/art/` and lists them in its `manifest.json`. |
@@ -178,7 +178,7 @@ Copied from the source and mapped back to the application layout by the artefact
 
 | Files | Lines | Origin |
 |---|---|---|
-| `tests/e2e/server/*.test.ts` (6) | 627 | server/test/room.test.ts, adapter.test.ts, video.test.ts and services.test.ts (split into update-links.test.ts and video-services.test.ts, one optional component each); hand.test.ts is new (a server hand without a network) |
+| `tests/e2e/server/*.test.ts` (6) | 678 | server/test/room.test.ts, adapter.test.ts, video.test.ts and services.test.ts (split into update-links.test.ts and video-services.test.ts, one optional component each); hand.test.ts is new (a server hand without a network) |
 | `tests/e2e/web/*` (10) | 1056 | web/test/* (browser.mjs is the two-player hand with a display; session.test.mjs the reconnect) |
 | `tests/e2e/verification/*` (15) | 691 | verification/* |
 | `tests/e2e/apple/*` (6) | 339 | ios/OurPokerTests/{Contract,Session,Guide,ChallengeLayout}Tests.swift, OurPokerUITests/HomeButtonsUITests.swift, VerificationSupport/ServerAddress.swift |

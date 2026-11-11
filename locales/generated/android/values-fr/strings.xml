@@ -75,8 +75,8 @@
     <string name="table_reset">Votre place a disparu. La table a été réinitialisée ou vous êtes resté absent trop longtemps.</string>
     <string name="network_error">Impossible de joindre le serveur.</string>
     <string name="err_badName">Le nom doit comporter 1 à 20 caractères simples et ne pas être déjà pris.</string>
-    <string name="err_nameTaken">Ce nom est déjà utilisé à cette table. Choisissez-en un autre.</string>
-    <string name="room_name_taken">Votre nom est déjà utilisé à cette table</string>
+    <string name="err_nameTaken">Ce nom est déjà utilisé à cette table. Choisissez-en un autre, ou attendez : une place laissée par une appli fermée se libère une minute après sa fermeture tant que la table attend, ou à la fin de la partie.</string>
+    <string name="room_name_taken">Votre nom est déjà utilisé à cette table. Une place laissée par une appli fermée se libère une minute après sa fermeture tant que la table attend, ou à la fin de la partie.</string>
     <string name="err_roomFull">La salle est complète.</string>
     <string name="err_staleVersion">La table a changé.</string>
     <string name="err_notYourTurn">Ce n\'est pas votre tour.</string>
@@ -142,6 +142,7 @@
     <string name="p_lobbyWaiting">En attente de %1$s joueurs de plus.</string>
     <string name="p_lobbyWaitingOne">En attente d\'%1$s joueur de plus.</string>
     <string name="p_lobbyReady">N\'importe qui peut lancer la partie.</string>
+    <string name="p_lobbyFill">Lancez la partie : des joueurs ordinateur prennent les %1$s places libres.</string>
     <string name="p_champion">%1$s remporte le tournoi.</string>
     <string name="p_completedTie">Le tournoi est terminé.</string>
     <string name="p_cancelled">La partie a été terminée. Pas de vainqueur.</string>

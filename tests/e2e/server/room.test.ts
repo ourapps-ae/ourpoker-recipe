@@ -7,6 +7,8 @@ import { settings } from "../src/settings";
 const BASE = "https://poker.test/r/casino";
 // A design whose computer players answer is none has no computer player to add.
 const computers = settings.computerPlayers !== "none";
+// With fill-empty, computer players take every empty seat when the game starts, and one person may start alone.
+const filling = settings.computerPlayers === "fill-empty";
 const ROOT = "https://poker.test";
 
 async function post(path: string, body: unknown, token?: string) {
@@ -89,7 +91,7 @@ describe("room", () => {
     const a = await join("Ann");
     const b = await join("Bob");
     expect(a.spectator).toBe(false);
-    expect(a.view.legal.start).toBe(false);
+    expect(a.view.legal.start).toBe(filling);
     let v = await state(a.token);
     if (computers) {
       v = await ok(a.token, { type: "addBot" });
@@ -110,6 +112,34 @@ describe("room", () => {
     expect(bv.hand!.sb).toBe(25);
   });
 
+  it.skipIf(!computers)("does not give a person the seat of a computer player with the same name", async () => {
+    const a = await join("Ann");
+    const v = await ok(a.token, { type: "addBot" });
+    const robin = v.players.find((p) => p.isBot)!;
+    const r = await post("/join", { name: robin.name });
+    expect(r.status).not.toBe(200);
+    expect((await state(a.token)).players.find((p) => p.name === robin.name)!.id).toBe(robin.id);
+  });
+
+  it("frees a seat left by a closed browser a minute after it closed in the waiting room, and with it the name", async () => {
+    const { env, runInDurableObject, runDurableObjectAlarm } = await import("cloudflare:test");
+    const a = await join("Ann");
+    await join("Bob");
+    const stub = env.ROOM.get(env.ROOM.idFromName("casino"));
+    // Ann's browser closed more than a minute ago (the waiting room's drop time) and has not been heard from since.
+    await runInDurableObject(stub, async (instance: unknown) => {
+      const rec = (instance as { rec: { game: { presence: { participants: { id: string; lastSeen: number; live: boolean; connected: boolean }[] } } } }).rec;
+      for (const p of rec.game.presence.participants) if (p.id === a.playerId) Object.assign(p, { lastSeen: p.lastSeen - 120_000, live: false, connected: false });
+    });
+    await runDurableObjectAlarm(stub);
+    await state((await join("Cy")).token);
+    const rooms = (await (await SELF.fetch(ROOT + "/rooms")).json()) as RoomInfo[];
+    expect(rooms[0].names).not.toContain("Ann");
+    // A new browser may now take the name, without Ann's token.
+    const again = await post("/join", { name: "Ann" });
+    expect(again.status).toBe(200);
+  });
+
   it("rejects stale versions, malformed bodies and rule breaks with the right codes", async () => {
     const a = await join("Ann");
     const v = await state(a.token);
@@ -120,8 +150,14 @@ describe("room", () => {
     expect(body.view.you).toBe(a.playerId);
     expect((await act(a.token, { type: "bet" }, v.version)).status).toBe(400);
     const rule = await act(a.token, { type: "start" }, v.version);
-    expect(rule.status).toBe(422);
-    expect(((await rule.json()) as { error: string }).error).toBe("notEnoughPlayers");
+    if (filling) {
+      // One person starts alone and the computers fill the table.
+      expect(rule.status).toBe(200);
+      expect(((await rule.json()) as View).players.length).toBe(settings.maximumPlayers);
+    } else {
+      expect(rule.status).toBe(422);
+      expect(((await rule.json()) as { error: string }).error).toBe("notEnoughPlayers");
+    }
     expect((await SELF.fetch(BASE + "/state", { headers: { authorization: "Bearer nope" } })).status).toBe(401);
   });
 
@@ -138,7 +174,7 @@ describe("room", () => {
     expect(again.playerId).toBe(b.playerId);
     expect(again.spectator).toBe(false);
     expect((await SELF.fetch(BASE + "/state", { headers: { authorization: `Bearer ${b.token}` } })).status).toBe(401);
-    const s = await join("Sam");
+    const s = await join("Watcher");
     expect(s.spectator).toBe(true);
     expect(s.view.promptKey).toBe("watching");
     expect(s.view.players.every((p) => p.cards.every((c) => c === null))).toBe(true);
@@ -161,7 +197,8 @@ describe("room", () => {
     expect(w.version).toBe(v.version);
     // Both countdowns moved on by the wait, not frozen at the moment the poll began.
     expect(w.hand!.settleMs!).toBeLessThanOrEqual(h.settleMs! - waited + 200);
-    expect(w.hand!.remainingMs!).toBeLessThanOrEqual(h.remainingMs! - waited + 200);
+    // A computer player to act has no decision countdown.
+    if (h.remainingMs !== null) expect(w.hand!.remainingMs!).toBeLessThanOrEqual(h.remainingMs - waited + 200);
   });
 
   it("lets a display read the table without a seat, a name or any say in the game", async () => {
@@ -171,6 +208,7 @@ describe("room", () => {
     expect(d.view.display).toBe(true);
     expect(d.view.you).toBe("");
     expect(d.view.promptKey).toBe("lobbyWaiting");
+    expect(d.view.prompt).toBe("Waiting for 2 more players.");
     const a = await join("Ann");
     await join("Bob");
     expect(a.view.display).toBe(false);
@@ -237,16 +275,20 @@ describe("room", () => {
     await ok(a.token, { type: "addBot" });
     let v = await ok(a.token, { type: "start" });
     const stub = env.ROOM.get(env.ROOM.idFromName("casino"));
-    const bot = v.players.find((p) => p.isBot)!;
     if (v.hand!.actorId === a.playerId) v = await ok(a.token, { type: "call" });
-    expect(v.hand!.actorId).toBe(bot.id);
-    // Settle, deal pace for two players and the bot's thinking time.
-    await new Promise((r) => setTimeout(r, 7500));
-    expect(await runDurableObjectAlarm(stub)).toBe(true);
-    const after = await state(a.token);
-    const moved = after.hand === null || after.hand.actorId !== bot.id || after.hand.street !== "preflop" || after.phase !== "betting";
+    // The computer to act (with fill-empty the table has several).
+    const bot = v.players.find((p) => p.id === v.hand!.actorId)!;
+    expect(bot.isBot).toBe(true);
+    // Settle, the deal (longer with more players) and the computer's thinking time, then the alarm moves it.
+    let moved = false;
+    for (const until = Date.now() + 25_000; !moved && Date.now() < until;) {
+      await new Promise((r) => setTimeout(r, 1000));
+      await runDurableObjectAlarm(stub);
+      const after = await state(a.token);
+      moved = after.hand === null || after.hand.actorId !== bot.id || after.hand.street !== "preflop" || after.phase !== "betting";
+    }
     expect(moved).toBe(true);
-  }, 15_000);
+  }, 30_000);
 
   it("every action type is accepted by the parser", async () => {
     const a = await join("Ann");

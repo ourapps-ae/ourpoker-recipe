@@ -106,16 +106,17 @@ QUESTIONS = [
      "askAgent": "Leave empty unless the developer names one; the application derives app.ourapps.<applicationId>.",
      "type": "text", "default": "",
      "effects": [{"sets": {"apple-host.bundleIdentifier": "$answer", "android-host.packageId": "$answer", "ourapps-release.bundleIdentifier": "$answer", "application.packageId": "$answer"}}]},
-    {"id": "scale", "ask": "How many people will use it, and how often?",
-     "askAgent": "Choose from the number of people using it and how often, not the seats at one table: a dozen friends meeting weekly is small; a club or a few dozen people playing daily is medium; 100 or more people playing continuously is large.",
+    {"id": "scale", "ask": "How many people will play at the same time, at most?",
+     "askAgent": "Count people at the same time, not seats at one table: up to 10 is small (9 friends); 11 to 100 is medium (a dozen or 15 friends, a club); over 100 is large. With own-hardware it changes only the video plan, or nothing but the record when video is off.",
      "type": "choice", "options": ["small", "medium", "large"], "default": "small", "effects": []},
     {"id": "languages", "ask": "Which languages should the game speak?",
      "askAgent": "Use the languages the request names; otherwise keep all four.",
      "type": "set", "options": ALL_LANGUAGES, "default": ALL_LANGUAGES, "effects": [{"sets": {"translations.languages": "$answer", "application.languages": "$answer"}}]},
-    {"id": "look", "ask": "Which look should the game have?",
-     "askAgent": "Pick night (dark) or lounge (warm) from any style the request gives; otherwise keep night.",
+    {"id": "look", "ask": "Which look should the game have: night (dark green felt, gold, striped card backs) or lounge (warm brown, plain card backs)?",
+     "askAgent": "The look of the whole application on every device: both rooms, every screen, the felt and the card backs. Pick night (dark) or lounge (warm) from any style the request gives; otherwise keep night.",
      "type": "choice", "options": ["night", "lounge"], "default": "night",
-     "effects": [{"sets": {"theme.themeName": "$answer", "card-graphics.backStyle": {"map": {"night": "stripes", "lounge": "plain"}}}}]},
+     "effects": [{"sets": {"theme.themeName": "$answer", "card-graphics.backStyle": {"map": {"night": "stripes", "lounge": "plain"}},
+                           "application.look": "$answer", "application.cardBack": {"map": {"night": "stripes", "lounge": "plain"}}}}]},
     {"id": "players", "ask": "What is the largest number of players at one table (2 to 9)?",
      "askAgent": "Seats at one table, not the group size. There are two tables (rooms Casino and Home, both in the room list), each up to this number, so a larger group splits across them: for about a dozen keep 9, or 6 for two even tables. Once a game runs, newcomers watch.",
      "type": "integer", "min": 2, "max": 9, "default": 9,
@@ -136,8 +137,8 @@ QUESTIONS = [
      "askAgent": "Keep 30 unless the request names a pace.",
      "type": "integer", "min": 5, "max": 300, "default": 30,
      "effects": [{"sets": {"game-clock.decisionSeconds": "$answer", "turn-engine.decisionSeconds": "$answer", "application.decisionSeconds": "$answer"}}]},
-    {"id": "computerPlayers", "ask": "Should computer players be available? none: never; on-request: a person adds one and one plays for someone who is away; fill-empty: also fills every empty seat when the game starts.",
-     "askAgent": "on-request unless the request says people only (none) or asks for full tables (fill-empty).",
+    {"id": "computerPlayers", "ask": "Computer players? none: never; on-request: a person adds them, and one plays for anyone away; fill-empty: as on-request, and when one person (or more) presses Start, computers take every empty seat.",
+     "askAgent": "on-request unless the request says people only (none) or asks for full tables or playing alone against the computer (fill-empty: one person can press Start alone and the table fills).",
      "type": "choice", "options": COMPUTER_MODES, "default": "on-request",
      "effects": [{"sets": {"computer-players.mode": "$answer", "application.computerPlayers": "$answer"}}]},
     {"id": "video", "ask": "Should players see and hear each other by video?",
@@ -202,9 +203,9 @@ JOBS = [
 ]
 
 SCALE = {"question": "scale", "bands": [
-    {"id": "small", "label": "small: fewer than 10 people, occasional use", "load": {"concurrentPeople": 10, "requestsPerDay": 2000, "storedMegabytes": 100}},
-    {"id": "medium", "label": "medium: up to 100 people, daily use", "load": {"concurrentPeople": 100, "requestsPerDay": 50000, "storedMegabytes": 1000}},
-    {"id": "large", "label": "large: 100 or more people, continuous use", "load": {"concurrentPeople": 1000, "requestsPerDay": 1000000, "storedMegabytes": 10000}},
+    {"id": "small", "label": "small: up to 10 people at the same time", "load": {"concurrentPeople": 10, "requestsPerDay": 2000, "storedMegabytes": 100}},
+    {"id": "medium", "label": "medium: 11 to 100 people at the same time", "load": {"concurrentPeople": 100, "requestsPerDay": 50000, "storedMegabytes": 1000}},
+    {"id": "large", "label": "large: 101 to 1,000 people at the same time", "load": {"concurrentPeople": 1000, "requestsPerDay": 1000000, "storedMegabytes": 10000}},
 ]}
 
 DEFAULT_ANSWERS = {
@@ -243,6 +244,8 @@ ANSWER_SETS = [
     {"id": "web-own-hardware", "answers": answers(targets=["web"], server="own-hardware", languages=["en", "fr"], video=False, lessons=False, computerPlayers="none")},
     {"id": "native-no-lessons", "answers": answers(targets=["ios", "android", "tvos"], languages=["en", "fr"], lessons=False, updates=True, storeInvitation=INVITATION)},
     {"id": "local-web", "answers": {"targets": ["web"], "scale": "small", "languages": ["en"], "video": False, "server": "own-hardware"}},
+    {"id": "fill-empty-own-hardware", "answers": {"targets": ["web"], "languages": ["en"], "video": False, "lessons": False, "server": "own-hardware", "computerPlayers": "fill-empty", "players": 8}},
+    {"id": "lounge-web-ios", "answers": {"targets": ["web", "ios"], "scale": "medium", "languages": ["en", "fr"], "look": "lounge", "players": 8, "computerPlayers": "fill-empty", "video": False, "server": "own-hardware"}},
     {"id": "windows-only", "answers": answers(targets=["windows"], server="own-hardware", video=False, serverAddress="https://poker.clinic.example")},
 ]
 

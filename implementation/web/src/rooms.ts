@@ -1,14 +1,15 @@
-// The two permanent rooms and how each looks: a theme from the theme component. The recipe ships no scene pictures; a picture
-// added as web/public/art/scene-<room>-back.jpg or -front.png and named in a room's scene here is drawn behind or in front.
+// The two permanent rooms. Both wear the design's look (the `look` answer: a theme of the theme component). The recipe ships no
+// scene pictures; a picture added as web/public/art/scene-<room>-back.jpg or -front.png and named in a room's scene here is drawn.
 import themes from "../../components/theme/web/themes.json";
+import { look } from "./configuration";
 import { Background, type Scene } from "../../components/theme/web/background";
 import { applyTheme, resolveTheme, type ThemeFile, type Tokens } from "../../components/theme/web/tokens";
 
 type Look = { theme: string; scene: Scene };
 
 export const LOOKS: Record<string, Look> = {
-  casino: { theme: "night", scene: { anchor: 0.5, fronts: [] } },
-  home: { theme: "lounge", scene: { anchor: 1, fronts: [] } },
+  casino: { theme: look.theme, scene: { anchor: 0.5, fronts: [] } },
+  home: { theme: look.theme, scene: { anchor: 1, fronts: [] } },
 };
 
 export const tokensFor = (room: string): Tokens => resolveTheme(themes as ThemeFile, { themeName: (LOOKS[room] ?? LOOKS.casino).theme });

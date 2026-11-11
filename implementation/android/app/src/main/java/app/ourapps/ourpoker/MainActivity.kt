@@ -38,13 +38,13 @@ class MainActivity : ShellActivity() {
 
     override val permissions = listOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
     override val language: ShellLanguage = AppLanguage.shell
-    override val palette: ShellPalette = night.colour.let { ShellPalette(it.primary, 0xFF9FB3C8, it.background, it.surface, it.onPrimary) }
+    override val palette: ShellPalette = appTheme.colour.let { ShellPalette(it.primary, 0xFF9FB3C8, it.background, it.surface, it.onPrimary) }
 
     override fun onShellCreated() { Sound.init(applicationContext) }
 
     @Composable
     override fun Content() {
-        ControlsTheme(night) { Root(vm) }
+        ControlsTheme(appTheme) { Root(vm) }
     }
 
     override fun onPermissionsChecked(allGranted: Boolean, result: Map<String, Boolean>) {
@@ -56,7 +56,8 @@ class MainActivity : ShellActivity() {
 }
 
 // The theme every screen draws with; the room's look is the background's.
-val night: ThemeSet = ThemeSet.named("night")
+// The design's look (the `look` answer): a theme of the theme component.
+val appTheme: ThemeSet = ThemeSet.named(AppSettings.LOOK)
 
 @Composable
 fun Root(vm: TableViewModel) {

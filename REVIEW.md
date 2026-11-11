@@ -18,7 +18,7 @@ Nothing is pushed or published. Paths are relative to this repository. `PY` is `
 
 ## 3. How to run every check
 
-INSTRUCTIONS.md part 5 lists the commands. The install proof: `PY authoring/try_install.py` (default `default`, `browser-only-no-extras`, `book-club`, `native-no-lessons`; any answer-set id or answers file).
+INSTRUCTIONS.md part 5 lists the commands. The install proof: `PY authoring/try_install.py` (default `default`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios`; any answer-set id or answers file).
 
 ## 4. Verified and not verified
 

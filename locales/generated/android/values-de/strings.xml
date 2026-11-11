@@ -75,8 +75,8 @@
     <string name="table_reset">Dein Platz ist weg. Der Tisch wurde zurückgesetzt oder du warst zu lange fort.</string>
     <string name="network_error">Server nicht erreichbar.</string>
     <string name="err_badName">Der Name muss 1 bis 20 einfache Zeichen haben und frei sein.</string>
-    <string name="err_nameTaken">Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen Namen.</string>
-    <string name="room_name_taken">Dein Name wird an diesem Tisch schon verwendet</string>
+    <string name="err_nameTaken">Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen oder warte: Ein Platz, den eine geschlossene App hinterlässt, wird eine Minute nach dem Schließen frei, solange der Tisch wartet, oder am Ende des Spiels.</string>
+    <string name="room_name_taken">Dein Name wird an diesem Tisch schon verwendet. Ein Platz, den eine geschlossene App hinterlässt, wird eine Minute nach dem Schließen frei, solange der Tisch wartet, oder am Ende des Spiels.</string>
     <string name="err_roomFull">Der Raum ist voll.</string>
     <string name="err_staleVersion">Der Tisch hat sich geändert.</string>
     <string name="err_notYourTurn">Du bist nicht dran.</string>
@@ -142,6 +142,7 @@
     <string name="p_lobbyWaiting">Warten auf %1$s weitere Spieler.</string>
     <string name="p_lobbyWaitingOne">Warten auf %1$s weiteren Spieler.</string>
     <string name="p_lobbyReady">Jeder kann das Spiel starten.</string>
+    <string name="p_lobbyFill">Starte das Spiel: Computerspieler nehmen die %1$s freien Plätze ein.</string>
     <string name="p_champion">%1$s gewinnt das Turnier.</string>
     <string name="p_completedTie">Das Turnier ist vorbei.</string>
     <string name="p_cancelled">Das Spiel wurde beendet. Kein Sieger.</string>

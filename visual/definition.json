@@ -352,6 +352,22 @@
       "default": "on-request"
     },
     {
+      "id": "look",
+      "name": "look",
+      "type": "string",
+      "required": true,
+      "secret": false,
+      "default": "night"
+    },
+    {
+      "id": "cardBack",
+      "name": "cardBack",
+      "type": "string",
+      "required": true,
+      "secret": false,
+      "default": "stripes"
+    },
+    {
       "id": "languages",
       "name": "languages",
       "type": "string",
