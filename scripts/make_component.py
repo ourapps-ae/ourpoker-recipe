@@ -31,6 +31,8 @@ import make_recipe  # noqa: E402
 import poker_game_adapter  # noqa: E402
 
 NAME = "ourapps-ae/ourpoker"
+# Tool pins are MAJOR.MINOR: aepm matches an installed tool's version by its leading components.
+TOOLS = {"node": "26.5", "python3": "3.12", "swiftc": "6.4", "kotlinc": "2.2", "java": "26.0"}
 VERSION = json.loads((Path(__file__).resolve().parent.parent / "recipe.json").read_text(encoding="utf-8"))["version"]
 TITLE = "OurPoker"
 SOURCE_REVISION = "19905b75dbea89fbfd424d67fe26c81aaed0e018"
@@ -85,9 +87,9 @@ def read(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def dump(path, value):
+def dump(path, value, sort=False):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=sort) + "\n", encoding="utf-8")
 
 
 def sha256(path):
@@ -211,7 +213,7 @@ def artefact_pairs(files):
 
 def suite():
     return {"id": "portable", "root": "package", "argv": ["node", "--test", "tests/portable.test.ts"], "cwd": ".", "prepare": [],
-            "tools": {"node": "26.5.0"}, "fixtures": ["locales/strings.json", "rules/texas-holdem-house-rules.json", "tests/fixtures"],
+            "tools": {"node": TOOLS["node"]}, "fixtures": ["locales/strings.json", "rules/texas-holdem-house-rules.json", "tests/fixtures"],
             "locks": ["tools.lock.json"], "network": False, "timeoutSeconds": 120, "expectedExit": 0, "scope": "required-local", "requirements": []}
 
 
@@ -421,8 +423,13 @@ def generate_translations():
         raise SystemExit("translations generator failed: " + (result.stderr.strip() or result.stdout.strip()))
 
 
+def tools_lock():
+    return {"format": 1, "dependencies": [], "tools": TOOLS}
+
+
 def main(argv):
     do_render = "--render" in argv
+    dump(ROOT / "tools.lock.json", tools_lock())
     generate_translations()
     dump(ROOT / "assets/ASSETS.json", assets_list())
     manifest = build_manifest(listed_files())
@@ -436,7 +443,7 @@ def main(argv):
     # the manifest lists the visual outputs and the asset list, so they exist before the file list is computed
     manifest = build_manifest(listed_files())
     check_templates(manifest)
-    dump(ROOT / "component.json", manifest)
+    dump(ROOT / "component.json", manifest, sort=True)
     marked = [a for a in manifest["artefacts"] if "component" in a]
     print("stand-ins", sum(1 for a in manifest["artefacts"] if "withoutComponent" in a))
     print("files", len(manifest["files"]), "artefacts", len(manifest["artefacts"]), "templates", sum(a["template"] for a in manifest["artefacts"]),
