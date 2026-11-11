@@ -3,14 +3,15 @@
 
 Everything that can be read from the components is read from them: names, versions, port ids and which requirements are
 optional come from each component.json; connections are derived from the manifests. Settings, questions and answer sets
-are written below. Nothing here evaluates the recipe (authoring/evaluate_recipe.py does that, for tests).
+are written below. Nothing here evaluates the recipe (aepm's evaluator, aepm.recipe, does).
 Usage: python3 -B authoring/make_recipe.py
 """
+import os
 import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
-COMPONENTS = HERE.parent.parent / "components"
+COMPONENTS = Path(os.environ.get("OURPOKER_COMPONENTS") or HERE.parent.parent / "components")  # the component checkouts
 
 # Order follows paper Section 5.3.
 ORDER = [
@@ -110,7 +111,7 @@ QUESTIONS = [
      "type": "choice", "options": ["small", "medium", "large"], "default": "small", "effects": []},
     {"id": "languages", "ask": "Which languages should the game speak?",
      "askAgent": "Use the languages the request names; otherwise keep all four.",
-     "type": "set", "options": ALL_LANGUAGES, "default": ALL_LANGUAGES, "effects": [{"sets": {"translations.languages": "$answer"}}]},
+     "type": "set", "options": ALL_LANGUAGES, "default": ALL_LANGUAGES, "effects": [{"sets": {"translations.languages": "$answer", "application.languages": "$answer"}}]},
     {"id": "look", "ask": "Which look should the game have?",
      "askAgent": "Pick night (dark) or lounge (warm) from any style the request gives; otherwise keep night.",
      "type": "choice", "options": ["night", "lounge"], "default": "night",
@@ -236,6 +237,7 @@ ANSWER_SETS = [
                                         webAddress="https://clinic.example")},
     {"id": "no-computers", "answers": answers(targets=["web", "android"], computerPlayers="none", webAddress="https://poker.acme.io")},
     {"id": "web-own-hardware", "answers": answers(targets=["web"], server="own-hardware", languages=["en", "fr"], video=False, lessons=False, computerPlayers="none")},
+    {"id": "native-no-lessons", "answers": answers(targets=["ios", "android", "tvos"], languages=["en", "fr"], lessons=False, updates=True, storeInvitation=INVITATION)},
     {"id": "windows-only", "answers": answers(targets=["windows"], server="own-hardware", video=False, serverAddress="https://poker.clinic.example")},
 ]
 

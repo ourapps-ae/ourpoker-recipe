@@ -100,7 +100,7 @@ struct TableScreen: View {
                     }
                 }
                 .onChange(of: view.hand?.no) { _, _ in model.zoom = nil }
-                .alert(L("update_needed"), isPresented: .constant(view.phase == .unknown)) {} message: { Text(L("update_body", currentVersion)) }
+                .alert(L("update_needed"), isPresented: .constant(view.phase == .unknown)) {} message: { Text(L("update_body", applicationVersion)) }
             }
         )
     }

@@ -1,9 +1,5 @@
 package app.ourapps.ourpoker.ui
 
-import ae.tour.Tour
-import ae.tour.TourButtons
-import ae.tour.TourHost
-import ae.tour.tourAnchor
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -40,15 +36,6 @@ enum class GuideId(val screen: String? = null) {
             return out
         }
     }
-}
-
-// Marks an element a lesson step can ring.
-fun Modifier.guideAnchor(name: String, on: Boolean = true): Modifier = tourAnchor(name, on)
-
-// The lesson on show, over the content, with the buttons in the phone's language.
-@Composable
-fun Guided(tour: Tour, content: @Composable () -> Unit) {
-    TourHost(tour, TourButtons(next = L("guide_next"), skip = L("guide_skip"), done = L("got_it")), content)
 }
 
 // Two dots side by side: a double tap.

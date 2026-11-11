@@ -6,6 +6,7 @@ import Observation
 @Observable final class Language {
     static let shared = Language()
     static let all: [(code: String, name: String)] = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español")]
+        .filter { ApplicationSettings.languages.contains($0.code) }
 
     private(set) var picked: String? = UserDefaults.standard.string(forKey: "lang")
     @ObservationIgnored private var bundle: Bundle = .main

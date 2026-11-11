@@ -3,7 +3,7 @@
 They use aepm's own artefact selection (`aepm.application.installed_artefacts`) and its manifest validation, and the checks of
 authoring/check_conditional_artefacts.py, for every answer set of recipe.json. Nothing here assembles components.
 
-Run: PYTHONPATH=/Users/george/Projects/com/my/aepm /Users/george/.pyenv/versions/3.12.8/bin/python3.12 -B tests/conditional_artefacts_test.py
+Run from the repository root with aepm on PYTHONPATH: python3 -B tests/conditional_artefacts_test.py
 """
 import json
 import os
@@ -14,14 +14,14 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-AEPM = ROOT.parent.parent / "aepm"
+AEPM = ROOT.parent.parent / "aepm"  # a sibling checkout, unless PYTHONPATH already names one
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(ROOT / "authoring"))
 sys.path.insert(0, str(AEPM))
 
 import check_conditional_artefacts as C  # noqa: E402
 import component_imports  # noqa: E402
-import evaluate_recipe as E  # noqa: E402
+from aepm import recipe as E  # noqa: E402
 from aepm import application, model  # noqa: E402
 from aepm.io import load  # noqa: E402
 
@@ -31,10 +31,10 @@ RESULTS = C.run(WORLD)
 
 # Marks, derived from the import and path strings of each source file (tests also from the application files they import), plus
 # the web package files, which declare livekit-client for video-calls.
-EXPECTED_MARKS = {"android-host": 1, "apple-host": 1, "computer-players": 1, "guided-tour": 3, "store-update": 9, "video-calls": 16, "web-host": 2, "windows-desktop": 6}
+EXPECTED_MARKS = {"android-host": 1, "apple-host": 1, "computer-players": 1, "guided-tour": 5, "store-update": 11, "video-calls": 20, "web-host": 2, "windows-desktop": 9}
 
 # Stand-ins (`withoutComponent`): installed at the destination of the optional module they replace when the design leaves its component out.
-EXPECTED_STAND_INS = {"computer-players": 1, "guided-tour": 2, "store-update": 3, "video-calls": 4, "web-host": 1}
+EXPECTED_STAND_INS = {"computer-players": 1, "guided-tour": 4, "store-update": 4, "video-calls": 8, "web-host": 1}
 
 
 def names_in(design):
@@ -62,6 +62,22 @@ class Marks(unittest.TestCase):
             if "component" in artefact:
                 marked[artefact["component"].split("/")[1]] = marked.get(artefact["component"].split("/")[1], 0) + 1
         self.assertEqual(marked, EXPECTED_MARKS)
+
+    def test_native_files_that_name_an_optional_components_types_are_marked(self):
+        # Swift and Kotlin reach a component through its types, not a path: only the marked modules may name them.
+        names = {"video-calls": r"\bVideoSession\b|\bimport LiveKit\b|\bio\.livekit\.|\bae\.video\.",
+                 "guided-tour": r"\bTour(Model|Host|Buttons|Keys)?\b|\btourAnchor\b|\btourHost\b|\bae\.tour\.|UserDefaultsTourStorage",
+                 "store-update": r"\bisNewer\(|\bae\.update\."}
+        import re
+        for artefact in MANIFEST["artefacts"]:
+            if not artefact["source"].endswith((".swift", ".kt")) or artefact["source"].startswith("tests/"):
+                continue
+            text = (ROOT / artefact["source"]).read_text()
+            if artefact["source"].endswith(".swift"):
+                text = text.replace("currentVersion", "isNewer(")  # store-update's Swift global (the Kotlin view model has its own)
+            for component, pattern in names.items():
+                if re.search(pattern, text):
+                    self.assertEqual(artefact.get("component"), "ourapps-ae/" + component, artefact["source"])
 
     def test_a_package_with_these_marks_is_a_valid_component_to_aepm(self):
         model.validate_component(load(ROOT / "component.json"))
@@ -105,8 +121,7 @@ class Installed(unittest.TestCase):
         for artefact in MANIFEST["artefacts"]:
             if "withoutComponent" in artefact:
                 twins = [a for a in MANIFEST["artefacts"] if a["destination"] == artefact["destination"] and a is not artefact]
-                # a Swift stand-in declares what the component's Swift files declare, so it has no twin in this package
-                self.assertEqual([a.get("component") for a in twins], [] if artefact["source"].endswith(".swift") else [artefact["withoutComponent"]], artefact["source"])
+                self.assertEqual([a.get("component") for a in twins], [artefact["withoutComponent"]], artefact["source"])
                 name = artefact["withoutComponent"].split("/")[1]
                 stand_ins[name] = stand_ins.get(name, 0) + 1
         self.assertEqual(stand_ins, EXPECTED_STAND_INS)
@@ -160,7 +175,7 @@ class Pack(unittest.TestCase):
     def test_the_package_packs_with_aepm(self):
         base = Path(os.path.realpath(tempfile.gettempdir()))
         with tempfile.TemporaryDirectory(dir=base) as store:
-            env = {**os.environ, "PYTHONPATH": str(AEPM), "PYTHONDONTWRITEBYTECODE": "1"}
+            env = {**os.environ, "PYTHONPATH": str(Path(model.__file__).resolve().parent.parent), "PYTHONDONTWRITEBYTECODE": "1"}
             run = subprocess.run([sys.executable, "-B", "-m", "aepm", "pack", "--store", store, str(ROOT)], capture_output=True, text=True, env=env, timeout=300)
             self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
 

@@ -1,12 +1,12 @@
 # Source record
 
-Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revision 19905b75dbea89fbfd424d67fe26c81aaed0e018. This component holds only what no general component provides. Line ranges are those of the source file named; many files were rewritten over components, so a range is the region the content came from, not a copy of it. `scripts/make_component.py` computes `component.json`; `scripts/make_source.py` writes this file.
+Everything here was taken from the `recipe/` folder of the OurPoker source at McInPoker revision 19905b75dbea89fbfd424d67fe26c81aaed0e018. This component holds only what no general component provides. Line ranges are those of the source file named; many files were rewritten over components, so a range is the region the content came from, not a copy of it. `scripts/make_component.py` computes `component.json`; `scripts/make_source.py` writes this file.
 
 ## Implementation: server (`implementation/server/src/`, destination `server/src/`)
 
 ### Server
 
-| File | Lines | Origin (OurPoker/recipe) | Notes |
+| File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
 | `implementation/server/src/adapter.ts` | 18 | server/src/adapter.ts 1-109 | The room's lobby, join, apply, advance and view moved to turn-engine; the rest wraps its view in the poker wire view and gives it the hand text and odds. |
 | `implementation/server/src/contract.ts` | 257 | server/src/contract.ts 1-257 | Wire types the four clients decode. |
@@ -26,7 +26,7 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 
 ### Web
 
-| File | Lines | Origin (OurPoker/recipe) | Notes |
+| File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
 | `implementation/web/src/api.ts` | 81 | web/src/api.ts 1-75 | Server address templated. |
 | `implementation/web/src/betting.ts` | 92 | web/src/table.ts 891-1012 | Gestures, hints and the move buttons; amounts from holdem-rules. |
@@ -64,8 +64,8 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 | `implementation/web/index.html` | 10 | web/index.html 1-21 | The body and the entry; web-host's Vite configuration writes the head. |
 | `implementation/web/vite.config.ts` | 20 | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
 | `implementation/web/tsconfig.json` | 17 | web/tsconfig.json 1-16 | |
-| `implementation/apple/generate-project.ts` | 23 | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
-| `implementation/android/generate-project.ts` | 31 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
+| `implementation/apple/generate-project.ts` | 30 | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
+| `implementation/android/generate-project.ts` | 39 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
 | `locales/generated/` | 6 files | i18n generator output | Written by `scripts/make_component.py` with translations' generator from `locales/strings.json`. |
 
 ## Stand-ins (`implementation/stand-ins/`, installed when the design leaves the component out)
@@ -75,19 +75,23 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 | `server/src/computers.ts`, `update-links.ts`, `video.ts` | 20 | computer-players, store-update, video-calls (new) |
 | `web/src/guide.ts`, `guide-style.ts`, `shell.ts`, `update.ts`, `video.ts` | 53 | guided-tour, web-host, store-update, video-calls (new) |
 | `web/package.json`, `package-lock.json` | 17, 938 | video-calls: the web package without `livekit-client` |
-| `apple/Sources/StoreVersion.swift` | 6 | store-update's Swift `isNewer` and `currentVersion` (new) |
+| `apple/Sources/Video.swift`, `SeatScreen.swift`, `Lessons.swift`, `Updates.swift` | 104 | video-calls, guided-tour, store-update (new) |
+| `android/.../Video.kt`, `ui/SeatScreen.kt`, `ui/Lessons.kt`, `Updates.kt` | 89 | video-calls, guided-tour, store-update (new) |
 
 ## Implementation: Apple (`implementation/apple/Sources/`, destination `ios/OurPoker/Sources/`)
 
 ### Apple
 
-| File | Lines | Origin (OurPoker/recipe) | Notes |
+| File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
-| `implementation/apple/Sources/ApplicationSettings.swift` | 3 | ApplicationSettings.swift 1-3 | Template: whether updates are offered. |
+| `implementation/apple/Sources/ApplicationSettings.swift` | 5 | ApplicationSettings.swift 1-3 | Template: whether updates are offered. |
+| `implementation/apple/Sources/Lessons.swift` | 37 | TableModel.swift 43-48, Guide.swift 160-175 | The lessons over guided-tour; the only application file that names it. |
+| `implementation/apple/Sources/Updates.swift` | 6 | new | The update check's version comparison over store-update; the only application file that names it. |
+| `implementation/apple/Sources/Video.swift` | 3 | new | The video session under the application's name (video-calls' `VideoSession`). |
 | `implementation/apple/Sources/Bridge.swift` | 110 | ios/OurPoker/Sources/Sound.swift 1-75, Layout.swift 1-35, Platform.swift 1-41, Cards.swift 137-149 | Names over the sound-cues player, preferences, apple-host platform rules and table-layout spots; `tapIf`. |
 | `implementation/apple/Sources/DisplayScreen.swift` | 569 | DisplayScreen.swift 1-628 | The table viewer for a television or shared screen. |
 | `implementation/apple/Sources/EndScreen.swift` | 57 | EndScreen.swift 1-57 |  |
-| `implementation/apple/Sources/Guides.swift` | 55 | Guide.swift 1-189 | Which lesson each moment asks for; the overlay moved to guided-tour. |
+| `implementation/apple/Sources/Guides.swift` | 42 | Guide.swift 1-189 | Which lesson each moment asks for; the overlay moved to guided-tour. |
 | `implementation/apple/Sources/HelpScreen.swift` | 29 | HelpScreen.swift 1-29 |  |
 | `implementation/apple/Sources/HomeScreen.swift` | 177 | HomeScreen.swift 1-174 |  |
 | `implementation/apple/Sources/LiveMessage.swift` | 8 | LiveMessage.swift 1-8 |  |
@@ -101,27 +105,30 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 | `implementation/apple/Sources/RoomLook.swift` | 84 | PokerBackground.swift 1-217 | Two room looks over theme; the drawing moved to theme. |
 | `implementation/apple/Sources/RootView.swift` | 106 | OurPokerApp.swift 1-135 | The screen flow. |
 | `implementation/apple/Sources/SeatScreen.swift` | 54 | SeatScreen.swift 1-54 |  |
-| `implementation/apple/Sources/Strings.swift` | 91 | Strings.swift 1-101 | Over translations. |
+| `implementation/apple/Sources/Strings.swift` | 92 | Strings.swift 1-101 | Over translations. |
 | `implementation/apple/Sources/TableClient.swift` | 86 | TableClient.swift 1-86 |  |
 | `implementation/apple/Sources/TableEffects.swift` | 360 | Chips.swift 109-455 | Spots, flights, showdown layout. |
-| `implementation/apple/Sources/TableModel.swift` | 525 | TableModel.swift 1-535 | Server address from the apple-host's settings. |
+| `implementation/apple/Sources/TableModel.swift` | 520 | TableModel.swift 1-535 | Server address from the apple-host's settings. |
 | `implementation/apple/Sources/TableScreen.swift` | 1282 | TableScreen.swift 1-1289 | Poker table screen. |
 
 ## Implementation: Android (`implementation/android/app/src/main/java/app/ourapps/ourpoker/`, same destination)
 
 ### Android
 
-| File | Lines | Origin (OurPoker/recipe) | Notes |
+| File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
-| `AppLanguage.kt` | 14 | AppLanguage.kt 1-31 | Over the android-host's ShellLanguage. |
-| `AppSettings.kt` | 8 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
+| `AppLanguage.kt` | 15 | AppLanguage.kt 1-31 | Over the android-host's ShellLanguage. |
+| `Updates.kt` | 4 | new | The update check's version comparison over store-update. |
+| `Video.kt` | 6 | new | The video session and room under the application's names (video-calls' `VideoSession`, LiveKit's `Room`). |
+| `ui/Lessons.kt` | 40 | TableViewModel.kt 87-92, ui/Guide.kt 170-184 | The lessons over guided-tour; the only application file that names it. |
+| `AppSettings.kt` | 10 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
 | `MainActivity.kt` | 106 | MainActivity.kt 1-137 | Subclass of the android-host's ShellActivity; screen flow. |
 | `Sound.kt` | 57 | Sound.kt 1-53 | Over the sound-cues player and preferences. |
-| `TableViewModel.kt` | 491 | TableViewModel.kt 1-493 | Lessons through the guided-tour component. |
+| `TableViewModel.kt` | 480 | TableViewModel.kt 1-493 | Lessons through the guided-tour component. |
 | `net/Model.kt` | 212 | net/Model.kt 1-212 | Wire model. |
 | `net/TableClient.kt` | 87 | net/TableClient.kt 1-87 | REST client; the live connection is realtime-rooms'. |
 | `ui/EndScreen.kt` | 80 | ui/EndScreen.kt 1-72 | Rows from tournament. |
-| `ui/Guides.kt` | 61 | ui/Guide.kt 1-184 | Which lesson each moment asks for; overlay moved to guided-tour. |
+| `ui/Guides.kt` | 48 | ui/Guide.kt 1-184 | Which lesson each moment asks for; overlay moved to guided-tour. |
 | `ui/HelpScreen.kt` | 20 | ui/HelpScreen.kt 1-53 | Over controls' HelpPage. |
 | `ui/HomeScreen.kt` | 227 | ui/HomeScreen.kt 1-226 |  |
 | `ui/LobbyScreen.kt` | 103 | ui/LobbyScreen.kt 1-97 | Rows from seating. |
@@ -140,7 +147,7 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 
 ### Desktop
 
-| File | Lines | Origin (OurPoker/recipe) | Notes |
+| File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
 | `implementation/desktop/package.json` | 19 | desktop/package.json 1-21 | Name templated. |
 | `implementation/desktop/package-lock.json` | 3604 | desktop/package-lock.json | Exact versions of electron and electron-builder. |
@@ -171,7 +178,7 @@ Copied from the source and mapped back to the application layout by the artefact
 
 | Files | Lines | Origin |
 |---|---|---|
-| `tests/e2e/server/*.test.ts` (6) | 624 | server/test/room.test.ts, adapter.test.ts, video.test.ts and services.test.ts (split into update-links.test.ts and video-services.test.ts, one optional component each); hand.test.ts is new (a server hand without a network) |
+| `tests/e2e/server/*.test.ts` (6) | 625 | server/test/room.test.ts, adapter.test.ts, video.test.ts and services.test.ts (split into update-links.test.ts and video-services.test.ts, one optional component each); hand.test.ts is new (a server hand without a network) |
 | `tests/e2e/web/*` (10) | 1056 | web/test/* (browser.mjs is the two-player hand with a display; session.test.mjs the reconnect) |
 | `tests/e2e/verification/*` (15) | 691 | verification/* |
 | `tests/e2e/apple/*` (6) | 339 | ios/OurPokerTests/{Contract,Session,Guide,ChallengeLayout}Tests.swift, OurPokerUITests/HomeButtonsUITests.swift, VerificationSupport/ServerAddress.swift |

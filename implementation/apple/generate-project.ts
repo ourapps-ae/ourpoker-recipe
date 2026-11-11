@@ -1,7 +1,7 @@
 // Writes the Xcode project description (project.yml, the Info.plist files, export options) for the design's Apple
 // targets with apple-host's renderer and installed settings. Run from this folder: `node generate-project.ts`, then
 // `xcodegen generate`. SERVER_ADDRESS replaces the server address the design was installed with.
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { renderApple, writeApple } from "../components/apple-host/apple/render.ts";
 import { appleHostSettings } from "../components/apple-host/apple/settings.ts";
@@ -20,4 +20,11 @@ const { files, message } = renderApple(appleHostSettings, {
   microphoneUsage: "Lets the other players hear you.",
 });
 writeApple(fileURLToPath(new URL(".", import.meta.url)), files);
-console.log(message);
+// The string catalogue with the design's languages only: the installed one holds all four.
+const languages = "{{languages}}".split(" ");
+const catalogue = JSON.parse(readFileSync(new URL("./strings/Localizable.xcstrings", import.meta.url), "utf8"));
+for (const entry of Object.values(catalogue.strings) as { localizations: Record<string, unknown> }[]) {
+  for (const code of Object.keys(entry.localizations)) if (!languages.includes(code)) delete entry.localizations[code];
+}
+writeFileSync(new URL("./OurPoker/Resources/Localizable.xcstrings", import.meta.url), JSON.stringify(catalogue, null, 2) + "\n");
+console.log(`${message} Languages: ${languages.join(" ")}.`);

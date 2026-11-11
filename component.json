@@ -31,6 +31,20 @@
       "template": false
     },
     {
+      "component": "ourapps-ae/store-update",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
+      "executable": false,
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
+      "template": false
+    },
+    {
+      "component": "ourapps-ae/video-calls",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
+      "executable": false,
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
+      "template": false
+    },
+    {
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
@@ -64,6 +78,13 @@
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
+      "template": false
+    },
+    {
+      "component": "ourapps-ae/guided-tour",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
+      "executable": false,
+      "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
       "template": false
     },
     {
@@ -103,6 +124,7 @@
       "template": false
     },
     {
+      "component": "ourapps-ae/video-calls",
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
@@ -182,6 +204,13 @@
       "template": false
     },
     {
+      "component": "ourapps-ae/guided-tour",
+      "destination": "ios/OurPoker/Sources/Lessons.swift",
+      "executable": false,
+      "source": "implementation/apple/Sources/Lessons.swift",
+      "template": false
+    },
+    {
       "destination": "ios/OurPoker/Sources/LiveMessage.swift",
       "executable": false,
       "source": "implementation/apple/Sources/LiveMessage.swift",
@@ -242,6 +271,7 @@
       "template": false
     },
     {
+      "component": "ourapps-ae/video-calls",
       "destination": "ios/OurPoker/Sources/SeatScreen.swift",
       "executable": false,
       "source": "implementation/apple/Sources/SeatScreen.swift",
@@ -278,6 +308,20 @@
       "template": false
     },
     {
+      "component": "ourapps-ae/store-update",
+      "destination": "ios/OurPoker/Sources/Updates.swift",
+      "executable": false,
+      "source": "implementation/apple/Sources/Updates.swift",
+      "template": false
+    },
+    {
+      "component": "ourapps-ae/video-calls",
+      "destination": "ios/OurPoker/Sources/Video.swift",
+      "executable": false,
+      "source": "implementation/apple/Sources/Video.swift",
+      "template": false
+    },
+    {
       "component": "ourapps-ae/apple-host",
       "destination": "ios/generate-project.ts",
       "executable": false,
@@ -285,12 +329,14 @@
       "template": true
     },
     {
+      "component": "ourapps-ae/windows-desktop",
       "destination": "desktop/package-lock.json",
       "executable": false,
       "source": "implementation/desktop/package-lock.json",
       "template": false
     },
     {
+      "component": "ourapps-ae/windows-desktop",
       "destination": "desktop/package.json",
       "executable": false,
       "source": "implementation/desktop/package.json",
@@ -311,6 +357,7 @@
       "template": true
     },
     {
+      "component": "ourapps-ae/windows-desktop",
       "destination": "desktop/src/configuration.cjs",
       "executable": false,
       "source": "implementation/desktop/src/configuration.cjs",
@@ -443,11 +490,60 @@
       "template": false
     },
     {
-      "destination": "ios/OurPoker/Sources/StoreVersion.swift",
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
       "executable": false,
-      "source": "implementation/stand-ins/apple/Sources/StoreVersion.swift",
+      "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
       "template": false,
       "withoutComponent": "ourapps-ae/store-update"
+    },
+    {
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
+      "executable": false,
+      "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
+      "template": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
+      "executable": false,
+      "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
+      "template": false,
+      "withoutComponent": "ourapps-ae/guided-tour"
+    },
+    {
+      "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
+      "executable": false,
+      "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
+      "template": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "destination": "ios/OurPoker/Sources/Lessons.swift",
+      "executable": false,
+      "source": "implementation/stand-ins/apple/Sources/Lessons.swift",
+      "template": false,
+      "withoutComponent": "ourapps-ae/guided-tour"
+    },
+    {
+      "destination": "ios/OurPoker/Sources/SeatScreen.swift",
+      "executable": false,
+      "source": "implementation/stand-ins/apple/Sources/SeatScreen.swift",
+      "template": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "destination": "ios/OurPoker/Sources/Updates.swift",
+      "executable": false,
+      "source": "implementation/stand-ins/apple/Sources/Updates.swift",
+      "template": false,
+      "withoutComponent": "ourapps-ae/store-update"
+    },
+    {
+      "destination": "ios/OurPoker/Sources/Video.swift",
+      "executable": false,
+      "source": "implementation/stand-ins/apple/Sources/Video.swift",
+      "template": false,
+      "withoutComponent": "ourapps-ae/video-calls"
     },
     {
       "destination": "server/src/computers.ts",
@@ -1077,31 +1173,31 @@
       "template": false
     },
     {
-      "destination": "android/app/src/main/res/values/strings.xml",
+      "destination": "android/strings/values/strings.xml",
       "executable": false,
       "source": "locales/generated/android/values/strings.xml",
       "template": false
     },
     {
-      "destination": "android/app/src/main/res/values-de/strings.xml",
+      "destination": "android/strings/values-de/strings.xml",
       "executable": false,
       "source": "locales/generated/android/values-de/strings.xml",
       "template": false
     },
     {
-      "destination": "android/app/src/main/res/values-es/strings.xml",
+      "destination": "android/strings/values-es/strings.xml",
       "executable": false,
       "source": "locales/generated/android/values-es/strings.xml",
       "template": false
     },
     {
-      "destination": "android/app/src/main/res/values-fr/strings.xml",
+      "destination": "android/strings/values-fr/strings.xml",
       "executable": false,
       "source": "locales/generated/android/values-fr/strings.xml",
       "template": false
     },
     {
-      "destination": "ios/OurPoker/Resources/Localizable.xcstrings",
+      "destination": "ios/strings/Localizable.xcstrings",
       "executable": false,
       "source": "locales/generated/apple/Localizable.xcstrings",
       "template": false
@@ -1831,12 +1927,15 @@
       "android/app/src/main/java/app/ourapps/ourpoker/MainActivity.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/Sound.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/TableViewModel.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/net/TableClient.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/EndScreen.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/Guides.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/HelpScreen.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt",
+      "android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/LobbyScreen.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/Marks.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/MediaToggles.kt",
@@ -1880,13 +1979,13 @@
       "android/app/src/main/res/raw/snd_turn.wav",
       "android/app/src/main/res/raw/snd_win.wav",
       "android/app/src/main/res/raw/sounds_manifest.json",
-      "android/app/src/main/res/values-de/strings.xml",
-      "android/app/src/main/res/values-es/strings.xml",
-      "android/app/src/main/res/values-fr/strings.xml",
-      "android/app/src/main/res/values/strings.xml",
       "android/app/src/test/java/app/ourapps/ourpoker/FixturesTest.kt",
       "android/app/src/test/java/app/ourapps/ourpoker/SoundSettingTest.kt",
       "android/generate-project.ts",
+      "android/strings/values-de/strings.xml",
+      "android/strings/values-es/strings.xml",
+      "android/strings/values-fr/strings.xml",
+      "android/strings/values/strings.xml",
       "desktop/package-lock.json",
       "desktop/package.json",
       "desktop/scripts/build.cjs",
@@ -1937,7 +2036,6 @@
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@1x.png",
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@2x.png",
       "ios/OurPoker/Resources/Assets.xcassets/Contents.json",
-      "ios/OurPoker/Resources/Localizable.xcstrings",
       "ios/OurPoker/Resources/lessons.json",
       "ios/OurPoker/Sources/ApplicationSettings.swift",
       "ios/OurPoker/Sources/Bridge.swift",
@@ -1946,6 +2044,7 @@
       "ios/OurPoker/Sources/Guides.swift",
       "ios/OurPoker/Sources/HelpScreen.swift",
       "ios/OurPoker/Sources/HomeScreen.swift",
+      "ios/OurPoker/Sources/Lessons.swift",
       "ios/OurPoker/Sources/LiveMessage.swift",
       "ios/OurPoker/Sources/LobbyScreen.swift",
       "ios/OurPoker/Sources/Marks.swift",
@@ -1957,12 +2056,13 @@
       "ios/OurPoker/Sources/RoomLook.swift",
       "ios/OurPoker/Sources/RootView.swift",
       "ios/OurPoker/Sources/SeatScreen.swift",
-      "ios/OurPoker/Sources/StoreVersion.swift",
       "ios/OurPoker/Sources/Strings.swift",
       "ios/OurPoker/Sources/TableClient.swift",
       "ios/OurPoker/Sources/TableEffects.swift",
       "ios/OurPoker/Sources/TableModel.swift",
       "ios/OurPoker/Sources/TableScreen.swift",
+      "ios/OurPoker/Sources/Updates.swift",
+      "ios/OurPoker/Sources/Video.swift",
       "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/1x.png",
       "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Shelf.imageset/2x.png",
       "ios/OurPokerTV/Assets.xcassets/AppIcon.brandassets/Small.imagestack/Artwork.imagestacklayer/Content.imageset/1x.png",
@@ -1980,6 +2080,7 @@
       "ios/OurPokerUITests/HomeButtonsUITests.swift",
       "ios/VerificationSupport/ServerAddress.swift",
       "ios/generate-project.ts",
+      "ios/strings/Localizable.xcstrings",
       "resources/strings.json",
       "rules/texas-holdem-house-rules.json",
       "rules/texas-holdem-house-rules.md",
@@ -2245,6 +2346,14 @@
       "default": "on-request",
       "grammar": "slug",
       "id": "computerPlayers",
+      "required": true,
+      "secret": false,
+      "type": "string"
+    },
+    {
+      "default": "en fr de es",
+      "grammar": "label",
+      "id": "languages",
       "required": true,
       "secret": false,
       "type": "string"
@@ -2683,6 +2792,14 @@
     },
     {
       "executable": false,
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Updates.kt"
+    },
+    {
+      "executable": false,
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Video.kt"
+    },
+    {
+      "executable": false,
       "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/net/Model.kt"
     },
     {
@@ -2704,6 +2821,10 @@
     {
       "executable": false,
       "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/HomeScreen.kt"
+    },
+    {
+      "executable": false,
+      "path": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt"
     },
     {
       "executable": false,
@@ -2783,6 +2904,10 @@
     },
     {
       "executable": false,
+      "path": "implementation/apple/Sources/Lessons.swift"
+    },
+    {
+      "executable": false,
       "path": "implementation/apple/Sources/LiveMessage.swift"
     },
     {
@@ -2844,6 +2969,14 @@
     {
       "executable": false,
       "path": "implementation/apple/Sources/TableScreen.swift"
+    },
+    {
+      "executable": false,
+      "path": "implementation/apple/Sources/Updates.swift"
+    },
+    {
+      "executable": false,
+      "path": "implementation/apple/Sources/Video.swift"
     },
     {
       "executable": false,
@@ -2951,7 +3084,35 @@
     },
     {
       "executable": false,
-      "path": "implementation/stand-ins/apple/Sources/StoreVersion.swift"
+      "path": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/Updates.kt"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/Video.kt"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/apple/Sources/Lessons.swift"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/apple/Sources/SeatScreen.swift"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/apple/Sources/Updates.swift"
+    },
+    {
+      "executable": false,
+      "path": "implementation/stand-ins/apple/Sources/Video.swift"
     },
     {
       "executable": false,

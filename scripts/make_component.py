@@ -20,10 +20,10 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parent.parent
 WORKSPACE = ROOT.parent.parent
-COMPONENTS = WORKSPACE / "components"
-AEPM = WORKSPACE / "aepm"
-sys.path.insert(0, str(AEPM))
+COMPONENTS = Path(os.environ.get("OURPOKER_COMPONENTS") or WORKSPACE / "components")  # the component checkouts
+sys.path.insert(0, str(WORKSPACE / "aepm"))  # a sibling checkout, unless PYTHONPATH already names one
 from aepm import application, model  # noqa: E402
+AEPM = Path(application.__file__).resolve().parent.parent
 
 sys.path.insert(0, str(ROOT / "authoring"))
 import component_imports  # noqa: E402
@@ -60,6 +60,8 @@ COLLECT = [
     ("rebuysPerPlayer", "integer", "integer", 1),
     ("decisionSeconds", "integer", "integer", 30),
     ("computerPlayers", "string", "slug", "on-request"),
+    # The languages answer, space-separated: the native projects carry only these.
+    ("languages", "string", "label", "en fr de es"),
 ]
 
 # The three configuration requirements of display-mode, video-calls and windows-desktop are optional (0.3.1), so the application
@@ -137,6 +139,8 @@ def artefact_pairs(files):
     for f in files:
         if f.startswith("implementation/stand-ins/apple/Sources/"):
             add(f, "ios/OurPoker/Sources/" + f[len("implementation/stand-ins/apple/Sources/"):])
+        elif f.startswith("implementation/stand-ins/android/"):
+            add(f, "android/" + f[len("implementation/stand-ins/android/"):])
         elif f.startswith("implementation/stand-ins/"):
             # a stand-in has the destination of the real module it replaces (stand_ins() pairs them)
             add(f, f[len("implementation/stand-ins/"):])
@@ -171,12 +175,14 @@ def artefact_pairs(files):
     add("locales/strings.json", "resources/strings.json")
     # the translations component's generator output (generate_translations), shipped so install alone gives every client its text
     for f in files:
+        # the web client offers the answered languages from the full table; the native projects take theirs when
+        # generate-project.ts copies the answered languages' files into the project
         if f == "locales/generated/web/strings.json":
             add(f, "web/src/strings.json")
         elif f == "locales/generated/apple/Localizable.xcstrings":
-            add(f, "ios/OurPoker/Resources/Localizable.xcstrings")
+            add(f, "ios/strings/Localizable.xcstrings")
         elif f.startswith("locales/generated/android/"):
-            add(f, "android/app/src/main/res/" + f[len("locales/generated/android/"):])
+            add(f, "android/strings/" + f[len("locales/generated/android/"):])
     add("locales/lessons.json", "web/src/lessons.json")
     add("locales/lessons.json", "ios/OurPoker/Resources/lessons.json")
     add("locales/lessons.json", "android/app/src/main/res/raw/lessons.json")
@@ -237,20 +243,28 @@ def conditional_components():
 
 # Files that need an optional component without naming its path: the web project's package files declare livekit-client,
 # which only video-calls' web code imports (the stand-in package files at the same destinations declare no livekit-client).
-DECLARED = {"implementation/web/package.json": "video-calls", "implementation/web/package-lock.json": "video-calls"}
-
-
-# Swift stand-ins declare what a component's Swift files declare (one module, no import names them), so they have no twin.
-STANDS_IN_FOR = {"implementation/stand-ins/apple/Sources/StoreVersion.swift": "store-update"}
+# Swift and Kotlin name a component's types, not its path; each of these has a stand-in at the same destination.
+SWIFT_SOURCES = "implementation/apple/Sources/"
+KOTLIN_SOURCES = f"implementation/android/app/src/main/java/{KOTLIN}/"
+DECLARED = {
+    "implementation/web/package.json": "video-calls", "implementation/web/package-lock.json": "video-calls",
+    SWIFT_SOURCES + "Video.swift": "video-calls", SWIFT_SOURCES + "SeatScreen.swift": "video-calls",
+    SWIFT_SOURCES + "Lessons.swift": "guided-tour", SWIFT_SOURCES + "Updates.swift": "store-update",
+    KOTLIN_SOURCES + "Video.kt": "video-calls", KOTLIN_SOURCES + "ui/SeatScreen.kt": "video-calls",
+    KOTLIN_SOURCES + "ui/Lessons.kt": "guided-tour", KOTLIN_SOURCES + "Updates.kt": "store-update",
+    # the desktop project exists only for Windows
+    "implementation/desktop/package.json": "windows-desktop", "implementation/desktop/package-lock.json": "windows-desktop",
+    "implementation/desktop/src/configuration.cjs": "windows-desktop",
+}
 
 
 def stand_ins(pairs, conditions):
     """source -> the component whose absence installs it: a stand-in under implementation/stand-ins/ replaces the real file
     with its destination, which must be conditional (aepm installs one when the component is in, the other when it is not)."""
     real = {d: s for s, d in pairs if not s.startswith("implementation/stand-ins/")}
-    out = {s: "ourapps-ae/" + c for s, c in STANDS_IN_FOR.items()}
+    out = {}
     for source, destination in pairs:
-        if source.startswith("implementation/stand-ins/") and source not in STANDS_IN_FOR:
+        if source.startswith("implementation/stand-ins/"):
             twin = real.get(destination)
             if twin is None or twin not in conditions:
                 raise SystemExit(f"{source}: no conditional file at {destination} to stand in for")
@@ -386,7 +400,7 @@ def connected_example(manifest, definition):
 
 def render(example):
     generator = AEPM / "aepm" / "diagram" / "generate.py"
-    env = {"PATH": "/opt/homebrew/bin" + os.pathsep + os.defpath, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONPATH": str(AEPM), "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8", "HOME": os.environ.get("HOME", "/")}
+    env = {"PATH": os.environ.get("PATH", os.defpath), "PYTHONDONTWRITEBYTECODE": "1", "PYTHONPATH": str(AEPM), "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8", "HOME": os.environ.get("HOME", "/")}
     out = ROOT / "visual/output"
     out.mkdir(parents=True, exist_ok=True)
     result = subprocess.run([sys.executable, "-B", str(generator), str(ROOT / "visual/examples/connected.json"), "--output-prefix", str(out / "connected")], env=env, capture_output=True, text=True, timeout=180)

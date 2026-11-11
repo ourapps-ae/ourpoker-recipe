@@ -1428,6 +1428,14 @@
           "required": true,
           "secret": false,
           "default": "on-request"
+        },
+        {
+          "id": "languages",
+          "name": "languages",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "en fr de es"
         }
       ]
     }
@@ -1648,7 +1656,8 @@
         "levelSeconds": 600,
         "rebuysPerPlayer": 1,
         "decisionSeconds": 30,
-        "computerPlayers": "on-request"
+        "computerPlayers": "on-request",
+        "languages": "en fr de es"
       }
     }
   ],

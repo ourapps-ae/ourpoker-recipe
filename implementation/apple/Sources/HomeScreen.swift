@@ -58,7 +58,7 @@ struct HomeScreen: View {
                         Button { Sound.play(.click); model.resetGuides() } label: { HomePill(symbol: "arrow.counterclockwise", text: L("reset_hints")) }
                             .platformButtonStyle()
                     }
-                    Text("OurPoker \(currentVersion)").font(.caption2).foregroundStyle(.secondary)
+                    Text("OurPoker \(applicationVersion)").font(.caption2).foregroundStyle(.secondary)
                 }
                 .padding(16)
                 .phoneColumn(help: { model.showHelp = true }, helpLabel: L("how_to_play"))
@@ -76,7 +76,7 @@ struct HomeScreen: View {
             }
             Button(L("update_later"), role: .cancel) { model.updateDismissed = true }
         } message: {
-            Text(L("update_body", currentVersion))
+            Text(L("update_body", applicationVersion))
         }
     }
 }

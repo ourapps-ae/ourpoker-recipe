@@ -3,7 +3,7 @@ import SwiftUI
 
 // A small monitor showing a player's camera, framed like a screen standing by their seat.
 struct SeatScreen: View {
-    let session: VideoSession
+    let session: Video
     let playerId: String
     let isMe: Bool
     let name: String
@@ -26,7 +26,7 @@ struct SeatScreen: View {
 
 // The camera, or the player's initial; fills whatever space it is placed in.
 struct VideoContent: View {
-    let session: VideoSession
+    let session: Video
     let playerId: String
     let isMe: Bool
     let name: String

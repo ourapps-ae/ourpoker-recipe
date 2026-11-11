@@ -9,14 +9,8 @@ import app.ourapps.ourpoker.net.TableClient
 import app.ourapps.ourpoker.net.UpdateInfo
 import app.ourapps.ourpoker.net.VideoGrant
 import app.ourapps.ourpoker.net.View
-import ae.video.VideoSession
 import ae.display.DisplayPolicy
-import ae.update.isNewer
-import ae.tour.LessonsJson
-import ae.tour.PreferencesTourStorage
-import ae.tour.Tour
-import ae.tour.TourKeys
-import app.ourapps.ourpoker.ui.text
+import app.ourapps.ourpoker.ui.Lessons
 import kotlinx.coroutines.Job
 import app.ourapps.ourpoker.ui.GuideId
 import app.ourapps.ourpoker.net.Status
@@ -72,7 +66,7 @@ enum class Zoom { BOARD, SHOWCASE, MINE, FOLDED, HAND }
 class TableViewModel(app: Application) : AndroidViewModel(app) {
     private val prefs = app.getSharedPreferences("ourpoker", 0)
     private val client = TableClient(AppSettings.SERVER_URL)
-    val video = VideoSession(app) { DisplayPolicy.canCapture(false) }
+    val video = Video(app) { DisplayPolicy.canCapture(false) }
     // Video grant from the last join; reconnects after a relaunch need a fresh join, so it is kept in memory only.
     private var grant: VideoGrant? = null
         set(value) { field = value; _hasVideo.value = value != null }
@@ -84,13 +78,8 @@ class TableViewModel(app: Application) : AndroidViewModel(app) {
     var permissionsGranted = false
         set(value) { field = value; _permitted.value = value; if (value) connectVideo() }
     val sound = SoundSetting(prefs)
-    // Lessons (res/raw/lessons.json, from locales/lessons.json) run by the guided-tour component: each is shown
-    // once ever, after any already waiting; progress and the choice to be guided are kept on this phone.
-    val tour: Tour = run {
-        val id = app.resources.getIdentifier("lessons", "raw", app.packageName)
-        val lessons = LessonsJson.parse(app.resources.openRawResource(id).bufferedReader().use { it.readText() })
-        Tour(lessons, PreferencesTourStorage(prefs), translate = { app.text(it) }, keys = TourKeys(prefix = "tut.", enabled = "beginner"))
-    }
+    // Lessons run by the guided-tour component (ui/Lessons.kt).
+    val tour = Lessons(app, prefs)
     private val _state = MutableStateFlow(
         UiState(token = prefs.getString("token", null), roomId = prefs.getString("roomId", null), name = prefs.getString("name", "") ?: "", handPanel = prefs.getBoolean("handPanel", true), beginner = tour.enabled),
     )
@@ -150,7 +139,7 @@ class TableViewModel(app: Application) : AndroidViewModel(app) {
     fun checkForUpdate() = viewModelScope.launch {
         if (!AppSettings.UPDATES_ENABLED) return@launch
         runCatching { client.update() }.onSuccess { info ->
-            if (isNewer(info.version, currentVersion)) _state.update { it.copy(update = info) }
+            if (newerRelease(info.version, currentVersion)) _state.update { it.copy(update = info) }
         }
     }
 

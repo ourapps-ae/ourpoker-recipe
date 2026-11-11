@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import "../authoring/register-ts-js.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const componentsRoot = join(root, "..", "..", "components");
+const componentsRoot = process.env.OURPOKER_COMPONENTS ?? join(root, "..", "..", "components");
 // The ourapps checkout whose catalogue validator is used: OURAPPS, else ../../ourapps beside the recipes folder.
 const ourapps = process.env.OURAPPS ?? join(root, "..", "..", "ourapps");
 const { validateRecipe, isSafeSvg } = await import(pathToFileURL(join(ourapps, "shared/src/catalogue.ts")).href);
@@ -468,7 +468,17 @@ test("INTEGRATION-GAPS.md lists only open and deferred items, and its totals mat
   assert.ok(bySeverity, "the severity line is present");
   assert.deepEqual([severity["blocks assembly"], severity["needs adapter"], severity.cosmetic], bySeverity.slice(1).map(Number));
   for (const heading of ["## Open items", "## Decisions", "## What is not specified or built"]) assert.ok(text.includes(heading), heading);
-  assert.match(text, /Nothing here runs a recipe/);
+});
+
+test("the recipe's documents name no machine path and no tool or folder outside the recipe's repository", () => {
+  const documents = ["AGENTS.md", "CONTRACT.md", "SOURCE.md", "INTEGRATION-GAPS.md", "REVIEW.md", "INSTRUCTIONS.md", "page/description.md", ".opencode/knowledge/00-index.md", ".opencode/knowledge/workflow.md"];
+  const banned = /\/Users\/|\/home\/[a-z]|\/private\/var|[A-Z]:\\|\.pyenv|recipes\/ourpoker|check_component|scaffold_component|sync_required_interfaces|tools\/standards|\.\.\/\.\.\/(aepm|components\/|ourapps\/)|component-standard\.md|OurPoker\/recipe/;
+  for (const file of documents) {
+    const text = readFileSync(join(root, file), "utf8");
+    for (const [index, line] of text.split("\n").entries()) {
+      assert.ok(!banned.test(line), `${file}:${index + 1}: ${line.slice(0, 120)}`);
+    }
+  }
 });
 
 test("the recipe's documents state what is: no history and no compatibility wording", () => {

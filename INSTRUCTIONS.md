@@ -1,12 +1,12 @@
 # OurPoker recipe: instructions
 
-Package `ourapps-ae/ourpoker` 0.4.0. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts, part 3 builds and runs what `aepm install` produces. `recipe.json` is the source of truth; this file explains how to use it.
+Package `ourapps-ae/ourpoker` 0.4.0. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts, part 3 installs the application with aepm, part 4 builds and runs it, and part 5 is for maintainers of the recipe's own repository. `recipe.json` is the source of truth; this file explains how to use it.
 
 ## 1. For the agent
 
 ### Answering
 
-Answer from the person's description whatever it settles. Ask the person only what the description leaves open and the table below marks "ask". Never invent a secret, an account name, an address or a hosting account. An answer must be an allowed option or inside the range given in `recipe.json`; the defaults are the paper's house rules. A question with `askWhen` is asked only when its condition holds; otherwise it takes its default and any answer given for it is ignored. Conditions (`askWhen`, `includedWhen`) are CEL (Common Expression Language) expressions over the answers: each question id is a variable holding its answer, a set is a list of text, so `'web' in targets` is true when the web is a target. The "asked when" column gives each condition as written in `recipe.json`.
+Answer from the person's description whatever it settles. Ask the person only what the description leaves open and the table below marks "ask". Never invent a secret, an account name, an address or a hosting account. An answer must be an allowed option or inside the range given in `recipe.json`; the defaults are the recipe's house rules. A question with `askWhen` is asked only when its condition holds; otherwise it takes its default and any answer given for it is ignored. Conditions (`askWhen`, `includedWhen`) are CEL (Common Expression Language) expressions over the answers: each question id is a variable holding its answer, a set is a list of text, so `'web' in targets` is true when the web is a target. The "asked when" column gives each condition as written in `recipe.json`.
 
 Ask in this order. A question only matters if the earlier ones left it open.
 
@@ -48,7 +48,7 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `webAddress` | none | `web-host.webAddress`, `application.webAddress`, `server-host.allowedOrigins`, `invitations.inviteAddress` |
 | `bundleId` | none | `apple-host.bundleIdentifier`, `android-host.packageId`, `ourapps-release.bundleIdentifier`, `application.packageId` (all `app.ourapps.ourpoker` when empty) |
 | `scale` | none directly (see "Scale and profiles") | none |
-| `languages` | none | `translations.languages`, the chosen languages joined by spaces (for example `en fr`) |
+| `languages` | none | `translations.languages` and `application.languages`, the chosen languages joined by spaces (for example `en fr`): the web client offers only these, and the Apple and Android projects carry only these languages' text |
 | `look` | none | `theme.themeName`; `card-graphics.backStyle` (night: stripes, lounge: plain) |
 | `players` | none | `seating.maximumPlayers`, `holdem-rules.seats`, `chip-ledger.seats`, `room-directory.roomCapacity`, `application.maximumPlayers` |
 | `startingChips` | none | `tournament.startingStack`, `tournament.rebuyStack`, `application.startingStack` (not chip-ledger's `startingStack`: the tournament issues the chips) |
@@ -63,11 +63,11 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `updates` yes | `store-update` | `application.updatesEnabled`; `storeInvitation` sets `store-update.inviteAddress` and `application.inviteAddress` |
 | `storeCredentials`, `androidSigning`, `webDeploy` | none | `ourapps-release.storeCredentials`, `.androidSigning`, `.webDeploy` |
 
-A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `web-host` is in when `'web' in targets || 'windows' in targets`; `apple-host` when `'ios' in targets || 'macos' in targets || 'tvos' in targets`. `computer-players` and `poker-strategy` are in when `computerPlayers != 'none'` (turn-engine's `computer-players` requirement is optional, and `make_recipe.py` asserts it). The application's files that import an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it (rule 25). Each optional module the core imports (`server/src/video.ts`, `update-links.ts`, `computers.ts`; `web/src/video.ts`, `shell.ts`, `guide.ts`, `guide-style.ts`, `update.ts`; the web package files, which declare `livekit-client`) has a stand-in at the same destination marked `withoutComponent: "ourapps-ae/<name>"`, installed when the design leaves the component out, so every design installs one of the two and the core compiles.
+A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `web-host` is in when `'web' in targets || 'windows' in targets`; `apple-host` when `'ios' in targets || 'macos' in targets || 'tvos' in targets`. `computer-players` and `poker-strategy` are in when `computerPlayers != 'none'` (turn-engine's `computer-players` requirement is optional). The application's files that use an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it. Each optional module the rest of the application uses has a stand-in at the same destination marked `withoutComponent: "ourapps-ae/<name>"`, installed when the design leaves the component out, so every design installs one of the two and every client compiles: server `video.ts`, `update-links.ts`, `computers.ts`; web `video.ts`, `shell.ts`, `guide.ts`, `guide-style.ts`, `update.ts` and the web package files (which declare `livekit-client`); Apple `Video.swift`, `SeatScreen.swift`, `Lessons.swift`, `Updates.swift`; Android `Video.kt`, `ui/SeatScreen.kt`, `ui/Lessons.kt`, `Updates.kt`.
 
 `application.<setting>` names a setting of the recipe's own component (`component.json`). The six that change the house rules (`maximumPlayers`, `startingStack`, `levelSeconds`, `rebuysPerPlayer`, `decisionSeconds`, `computerPlayers`) are written over `rules/texas-holdem-house-rules.json` by the server when it starts, and each component is built from the result; the rules file is the one source of those numbers, and `recipe.json` does not restate any number the rules file states (`rules-settings.rulesFile` is `texas-holdem-house-rules`). `guest-identity` keeps its own defaults, which the application uses too.
 
-Forms of a `sets` value in `recipe.json` (the evaluation rules, component-standard.md): a literal; `"$answer"` (the answer; a set joined with spaces); `{"map": {...}}` (a choice answer to a value, covering every option); `{"fromScale": "<load key>"}`; `{"template": "prefix-{{answer}}"}`; `{"ref": "<secretRef question>"}`. This recipe uses `$answer`, `map` and `ref`. There is no `includes`, `$job`, `null` or `mapEach`.
+Forms of a `sets` value in `recipe.json` (aepm's recipe evaluation rules): a literal; `"$answer"` (the answer; a set joined with spaces); `{"map": {...}}` (a choice answer to a value, covering every option); `{"fromScale": "<load key>"}`; `{"template": "prefix-{{answer}}"}`; `{"ref": "<secretRef question>"}`. This recipe uses `$answer`, `map` and `ref`. There is no `includes`, `$job`, `null` or `mapEach`.
 
 ### Scale and profiles
 
@@ -81,7 +81,7 @@ The `scale` answer picks a band; the band's load (`concurrentPeople`, `requestsP
 
 With `server` = `own-hardware` the `server` and `realtime` jobs resolve to the `own-hardware` profiles at every band (no cost, no declared limits).
 
-Changing `scale` later swaps components that keep data with a migration (paper Section 3.11); do not rebuild from scratch.
+Changing `scale` later swaps components that keep data with a migration (each such component's `migration.json`); do not rebuild from scratch.
 
 ### Settings fixed by the recipe
 
@@ -96,7 +96,7 @@ Supply each secret to the tool that runs the build as a named reference, never a
 | Needed when | Account | Question that names the reference | Notes |
 |---|---|---|---|
 | `server` = `cloudflare` | A Cloudflare account | `hostingAccount` (a slug) | `realtime-rooms` and `server-host` run on Workers with SQLite-backed Durable Objects |
-| `updates`, or an iPhone and iPad target | Apple developer membership (the one paid item the paper names for delivery) | `storeCredentials` | signing and TestFlight upload through `ourapps-release` |
+| `updates`, or an iPhone and iPad target | Apple developer membership (the one paid item delivery needs) | `storeCredentials` | signing and TestFlight upload through `ourapps-release` |
 | `android` | A signing key for the Android package | `androidSigning` | |
 | `web` | A hosting account for the web files | `webDeploy` | |
 | `video` yes | A LiveKit Cloud account | `videoKey`, `videoSecret` (the API key and secret); the service address is `videoServiceUrl` | the deployment resolves the references into `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET` |
@@ -112,58 +112,67 @@ Supply each secret to the tool that runs the build as a named reference, never a
 
 A small group stays inside the free tiers: the small and medium bands both fit `cloudflare-free` and LiveKit `free`.
 
-### Checking the result
+## 3. Install
 
-From `recipes/ourpoker/` with node 26.5.0 and python 3.12.8 (`PY` is python3.12 with `PYTHONPATH=../../aepm`):
+Needs Python 3.12, Node 26.5 and git. aepm is the installer: `git clone https://github.com/ourapps-ae/aepm`, then define the command for this shell (bash or zsh):
 
 ```
-node --test tests/recipe.test.ts
-node --test tests/portable.test.ts
-PY -B tests/evaluate_recipe_test.py
-PY -B tests/conditional_artefacts_test.py
-PY -B authoring/check_conditional_artefacts.py -v
-PY -B authoring/try_install.py        (packs, signs, reviews and installs designs, then builds and runs them: part 3)
-(cd ../../ourapps && node scripts/validate-recipe-file.ts ../recipes/ourpoker/recipe.json --components ../components)
-npm install --prefix authoring        (once: @bufbuild/cel for the condition parity test)
-PY -B scripts/make_component.py --render
-PY -B authoring/make_recipe.py
-PY -B authoring/draw_default_design.py
+AEPM="$PWD/aepm"
+aepm() { PYTHONPATH="$AEPM" python3 -B -m aepm "$@"; }
 ```
 
-- `tests/recipe.test.ts` checks consistency only: the recipe passes the ourapps catalogue validator with the components' settings and profiles; every component exists at the named version in `components/`; every setting a question or the configuration sets exists with a matching type and grammar; no secret is in `configuration`; inclusion is by `includedWhen` only; every connection uses ports and types that exist and only optional requirements stay open; every job candidate profile exists; every answer in the answer sets is allowed; the recipe restates no number of the house rules file and sets the application's copy of each answer; the totals in `INTEGRATION-GAPS.md` match its table; the recipe's documents carry no history wording.
-- `authoring/evaluate_recipe.py` is a reference evaluator of the evaluation rules in component-standard.md. It is used only by tests, to show the rules are complete: it turns answers into an aepm application definition and does not assemble, resolve, install or run anything. `tests/evaluate_recipe_test.py` runs it on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code. Its CEL parser accepts exactly the subset the standard allows; the test evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination, and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `../../ourapps`, or from the checkout named by `OURAPPS`.
-- `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
-- `authoring/try_install.py [ANSWERS ...]` proves part 3 for answer sets (default: `default`, `browser-only-no-extras`, `web-own-hardware`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node and checks in headless Chrome that the built web client loads, lists the rooms from the server and seats a player. It needs Chrome (`--chrome` or `CHROME`) and network access for npm.
-- `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. Read it before assembling.
+STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder for downloaded packages, POLICY the owner's policy file, APP the application folder `aepm install` creates (it must not exist yet). `<version>` is the recipe version the catalogue lists (this file belongs to 0.4.0).
 
-### What the test answer sets cover
+1. Fetch the recipe and every component it names, with their release and guardian attestations:
+   ```
+   aepm fetch ourpoker@<version> --with-dependencies --store STORE
+   ```
+2. Read the questions (id, wording, type, options or range, default, askWhen):
+   ```
+   aepm questions ourpoker@<version> --store STORE
+   ```
+3. Answer them as part 1 says and write `answers.json`, an object from question id to answer, for example:
+   ```
+   {"targets": ["web"], "server": "own-hardware", "languages": ["en", "fr"], "video": false, "lessons": false, "computerPlayers": "none", "webDeploy": "ourpoker/web-deploy"}
+   ```
+   Unanswered questions take their defaults. `server` has none, nor has any secret reference question whose condition holds (here `webDeploy`, a name in your secret store, never the secret): answer those.
+4. Evaluate the design:
+   ```
+   aepm design ourpoker@<version> --store STORE --answers answers.json --out definition.json
+   ```
+   A refusal lists each error as `{code, path}` (for example `unanswered` with the question id); fix the answer and run it again.
+5. Lock the exact packages:
+   ```
+   aepm resolve definition.json --catalogue STORE/catalogue.json --out lock.json
+   ```
+6. Make the owner's policy (once). The policy names whose signatures aepm accepts: Level N's public release and guardian keys, which sign every published package, and the owner's own key, which signs approvals of later updates. For trying the recipe, make a disposable owner key:
+   ```
+   PYTHONPATH="$AEPM" python3 -B -m aepm.test_identities "$PWD/identities"
+   curl -fsSL https://ourapps.app/policy/levelnpolicy.json -o levelnpolicy.json
+   python3 - <<'POLICY'
+   import json
+   level_n = json.load(open("levelnpolicy.json"))
+   mine = json.load(open("identities/policy.json"))
+   policy = {"format": 1, "keys": {"release": level_n["keys"]["release"], "guardian": level_n["keys"]["guardian"], "owner": mine["keys"]["owner"]}, "trustedExecution": []}
+   json.dump(policy, open("policy.json", "w"), indent=2)
+   POLICY
+   ```
+   `identities/` then holds three disposable private keys; keep `owner.pem` (it approves updates), delete the other two, and keep the folder outside STORE and APP. For an owner key you keep, make it with OpenSSL instead and put its public key in the policy's `owner` list: `openssl genpkey -algorithm ed25519 -out owner.pem` and `openssl pkey -in owner.pem -pubout` (the `publicKey` value is that PEM text). POLICY is the resulting `policy.json`.
+7. Install:
+   ```
+   aepm install definition.json --lock lock.json --store STORE --policy POLICY --target APP
+   ```
+   aepm checks every package's release and guardian signatures against POLICY, places the files, renders each setting into the files that name it, and records the design in `APP/.aepm/`. It runs no package code. Then build and run (part 4).
 
-| id | what differs from the defaults | covers |
-|---|---|---|
-| `default` | nothing: all six devices, small, four languages, 9 players, 5,000 chips, 600 s levels, one rebuy, 30 s decisions, computer players on request, video, lessons, Cloudflare, no updates | every component but `store-update` |
-| `book-club` | `ios`, `android`, `tvos`; `en`, `fr`; no video; 3,000 chips; small | the paper's worked run: `web-host`, `windows-desktop`, `video-calls` and `store-update` out; free tiers |
-| `poker-league` | medium; updates on, with an invitation and a web address | `store-update` in; medium load still on free tiers |
-| `company-event` | large; `own-hardware`; updates on | `own-hardware` server and realtime profiles; paid video |
-| `company-event-hosted` | large; Cloudflare; updates on | `cloudflare-paid`, realtime `paid`, video `paid`, with the Cloudflare account reference set |
-| `tv-only` | `tvos` only; `en`; no video; no lessons | a single client target; `apple-host` only |
-| `browser-only-no-extras` | `web` only; no rebuys; computer players none; no lessons, video or updates | the smallest design: every host but `web-host` out; computer players off |
-| `large-paid-host` | large; Cloudflare; lounge look; 6 players; 3 rebuys; fill-empty; a bundle id; a video service address | the scale choosing the paid host; answers that set several components |
-| `clinic` | `web` and `windows`; small; `own-hardware`; `en`, `es`; no video or lessons; an https web address | own hardware for a small group with desktop and web |
-| `no-computers` | `web` and `android`; computer players none | `computer-players.mode` none |
-| `web-own-hardware` | `web` only; `own-hardware`; `en`, `fr`; computer players none; no video or lessons | a web and Node server design with every optional module replaced by its stand-in |
-| `windows-only` | `windows` only; `own-hardware`; no video; a deployed server address | Windows alone keeps `web-host`, whose web project the Windows build packs |
+## 4. Build and run
 
-Other combinations of answers are allowed: `tests/evaluate_recipe_test.py` evaluates every combination of devices, video, lessons, updates, computer players, server and scale, and checks only that the design is complete (every non-optional requirement connected once), not what is built from it.
-
-## 3. Build and run
-
-What `aepm install` writes into the application folder. Folders marked with a target appear only when the design has that target.
+What `aepm install` writes into the application folder. `web/`, `ios/` and `android/` hold their client's sources in every design; what builds them comes only with the target in brackets (web-host's `vite.config.ts`, apple-host's and android-host's `generate-project.ts`), so build only the clients the design targets. `desktop/` appears only with Windows.
 
 ```
 server/       package.json, package-lock.json, tsconfig.json, vitest.config.ts, src/, test/, fixtures/
-web/          package.json, package-lock.json, index.html, vite.config.ts, tsconfig.json, src/, public/, test/   (web or windows)
-ios/          generate-project.ts, OurPoker/, OurPokerTV/, OurPokerTests/, OurPokerUITests/, VerificationSupport/  (ios, macos, tvos)
-android/      generate-project.ts, app/                                                                       (android)
+web/          package.json, package-lock.json, index.html, tsconfig.json, src/, public/, test/; vite.config.ts   (web or windows)
+ios/          OurPoker/, OurPokerTV/, OurPokerTests/, OurPokerUITests/, VerificationSupport/, strings/; generate-project.ts  (ios, macos, tvos)
+android/      app/, strings/; generate-project.ts                                                               (android)
 desktop/      package.json, package-lock.json, src/, scripts/, test/                                          (windows)
 rules/        the house rules file, its schema and text
 resources/    strings.json, the text table the generated string files come from
@@ -172,7 +181,7 @@ components/   one folder per component of the design; server-host's server/ hold
 .aepm/        aepm's records: definition, lock, assembly, packages, receipts
 ```
 
-Every value that depends on an answer is already in the installed files (aepm renders the templates), and the generated string files are shipped, so nothing has to be generated before the commands below. Tools: Node 26.5 with npm 11. Apple: Xcode 26 or later and XcodeGen. Android: JDK 17, the Android SDK (platform 36) and Gradle 9.4. Windows: a Windows machine with Node 26.5.
+Every value that depends on an answer is already in the installed files (aepm renders the templates), and the generated string files are shipped, so nothing has to be generated before the commands below; the Apple and Android `generate-project.ts` steps write the native projects from them. Tools: Node 26.5 with npm 11. Apple: Xcode 26 or later and XcodeGen. Android: JDK 17, the Android SDK (platform 36) and Gradle 9.4. Windows: a Windows machine with Node 26.5.
 
 ### Local: the server on Node and the web client in a browser (no account)
 
@@ -216,7 +225,7 @@ Wrangler prints the worker's address (`https://<roomPrefix>server.<your subdomai
 The clients carry the server's address, which is known only after the server's first deploy:
 
 1. Install with `serverAddress` left at its default, then deploy the server (Cloudflare above, or own hardware) and note its https address.
-2. Answer `serverAddress` with that address, evaluate the design again and install it again (or update the installed application with `aepm propose-update`, `aepm approve` and `aepm apply`), then build the clients below. For the web client alone, `VITE_SERVER=<address> npm run build` gives the same result without reinstalling.
+2. Add `serverAddress` with that address to `answers.json`, run `aepm design`, `aepm resolve` and `aepm install` again into a new APP (part 3, steps 4, 5 and 7; or update the installed application with `aepm propose-update`, `aepm approve` and `aepm apply`), then build the clients below. For the web client alone, `VITE_SERVER=<address> npm run build` gives the same result without reinstalling.
 
 Publishing the web client: copy `web/dist/` to the host at the `webAddress` answer (the account named by `webDeploy`).
 
@@ -224,7 +233,7 @@ Publishing the web client: copy `web/dist/` to the host at the `webAddress` answ
 
 ```
 cd <application>/ios
-node generate-project.ts         # project.yml and the Info.plist files for the design's Apple targets (SERVER_ADDRESS=<address> overrides the address)
+node generate-project.ts         # project.yml, the Info.plist files and the string catalogue of the design's languages (SERVER_ADDRESS=<address> overrides the address)
 xcodegen generate
 xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
 xcodebuild -project OurPoker.xcodeproj -scheme OurPokerTV -destination 'generic/platform=tvOS Simulator' CODE_SIGNING_ALLOWED=NO build
@@ -236,7 +245,7 @@ The `OurPoker` scheme builds iPhone, iPad and Mac (Mac Catalyst); `OurPokerTV` e
 
 ```
 cd <application>/android
-node generate-project.ts         # settings.gradle.kts, build.gradle.kts, app/build.gradle.kts and the manifest
+node generate-project.ts         # settings.gradle.kts, build.gradle.kts, app/build.gradle.kts, the manifest and the design's languages' strings
 gradle wrapper --gradle-version 9.4.0
 ANDROID_HOME=<the Android SDK> ./gradlew :app:assembleDebug
 ```
@@ -256,3 +265,50 @@ npm run package:win      # the installer under desktop\artifacts
 ```
 
 Building and packaging need no account.
+
+## 5. For maintainers of the recipe repository
+
+Commands run from the root of the recipe's repository with Node 26.5 and Python 3.12. `PY` is `python3 -B` with an aepm checkout on `PYTHONPATH`. Set `OURPOKER_COMPONENTS` to a folder holding one checkout per component, each named as the component (`web-host`, `server-host`, ...), and `OURAPPS` to a checkout of the ourapps catalogue (its recipe validator).
+
+```
+node --test tests/recipe.test.ts
+node --test tests/portable.test.ts
+PY tests/evaluate_recipe_test.py
+PY tests/conditional_artefacts_test.py
+PY authoring/check_conditional_artefacts.py -v
+PY authoring/try_install.py        (packs, signs, reviews and installs designs, then builds and runs them: parts 3 and 4)
+node "$OURAPPS/scripts/validate-recipe-file.ts" recipe.json --components "$OURPOKER_COMPONENTS"
+gradle -p authoring/kotlin-stand-ins compileKotlin   (type-checks the Kotlin stand-ins without the Android SDK)
+npm install --prefix authoring        (once: @bufbuild/cel for the condition parity test)
+PY scripts/make_component.py --render
+PY scripts/make_source.py
+PY authoring/make_recipe.py
+PY authoring/draw_default_design.py
+```
+
+- `tests/recipe.test.ts` checks consistency only: the recipe passes the ourapps catalogue validator with the components' settings and profiles; every component exists at the named version in `components/`; every setting a question or the configuration sets exists with a matching type and grammar; no secret is in `configuration`; inclusion is by `includedWhen` only; every connection uses ports and types that exist and only optional requirements stay open; every job candidate profile exists; every answer in the answer sets is allowed; the recipe restates no number of the house rules file and sets the application's copy of each answer; the totals in `INTEGRATION-GAPS.md` match its table; the recipe's documents carry no history wording.
+- `tests/evaluate_recipe_test.py` runs aepm's evaluator (`aepm.recipe`, the same code as `aepm design`) on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code, and validates each design with aepm's definition validator. It evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination with aepm's CEL subset and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `OURAPPS`.
+- `tests/conditional_artefacts_test.py` and `authoring/check_conditional_artefacts.py` check, for every answer set, that the files aepm installs reach no component the design leaves out, that every stand-in replaces a marked module at its destination, and that every relative import of an installed file is installed.
+- `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
+- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `browser-only-no-extras`, `book-club`, `native-no-lessons`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome that the built web client loads, lists the rooms from the server and seats a player, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with Gradle where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm.
+- `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. 
+
+### What the test answer sets cover
+
+| id | what differs from the defaults | covers |
+|---|---|---|
+| `default` | nothing: all six devices, small, four languages, 9 players, 5,000 chips, 600 s levels, one rebuy, 30 s decisions, computer players on request, video, lessons, Cloudflare, no updates | every component but `store-update` |
+| `book-club` | `ios`, `android`, `tvos`; `en`, `fr`; no video; 3,000 chips; small | the worked example: `web-host`, `windows-desktop`, `video-calls` and `store-update` out; free tiers |
+| `poker-league` | medium; updates on, with an invitation and a web address | `store-update` in; medium load still on free tiers |
+| `company-event` | large; `own-hardware`; updates on | `own-hardware` server and realtime profiles; paid video |
+| `company-event-hosted` | large; Cloudflare; updates on | `cloudflare-paid`, realtime `paid`, video `paid`, with the Cloudflare account reference set |
+| `tv-only` | `tvos` only; `en`; no video; no lessons | a single client target; `apple-host` only |
+| `browser-only-no-extras` | `web` only; no rebuys; computer players none; no lessons, video or updates | the smallest design: every host but `web-host` out; computer players off |
+| `large-paid-host` | large; Cloudflare; lounge look; 6 players; 3 rebuys; fill-empty; a bundle id; a video service address | the scale choosing the paid host; answers that set several components |
+| `clinic` | `web` and `windows`; small; `own-hardware`; `en`, `es`; no video or lessons; an https web address | own hardware for a small group with desktop and web |
+| `no-computers` | `web` and `android`; computer players none | `computer-players.mode` none |
+| `web-own-hardware` | `web` only; `own-hardware`; `en`, `fr`; computer players none; no video or lessons | a web and Node server design with every optional module replaced by its stand-in |
+| `native-no-lessons` | `ios`, `android`, `tvos`; `en`, `fr`; no lessons; updates on, with an invitation | native clients with video and updates and the lessons' stand-ins |
+| `windows-only` | `windows` only; `own-hardware`; no video; a deployed server address | Windows alone keeps `web-host`, whose web project the Windows build packs |
+
+Other combinations of answers are allowed: `tests/evaluate_recipe_test.py` evaluates every combination of devices, video, lessons, updates, computer players, server and scale, and checks only that the design is complete (every non-optional requirement connected once), not what is built from it.

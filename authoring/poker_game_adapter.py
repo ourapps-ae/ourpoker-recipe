@@ -3,10 +3,11 @@ implementation/server/src/adapter.ts, wire.ts and contract.ts. Every GameAdapter
 members with their schemas and errors are read from turn-engine's provided document; the poker wire view (contract.ts) is
 written here. scripts/make_component.py writes it to interfaces/poker-game-adapter.json."""
 import copy
+import os
 import json
 from pathlib import Path
 
-COMPONENTS = Path(__file__).resolve().parent.parent.parent.parent / "components"
+COMPONENTS = Path(os.environ.get("OURPOKER_COMPONENTS") or Path(__file__).resolve().parent.parent.parent.parent / "components")  # the component checkouts
 REF = "#/components/schemas/"
 # turn-engine schemas that a poker schema of the same name replaces
 RENAMED = {"View": "EngineView", "Legal": "EngineLegal"}

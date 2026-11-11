@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.livekit.android.compose.state.rememberParticipantTrackReferences
 import io.livekit.android.compose.state.rememberParticipants
-import ae.video.VideoSession
+import app.ourapps.ourpoker.Video
 import io.livekit.android.compose.ui.VideoTrackView
 import io.livekit.android.room.Room
 import io.livekit.android.room.participant.Participant
@@ -45,7 +45,7 @@ fun SeatScreen(room: Room?, playerId: String, isMe: Boolean, name: String, width
 
 // Player ids whose camera picture is arriving right now (yours while your camera is on).
 @Composable
-fun rememberLiveVideo(video: VideoSession): Set<String> {
+fun rememberLiveVideo(video: Video): Set<String> {
     val room by video.room.collectAsState()
     val camOn by video.camOn.collectAsState()
     val held by video.held.collectAsState()

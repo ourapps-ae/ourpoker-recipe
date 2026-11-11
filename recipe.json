@@ -558,7 +558,8 @@
       "effects": [
         {
           "sets": {
-            "translations.languages": "$answer"
+            "translations.languages": "$answer",
+            "application.languages": "$answer"
           }
         }
       ]
@@ -1888,6 +1889,38 @@
           "server": "own-hardware",
           "updates": false,
           "webDeploy": "ourpoker/web-deploy"
+        }
+      },
+      {
+        "id": "native-no-lessons",
+        "answers": {
+          "targets": [
+            "ios",
+            "android",
+            "tvos"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "fr"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": true,
+          "lessons": false,
+          "server": "cloudflare",
+          "updates": true,
+          "videoKey": "ourpoker/video-key",
+          "videoSecret": "ourpoker/video-secret",
+          "hostingAccount": "ourpoker-cloudflare-account",
+          "storeCredentials": "ourpoker/store-credentials",
+          "androidSigning": "ourpoker/android-signing",
+          "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567"
         }
       },
       {

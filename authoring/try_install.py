@@ -4,19 +4,21 @@
 For the given answers it packs the 39 components and this recipe into a temporary store, creates disposable identities
 (`python -m aepm.test_identities`), signs each release (aepm.trust.publish_release), reviews each package
 (`aepm review --trusted --allow-network`) and signs the review (aepm.trust.publish_review) when its required-local suites
-passed. Then, per answers: evaluates the design with authoring/evaluate_recipe.py, resolves and installs it (`aepm resolve`,
+passed. Then, per answers: evaluates the design with aepm's evaluator (aepm.recipe), resolves and installs it (`aepm resolve`,
 `aepm install`), and in the installed folder runs the documented local build:
 
   server  npm ci; tsc --noEmit; vitest run (the application's tests from tests/e2e/server); npm start (Node, own hardware)
   web     npm ci; tsc --noEmit; npm run build (pointed at the running server); vite preview
   desktop node scripts/build.cjs (Windows designs: the web client in desktop mode; Electron packaging needs Windows)
+  apple   node generate-project.ts; xcodegen generate; xcodebuild for the iOS and tvOS simulators; only the answered languages
+  android node generate-project.ts; only the answered languages' strings; Gradle build where ANDROID_HOME is set
   browser headless Chrome over the DevTools protocol: the page loads with web-host's head, the room list comes from the
           server, a player names themself and sits down, and the server lists them; no script error
 
 Usage (from the recipe folder; python 3.12, node 26.5.0, Chrome):
   PYTHONPATH=<aepm checkout> python3.12 -B authoring/try_install.py [ANSWERS ...] [--components DIR] [--work DIR] [--chrome PATH]
 ANSWERS is an answer-set id of recipe.json (`default` for its default answers) or a path to an answers JSON file;
-without ANSWERS: default, browser-only-no-extras and web-own-hardware. The work folder (default: a new temporary folder) keeps
+without ANSWERS: default, browser-only-no-extras, book-club and native-no-lessons. The work folder (default: a new temporary folder) keeps
 the store, identities, installed applications and logs; report.json there holds every result. Exit status 0 when every step passed.
 """
 import argparse
@@ -37,11 +39,12 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 
-import evaluate_recipe as E  # noqa: E402
+from aepm import recipe as E  # noqa: E402
+import recipe_world  # noqa: E402
 from aepm.trust import publish_release, publish_review  # noqa: E402
 from aepm.io import load, write  # noqa: E402
 
-DEFAULT_ANSWERS = ["default", "browser-only-no-extras", "web-own-hardware"]
+DEFAULT_ANSWERS = ["default", "browser-only-no-extras", "book-club", "native-no-lessons"]
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 
@@ -225,8 +228,9 @@ def build_and_run(work, name, app, chrome, results):
         address = f"http://127.0.0.1:{port}"
         health = get_json(address + "/health")
         results["serverRun"] = f"{address} health {json.dumps(health)}"
-        if not (app / "web/package.json").exists():
-            return
+        native(work, name, app, results)
+        if not (app / "web/vite.config.ts").exists():
+            return  # no web or windows target: the web sources are installed, but the web project's build comes with web-host
         run(["npm", "ci"], work, f"{name}-web-npm-ci", cwd=web, env=npm_env)
         run(["npx", "tsc", "--noEmit"], work, f"{name}-web-tsc", cwd=web, env=npm_env)
         results["webTsc"] = "passed"
@@ -246,6 +250,56 @@ def build_and_run(work, name, app, chrome, results):
         results["browser"] = browser_smoke(work, name, chrome, f"http://127.0.0.1:{web_port}/", address, processes)
     finally:
         processes.stop()
+
+
+# ---- the native projects ----
+
+def native(work, name, app, results):
+    """Apple: generate the project and build each scheme for its simulator (needs Xcode and XcodeGen). Android: generate the
+    project and check its string resources; build it with Gradle only where an Android SDK is set (ANDROID_HOME)."""
+    languages = json.loads((app / ".aepm/definition.json").read_text())["configuration"].get("languages", "en fr de es").split()
+    if (app / "ios/generate-project.ts").exists():
+        ios = app / "ios"
+        run(["node", "generate-project.ts"], work, f"{name}-ios-generate", cwd=ios)
+        if not (shutil.which("xcodegen") and shutil.which("xcodebuild")):
+            results["apple"] = "generated; not built (no Xcode or XcodeGen)"
+        else:
+            run(["xcodegen", "generate"], work, f"{name}-ios-xcodegen", cwd=ios)
+            project = (ios / "project.yml").read_text()
+            built = []
+            for scheme, platform in (("OurPoker", "iOS"), ("OurPokerTV", "tvOS")):
+                if f"\n  {scheme}:\n" not in project.split("schemes:")[1]:
+                    continue
+                derived = work / "designs" / name / "derived"
+                run(["xcodebuild", "-project", "OurPoker.xcodeproj", "-scheme", scheme, "-destination", f"generic/platform={platform} Simulator",
+                     "-derivedDataPath", str(derived), "CODE_SIGNING_ALLOWED=NO", "build"], work, f"{name}-xcodebuild-{platform}", cwd=ios, timeout=3600)
+                bundle = next(derived.glob(f"Build/Products/*/{scheme}.app"))
+                found = sorted(p.stem for p in bundle.glob("*.lproj"))
+                if found != sorted(languages):
+                    raise Step(f"{scheme}: the app carries {found}, the design's languages are {languages}")
+                built.append(f"{platform} ({' '.join(found)})")
+            results["apple"] = "built " + ", ".join(built)
+    if (app / "android/generate-project.ts").exists():
+        android = app / "android"
+        run(["node", "generate-project.ts"], work, f"{name}-android-generate", cwd=android)
+        folders = sorted(p.name for p in (android / "app/src/main/res").iterdir() if p.name.startswith("values"))
+        wanted = sorted("values" if code == "en" else f"values-{code}" for code in languages)
+        if folders != wanted:
+            raise Step(f"android: string folders {folders}, the design's languages want {wanted}")
+        if os.environ.get("ANDROID_HOME") and shutil.which("gradle"):
+            run(["gradle", "wrapper", "--gradle-version", "9.4.0"], work, f"{name}-android-wrapper", cwd=android)
+            run(["./gradlew", ":app:assembleDebug"], work, f"{name}-android-build", cwd=android, timeout=3600)
+            results["android"] = f"built ({' '.join(folders)})"
+        else:
+            results["android"] = f"generated ({' '.join(folders)}); not built (no ANDROID_HOME)"
+
+
+def kotlin_stand_ins(work):
+    """The Kotlin stand-ins type-checked on the JVM (authoring/kotlin-stand-ins), when Gradle is installed."""
+    if not shutil.which("gradle"):
+        return "not run (no Gradle)"
+    run(["gradle", "-q", "-p", str(HERE / "kotlin-stand-ins"), "compileKotlin"], work, "kotlin-stand-ins", timeout=1800)
+    return "passed"
 
 
 # ---- the browser check (Chrome DevTools protocol, no extra packages) ----
@@ -319,7 +373,7 @@ def main(argv):
     work = (args.work or Path(tempfile.mkdtemp(prefix="ourpoker-install-", dir=os.path.realpath(tempfile.gettempdir())))).resolve()
     work.mkdir(parents=True, exist_ok=True)
     print(f"work folder {work}", flush=True)
-    world = E.World(ROOT, args.components)
+    world = recipe_world.world(args.components)
     report = {"work": str(work), "designs": {}}
     try:
         store, policy, refs, reviews, blocked = prepare_store(work, args.components.resolve())
@@ -329,6 +383,11 @@ def main(argv):
     report["packages"] = len(refs)
     report["reviews"] = reviews
     print(f"packed and released {len(refs)} packages; required-local passed and guardian-signed: {len(refs) - len(blocked)}; not signed: {sorted(blocked) or 'none'}", flush=True)
+    try:
+        report["kotlinStandIns"] = kotlin_stand_ins(work)
+    except Step as error:
+        report["kotlinStandIns"] = str(error)
+    print(f"Kotlin stand-ins type-check: {report['kotlinStandIns']}", flush=True)
     retried = {name: r["attempts"] for name, r in reviews.items() if len(r.get("attempts", [])) > 1}
     if retried:
         print(f"reviewed twice: {retried}", flush=True)

@@ -1,10 +1,10 @@
-"""Tests for authoring/evaluate_recipe.py, the reference evaluator of the recipe evaluation rules (component-standard.md).
+"""Tests of this recipe under aepm's evaluator (aepm.recipe), which implements the recipe evaluation rules.
 
 They check the evaluator against what the rules say, for each answer set in recipe.json, for every answer that changes which
 components are included or which hosts are selected, and for each error code. The point is to show the written rules are
 complete: nothing here assembles, installs or runs an application.
 
-Run: PYTHONPATH=/Users/george/Projects/com/my/aepm /Users/george/.pyenv/versions/3.12.8/bin/python3.12 -B tests/evaluate_recipe_test.py
+Run from the repository root with aepm on PYTHONPATH: python3 -B tests/evaluate_recipe_test.py
 """
 import copy
 import itertools
@@ -20,11 +20,12 @@ sys.path.insert(0, str(ROOT / "authoring"))
 sys.path.insert(0, str(ROOT.parent.parent / "aepm"))
 
 import draw_design  # noqa: E402
-import evaluate_recipe as E  # noqa: E402
+from aepm import recipe as E  # noqa: E402
+import recipe_world  # noqa: E402
 from aepm import application as aepm_application  # noqa: E402
 from aepm.diagram import generate as diagram  # noqa: E402
 
-WORLD = E.World()
+WORLD = recipe_world.world()
 RECIPE = WORLD.recipe
 SETS = {s["id"]: s["answers"] for s in RECIPE["tests"]["answerSets"]}
 SETS = {"default": RECIPE["tests"]["defaultAnswers"], **SETS}
@@ -137,6 +138,12 @@ EXPECTED["web-own-hardware"] = dict(
     settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en fr"},
               "application": {"computerPlayers": "none", "serverAddress": "http://localhost:8788"}, "ourapps-release": {"targets": "web", "webDeploy": WEB_DEPLOY}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
+# Phones and television with video and updates but no lessons: guided-tour's native files are replaced by stand-ins.
+EXPECTED["native-no-lessons"] = dict(
+    out={"web-host", "windows-desktop", "guided-tour"},
+    settings={"apple-host": {"targets": "ios android tvos"}, "translations": {"languages": "en fr"}, "application": {"languages": "en fr", "updatesEnabled": True},
+              "store-update": {"inviteAddress": INVITATION}},
+    selections={"server": "cloudflare-free", "realtime": "free", "video": "free"})
 # Windows alone keeps the web project (web-host), which the Windows build packs; the deployed server address is an answer.
 EXPECTED["windows-only"] = dict(
     out={"apple-host", "android-host", "store-update", "video-calls"},
@@ -232,7 +239,7 @@ class AnswerSets(unittest.TestCase):
         for name, answers in SETS.items():
             with self.subTest(name):
                 first = E.to_json(E.evaluate(WORLD, answers))
-                second = E.to_json(E.evaluate(E.World(), copy.deepcopy(answers)))
+                second = E.to_json(E.evaluate(recipe_world.world(), copy.deepcopy(answers)))
                 self.assertEqual(first, second)
                 shuffled = dict(reversed(list(answers.items())))
                 self.assertEqual(first, E.to_json(E.evaluate(WORLD, shuffled)), "answer order does not matter")
@@ -603,7 +610,7 @@ class CelParity(unittest.TestCase):
                     differ.append((expression, line["bindings"], ours, result))
         self.assertEqual(differ[:3], [])
         self.assertEqual(compared, (len(SETS) + 63 * 2 * 2 * 2 * 3 * 2 * 3) * len(expressions))
-        self.assertEqual(compared, 9084 * 44)
+        self.assertEqual(compared, 9085 * 44)
 
     def test_each_condition_takes_both_values_over_the_combinations(self):
         lines = [E.bindings(WORLD, answers) for answers in all_answers()]

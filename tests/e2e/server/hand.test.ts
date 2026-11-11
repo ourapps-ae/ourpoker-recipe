@@ -1,5 +1,6 @@
 import { expect, it } from "vitest";
 import { pokerAdapter } from "../src/adapter";
+import { settings } from "../src/settings";
 
 // A server hand without a network: two people sit, the host starts, the player to act folds, and
 // the hand is over with every chip accounted for.
@@ -23,7 +24,7 @@ it("plays a hand to its end when the player to act folds", () => {
   const after = adapter.view(s, { id: "a", role: "player" }, { odds: false }, context);
   expect(after.phase).toBe("handOver");
   expect(after.lastResult).toMatchObject({ uncontested: true, voided: false });
-  expect(after.players.reduce((n, p) => n + p.stack + p.bet, 0)).toBe(10_000);
+  expect(after.players.reduce((n, p) => n + p.stack + p.bet, 0)).toBe(2 * settings.startingStack);
   expect(after.promptKey).toBe("handWon");
   expect(after.prompt).toMatch(/Ann|Bob/);
 });

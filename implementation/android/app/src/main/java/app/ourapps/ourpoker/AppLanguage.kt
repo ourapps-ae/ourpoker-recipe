@@ -5,7 +5,8 @@ import ae.androidhost.ShellLanguage
 // The app's language: the one picked on the home screen, else the phone's. The android-host shell
 // carries it on the activity's context, so a change takes effect when the activity is recreated.
 object AppLanguage {
-    val shell = ShellLanguage("ourpoker", listOf("en" to "English", "fr" to "Français", "de" to "Deutsch", "es" to "Español"))
+    private val offered = AppSettings.LANGUAGES.split(" ")
+    val shell = ShellLanguage("ourpoker", listOf("en" to "English", "fr" to "Français", "de" to "Deutsch", "es" to "Español").filter { it.first in offered })
     val all get() = shell.all
     fun picked(ctx: android.content.Context): String? = shell.picked(ctx)
     fun pick(ctx: android.content.Context, code: String?) = shell.pick(ctx, code)

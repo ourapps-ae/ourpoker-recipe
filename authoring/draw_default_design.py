@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Draws the OurPoker design for the DEFAULT answers with aepm's diagram generator.
 
-The design comes from authoring/evaluate_recipe.py (the reference evaluator) applied to the default answers; this script only
+The design comes from aepm's evaluator (aepm.recipe) applied to the default answers; this script only
 draws it. It does not assemble, resolve, install or run anything.
 
 Writes authoring/designs/*.json and renders page/diagram.{svg,png} (every component by name, grouped as in paper Section 5.3), page/diagram-<group>.{svg,png}
@@ -9,24 +9,26 @@ Writes authoring/designs/*.json and renders page/diagram.{svg,png} (every compon
 Usage: PYTHONPATH=/Users/george/Projects/com/my/aepm python3.12 -B authoring/draw_default_design.py
 """
 import copy
+import os
 import json
 import re
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
-COMPONENTS = HERE.parent.parent / "components"
+COMPONENTS = Path(os.environ.get("OURPOKER_COMPONENTS") or HERE.parent.parent / "components")  # the component checkouts
 sys.path.insert(0, str(HERE.parent.parent / "aepm"))
 from aepm.diagram import generate as diagram  # noqa: E402
 
 sys.path.insert(0, str(HERE / "authoring"))
 import draw_design  # noqa: E402
 import draw_overview  # noqa: E402
-import evaluate_recipe  # noqa: E402
+from aepm import recipe as evaluator  # noqa: E402
+import recipe_world  # noqa: E402
 
 recipe = json.loads((HERE / "recipe.json").read_text())
 
-# The default answers (recipe.json tests.defaultAnswers) are evaluated by authoring/evaluate_recipe.py and the result is drawn:
+# The default answers (recipe.json tests.defaultAnswers) are evaluated by aepm's evaluator and the result is drawn:
 # all six devices, small, video yes, computer players on request, lessons yes, updates no, Cloudflare. Under these answers every
 # component is present except store-update (updates is no).
 GROUPS = [
@@ -53,7 +55,7 @@ def port(pid, name, direction, ptype, version, required=True):
 
 
 def build():
-    result = evaluate_recipe.evaluate(evaluate_recipe.World(), recipe["tests"]["defaultAnswers"])
+    result = evaluator.evaluate(recipe_world.world(), recipe["tests"]["defaultAnswers"])
     if not result["ok"]:
         raise SystemExit(f"the default answers do not evaluate: {result['errors']}")
     design = result["design"]

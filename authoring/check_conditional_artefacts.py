@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Checks the conditional artefacts of the application component against every answer set of recipe.json.
 
-For each answer set it evaluates the design with the reference evaluator (authoring/evaluate_recipe.py), takes the artefacts
+For each answer set it evaluates the design with aepm's evaluator (aepm.recipe), takes the artefacts
 aepm would install for that design (aepm.application.installed_artefacts), and reads each installed file, without assembling anything:
 
   marks       every `component` mark names a component the recipe can leave out (it has an includedWhen) and is in the recipe;
@@ -29,7 +29,8 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT.parent.parent / "aepm"))
 
 import component_imports  # noqa: E402
-import evaluate_recipe as E  # noqa: E402
+from aepm import recipe as E  # noqa: E402
+import recipe_world  # noqa: E402
 import make_recipe  # noqa: E402
 from aepm import application  # noqa: E402
 
@@ -73,7 +74,7 @@ def check_design(world, design) -> dict:
 
 
 def load_world():
-    world = E.World()
+    world = recipe_world.world()
     world.recipe_names = {c["id"]: c["name"] for c in world.recipe["components"]}
     return world
 

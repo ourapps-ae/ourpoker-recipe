@@ -66,7 +66,7 @@ struct RootView: View {
         }
         // Lessons for the screen showing, the first time it shows; the home and lobby ones here, the
         // table's as things happen there. The guided-tour component draws them.
-        .tourHost(model.tour, buttons: TourButtons(next: L("guide_next"), skip: L("guide_skip"), done: L("got_it")))
+        .lessonsHost(model.tour)
         .overlay {
             if model.beginner == nil && !viewer && (!Platform.uprightBoard || model.entryMode == .player) {
                 ZStack {

@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Turns an evaluated design (authoring/evaluate_recipe.py) into a drawing for aepm's diagram generator.
+"""Turns an evaluated design (aepm.recipe) into a drawing for aepm's diagram generator.
 
 The drawing is a diagram design (schemaVersion 1): each included component's visual definition, one instance per component
 carrying its effective settings, the recipe's own component as `application`, and the design's connections. It draws only.
 Usage (library): drawing(design, components_directory, recipe_directory) -> dict; check it with aepm.diagram.generate.validate_design.
 """
+import os
 import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
-COMPONENTS = HERE.parent.parent / "components"
+COMPONENTS = Path(os.environ.get("OURPOKER_COMPONENTS") or HERE.parent.parent / "components")  # the component checkouts
 APPLICATION = "application"
 
 

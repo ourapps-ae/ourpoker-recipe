@@ -40,13 +40,8 @@ final class TableModel {
     var zoom: Zoom? = nil { didSet { updateHold() } }
     var videoPlayerId: String?
 
-    // Lessons (locales/lessons.json) run by the guided-tour component: each is shown once ever, after any
-    // already waiting; progress and the choice to be guided are kept on this device.
-    let tour: Tour = {
-        let data = Bundle.main.url(forResource: "lessons", withExtension: "json").flatMap { try? Data(contentsOf: $0) } ?? Data()
-        let lessons = (try? TourModel.parseLessons(data)) ?? []
-        return Tour(lessons: lessons, storage: UserDefaultsTourStorage(), translate: { localized($0) })
-    }()
+    // Lessons run by the guided-tour component (Lessons.swift).
+    let tour = Lessons()
     func want(_ id: GuideID) {
         guard !display, entryMode != .board else { return }
         guard !Platform.uprightBoard || entryMode == .player else { return }
@@ -125,7 +120,7 @@ final class TableModel {
     private var homeLive: LiveConnection<LiveMessage>?
     private var homeWanted = false
     private var foreground = true
-    @ObservationIgnored lazy var video = VideoSession(soundOn: { SoundSetting.shared.on }, soundChanged: { SoundSetting.shared.set($0) }, canCapture: { [weak self] in DisplayPolicy.canCapture(self?.display ?? true) })
+    @ObservationIgnored lazy var video = Video(soundOn: { SoundSetting.shared.on }, soundChanged: { SoundSetting.shared.set($0) }, canCapture: { [weak self] in DisplayPolicy.canCapture(self?.display ?? true) })
     private var grant: VideoGrant?
     private var idleCut: Task<Void, Never>?
     private let idleLimit: UInt64 = 5 * 60 * 1_000_000_000
@@ -183,7 +178,7 @@ final class TableModel {
         #if !targetEnvironment(macCatalyst) && !os(tvOS)
         Task {
             // Only what TestFlight can already give, not a release still waiting for Apple.
-            if let info = try? await client.update(), let v = info.testflightVersion, info.testflightUrl != nil, isNewer(v, than: currentVersion) { update = info }
+            if let info = try? await client.update(), let v = info.testflightVersion, info.testflightUrl != nil, newerRelease(v, than: applicationVersion) { update = info }
         }
         #endif
     }

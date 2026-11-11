@@ -357,6 +357,14 @@
           "required": true,
           "secret": false,
           "default": "on-request"
+        },
+        {
+          "id": "languages",
+          "name": "languages",
+          "type": "string",
+          "required": true,
+          "secret": false,
+          "default": "en fr de es"
         }
       ]
     },

@@ -33,19 +33,6 @@ enum Guides {
     }
 }
 
-// An anchor on one of several alike views, such as the first room or the first computer player.
-struct GuideAnchorIf: ViewModifier {
-    let name: String
-    let on: Bool
-    func body(content: Content) -> some View {
-        if on { content.tourAnchor(name) } else { content }
-    }
-}
-
-extension View {
-    func guideAnchor(_ name: String) -> some View { tourAnchor(name) }
-}
-
 // Two dots side by side: a double tap.
 struct DoubleTapDots: View {
     var size: CGFloat = 4

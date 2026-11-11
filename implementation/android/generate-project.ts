@@ -1,6 +1,6 @@
 // Writes the Gradle project (settings, build files, manifest, launcher icon) for the design with android-host's
 // renderer and installed settings. Run from this folder: `node generate-project.ts`, then build with Gradle.
-import { existsSync, readdirSync } from "node:fs";
+import { cpSync, existsSync, readdirSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { renderAndroid, writeAndroid } from "../components/android-host/android/render.ts";
 import { androidHostSettings } from "../components/android-host/android/settings.ts";
@@ -28,4 +28,12 @@ writeAndroid(fileURLToPath(new URL(".", import.meta.url)), renderAndroid(android
     ...(video ? ["io.livekit:livekit-android:2.29.0", "io.livekit:livekit-android-compose-components:2.4.2"] : []),
   ],
 }));
-console.log(`Android project written with ${componentFolders.length} component folders${video ? " and LiveKit" : ""}`);
+// The string resources of the design's languages only: the installed ones (strings/values*) hold all four.
+const languages = "{{languages}}".split(" ");
+for (const code of ["en", "fr", "de", "es"]) {
+  const folder = code === "en" ? "values" : `values-${code}`;
+  const target = new URL(`./app/src/main/res/${folder}/strings.xml`, import.meta.url);
+  if (languages.includes(code)) cpSync(new URL(`./strings/${folder}/strings.xml`, import.meta.url), target);
+  else rmSync(target, { force: true });
+}
+console.log(`Android project written with ${componentFolders.length} component folders${video ? " and LiveKit" : ""}, languages ${languages.join(" ")}`);

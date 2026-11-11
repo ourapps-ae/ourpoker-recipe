@@ -4,14 +4,14 @@ import AVFoundation
 // GAP: G9.4 video-calls has the session but no toggle strip; these are drawn with the controls component's ToggleButton.
 // Microphone and camera toggles with the usual icons: filled when on, struck through when off.
 struct MediaToggles: View {
-    let session: VideoSession
+    let session: Video
 
     var body: some View {
         HStack(spacing: 12) {
             ToggleButton(on: session.micOn, onIcon: "mic.fill", offIcon: "mic.slash.fill", label: L(session.micOn ? "mic_on" : "mic_off")) { session.setMic(!session.micOn) }
             ToggleButton(on: session.camOn, onIcon: "video.fill", offIcon: "video.slash.fill", label: L(session.camOn ? "cam_on" : "cam_off")) { session.setCam(!session.camOn) }
             #if !os(tvOS)
-            if VideoSession.offersCameraSelection && (session.cameras.count > 1 || session.selectedCameraID != nil || session.cameraFailed) {
+            if Video.offersCameraSelection && (session.cameras.count > 1 || session.selectedCameraID != nil || session.cameraFailed) {
                 Menu {
                     Picker(L("camera_select"), selection: Binding(get: { session.availableCameraID }, set: { session.selectCamera($0) })) {
                         Text(L("camera_automatic")).tag("")
@@ -27,19 +27,19 @@ struct MediaToggles: View {
             }
             #endif
         }
-        .task { if VideoSession.offersCameraSelection { await session.refreshCameras() } }
+        .task { if Video.offersCameraSelection { await session.refreshCameras() } }
         .onReceive(NotificationCenter.default.publisher(for: AVCaptureDevice.wasConnectedNotification)) { _ in
-            if VideoSession.offersCameraSelection { Task { await session.refreshCameras() } }
+            if Video.offersCameraSelection { Task { await session.refreshCameras() } }
         }
         .onReceive(NotificationCenter.default.publisher(for: AVCaptureDevice.wasDisconnectedNotification)) { _ in
-            if VideoSession.offersCameraSelection { Task { await session.refreshCameras() } }
+            if Video.offersCameraSelection { Task { await session.refreshCameras() } }
         }
     }
 }
 
 // Sounds on or off: the game's sounds and other players' voices.
 struct SoundToggle: View {
-    let session: VideoSession
+    let session: Video
 
     var body: some View {
         let on = SoundSetting.shared.on

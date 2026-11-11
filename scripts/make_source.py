@@ -1,5 +1,5 @@
 #!/usr/bin/env python3.12
-"""Write SOURCE.md: each implementation file, where it came from in OurPoker/recipe, what moved, what stayed behind."""
+"""Write SOURCE.md: each implementation file, where it came from in the OurPoker source, what moved, what stayed behind."""
 import sys
 from pathlib import Path
 
@@ -61,6 +61,9 @@ web = {
 
 apple = {
     "ApplicationSettings.swift": ("ApplicationSettings.swift 1-3", "Template: whether updates are offered."),
+    "Lessons.swift": ("TableModel.swift 43-48, Guide.swift 160-175", "The lessons over guided-tour; the only application file that names it."),
+    "Updates.swift": ("new", "The update check's version comparison over store-update; the only application file that names it."),
+    "Video.swift": ("new", "The video session under the application's name (video-calls' `VideoSession`)."),
     "Bridge.swift": ("ios/OurPoker/Sources/Sound.swift 1-75, Layout.swift 1-35, Platform.swift 1-41, Cards.swift 137-149", "Names over the sound-cues player, preferences, apple-host platform rules and table-layout spots; `tapIf`."),
     "DisplayScreen.swift": ("DisplayScreen.swift 1-628", "The table viewer for a television or shared screen."),
     "EndScreen.swift": ("EndScreen.swift 1-57", ""),
@@ -87,6 +90,9 @@ apple = {
 
 android = {
     "AppLanguage.kt": ("AppLanguage.kt 1-31", "Over the android-host's ShellLanguage."),
+    "Updates.kt": ("new", "The update check's version comparison over store-update."),
+    "Video.kt": ("new", "The video session and room under the application's names (video-calls' `VideoSession`, LiveKit's `Room`)."),
+    "ui/Lessons.kt": ("TableViewModel.kt 87-92, ui/Guide.kt 170-184", "The lessons over guided-tour; the only application file that names it."),
     "AppSettings.kt": ("app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED", "Template."),
     "MainActivity.kt": ("MainActivity.kt 1-137", "Subclass of the android-host's ShellActivity; screen flow."),
     "Sound.kt": ("Sound.kt 1-53", "Over the sound-cues player and preferences."),
@@ -123,7 +129,7 @@ desktop = {
 
 
 def table(title, folder, mapping, base_dir):
-    out = [f"### {title}", "", "| File | Lines | Origin (OurPoker/recipe) | Notes |", "|---|---|---|---|"]
+    out = [f"### {title}", "", "| File | Lines | Origin (the source's recipe/ folder) | Notes |", "|---|---|---|---|"]
     for name, (origin, note) in mapping.items():
         path = f"{base_dir}/{name}"
         count = lines(path) if (ROOT / path).exists() else "-"
@@ -137,7 +143,7 @@ def count_dir(path, suffixes):
 
 doc = f"""# Source record
 
-Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revision 19905b75dbea89fbfd424d67fe26c81aaed0e018. This component holds only what no general component provides. Line ranges are those of the source file named; many files were rewritten over components, so a range is the region the content came from, not a copy of it. `scripts/make_component.py` computes `component.json`; `scripts/make_source.py` writes this file.
+Everything here was taken from the `recipe/` folder of the OurPoker source at McInPoker revision 19905b75dbea89fbfd424d67fe26c81aaed0e018. This component holds only what no general component provides. Line ranges are those of the source file named; many files were rewritten over components, so a range is the region the content came from, not a copy of it. `scripts/make_component.py` computes `component.json`; `scripts/make_source.py` writes this file.
 
 ## Implementation: server (`implementation/server/src/`, destination `server/src/`)
 
@@ -167,7 +173,8 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 | `server/src/computers.ts`, `update-links.ts`, `video.ts` | {count_dir("implementation/stand-ins/server/src", {".ts"})} | computer-players, store-update, video-calls (new) |
 | `web/src/guide.ts`, `guide-style.ts`, `shell.ts`, `update.ts`, `video.ts` | {count_dir("implementation/stand-ins/web/src", {".ts"})} | guided-tour, web-host, store-update, video-calls (new) |
 | `web/package.json`, `package-lock.json` | {lines("implementation/stand-ins/web/package.json")}, {lines("implementation/stand-ins/web/package-lock.json")} | video-calls: the web package without `livekit-client` |
-| `apple/Sources/StoreVersion.swift` | {lines("implementation/stand-ins/apple/Sources/StoreVersion.swift")} | store-update's Swift `isNewer` and `currentVersion` (new) |
+| `apple/Sources/Video.swift`, `SeatScreen.swift`, `Lessons.swift`, `Updates.swift` | {count_dir("implementation/stand-ins/apple/Sources", {".swift"})} | video-calls, guided-tour, store-update (new) |
+| `android/.../Video.kt`, `ui/SeatScreen.kt`, `ui/Lessons.kt`, `Updates.kt` | {count_dir("implementation/stand-ins/android", {".kt"})} | video-calls, guided-tour, store-update (new) |
 
 ## Implementation: Apple (`implementation/apple/Sources/`, destination `ios/OurPoker/Sources/`)
 
