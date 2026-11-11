@@ -156,14 +156,20 @@ export class Store {
     if (saved !== null) this.set({ name: saved, editingName: false });
   }
 
-  // Joining, and rejoining on a reload: one call gives the seat token, the view and the video grant.
+  // The seat token this device holds for a room, or null: the only way back to a seat.
+  seatToken(roomId: string): string | null {
+    const session = identity.session("player");
+    return session && session.roomId === roomId ? session.token : null;
+  }
+
+  // Joining, and rejoining on a reload with the seat token kept: one call gives the seat token, the view and the video grant.
   async join(roomId: string) {
     if (this.state.mode === "board") return this.joinBoard(roomId);
     if (!this.state.name) return this.set({ editingName: true });
     const generation = this.beginJoin(roomId);
     play("enter");
     try {
-      const r = await api.join(roomId, this.state.name);
+      const r = await api.join(roomId, this.state.name, this.seatToken(roomId) ?? undefined);
       if (generation !== this.generation) return;
       identity.saveSession("player", { token: r.token, roomId });
       this.set({ token: r.token, roomId, view: r.view, video: r.video, busy: false, betTo: null });

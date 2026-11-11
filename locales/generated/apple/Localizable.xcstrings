@@ -1655,35 +1655,6 @@
         }
       }
     },
-    "need_two": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Two players are needed"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Il faut deux joueurs"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zwei Spieler werden gebraucht"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hacen falta dos jugadores"
-          }
-        }
-      }
-    },
     "add_computer": {
       "extractionState": "manual",
       "localizations": {
@@ -2202,6 +2173,64 @@
           "stringUnit": {
             "state": "translated",
             "value": "El nombre debe tener de 1 a 20 caracteres simples y no estar ya en uso."
+          }
+        }
+      }
+    },
+    "err_nameTaken": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That name is in use at this table. Choose another name."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce nom est déjà utilisé à cette table. Choisissez-en un autre."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen Namen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ese nombre ya se usa en esta mesa. Elige otro nombre."
+          }
+        }
+      }
+    },
+    "room_name_taken": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your name is in use at this table"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre nom est déjà utilisé à cette table"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Name wird an diesem Tisch schon verwendet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu nombre ya se usa en esta mesa"
           }
         }
       }
@@ -4010,25 +4039,54 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Waiting for players: %1$@ needed."
+            "value": "Waiting for %1$@ more players."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En attente de joueurs : %1$@ nécessaires."
+            "value": "En attente de %1$@ joueurs de plus."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Warten auf Spieler: %1$@ nötig."
+            "value": "Warten auf %1$@ weitere Spieler."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esperando jugadores: hacen falta %1$@."
+            "value": "Esperando a %1$@ jugadores más."
+          }
+        }
+      }
+    },
+    "p_lobbyWaitingOne": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for %1$@ more player."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En attente d'%1$@ joueur de plus."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warten auf %1$@ weiteren Spieler."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esperando a %1$@ jugador más."
           }
         }
       }

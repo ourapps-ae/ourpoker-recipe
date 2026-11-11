@@ -67,7 +67,7 @@ fun LobbyScreen(vm: TableViewModel, ui: UiState, view: View) {
                     if (view.legal.addBot) Box(Modifier.guideAnchor("addBot")) { RoundIconButton(null, L("add_computer"), enabled = !ui.busy, filled = false, onClick = vm::addBot) { AddBotIcon(it) } }
                     Spacer(Modifier.weight(1f))
                     if (me != null && !me.isBot) {
-                        Box(Modifier.guideAnchor("start")) { RoundIconButton(Icons.Filled.PlayArrow, L(if (view.legal.start) "start_game" else "need_two"), enabled = view.legal.start && !ui.busy, filled = true, glow = true, onClick = vm::start) }
+                        Box(Modifier.guideAnchor("start")) { RoundIconButton(Icons.Filled.PlayArrow, if (view.legal.start) L("start_game") else promptText(view), enabled = view.legal.start && !ui.busy, filled = true, glow = true, onClick = vm::start) }
                     }
                 }
                 Spacer(Modifier.height(8.dp))

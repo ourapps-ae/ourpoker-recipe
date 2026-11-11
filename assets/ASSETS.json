@@ -198,69 +198,9 @@
       "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
     },
     {
-      "path": "art/card-back-casino.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-back-home.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-casino-jack.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-casino-king.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-casino-queen.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-home-jack.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-home-king.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/card-home-queen.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
       "path": "art/icon.png",
       "bytes": 6504,
       "sha256": "5152b4661abcbdc3f9d0a5e97cc51445233380850d9d07fcb976e8ff1b7d139f"
-    },
-    {
-      "path": "art/scene-casino-back.jpg",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/scene-casino-front.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/scene-home-back.jpg",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
-    },
-    {
-      "path": "art/scene-home-front.png",
-      "bytes": 210,
-      "sha256": "d3d6a2fcf198bdc300b20501e6470091311097c731814a44dab915ebb5538ee5"
     },
     {
       "path": "sounds/allin.wav",
@@ -343,66 +283,6 @@
       "sha256": "ff6aeb5c2b7ce6f98510bc7015160523df34d5e0ae1b9e483bde93804ded75d8"
     },
     {
-      "path": "web/art/card-back-casino.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-back-home.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-casino-jack.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-casino-king.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-casino-queen.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-home-jack.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-home-king.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/card-home-queen.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/scene-casino-back.jpg",
-      "bytes": 543,
-      "sha256": "34855a1ab1a33a187870b6536d0fd3613926d9d707779d8d5c9288514c036215"
-    },
-    {
-      "path": "web/art/scene-casino-front.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
-      "path": "web/art/scene-home-back.jpg",
-      "bytes": 543,
-      "sha256": "34855a1ab1a33a187870b6536d0fd3613926d9d707779d8d5c9288514c036215"
-    },
-    {
-      "path": "web/art/scene-home-front.png",
-      "bytes": 1132,
-      "sha256": "509aa602f2fd974891cb946ab92844ed544dac9fdfc7abfed2c5e17fdaa8e5f5"
-    },
-    {
       "path": "web/icon-192.png",
       "bytes": 414,
       "sha256": "e7b7da5f4d441e25d64cd2db766d15d2993279a816be08546cd7b5dbc5ce7579"
@@ -414,8 +294,8 @@
     },
     {
       "path": "web/manifest.json",
-      "bytes": 285,
-      "sha256": "7a4fe726a2f4db514b199ae3d1a073da5a9c07f183c637d5d3aa373cda428656"
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
     },
     {
       "path": "web/sounds-manifest.json",

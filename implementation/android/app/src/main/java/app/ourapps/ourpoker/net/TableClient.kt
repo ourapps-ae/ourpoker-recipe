@@ -46,9 +46,12 @@ class TableClient(private val baseUrl: String) {
         return json.decodeFromString(UpdateInfo.serializer(), send(req))
     }
 
-    suspend fun join(roomId: String, name: String): JoinResponse {
+    // `token`: the seat token this device holds for the room; a name in use is given back only with it.
+    suspend fun join(roomId: String, name: String, token: String? = null): JoinResponse {
         val body = buildJsonObject { put("name", name) }
-        val req = Request.Builder().url("$baseUrl/r/$roomId/join").post(body.toString().toRequestBody(jsonType)).build()
+        val builder = Request.Builder().url("$baseUrl/r/$roomId/join").post(body.toString().toRequestBody(jsonType))
+        if (token != null) builder.header("Authorization", "Bearer $token")
+        val req = builder.build()
         return json.decodeFromString(JoinResponse.serializer(), send(req))
     }
 

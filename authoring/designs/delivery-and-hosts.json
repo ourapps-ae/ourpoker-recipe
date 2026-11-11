@@ -453,16 +453,7 @@
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
         "bundleIdentifier": "app.ourapps.ourpoker",
-        "targets": "web ios android macos windows tvos",
-        "storeCredentials": {
-          "secretRef": "ourpoker/store-credentials"
-        },
-        "androidSigning": {
-          "secretRef": "ourpoker/android-signing"
-        },
-        "webDeploy": {
-          "secretRef": "ourpoker/web-deploy"
-        }
+        "targets": "web ios android macos windows tvos"
       }
     }
   ],

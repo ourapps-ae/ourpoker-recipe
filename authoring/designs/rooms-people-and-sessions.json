@@ -437,13 +437,7 @@
       "name": "Video calls",
       "definition": "ourapps-ae.video-calls",
       "configuration": {
-        "enabled": true,
-        "keyReference": {
-          "secretRef": "ourpoker/video-key"
-        },
-        "secretReference": {
-          "secretRef": "ourpoker/video-secret"
-        }
+        "enabled": true
       }
     },
     {

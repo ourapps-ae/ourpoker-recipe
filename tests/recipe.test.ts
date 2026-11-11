@@ -97,7 +97,7 @@ test("recipe.json passes the ourapps catalogue validator, with the components' s
   assert.equal(recipe.name, "ourapps-ae/ourpoker");
   assert.equal(recipe.version, "0.4.1");
   assert.equal(recipe.components.length, 39);
-  assert.equal(recipe.questions.length, 25);
+  assert.equal(recipe.questions.length, 26);
 });
 
 test("page, instructions and diagram files exist; the diagrams are safe SVG", () => {
@@ -212,10 +212,12 @@ test("secret references come only from secretRef questions guarded by askWhen, e
     }
   }
   const askedWhen = (id: string) => questions.get(id)!.askWhen;
-  assert.equal(askedWhen("videoKey"), "video");
-  assert.equal(askedWhen("videoSecret"), "video");
+  assert.equal(askedWhen("videoKey"), "video && publish");
+  assert.equal(askedWhen("videoSecret"), "video && publish");
   assert.equal(askedWhen("hostingAccount"), "server == 'cloudflare'");
-  assert.equal(askedWhen("storeCredentials"), "updates || 'ios' in targets");
+  assert.equal(askedWhen("storeCredentials"), "publish && (updates || 'ios' in targets)");
+  assert.equal(askedWhen("androidSigning"), "publish && 'android' in targets");
+  assert.equal(askedWhen("webDeploy"), "publish && 'web' in targets");
   assert.equal(manifests.get("ourapps-release")!.collect.find((s: Obj) => s.id === "storeCredentials").required, false);
   const storeSets = everyQuestionEffect().filter(([, target]) => target === "ourapps-release.storeCredentials");
   assert.equal(storeSets.length, 1, "storeCredentials is set once, only by the {ref} effect");
@@ -425,8 +427,11 @@ test("the questions of paper Section 5.4 are present, in order, with the follow-
   const paper = ["targets", "scale", "languages", "look", "players", "startingChips", "levelSeconds", "rebuys", "decisionSeconds", "computerPlayers", "video", "lessons", "server", "updates"];
   assert.deepEqual(ids.filter((id: string) => paper.includes(id)), paper);
   const followUps = ids.filter((id: string) => !paper.includes(id));
-  assert.deepEqual(followUps, ["webAddress", "bundleId", "videoServiceUrl", "videoKey", "videoSecret", "hostingAccount", "serverAddress", "storeInvitation", "storeCredentials", "androidSigning", "webDeploy"]);
-  for (const id of followUps) if (!["bundleId", "serverAddress", "storeCredentials"].includes(id)) assert.ok(questions.get(id)!.askWhen, `${id} has askWhen`);
+  assert.deepEqual(followUps, ["webAddress", "bundleId", "videoServiceUrl", "videoKey", "videoSecret", "hostingAccount", "serverAddress", "publish", "storeInvitation", "storeCredentials", "androidSigning", "webDeploy"]);
+  for (const id of followUps) if (!["bundleId", "serverAddress", "publish"].includes(id)) assert.ok(questions.get(id)!.askWhen, `${id} has askWhen`);
+  // signing and deployment references are asked only when builds are published; a local design needs none
+  for (const id of ["videoKey", "videoSecret", "storeCredentials", "androidSigning", "webDeploy"]) assert.match(questions.get(id)!.askWhen, /\bpublish\b/, `${id} is asked only when publishing`);
+  assert.equal(questions.get("publish")!.default, false);
   for (const q of recipe.questions) {
     assert.ok(q.ask && q.askAgent, `${q.id} has wording for people and for the agent`);
     if (q.askWhen) assert.ok(q.type === "secretRef" || (q.default !== undefined && q.default !== null), `${q.id}: a question with askWhen has a default`);
@@ -468,6 +473,18 @@ test("INTEGRATION-GAPS.md lists only open and deferred items, and its totals mat
   assert.ok(bySeverity, "the severity line is present");
   assert.deepEqual([severity["blocks assembly"], severity["needs adapter"], severity.cosmetic], bySeverity.slice(1).map(Number));
   for (const heading of ["## Open items", "## Decisions", "## What is not specified or built"]) assert.ok(text.includes(heading), heading);
+});
+
+test("every version a document names for this package is recipe.json's (scripts/make_component.py writes them)", () => {
+  const version = recipe.version;
+  const places: [string, RegExp][] = [["INSTRUCTIONS.md", /Package `ourapps-ae\/ourpoker` (\d+\.\d+\.\d+)/], ["INSTRUCTIONS.md", /this file belongs to (\d+\.\d+\.\d+)/],
+    ["CONTRACT.md", /Package `ourapps-ae\/ourpoker` version (\d+\.\d+\.\d+)/], ["INTEGRATION-GAPS.md", /\(recipe (\d+\.\d+\.\d+)\)/],
+    ["page/description.md", /Version (\d+\.\d+\.\d+)/], ["page/description.md", /ourpoker@(\d+\.\d+\.\d+)/], ["page/description.md", /STORE (\d+\.\d+\.\d+)/], ["AGENTS.md", /Version (\d+\.\d+\.\d+)/]];
+  for (const [file, pattern] of places) {
+    const found = readFileSync(join(root, file), "utf8").match(pattern);
+    assert.ok(found, `${file}: ${pattern}`);
+    assert.equal(found![1], version, `${file}: ${pattern}`);
+  }
 });
 
 test("the recipe's documents name no machine path and no tool or folder outside the recipe's repository", () => {

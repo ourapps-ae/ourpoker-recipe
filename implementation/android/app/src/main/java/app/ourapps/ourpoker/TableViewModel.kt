@@ -274,7 +274,9 @@ class TableViewModel(app: Application) : AndroidViewModel(app) {
         val name = _state.value.name
         _state.update { it.copy(busy = true, error = null) }
         try {
-            val r = client.join(roomId, name)
+            // The seat token kept for this room: the only way back to a seat.
+            val held = if (_state.value.roomId == roomId) _state.value.token else null
+            val r = client.join(roomId, name, held)
             prefs.edit().putString("token", r.token).putString("roomId", roomId).apply()
             _state.update { it.copy(token = r.token, roomId = roomId, view = r.view, viewAt = System.currentTimeMillis(), busy = false, betTo = null) }
             grant = r.video
@@ -377,7 +379,7 @@ class TableViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             for (attempt in 0 until 5) {
                 try {
-                    val r = client.join(roomId, _state.value.name)
+                    val r = client.join(roomId, _state.value.name, _state.value.token)
                     prefs.edit().putString("token", r.token).apply()
                     _state.update { it.withView(r.view).copy(token = r.token) }
                     grant = r.video

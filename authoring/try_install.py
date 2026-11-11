@@ -13,7 +13,9 @@ passed. Then, per answers: evaluates the design with aepm's evaluator (aepm.reci
   apple   node generate-project.ts; xcodegen generate; xcodebuild for the iOS and tvOS simulators; only the answered languages
   android node generate-project.ts; only the answered languages' strings; Gradle build where ANDROID_HOME is set
   browser headless Chrome over the DevTools protocol: the page loads with web-host's head, the room list comes from the
-          server, a player names themself and sits down, and the server lists them; no script error
+          server, a player names themself and sits down, the server lists them, a computer player (or a second person) joins,
+          the game starts and the player's two cards are dealt, the table fits a 1280x800 window; no script error; screenshots
+          of home, lobby and table are kept beside the design
 
 Usage (from the recipe folder; python 3.12, node 26.5.0, Chrome):
   PYTHONPATH=<aepm checkout> python3.12 -B authoring/try_install.py [ANSWERS ...] [--components DIR] [--work DIR] [--chrome PATH]
@@ -339,12 +341,16 @@ const command = (method, params = {}) => new Promise((resolve, reject) => { cons
 const evaluate = async (expression) => (await command("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true })).result.value;
 const wait = async (expression, what, ms = 20000) => { const until = Date.now() + ms; while (!(await evaluate(expression))) { if (Date.now() > until) throw new Error(`timed out: ${what}; exceptions ${JSON.stringify(exceptions)}`); await pause(100); } };
 await command("Runtime.enable"); await command("Network.enable"); await command("Page.enable");
+await command("Emulation.setDeviceMetricsOverride", { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false });
 await command("Page.navigate", { url: page });
 await wait("document.readyState === 'complete'", "page load");
 const title = await evaluate("document.title");
 if (title !== "OurPoker") throw new Error(`title ${title}`);
 if (!(await evaluate("!!document.querySelector('meta[name=theme-color]') && !!document.querySelector('link[rel=manifest]')"))) throw new Error("web-host head missing");
 await wait("[...document.querySelectorAll('[data-guide=roomJoin]')].some((b) => !b.disabled)", "room list from the server");
+await pause(800);
+const fsHome = await import("node:fs");
+{ const s = await command("Page.captureScreenshot", { format: "png" }); fsHome.writeFileSync(process.env.SHOT.replace(/\.png$/, "-home.png"), Buffer.from(s.data, "base64")); }
 await evaluate("[...document.querySelectorAll('[data-guide=roomJoin]')].find((b) => !b.disabled).click()");
 await wait("!!document.querySelector('input')", "name entry");
 await evaluate("const i = document.querySelector('input'); i.value = 'Smoke'; i.dispatchEvent(new Event('input', { bubbles: true })); [...document.querySelectorAll('button')].find((b) => b.textContent === 'Save').click()");
@@ -352,13 +358,38 @@ await pause(300);
 await evaluate("localStorage.setItem('beginner', 'false'); [...document.querySelectorAll('[data-guide=roomJoin]')].find((b) => !b.disabled)?.click()");
 const seated = async () => (await (await fetch(`${server}/rooms`)).json()).some((room) => room.names.includes("Smoke"));
 for (const until = Date.now() + 20000; !(await seated());) { if (Date.now() > until) throw new Error(`the server never listed the player; exceptions ${JSON.stringify(exceptions)}`); await pause(200); }
+const fs = await import("node:fs");
+const shoot = async (suffix) => { const s = await command("Page.captureScreenshot", { format: "png" }); fs.writeFileSync(process.env.SHOT.replace(/\.png$/, `-${suffix}.png`), Buffer.from(s.data, "base64")); };
+await wait("!!document.querySelector('[data-guide=start]')", "the lobby");
+await evaluate("document.querySelector('[data-install-banner],[data-ourapps-install]')?.remove()");
 await pause(500);
-const shot = await command("Page.captureScreenshot", { format: "png" });
-(await import("node:fs")).writeFileSync(process.env.SHOT, Buffer.from(shot.data, "base64"));
+await shoot("lobby");
+const lobbyPrompt = await evaluate("document.querySelector('[data-guide=start]').title");
+// A second player: a computer player where the design has them, otherwise a person joining over the server's API.
+let second;
+if (await evaluate("!!document.querySelector('[data-guide=addBot]')")) {
+  await evaluate("document.querySelector('[data-guide=addBot]').click()");
+  second = "a computer player";
+} else {
+  const room = (await (await fetch(`${server}/rooms`)).json()).find((r) => r.names.includes("Smoke")).id;
+  const joined = await fetch(`${server}/r/${room}/join`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: "Second" }) });
+  if (!joined.ok) throw new Error(`second player: ${joined.status}`);
+  second = "a second person";
+}
+await wait("!!document.querySelector('[data-guide=start]') && !document.querySelector('[data-guide=start]').disabled", "start enabled");
+await evaluate("document.querySelector('[data-guide=start]').click()");
+// The hand is dealt when this browser's own two cards show face up.
+await wait("document.querySelectorAll('.mycards .handcard .card:not(.back)').length === 2", "own cards dealt", 30000);
+await pause(1500);
+await evaluate("document.querySelector('[data-install-banner],[data-ourapps-install]')?.remove()");
+await shoot("table");
+// The table and this player's seat lie inside the window.
+const fits = await evaluate("(() => { const t = document.querySelector('.table').getBoundingClientRect(); return t.bottom <= innerHeight + 1 && t.top >= 0; })()");
+if (!fits) throw new Error("the table does not fit the window at 1280x800");
 if (exceptions.length) throw new Error(`script errors: ${JSON.stringify(exceptions)}`);
 const calls = requests.filter((url) => url.startsWith(server)).length;
 socket.close();
-console.log(`passed: title OurPoker, web-host head, room list from ${server}, player seated (server lists "Smoke"), ${calls} requests to the server, no script error`);
+console.log(`passed: title OurPoker, web-host head, room list from ${server}, player seated (server lists "Smoke"), lobby says "${lobbyPrompt}", a hand dealt with ${second}, the table fits 1280x800, ${calls} requests to the server, no script error`);
 process.exit(0);
 """
 

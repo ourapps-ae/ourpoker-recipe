@@ -195,7 +195,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `locales/strings.json` | {lines("locales/strings.json")} | i18n/strings.json 1-1472 | Key to en, fr, de, es; the translations generator makes each platform's resources from it. |
 | `locales/lessons.json` | {lines("locales/lessons.json")} | web/src/guide.ts 1-159, android ui/Guide.kt 90-105, ios Guide.swift | Lessons as data for guided-tour: ids, screens, steps naming string keys and anchors. |
 | `assets/ASSETS.json` | {lines("assets/ASSETS.json")} | new | The asset list; `tests/portable.test.ts` checks it against the files. |
-| `assets/art/`, `assets/web/art/` | 13 + 12 files | art/, web/public/art/ | Placeholder pictures (64 px squares) and the 1024 px icon; the source repository ships no other artwork. |
+| `assets/art/icon.png`, `assets/web/manifest.json` | 1 file, an empty list | art/, web/public/art/manifest.json | The 1024 px icon; the source's court-card, card-back and scene pictures were single-colour placeholders and are not shipped, so cards and rooms are drawn by card-graphics and theme. A developer adds pictures to `web/public/art/` and lists them in its `manifest.json`. |
 | `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, myTurn and lowTime events). |
 | `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files belong to apple-host (it writes them); only the TV images are mapped. |
 
@@ -235,7 +235,7 @@ Copied from the source and mapped back to the application layout by the artefact
 - Desktop: scripts/runtime-smoke.cjs and installed-smoke.cjs (they require `../src/policy.cjs`, which the source tree does not have; windows-desktop's own platform checks cover them), native-verify.ps1, icon.py.
 - rules/texas-holdem-coding-handoff.md (110 lines): a build note for the hand-built game, replaced by holdem-rules' CONTRACT.md.
 - Android INSTRUMENTATION.md.
-- Artwork: the source tree holds only placeholder pictures; nothing personal existed to leave out.
+- Artwork: the source tree's court-card, card-back and scene pictures, single-colour placeholders.
 """
 (ROOT / "SOURCE.md").write_text(doc, encoding="utf-8")
 print("SOURCE.md", len(doc.splitlines()), "lines")

@@ -31,9 +31,11 @@ struct TableClient {
         return try decoder.decode(UpdateInfo.self, from: try await send(req))
     }
 
-    func join(roomId: String, name: String) async throws -> JoinResponse {
+    // `token`: the seat token this device holds for the room; a name in use is given back only with it.
+    func join(roomId: String, name: String, token: String? = nil) async throws -> JoinResponse {
         var req = URLRequest(url: baseURL.appendingPathComponent("r/\(roomId)/join"))
         req.httpMethod = "POST"
+        if let token { req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
         req.httpBody = try JSONSerialization.data(withJSONObject: ["name": name])
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return try decoder.decode(JoinResponse.self, from: try await send(req))

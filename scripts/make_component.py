@@ -49,7 +49,8 @@ COLLECT = [
     ("serverAddress", "string", "address", "http://localhost:8788"),
     ("webAddress", "string", "address", "http://localhost:5173"),
     ("roomPrefix", "string", "slug", "ourpoker-"),
-    ("inviteAddress", "string", "address", "https://store.example/l/0123456789abcdef01234567"),
+    # The store invitation when updates are on; until one is answered it is the local web address, which is no invitation and is never offered.
+    ("inviteAddress", "string", "address", "http://localhost:5173"),
     ("updatesEnabled", "boolean", "boolean", False),
     ("modeEvent", "string", "slug", "ourpoker-mode"),
     ("signingEnvironmentPrefix", "string", "environment", "OURPOKER"),
@@ -437,6 +438,27 @@ def generate_translations():
         raise SystemExit("translations generator failed: " + (result.stderr.strip() or result.stdout.strip()))
 
 
+# Every place a document names the package's own version, rewritten from recipe.json's version on each run.
+VERSION_PLACES = {
+    "INSTRUCTIONS.md": [r"(Package `ourapps-ae/ourpoker` )\d+\.\d+\.\d+", r"(this file belongs to )\d+\.\d+\.\d+", r"(ourpoker@)\d+\.\d+\.\d+"],
+    "CONTRACT.md": [r"(Package `ourapps-ae/ourpoker` version )\d+\.\d+\.\d+"],
+    "INTEGRATION-GAPS.md": [r"(# OurPoker integration status \(recipe )\d+\.\d+\.\d+"],
+    "REVIEW.md": [r"(package `ourapps-ae/ourpoker` )\d+\.\d+\.\d+", r"(ourpoker@)\d+\.\d+\.\d+"],
+    "page/description.md": [r"(Version )\d+\.\d+\.\d+", r"(ourpoker@)\d+\.\d+\.\d+", r"(STORE )\d+\.\d+\.\d+"],
+    "AGENTS.md": [r"(Version )\d+\.\d+\.\d+"],
+    ".opencode/knowledge/00-index.md": [r"(Package `ourapps-ae/ourpoker` version )\d+\.\d+\.\d+"],
+}
+
+
+def stamp_versions():
+    for name, patterns in VERSION_PLACES.items():
+        path = ROOT / name
+        text = path.read_text(encoding="utf-8")
+        for pattern in patterns:
+            text = re.sub(pattern, lambda m: m.group(1) + VERSION, text)
+        path.write_text(text, encoding="utf-8")
+
+
 def tools_lock():
     return {"format": 1, "dependencies": [], "tools": TOOLS}
 
@@ -444,6 +466,7 @@ def tools_lock():
 def main(argv):
     do_render = "--render" in argv
     dump(ROOT / "tools.lock.json", tools_lock())
+    stamp_versions()
     generate_translations()
     dump(ROOT / "assets/ASSETS.json", assets_list())
     manifest = build_manifest(listed_files())

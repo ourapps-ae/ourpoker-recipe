@@ -46,7 +46,7 @@
 <!-- n38 -->
 <g id="node39" class="node">
 <title>n38</title>
-<polygon fill="#1a2332" stroke="none" points="3322,-1542.12 3322,-3255.88 3638.25,-3255.88 3638.25,-1542.12 3322,-1542.12"/>
+<polygon fill="#1a2332" stroke="none" points="3322,-1554.12 3322,-3255.88 3638.25,-3255.88 3638.25,-1554.12 3322,-1554.12"/>
 <polygon fill="#594180" stroke="none" points="3324,-3191.88 3324,-3253.88 3636.25,-3253.88 3636.25,-3191.88 3324,-3191.88"/>
 <text xml:space="preserve" text-anchor="start" x="3452.75" y="-3233.47" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="12.00" fill="#edf2fa">OurPoker</text>
 <text xml:space="preserve" text-anchor="start" x="3384.12" y="-3223.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Application&#45;owned code | Example definition</text>
@@ -200,19 +200,18 @@
 <text xml:space="preserve" text-anchor="start" x="3330" y="-1890.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">serverAddress: http://localhost:8788</text>
 <text xml:space="preserve" text-anchor="start" x="3330" y="-1865.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">webAddress: http://localhost:5173</text>
 <text xml:space="preserve" text-anchor="start" x="3330" y="-1840.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">roomPrefix: ourpoker&#45;</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1815.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">inviteAddress:</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1803.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">https://store.example/l/0123456789abcdef01234567</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1778.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">updatesEnabled: false</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1753.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">modeEvent: ourpoker&#45;mode</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1728.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">signingEnvironmentPrefix: OURPOKER</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1703.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">maximumPlayers: 9</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1678.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">startingStack: 5000</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1653.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">levelSeconds: 600</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1628.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">rebuysPerPlayer: 1</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1603.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">decisionSeconds: 30</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1578.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">computerPlayers: on&#45;request</text>
-<text xml:space="preserve" text-anchor="start" x="3330" y="-1553.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">languages: en fr de es</text>
-<polygon fill="none" stroke="#6b7d95" points="3322,-1542.12 3322,-3255.88 3638.25,-3255.88 3638.25,-1542.12 3322,-1542.12"/>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1815.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">inviteAddress: http://localhost:5173</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1790.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">updatesEnabled: false</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1765.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">modeEvent: ourpoker&#45;mode</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1740.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">signingEnvironmentPrefix: OURPOKER</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1715.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">maximumPlayers: 9</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1690.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">startingStack: 5000</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1665.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">levelSeconds: 600</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1640.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">rebuysPerPlayer: 1</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1615.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">decisionSeconds: 30</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1590.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">computerPlayers: on&#45;request</text>
+<text xml:space="preserve" text-anchor="start" x="3330" y="-1565.12" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">languages: en fr de es</text>
+<polygon fill="none" stroke="#6b7d95" points="3322,-1554.12 3322,-3255.88 3638.25,-3255.88 3638.25,-1554.12 3322,-1554.12"/>
 </g>
 <!-- n0&#45;&gt;n38 -->
 <g id="edge47" class="edge">
@@ -395,10 +394,10 @@
 <text xml:space="preserve" text-anchor="start" x="2958.88" y="-3561.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Applicationid: ourpoker</text>
 <text xml:space="preserve" text-anchor="start" x="2958.88" y="-3536.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Applicationname: OurPoker</text>
 <text xml:space="preserve" text-anchor="start" x="2958.88" y="-3511.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Manifesturl: https://ourapps.app</text>
-<text xml:space="preserve" text-anchor="start" x="2958.88" y="-3486.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Storecredentials: [secret reference]</text>
+<text xml:space="preserve" text-anchor="start" x="2958.88" y="-3486.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Storecredentials: [not set]</text>
 <text xml:space="preserve" text-anchor="start" x="2958.88" y="-3461.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Bundleidentifier: app.ourapps.ourpoker</text>
-<text xml:space="preserve" text-anchor="start" x="2958.88" y="-3436.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Androidsigning: [secret reference]</text>
-<text xml:space="preserve" text-anchor="start" x="2958.88" y="-3411.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Webdeploy: [secret reference]</text>
+<text xml:space="preserve" text-anchor="start" x="2958.88" y="-3436.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Androidsigning: [not set]</text>
+<text xml:space="preserve" text-anchor="start" x="2958.88" y="-3411.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Webdeploy: [not set]</text>
 <polygon fill="none" stroke="#6b7d95" points="2950.88,-3400.62 2950.88,-3763.38 3185.88,-3763.38 3185.88,-3400.62 2950.88,-3400.62"/>
 </g>
 <!-- n5&#45;&gt;n38 -->
@@ -517,7 +516,7 @@
 <!-- n8&#45;&gt;n6 -->
 <g id="edge7" class="edge">
 <title>n8:e&#45;&gt;n6:w</title>
-<path fill="none" stroke="#65d6ff" stroke-width="1.6" d="M1385.12,-509.12C1650.45,-509.12 1431.55,0 1696.88,0 1696.88,0 1696.88,0 3481.12,0 4162.05,0 3571.52,-846.35 3638.25,-1524 3649.15,-1634.73 3621.76,-2497.52 3724.72,-2549.66"/>
+<path fill="none" stroke="#65d6ff" stroke-width="1.6" d="M1385.12,-509.12C1650.45,-509.12 1431.55,0 1696.88,0 1696.88,0 1696.88,0 3481.12,0 4167.35,0 3570.89,-853.08 3638.25,-1536 3649.04,-1645.45 3623,-2498.16 3724.83,-2549.69"/>
 <polygon fill="#65d6ff" stroke="#65d6ff" stroke-width="1.6" points="3723.96,-2552.36 3732.4,-2551.55 3725.3,-2546.92 3723.96,-2552.36"/>
 <text xml:space="preserve" text-anchor="middle" x="2731.38" y="-1.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">interface</text>
 </g>
@@ -801,8 +800,8 @@
 <text xml:space="preserve" text-anchor="start" x="3110.5" y="-2751.12" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">provided output</text>
 <text xml:space="preserve" text-anchor="start" x="2923.12" y="-2719.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Enabled: true</text>
 <text xml:space="preserve" text-anchor="start" x="2923.12" y="-2694.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Serviceurl: [not set]</text>
-<text xml:space="preserve" text-anchor="start" x="2923.12" y="-2669.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Keyreference: [secret reference]</text>
-<text xml:space="preserve" text-anchor="start" x="2923.12" y="-2644.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Secretreference: [secret reference]</text>
+<text xml:space="preserve" text-anchor="start" x="2923.12" y="-2669.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Keyreference: [not set]</text>
+<text xml:space="preserve" text-anchor="start" x="2923.12" y="-2644.62" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Secretreference: [not set]</text>
 <polygon fill="none" stroke="#6b7d95" points="2915.12,-2633.62 2915.12,-2906.38 3221.62,-2906.38 3221.62,-2633.62 2915.12,-2633.62"/>
 </g>
 <!-- n13&#45;&gt;n38 -->

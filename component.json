@@ -1533,222 +1533,6 @@
       "template": false
     },
     {
-      "destination": "ios/OurPoker/Art/card-back-casino.png",
-      "executable": false,
-      "source": "assets/art/card-back-casino.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_back_casino.png",
-      "executable": false,
-      "source": "assets/art/card-back-casino.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-back-home.png",
-      "executable": false,
-      "source": "assets/art/card-back-home.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_back_home.png",
-      "executable": false,
-      "source": "assets/art/card-back-home.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-casino-jack.png",
-      "executable": false,
-      "source": "assets/art/card-casino-jack.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_casino_jack.png",
-      "executable": false,
-      "source": "assets/art/card-casino-jack.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-casino-king.png",
-      "executable": false,
-      "source": "assets/art/card-casino-king.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_casino_king.png",
-      "executable": false,
-      "source": "assets/art/card-casino-king.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-casino-queen.png",
-      "executable": false,
-      "source": "assets/art/card-casino-queen.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_casino_queen.png",
-      "executable": false,
-      "source": "assets/art/card-casino-queen.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-home-jack.png",
-      "executable": false,
-      "source": "assets/art/card-home-jack.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_home_jack.png",
-      "executable": false,
-      "source": "assets/art/card-home-jack.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-home-king.png",
-      "executable": false,
-      "source": "assets/art/card-home-king.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_home_king.png",
-      "executable": false,
-      "source": "assets/art/card-home-king.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/card-home-queen.png",
-      "executable": false,
-      "source": "assets/art/card-home-queen.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/card_home_queen.png",
-      "executable": false,
-      "source": "assets/art/card-home-queen.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/scene-casino-back.jpg",
-      "executable": false,
-      "source": "assets/art/scene-casino-back.jpg",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/scene_casino_back.jpg",
-      "executable": false,
-      "source": "assets/art/scene-casino-back.jpg",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/scene-casino-front.png",
-      "executable": false,
-      "source": "assets/art/scene-casino-front.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/scene_casino_front.png",
-      "executable": false,
-      "source": "assets/art/scene-casino-front.png",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/scene-home-back.jpg",
-      "executable": false,
-      "source": "assets/art/scene-home-back.jpg",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/scene_home_back.jpg",
-      "executable": false,
-      "source": "assets/art/scene-home-back.jpg",
-      "template": false
-    },
-    {
-      "destination": "ios/OurPoker/Art/scene-home-front.png",
-      "executable": false,
-      "source": "assets/art/scene-home-front.png",
-      "template": false
-    },
-    {
-      "destination": "android/app/src/main/res/drawable-nodpi/scene_home_front.png",
-      "executable": false,
-      "source": "assets/art/scene-home-front.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-back-casino.png",
-      "executable": false,
-      "source": "assets/web/art/card-back-casino.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-back-home.png",
-      "executable": false,
-      "source": "assets/web/art/card-back-home.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-casino-jack.png",
-      "executable": false,
-      "source": "assets/web/art/card-casino-jack.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-casino-king.png",
-      "executable": false,
-      "source": "assets/web/art/card-casino-king.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-casino-queen.png",
-      "executable": false,
-      "source": "assets/web/art/card-casino-queen.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-home-jack.png",
-      "executable": false,
-      "source": "assets/web/art/card-home-jack.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-home-king.png",
-      "executable": false,
-      "source": "assets/web/art/card-home-king.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/card-home-queen.png",
-      "executable": false,
-      "source": "assets/web/art/card-home-queen.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/scene-casino-back.jpg",
-      "executable": false,
-      "source": "assets/web/art/scene-casino-back.jpg",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/scene-casino-front.png",
-      "executable": false,
-      "source": "assets/web/art/scene-casino-front.png",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/scene-home-back.jpg",
-      "executable": false,
-      "source": "assets/web/art/scene-home-back.jpg",
-      "template": false
-    },
-    {
-      "destination": "web/public/art/scene-home-front.png",
-      "executable": false,
-      "source": "assets/web/art/scene-home-front.png",
-      "template": false
-    },
-    {
       "destination": "web/public/art/manifest.json",
       "executable": false,
       "source": "assets/web/manifest.json",
@@ -1947,18 +1731,6 @@
       "android/app/src/main/java/app/ourapps/ourpoker/ui/TableEffects.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/TableScreen.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/ui/VideoPanel.kt",
-      "android/app/src/main/res/drawable-nodpi/card_back_casino.png",
-      "android/app/src/main/res/drawable-nodpi/card_back_home.png",
-      "android/app/src/main/res/drawable-nodpi/card_casino_jack.png",
-      "android/app/src/main/res/drawable-nodpi/card_casino_king.png",
-      "android/app/src/main/res/drawable-nodpi/card_casino_queen.png",
-      "android/app/src/main/res/drawable-nodpi/card_home_jack.png",
-      "android/app/src/main/res/drawable-nodpi/card_home_king.png",
-      "android/app/src/main/res/drawable-nodpi/card_home_queen.png",
-      "android/app/src/main/res/drawable-nodpi/scene_casino_back.jpg",
-      "android/app/src/main/res/drawable-nodpi/scene_casino_front.png",
-      "android/app/src/main/res/drawable-nodpi/scene_home_back.jpg",
-      "android/app/src/main/res/drawable-nodpi/scene_home_front.png",
       "android/app/src/main/res/drawable/ic_launcher_background.xml",
       "android/app/src/main/res/drawable/ic_launcher_foreground.xml",
       "android/app/src/main/res/raw/lessons.json",
@@ -2011,18 +1783,6 @@
       "ios/OurPoker/Art/Sounds/start.wav",
       "ios/OurPoker/Art/Sounds/turn.wav",
       "ios/OurPoker/Art/Sounds/win.wav",
-      "ios/OurPoker/Art/card-back-casino.png",
-      "ios/OurPoker/Art/card-back-home.png",
-      "ios/OurPoker/Art/card-casino-jack.png",
-      "ios/OurPoker/Art/card-casino-king.png",
-      "ios/OurPoker/Art/card-casino-queen.png",
-      "ios/OurPoker/Art/card-home-jack.png",
-      "ios/OurPoker/Art/card-home-king.png",
-      "ios/OurPoker/Art/card-home-queen.png",
-      "ios/OurPoker/Art/scene-casino-back.jpg",
-      "ios/OurPoker/Art/scene-casino-front.png",
-      "ios/OurPoker/Art/scene-home-back.jpg",
-      "ios/OurPoker/Art/scene-home-front.png",
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json",
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-128@1x.png",
@@ -2141,19 +1901,7 @@
       "web/index.html",
       "web/package-lock.json",
       "web/package.json",
-      "web/public/art/card-back-casino.png",
-      "web/public/art/card-back-home.png",
-      "web/public/art/card-casino-jack.png",
-      "web/public/art/card-casino-king.png",
-      "web/public/art/card-casino-queen.png",
-      "web/public/art/card-home-jack.png",
-      "web/public/art/card-home-king.png",
-      "web/public/art/card-home-queen.png",
       "web/public/art/manifest.json",
-      "web/public/art/scene-casino-back.jpg",
-      "web/public/art/scene-casino-front.png",
-      "web/public/art/scene-home-back.jpg",
-      "web/public/art/scene-home-front.png",
       "web/public/icon-192.png",
       "web/public/icon.png",
       "web/public/sounds/allin.wav",
@@ -2271,7 +2019,7 @@
       "type": "string"
     },
     {
-      "default": "https://store.example/l/0123456789abcdef01234567",
+      "default": "http://localhost:5173",
       "grammar": "address",
       "id": "inviteAddress",
       "required": true,
@@ -2588,55 +2336,7 @@
     },
     {
       "executable": false,
-      "path": "assets/art/card-back-casino.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-back-home.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-casino-jack.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-casino-king.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-casino-queen.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-home-jack.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-home-king.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/card-home-queen.png"
-    },
-    {
-      "executable": false,
       "path": "assets/art/icon.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/scene-casino-back.jpg"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/scene-casino-front.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/scene-home-back.jpg"
-    },
-    {
-      "executable": false,
-      "path": "assets/art/scene-home-front.png"
     },
     {
       "executable": false,
@@ -2701,54 +2401,6 @@
     {
       "executable": false,
       "path": "assets/sounds/win.wav"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-back-casino.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-back-home.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-casino-jack.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-casino-king.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-casino-queen.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-home-jack.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-home-king.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/card-home-queen.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/scene-casino-back.jpg"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/scene-casino-front.png"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/scene-home-back.jpg"
-    },
-    {
-      "executable": false,
-      "path": "assets/web/art/scene-home-front.png"
     },
     {
       "executable": false,

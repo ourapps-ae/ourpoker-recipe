@@ -32,6 +32,9 @@ SETS = {"default": RECIPE["tests"]["defaultAnswers"], **SETS}
 INVITATION = "https://ourapps.app/l/0123456789abcdef01234567"
 KEY, SECRET, STORE = {"secretRef": "ourpoker/video-key"}, {"secretRef": "ourpoker/video-secret"}, {"secretRef": "ourpoker/store-credentials"}
 ANDROID, WEB_DEPLOY = {"secretRef": "ourpoker/android-signing"}, {"secretRef": "ourpoker/web-deploy"}
+# The default answers with builds published: every signing and deployment reference is asked.
+PUBLISHED = {**SETS["default"], "publish": True, "videoKey": "ourpoker/video-key", "videoSecret": "ourpoker/video-secret",
+             "storeCredentials": "ourpoker/store-credentials", "androidSigning": "ourpoker/android-signing", "webDeploy": "ourpoker/web-deploy"}
 
 CONDITIONAL = {"web-host", "apple-host", "android-host", "windows-desktop", "guided-tour", "video-calls", "store-update"}
 # turn-engine's computer-players requirement is optional (0.3.0), so computer-players and poker-strategy follow the answer.
@@ -68,9 +71,10 @@ EXPECTED = {
             "web-host": {"webAddress": "http://localhost:5173"},
             "apple-host": {"targets": "web ios android macos windows tvos", "bundleIdentifier": "app.ourapps.ourpoker"},
             "android-host": {"packageId": "app.ourapps.ourpoker"},
-            "ourapps-release": {"targets": "web ios android macos windows tvos", "storeCredentials": STORE, "androidSigning": ANDROID, "webDeploy": WEB_DEPLOY, "bundleIdentifier": "app.ourapps.ourpoker"},
+            # not published: no signing or deployment reference
+            "ourapps-release": {"targets": "web ios android macos windows tvos", "storeCredentials": None, "androidSigning": None, "webDeploy": None, "bundleIdentifier": "app.ourapps.ourpoker"},
             "server-host": {"provider": "cloudflare-free", "accountReference": "ourpoker-cloudflare-account", "allowedOrigins": "http://localhost:5173", "roomPrefix": "ourpoker-"},
-            "video-calls": {"keyReference": KEY, "secretReference": SECRET},
+            "video-calls": {"keyReference": None, "secretReference": None},
             "theme": {"themeName": "night"}, "card-graphics": {"backStyle": "stripes"}, "translations": {"languages": "en fr de es"},
             "seating": {"maximumPlayers": 9}, "holdem-rules": {"seats": 9}, "chip-ledger": {"seats": 9}, "room-directory": {"roomCapacity": 9},
             "tournament": {"startingStack": 5000, "rebuyStack": 5000, "rebuysPerPlayer": 1}, "level-schedule": {"levelSeconds": 600},
@@ -109,7 +113,7 @@ EXPECTED = {
         selections={"server": "cloudflare-free", "realtime": "free"}),
     "browser-only-no-extras": dict(
         out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
-        settings={"ourapps-release": {"targets": "web", "webDeploy": WEB_DEPLOY}, "tournament": {"rebuysPerPlayer": 0}, "application": {"computerPlayers": "none", "rebuysPerPlayer": 0}},
+        settings={"ourapps-release": {"targets": "web", "webDeploy": None}, "tournament": {"rebuysPerPlayer": 0}, "application": {"computerPlayers": "none", "rebuysPerPlayer": 0}},
         selections={"server": "cloudflare-free", "realtime": "free"}),
     "large-paid-host": dict(
         out={"store-update"},
@@ -125,18 +129,25 @@ EXPECTED = {
         out={"apple-host", "android-host", "store-update", "video-calls", "guided-tour"},
         settings={
             "web-host": {"webAddress": "https://clinic.example"}, "server-host": {"provider": "own-hardware", "accountReference": "none", "allowedOrigins": "https://clinic.example"},
-            "translations": {"languages": "en es"}, "ourapps-release": {"targets": "web windows", "webDeploy": WEB_DEPLOY},
+            "translations": {"languages": "en es"}, "ourapps-release": {"targets": "web windows", "webDeploy": None},
         },
         selections={"server": "own-hardware", "realtime": "own-hardware"}),
     "no-computers": dict(
         out={"apple-host", "windows-desktop", "store-update"},
-        settings={"application": {"computerPlayers": "none"}, "ourapps-release": {"targets": "web android", "androidSigning": ANDROID, "webDeploy": WEB_DEPLOY}},
+        settings={"application": {"computerPlayers": "none"}, "ourapps-release": {"targets": "web android", "androidSigning": None, "webDeploy": None}},
         selections={"server": "cloudflare-free", "realtime": "free", "video": "free"}),
 }
+# The dry run's answers: nothing but devices, size, language, video and server; no reference is asked.
+EXPECTED["local-web"] = dict(
+    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls"},
+    settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en"},
+              "ourapps-release": {"targets": "web", "webDeploy": None, "storeCredentials": None},
+              "application": {"inviteAddress": "http://localhost:5173", "serverAddress": "http://localhost:8788"}},
+    selections={"server": "own-hardware", "realtime": "own-hardware"})
 EXPECTED["web-own-hardware"] = dict(
     out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
     settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en fr"},
-              "application": {"computerPlayers": "none", "serverAddress": "http://localhost:8788"}, "ourapps-release": {"targets": "web", "webDeploy": WEB_DEPLOY}},
+              "application": {"computerPlayers": "none", "serverAddress": "http://localhost:8788"}, "ourapps-release": {"targets": "web", "webDeploy": None}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
 # Phones and television with video and updates but no lessons: guided-tour's native files are replaced by stand-ins.
 EXPECTED["native-no-lessons"] = dict(
@@ -303,8 +314,8 @@ def all_answers():
     options = RECIPE["questions"][0]["options"]
     for size in range(1, len(options) + 1):  # no devices at all is an invalid answer (test_invalid_answers)
         for targets in itertools.combinations(options, size):
-            for video, lessons, updates, computers, server, scale in itertools.product((True, False), (True, False), (True, False), ("none", "on-request", "fill-empty"), ("cloudflare", "own-hardware"), ("small", "medium", "large")):
-                yield {**refs, "targets": list(targets), "video": video, "lessons": lessons, "updates": updates, "computerPlayers": computers, "server": server, "scale": scale}
+            for video, lessons, updates, publish, computers, server, scale in itertools.product((True, False), (True, False), (True, False), (True, False), ("none", "on-request", "fill-empty"), ("cloudflare", "own-hardware"), ("small", "medium", "large")):
+                yield {**refs, "targets": list(targets), "video": video, "lessons": lessons, "updates": updates, "publish": publish, "computerPlayers": computers, "server": server, "scale": scale}
 
 
 class EveryAnswer(unittest.TestCase):
@@ -318,7 +329,7 @@ class EveryAnswer(unittest.TestCase):
                 bad.append((answers["targets"], answers["video"], answers["computerPlayers"], result["errors"][:2]))
             elif required_but_unconnected(result["design"]):
                 bad.append((answers, required_but_unconnected(result["design"])))
-        self.assertEqual(count, 63 * 2 * 2 * 2 * 3 * 2 * 3)
+        self.assertEqual(count, 63 * 2 * 2 * 2 * 2 * 3 * 2 * 3)
         self.assertEqual(bad[:3], [])
 
     def test_inclusion_follows_the_conditions_for_every_answer_set(self):
@@ -376,11 +387,11 @@ class Rules(unittest.TestCase):
         return next(q for q in recipe["questions"] if q["id"] == qid)
 
     def test_unanswered(self):
-        answers = {k: v for k, v in SETS["default"].items() if k not in ("server", "storeCredentials")}
+        answers = {k: v for k, v in PUBLISHED.items() if k not in ("server", "storeCredentials")}
         self.assertEqual(codes(E.evaluate(WORLD, answers)), {("unanswered", "answers.server"), ("unanswered", "answers.storeCredentials")})
 
     def test_invalid_answers(self):
-        base = SETS["default"]
+        base = PUBLISHED
         for change, path in (({"players": 10}, "answers.players"), ({"players": True}, "answers.players"), ({"targets": ["web", "fax"]}, "answers.targets"), ({"targets": []}, "answers.targets"),
                              ({"look": "neon"}, "answers.look"), ({"video": "yes"}, "answers.video"), ({"videoKey": "bad key!"}, "answers.videoKey"),
                              ({"hostingAccount": "Bad_Name"}, "answers.hostingAccount"), ({"webAddress": "not an address"}, "answers.webAddress"),
@@ -396,7 +407,7 @@ class Rules(unittest.TestCase):
         # a question that is asked but unanswered takes its default; an asked reference without an answer is an error
         asked = evaluated({k: v for k, v in SETS["default"].items() if k != "webAddress"})
         self.assertEqual(settings_of(asked)["web-host"]["webAddress"], "http://localhost:5173")
-        self.assertIn(("unanswered", "answers.videoKey"), codes(E.evaluate(WORLD, {k: v for k, v in SETS["default"].items() if k != "videoKey"})))
+        self.assertIn(("unanswered", "answers.videoKey"), codes(E.evaluate(WORLD, {k: v for k, v in PUBLISHED.items() if k != "videoKey"})))
 
     def test_conditions(self):
         def with_condition(condition):
@@ -444,7 +455,7 @@ class Rules(unittest.TestCase):
                 "card-graphics.cornerStyle": "square",
             }})
         world = self.mutate(change)
-        small = settings_of(evaluated(SETS["default"], world))
+        small = settings_of(evaluated(PUBLISHED, world))
         self.assertEqual([small["room-directory"]["maxConnections"], small["server-host"]["roomPrefix"], small["card-graphics"]["cardWidth"], small["card-graphics"]["cornerStyle"]], [10, "night-room-", 60, "square"])
         self.assertEqual(settings_of(evaluated({**SETS["default"], "scale": "large", "look": "lounge"}, world))["room-directory"]["maxConnections"], 1000)
         self.assertEqual(small["card-graphics"]["backStyle"], "stripes", "map")
@@ -543,16 +554,25 @@ class Rules(unittest.TestCase):
         self.assertIn("turn-engine.computer-players", open_ports)
         self.assertTrue({"computer-players", "poker-strategy"} <= ids_of(evaluated({**SETS["default"], "computerPlayers": "fill-empty"})))
 
-    def test_store_credentials_are_asked_only_for_updates_or_an_iphone_target(self):
+    def test_store_credentials_are_asked_only_when_published_for_updates_or_an_iphone_target(self):
         def release(**changes):
-            return evaluated({**SETS["default"], **changes})
+            return evaluated({**PUBLISHED, **changes})
         web_only = release(targets=["web"])
         self.assertNotIn("storeCredentials", web_only["answers"])
         self.assertNotIn("storeCredentials", settings_of(web_only)["ourapps-release"])
         self.assertEqual(settings_of(release(targets=["web"], updates=True, storeInvitation=INVITATION))["ourapps-release"]["storeCredentials"], STORE)
         self.assertEqual(settings_of(release(targets=["ios"]))["ourapps-release"]["storeCredentials"], STORE)
         self.assertNotIn("storeCredentials", settings_of(release(targets=["android", "macos", "tvos"]))["ourapps-release"])
-        self.assertIn(("unanswered", "answers.storeCredentials"), codes(E.evaluate(WORLD, {k: v for k, v in SETS["default"].items() if k != "storeCredentials"})))
+        self.assertIn(("unanswered", "answers.storeCredentials"), codes(E.evaluate(WORLD, {k: v for k, v in PUBLISHED.items() if k != "storeCredentials"})))
+
+    def test_a_local_design_asks_for_no_signing_or_deployment_reference(self):
+        local = evaluated({"targets": ["web", "ios", "android"], "server": "own-hardware", "video": True, "updates": True})
+        for question in ("webDeploy", "androidSigning", "storeCredentials", "videoKey", "videoSecret", "hostingAccount"):
+            self.assertNotIn(question, local["answers"])
+        self.assertEqual({k: v for k, v in settings_of(local)["ourapps-release"].items() if k in ("storeCredentials", "androidSigning", "webDeploy")}, {})
+        self.assertNotIn("keyReference", settings_of(local)["video-calls"])
+        # a Cloudflare server needs its account reference whether or not builds are published
+        self.assertEqual(codes(E.evaluate(WORLD, {"targets": ["web"], "server": "cloudflare"})), {("unanswered", "answers.hostingAccount")})
 
     def test_the_devices_answer_goes_to_apple_host_whole(self):
         self.assertEqual(settings_of(evaluated({**SETS["default"], "targets": ["macos", "android", "web"]}))["apple-host"]["targets"], "web android macos")
@@ -594,7 +614,7 @@ class CelParity(unittest.TestCase):
 
     def test_the_python_evaluator_and_bufbuild_cel_agree(self):
         conditions = conditions_of(RECIPE)
-        self.assertEqual(len(conditions), 11, "distinct conditions of the recipe")
+        self.assertEqual(len(conditions), 14, "distinct conditions of the recipe")
         expressions = conditions + SAMPLES
         answer_sets = list(SETS.values()) + list(all_answers())
         lines = [{"kinds": KINDS, "bindings": E.bindings(WORLD, answers), "expressions": expressions} for answers in answer_sets]
@@ -609,8 +629,8 @@ class CelParity(unittest.TestCase):
                 if ours != result:
                     differ.append((expression, line["bindings"], ours, result))
         self.assertEqual(differ[:3], [])
-        self.assertEqual(compared, (len(SETS) + 63 * 2 * 2 * 2 * 3 * 2 * 3) * len(expressions))
-        self.assertEqual(compared, 9085 * 44)
+        self.assertEqual(compared, (len(SETS) + 63 * 2 * 2 * 2 * 2 * 3 * 2 * 3) * len(expressions))
+        self.assertEqual(compared, (len(SETS) + 63 * 2 * 2 * 2 * 2 * 3 * 2 * 3) * len(expressions))
 
     def test_each_condition_takes_both_values_over_the_combinations(self):
         lines = [E.bindings(WORLD, answers) for answers in all_answers()]

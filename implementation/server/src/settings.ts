@@ -8,7 +8,7 @@ export const settings = {
   nativeOrigin: "{{scheme}}://app",
   roomPrefix: "{{roomPrefix}}",
   updatesEnabled: {{updatesEnabled}} as boolean,
-  // The store invitation used when the room service has none of its own (env INVITE_URL).
+  // The store invitation used when the room service has none of its own (env INVITE_URL); offered only when it is one.
   inviteAddress: "{{inviteAddress}}",
   // The answers that change the house rules (see rules.ts).
   maximumPlayers: {{maximumPlayers}},

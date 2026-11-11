@@ -57,7 +57,6 @@
     <string name="select_room">Wähle einen Raum zum Spielen, dann tritt ein</string>
     <string name="how_to_play">Spielregeln</string>
     <string name="start_game">Spiel starten</string>
-    <string name="need_two">Zwei Spieler werden gebraucht</string>
     <string name="add_computer">Computerspieler hinzufügen</string>
     <string name="remove">Entfernen</string>
     <string name="computer">Computerspieler</string>
@@ -76,6 +75,8 @@
     <string name="table_reset">Dein Platz ist weg. Der Tisch wurde zurückgesetzt oder du warst zu lange fort.</string>
     <string name="network_error">Server nicht erreichbar.</string>
     <string name="err_badName">Der Name muss 1 bis 20 einfache Zeichen haben und frei sein.</string>
+    <string name="err_nameTaken">Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen Namen.</string>
+    <string name="room_name_taken">Dein Name wird an diesem Tisch schon verwendet</string>
     <string name="err_roomFull">Der Raum ist voll.</string>
     <string name="err_staleVersion">Der Tisch hat sich geändert.</string>
     <string name="err_notYourTurn">Du bist nicht dran.</string>
@@ -138,7 +139,8 @@
     <string name="history">Hände</string>
     <string name="voided">annulliert</string>
     <string name="p_watching">Du schaust an diesem Tisch zu.</string>
-    <string name="p_lobbyWaiting">Warten auf Spieler: %1$s nötig.</string>
+    <string name="p_lobbyWaiting">Warten auf %1$s weitere Spieler.</string>
+    <string name="p_lobbyWaitingOne">Warten auf %1$s weiteren Spieler.</string>
     <string name="p_lobbyReady">Jeder kann das Spiel starten.</string>
     <string name="p_champion">%1$s gewinnt das Turnier.</string>
     <string name="p_completedTie">Das Turnier ist vorbei.</string>

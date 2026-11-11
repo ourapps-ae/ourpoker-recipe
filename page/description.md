@@ -1,6 +1,6 @@
 # OurPoker
 
-A complete Texas hold'em game for two to nine players at one table. People play on phones, tablets, computers or the web; a television or any shared screen shows the public table; players can see and hear each other by video; computer players can fill empty seats; play has decision clocks, rising blinds and rebuys; and the game speaks English, French, German and Spanish.
+A complete Texas hold'em game with two tables of two to nine players each. People play on phones, tablets, computers or the web; a television or any shared screen shows the public table; players can see and hear each other by video; computer players can fill empty seats; play has decision clocks, rising blinds and rebuys; and the game speaks English, French, German and Spanish.
 
 ## Who it is for
 
@@ -16,13 +16,13 @@ Two to nine players at a table, 5,000 chips each, blind levels of 10 minutes tha
 
 ## The questions
 
-An agent answers them from your description and asks you only what it cannot infer; the server location is always asked. Fourteen are the main questions; ten follow-ups, most asked only when they apply (a web address, a bundle identifier, the video service address and the references to your video, hosting, store, Android and web deployment secrets, the store invitation).
+An agent answers them from your description and asks you only what it cannot infer; the server location is always asked. Fourteen are the main questions; twelve follow-ups, most asked only when they apply (a web address, a bundle identifier, the server address after the first deploy, whether builds are published, the video service address, the store invitation, and the references to your hosting account and, only when publishing, your video, store, Android and web deployment secrets). Building and running it on your own machine needs no secret at all.
 
 1. Which devices? (any of web, ios, android, macos, windows, tvos)
 2. How many people, and how often? (small, medium, large)
 3. Which languages? (en, fr, de, es)
 4. Which look? (night, lounge)
-5. How many players per table? (2 to 9)
+5. How many players per table? (2 to 9; a larger group splits across the two tables)
 6. Starting chips? (5,000)
 7. How long is each blind level? (600 seconds)
 8. How many rebuys? (1, until level 3)
@@ -45,7 +45,7 @@ An agent answers them from your description and asks you only what it cannot inf
 - A Cloudflare account, or a machine of your own, for the server.
 - An Apple developer membership for iPhone, iPad, Mac and Apple TV builds.
 - A LiveKit Cloud account if video is on.
-- Signing and deployment keys for the targets you enable.
+- Signing and deployment keys for the targets you publish.
 
 Secrets are given by reference only; no key is written into the recipe, the answers or the application.
 
@@ -53,10 +53,20 @@ Secrets are given by reference only; no key is written into the recipe, the answ
 
 39 components in five groups (delivery and hosts; rooms, people and sessions; turn-based game framework; poker; interface and presentation) plus the recipe's own application-specific component: screen flow, artwork, text in four languages, lessons and end-to-end tests. Thirty-five of the 39 have nothing to do with poker. The diagram names every component, grouped, with the connections of the default design; store-update is dashed because it is present only when updates is yes.
 
+## Building it
+
+With aepm and the published catalogue: `aepm fetch ourpoker@0.4.1 --with-dependencies --store STORE`, then read the recipe's INSTRUCTIONS.md from the fetched archive:
+
+```
+python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e in json.load(open(s+"/catalogue.json"))["entries"] if e["name"]=="ourapps-ae/ourpoker" and e["version"]==v); sys.stdout.write(tarfile.open(f"{s}/objects/{d}.tar").extractfile("INSTRUCTIONS.md").read().decode())' STORE 0.4.1 > INSTRUCTIONS.md
+```
+
+It takes you through `aepm questions`, `aepm design`, `aepm resolve` and `aepm install`, then the build and run commands for each device.
+
 ## Tested answer sets
 
-The default answers, `book-club`, `poker-league`, `company-event`, `company-event-hosted`, `tv-only`, `browser-only-no-extras`, `large-paid-host`, `clinic` and `no-computers`; every combination of devices, video, lessons, updates, computer players, server and scale is checked to give a complete design.
+The default answers, `book-club`, `poker-league`, `company-event`, `company-event-hosted`, `tv-only`, `browser-only-no-extras`, `large-paid-host`, `clinic`, `no-computers`, `web-own-hardware`, `native-no-lessons`, `local-web` and `windows-only`; every combination of devices, video, lessons, updates, publishing, computer players, server and scale is checked to give a complete design.
 
 ## Status
 
-Version 0.4.1 is a draft. The components are built and their interfaces match; the recipe has not been assembled or run, because the assembler (`aepm create`) is not yet available. The files of the application that import an optional component are installed only with it; the application's core imports some of them, so designs without video, lessons, updates or web are not buildable. The open items are in `INTEGRATION-GAPS.md`.
+Version 0.4.1. Installed with `aepm install` from signed packages and built and run: the default answers, `browser-only-no-extras`, `book-club`, `local-web` (web and a Node server, English, no video), `native-no-lessons`, `clinic` and `windows-only`. For each, the server and web code type-check, the server tests pass, the server runs on Node, and the web client loads in a browser, seats a player and deals a hand. The iPhone, iPad and Apple TV apps build for their simulators. Not run: Android builds (no Android SDK where the recipe is maintained; the Kotlin is type-checked in part), Windows packaging (needs Windows) and deploying to Cloudflare (needs an account). The open items are in `INTEGRATION-GAPS.md`.

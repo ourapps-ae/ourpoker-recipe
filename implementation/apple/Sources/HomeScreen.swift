@@ -114,10 +114,13 @@ private struct EnterButton: View {
 
     var body: some View {
         let inGame = room.map { !roomOpenStatuses.contains($0.status) } ?? false
-        let seated = room.map { $0.names.contains(model.name) } ?? false
-        let full = room.map { $0.playerCount >= 9 && !seated && !inGame } ?? false
+        // A seat goes back only to the device holding its token for that room.
+        let named = room.map { $0.names.contains(model.name) } ?? false
+        let seated = named && model.token != nil && model.roomId == room?.id
         let board = Platform.uprightBoard && model.entryMode == .board
-        let label = L(board ? "join_as_viewer" : seated ? "room_rejoin" : full ? "room_full" : inGame ? "room_watch" : "room_join")
+        let taken = named && !seated && !board
+        let full = room.map { ($0.playerCount >= 9 || taken) && !seated && !inGame } ?? false
+        let label = L(board ? "join_as_viewer" : seated ? "room_rejoin" : taken ? "room_name_taken" : full ? "room_full" : inGame ? "room_watch" : "room_join")
         if model.busy {
             ProgressView().frame(width: 40, height: 40)
         } else {

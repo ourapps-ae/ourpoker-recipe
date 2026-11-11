@@ -57,7 +57,6 @@
     <string name="select_room">Select a room to play in, then enter</string>
     <string name="how_to_play">How to play</string>
     <string name="start_game">Start the game</string>
-    <string name="need_two">Two players are needed</string>
     <string name="add_computer">Add a computer player</string>
     <string name="remove">Remove</string>
     <string name="computer">Computer player</string>
@@ -76,6 +75,8 @@
     <string name="table_reset">Your seat is gone. The table was reset or you were away too long.</string>
     <string name="network_error">Cannot reach the server.</string>
     <string name="err_badName">Name must be 1 to 20 plain characters and not already taken.</string>
+    <string name="err_nameTaken">That name is in use at this table. Choose another name.</string>
+    <string name="room_name_taken">Your name is in use at this table</string>
     <string name="err_roomFull">The room is full.</string>
     <string name="err_staleVersion">The table has changed.</string>
     <string name="err_notYourTurn">It is not your turn.</string>
@@ -138,7 +139,8 @@
     <string name="history">Hands</string>
     <string name="voided">voided</string>
     <string name="p_watching">You are watching this table.</string>
-    <string name="p_lobbyWaiting">Waiting for players: %1$s needed.</string>
+    <string name="p_lobbyWaiting">Waiting for %1$s more players.</string>
+    <string name="p_lobbyWaitingOne">Waiting for %1$s more player.</string>
     <string name="p_lobbyReady">Anyone can start the game.</string>
     <string name="p_champion">%1$s wins the tournament.</string>
     <string name="p_completedTie">The tournament is over.</string>

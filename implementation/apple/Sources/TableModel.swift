@@ -193,6 +193,8 @@ final class TableModel {
 
     func join(roomId id: String) {
         guard !name.isEmpty else { editingName = true; return }
+        // The seat token kept for this room, before signing out forgets it: the only way back to a seat.
+        let held = roomId == id ? token : nil
         signOut()
         entryMode = .player
         let generation = sessionGeneration
@@ -201,7 +203,7 @@ final class TableModel {
         error = nil
         Task {
             do {
-                let r = try await client.join(roomId: id, name: name)
+                let r = try await client.join(roomId: id, name: name, token: held)
                 guard generation == sessionGeneration else { return }
                 UserDefaults.standard.set(r.token, forKey: "token")
                 UserDefaults.standard.set(id, forKey: "roomId")
@@ -425,7 +427,7 @@ final class TableModel {
             defer { if generation == sessionGeneration { rejoining = false } }
             for attempt in 0..<5 {
                 do {
-                    let r = try await client.join(roomId: id, name: name)
+                    let r = try await client.join(roomId: id, name: name, token: token)
                     guard generation == sessionGeneration, !display else { return }
                     UserDefaults.standard.set(r.token, forKey: "token")
                     token = r.token

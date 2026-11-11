@@ -15,10 +15,10 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 1 | `targets` | set of `web ios android macos windows tvos` | always | all six | "phones" is ios and android; "television" is tvos; "computers" is macos and windows; "browser" is web | no device is named |
 | 2 | `webAddress` | text, an https address, or `http://localhost` with a port | `'web' in targets` | `http://localhost:5173` | the developer's own address | the web version is to be served somewhere other than this machine (the server refuses a plain http origin other than localhost) |
 | 3 | `bundleId` | text, for example `com.yourname.poker` | always | empty: the application derives `app.ourapps.ourpoker` | a name the developer gives | never |
-| 4 | `scale` | `small` `medium` `large` | always | small | a dozen friends once a week is small; a club or a few dozen playing daily is medium; 100 or more playing continuously is large | the group size is not stated |
+| 4 | `scale` | `small` `medium` `large` | always | small | the people using it, not the seats at one table: a dozen friends once a week is small; a club or a few dozen playing daily is medium; 100 or more playing continuously is large | the group size is not stated |
 | 5 | `languages` | set of `en fr de es` | always | all four | the languages named | never |
 | 6 | `look` | `night` `lounge` | always | night | dark or warm style words | never |
-| 7 | `players` | integer 2 to 9 | always | 9 | the largest group at one table | never |
+| 7 | `players` | integer 2 to 9 | always | 9 | seats at one table; the game has two tables (rooms Casino and Home, both in the room list), so a larger group splits across them: about a dozen is 9 (or 6 for two even tables); once a game runs, newcomers watch | never |
 | 8 | `startingChips` | integer 100 to 1000000 | always | 5000 | the number named | never |
 | 9 | `levelSeconds` | integer 60 to 3600 | always | 600 | minutes converted to seconds | never |
 | 10 | `rebuys` | integer 0 to 5 | always | 1 (until level 3) | "no rebuys" is 0 | never |
@@ -26,17 +26,18 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 12 | `computerPlayers` | `none` `on-request` `fill-empty` | always | on-request | "people only" is none; "full tables" is fill-empty | never |
 | 13 | `video` | yes or no | always | yes | "no video", or everyone in one room, is no | never |
 | 14 | `videoServiceUrl` | text, an address (empty to set it later) | `video` | empty | the developer's LiveKit address | video is on |
-| 15 | `videoKey` | secret reference name | `video` | none | never a value | video is on |
-| 16 | `videoSecret` | secret reference name | `video` | none | never a value | video is on |
+| 15 | `videoKey` | secret reference name | `video && publish` | none | never a value | video is on and builds are published (locally the server reads `LIVEKIT_*` from its environment) |
+| 16 | `videoSecret` | secret reference name | `video && publish` | none | never a value | video is on and builds are published |
 | 17 | `lessons` | yes or no | always | yes | "everyone already knows the game" is no | never |
 | 18 | `server` | `cloudflare` `own-hardware` | always | none | nothing: ask | always, unless the person already named the provider |
-| 19 | `hostingAccount` | secret reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | a hosting provider is chosen |
+| 19 | `hostingAccount` | secret reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | the server runs on Cloudflare (a Cloudflare server needs it to start and to deploy) |
 | 20 | `serverAddress` | text, an http or https address | always | `http://localhost:8788` | the deployed server's address, once known | after the first deploy (see "Two-step deploy") |
 | 21 | `updates` | yes or no | always | no | updates or keeping apps current is yes | never |
-| 22 | `storeInvitation` | text, an address (empty to set it later) | `updates` | empty | the developer's ourapps.app invitation | updates are on |
-| 23 | `storeCredentials` | secret reference name | `updates \|\| 'ios' in targets` | none | never a value | updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
-| 24 | `androidSigning` | secret reference name | `'android' in targets` | none | never a value | Android is a target |
-| 25 | `webDeploy` | secret reference name | `'web' in targets` | none | never a value | the web is a target |
+| 22 | `publish` | yes or no | always | no | yes only when the request is to publish builds (web hosting, app stores, updates) | the request asks for publishing |
+| 23 | `storeInvitation` | text, an address (empty to set it later) | `updates` | empty | the developer's ourapps.app invitation | updates are on |
+| 24 | `storeCredentials` | secret reference name | `publish && (updates \|\| 'ios' in targets)` | none | never a value | builds are published and updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
+| 25 | `androidSigning` | secret reference name | `publish && 'android' in targets` | none | never a value | builds are published and Android is a target |
+| 26 | `webDeploy` | secret reference name | `publish && 'web' in targets` | none | never a value | builds are published and the web is a target |
 
 ### What each answer changes
 
@@ -60,7 +61,8 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `lessons` yes | `guided-tour` | none |
 | `server` | none | none directly: it restricts the `server` and `realtime` jobs (see "Scale and profiles"); `hostingAccount` sets `server-host.accountReference` |
 | `serverAddress` | none | `application.serverAddress`: the address the web, Apple, Android and Windows clients call |
-| `updates` yes | `store-update` | `application.updatesEnabled`; `storeInvitation` sets `store-update.inviteAddress` and `application.inviteAddress` |
+| `updates` yes | `store-update` | `application.updatesEnabled`; `storeInvitation` sets `store-update.inviteAddress` and `application.inviteAddress` (until it is answered, `application.inviteAddress` is the local web address, which is no invitation and is never offered) |
+| `publish` | none | none directly: it decides whether the signing and deployment references are asked |
 | `storeCredentials`, `androidSigning`, `webDeploy` | none | `ourapps-release.storeCredentials`, `.androidSigning`, `.webDeploy` |
 
 A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `web-host` is in when `'web' in targets || 'windows' in targets`; `apple-host` when `'ios' in targets || 'macos' in targets || 'tvos' in targets`. `computer-players` and `poker-strategy` are in when `computerPlayers != 'none'` (turn-engine's `computer-players` requirement is optional). The application's files that use an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it. Each optional module the rest of the application uses has a stand-in at the same destination marked `withoutComponent: "ourapps-ae/<name>"`, installed when the design leaves the component out, so every design installs one of the two and every client compiles: server `video.ts`, `update-links.ts`, `computers.ts`; web `video.ts`, `shell.ts`, `guide.ts`, `guide-style.ts`, `update.ts` and the web package files (which declare `livekit-client`); Apple `Video.swift`, `SeatScreen.swift`, `Lessons.swift`, `Updates.swift`; Android `Video.kt`, `ui/SeatScreen.kt`, `ui/Lessons.kt`, `Updates.kt`.
@@ -96,10 +98,10 @@ Supply each secret to the tool that runs the build as a named reference, never a
 | Needed when | Account | Question that names the reference | Notes |
 |---|---|---|---|
 | `server` = `cloudflare` | A Cloudflare account | `hostingAccount` (a slug) | `realtime-rooms` and `server-host` run on Workers with SQLite-backed Durable Objects |
-| `updates`, or an iPhone and iPad target | Apple developer membership (the one paid item delivery needs) | `storeCredentials` | signing and TestFlight upload through `ourapps-release` |
-| `android` | A signing key for the Android package | `androidSigning` | |
-| `web` | A hosting account for the web files | `webDeploy` | |
-| `video` yes | A LiveKit Cloud account | `videoKey`, `videoSecret` (the API key and secret); the service address is `videoServiceUrl` | the deployment resolves the references into `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET` |
+| `publish`, with `updates` or an iPhone and iPad target | Apple developer membership (the one paid item delivery needs) | `storeCredentials` | signing and TestFlight upload through `ourapps-release` |
+| `publish` with `android` | A signing key for the Android package | `androidSigning` | |
+| `publish` with `web` | A hosting account for the web files | `webDeploy` | |
+| `video` yes | A LiveKit Cloud account | `videoKey`, `videoSecret` when `publish` (the API key and secret); the service address is `videoServiceUrl` | the deployment resolves the references into `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`; a local run sets those three in the server's environment |
 | `server` = `own-hardware` | A machine that runs Node and a way to deploy to it | none | no account; server-host's `start.ts` runs the worker module on Node |
 
 ### Free tiers and limits (from each component's `suitability.json`, checked 2026-11-09)
@@ -121,11 +123,12 @@ AEPM="$PWD/aepm"
 aepm() { PYTHONPATH="$AEPM" python3 -B -m aepm "$@"; }
 ```
 
-STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder for downloaded packages, POLICY the owner's policy file, APP the application folder `aepm install` creates (it must not exist yet). `<version>` is the recipe version the catalogue lists (this file belongs to 0.4.0).
+STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder for downloaded packages, POLICY the owner's policy file, APP the application folder `aepm install` creates (it must not exist yet). `<version>` is the recipe version the catalogue lists (this file belongs to 0.4.1).
 
-1. Fetch the recipe and every component it names, with their release and guardian attestations:
+1. Fetch the recipe and every component it names, with their release and guardian attestations, then read these instructions from the recipe's archive:
    ```
    aepm fetch ourpoker@<version> --with-dependencies --store STORE
+   python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e in json.load(open(s+"/catalogue.json"))["entries"] if e["name"]=="ourapps-ae/ourpoker" and e["version"]==v); sys.stdout.write(tarfile.open(f"{s}/objects/{d}.tar").extractfile("INSTRUCTIONS.md").read().decode())' STORE <version> > INSTRUCTIONS.md
    ```
 2. Read the questions (id, wording, type, options or range, default, askWhen):
    ```
@@ -133,9 +136,9 @@ STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder 
    ```
 3. Answer them as part 1 says and write `answers.json`, an object from question id to answer, for example:
    ```
-   {"targets": ["web"], "server": "own-hardware", "languages": ["en", "fr"], "video": false, "lessons": false, "computerPlayers": "none", "webDeploy": "ourpoker/web-deploy"}
+   {"targets": ["web"], "server": "own-hardware", "languages": ["en"], "video": false}
    ```
-   Unanswered questions take their defaults. `server` has none, nor has any secret reference question whose condition holds (here `webDeploy`, a name in your secret store, never the secret): answer those.
+   Unanswered questions take their defaults; `server` has none and must be answered. Secret reference questions have no default and are asked only when their condition holds: `hostingAccount` for a Cloudflare server, the others only when `publish` is yes. Answer each with a name in your secret store, never the secret.
 4. Evaluate the design:
    ```
    aepm design ourpoker@<version> --store STORE --answers answers.json --out definition.json
@@ -290,25 +293,26 @@ PY authoring/draw_default_design.py
 - `tests/evaluate_recipe_test.py` runs aepm's evaluator (`aepm.recipe`, the same code as `aepm design`) on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code, and validates each design with aepm's definition validator. It evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination with aepm's CEL subset and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `OURAPPS`.
 - `tests/conditional_artefacts_test.py` and `authoring/check_conditional_artefacts.py` check, for every answer set, that the files aepm installs reach no component the design leaves out, that every stand-in replaces a marked module at its destination, and that every relative import of an installed file is installed.
 - `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
-- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `browser-only-no-extras`, `book-club`, `native-no-lessons`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome that the built web client loads, lists the rooms from the server and seats a player, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with Gradle where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm.
+- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `browser-only-no-extras`, `book-club`, `native-no-lessons`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with Gradle where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm.
 - `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. 
 
 ### What the test answer sets cover
 
 | id | what differs from the defaults | covers |
 |---|---|---|
-| `default` | nothing: all six devices, small, four languages, 9 players, 5,000 chips, 600 s levels, one rebuy, 30 s decisions, computer players on request, video, lessons, Cloudflare, no updates | every component but `store-update` |
-| `book-club` | `ios`, `android`, `tvos`; `en`, `fr`; no video; 3,000 chips; small | the worked example: `web-host`, `windows-desktop`, `video-calls` and `store-update` out; free tiers |
-| `poker-league` | medium; updates on, with an invitation and a web address | `store-update` in; medium load still on free tiers |
+| `default` | nothing: all six devices, small, four languages, 9 players, 5,000 chips, 600 s levels, one rebuy, 30 s decisions, computer players on request, video, lessons, Cloudflare, no updates, not published | every component but `store-update`; no signing or deployment reference |
+| `book-club` | `ios`, `android`, `tvos`; `en`, `fr`; no video; 3,000 chips; small; published | the worked example: `web-host`, `windows-desktop`, `video-calls` and `store-update` out; free tiers |
+| `poker-league` | medium; published; updates on, with an invitation and a web address | `store-update` in; medium load still on free tiers |
 | `company-event` | large; `own-hardware`; updates on | `own-hardware` server and realtime profiles; paid video |
-| `company-event-hosted` | large; Cloudflare; updates on | `cloudflare-paid`, realtime `paid`, video `paid`, with the Cloudflare account reference set |
+| `company-event-hosted` | large; Cloudflare; published; updates on | `cloudflare-paid`, realtime `paid`, video `paid`, with the Cloudflare account reference set |
 | `tv-only` | `tvos` only; `en`; no video; no lessons | a single client target; `apple-host` only |
 | `browser-only-no-extras` | `web` only; no rebuys; computer players none; no lessons, video or updates | the smallest design: every host but `web-host` out; computer players off |
-| `large-paid-host` | large; Cloudflare; lounge look; 6 players; 3 rebuys; fill-empty; a bundle id; a video service address | the scale choosing the paid host; answers that set several components |
+| `large-paid-host` | large; Cloudflare; published; lounge look; 6 players; 3 rebuys; fill-empty; a bundle id; a video service address | the scale choosing the paid host; answers that set several components |
 | `clinic` | `web` and `windows`; small; `own-hardware`; `en`, `es`; no video or lessons; an https web address | own hardware for a small group with desktop and web |
 | `no-computers` | `web` and `android`; computer players none | `computer-players.mode` none |
 | `web-own-hardware` | `web` only; `own-hardware`; `en`, `fr`; computer players none; no video or lessons | a web and Node server design with every optional module replaced by its stand-in |
 | `native-no-lessons` | `ios`, `android`, `tvos`; `en`, `fr`; no lessons; updates on, with an invitation | native clients with video and updates and the lessons' stand-ins |
+| `local-web` | only `targets` `web`, `scale` small, `languages` `en`, `video` no, `server` `own-hardware` | the shortest answers for a local web and Node design: no reference is asked |
 | `windows-only` | `windows` only; `own-hardware`; no video; a deployed server address | Windows alone keeps `web-host`, whose web project the Windows build packs |
 
-Other combinations of answers are allowed: `tests/evaluate_recipe_test.py` evaluates every combination of devices, video, lessons, updates, computer players, server and scale, and checks only that the design is complete (every non-optional requirement connected once), not what is built from it.
+Other combinations of answers are allowed: `tests/evaluate_recipe_test.py` evaluates every combination of devices, video, lessons, updates, publishing, computer players, server and scale, and checks only that the design is complete (every non-optional requirement connected once), not what is built from it.

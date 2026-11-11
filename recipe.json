@@ -528,7 +528,7 @@
     {
       "id": "scale",
       "ask": "How many people will use it, and how often?",
-      "askAgent": "Choose from the group size and rhythm described: a dozen friends meeting weekly is small; a club or a few dozen people playing daily is medium; 100 or more people playing continuously is large.",
+      "askAgent": "Choose from the number of people using it and how often, not the seats at one table: a dozen friends meeting weekly is small; a club or a few dozen people playing daily is medium; 100 or more people playing continuously is large.",
       "type": "choice",
       "options": [
         "small",
@@ -591,7 +591,7 @@
     {
       "id": "players",
       "ask": "What is the largest number of players at one table (2 to 9)?",
-      "askAgent": "Use the largest group that will sit together; keep 9 if unstated.",
+      "askAgent": "Seats at one table, not the group size. There are two tables (rooms Casino and Home, both in the room list), each up to this number, so a larger group splits across them: for about a dozen keep 9, or 6 for two even tables. Once a game runs, newcomers watch.",
       "type": "integer",
       "min": 2,
       "max": 9,
@@ -724,8 +724,8 @@
     {
       "id": "videoKey",
       "ask": "Under which name is the video service API key kept in your secret store?",
-      "askAgent": "Ask only when video is on; a reference name, never the key.",
-      "askWhen": "video",
+      "askAgent": "Ask only when video is on and builds are published; a reference name, never the key. Locally the server reads LIVEKIT_URL, LIVEKIT_API_KEY and LIVEKIT_API_SECRET from its environment instead.",
+      "askWhen": "video && publish",
       "type": "secretRef",
       "effects": [
         {
@@ -740,8 +740,8 @@
     {
       "id": "videoSecret",
       "ask": "Under which name is the video service API secret kept in your secret store?",
-      "askAgent": "Ask only when video is on; a reference name, never the secret.",
-      "askWhen": "video",
+      "askAgent": "Ask only when video is on and builds are published; a reference name, never the secret. Locally the server reads LIVEKIT_URL, LIVEKIT_API_KEY and LIVEKIT_API_SECRET from its environment instead.",
+      "askWhen": "video && publish",
       "type": "secretRef",
       "effects": [
         {
@@ -775,7 +775,7 @@
     {
       "id": "hostingAccount",
       "ask": "Under which name is your Cloudflare account kept in your secret store?",
-      "askAgent": "Ask only for a hosting provider; a reference name (lowercase letters, digits, hyphens), never the account key.",
+      "askAgent": "Ask only when the server runs on Cloudflare (the server needs it to start as a Cloudflare server and to deploy); a reference name (lowercase letters, digits, hyphens), never the account key.",
       "askWhen": "server == 'cloudflare'",
       "type": "secretRef",
       "effects": [
@@ -817,6 +817,14 @@
       ]
     },
     {
+      "id": "publish",
+      "ask": "Will builds be signed and published (web hosting, Android and Apple stores, updates through ourapps.app)?",
+      "askAgent": "No for building and running it locally or on the developer's own machine; yes only when the request is to publish. Every signing and deployment reference is asked only when this is yes.",
+      "type": "boolean",
+      "default": false,
+      "effects": []
+    },
+    {
       "id": "storeInvitation",
       "ask": "What is your ourapps.app store invitation link (leave empty to set it later)?",
       "askAgent": "Ask only when updates are on; the developer's own link, never invented.",
@@ -835,8 +843,8 @@
     {
       "id": "storeCredentials",
       "ask": "Under which name are your app store credentials kept in your secret store?",
-      "askAgent": "Ask only when updates are on or iPhone and iPad is a target (the release pipeline has no store call and no iOS job without it); a reference name, never the credentials.",
-      "askWhen": "updates || 'ios' in targets",
+      "askAgent": "Ask only when builds are published and updates are on or iPhone and iPad is a target (the release pipeline has no store call and no iOS job without it); a reference name, never the credentials.",
+      "askWhen": "publish && (updates || 'ios' in targets)",
       "type": "secretRef",
       "effects": [
         {
@@ -851,8 +859,8 @@
     {
       "id": "androidSigning",
       "ask": "Under which name is your Android signing key kept in your secret store?",
-      "askAgent": "Ask only when Android is a target; a reference name, never the key.",
-      "askWhen": "'android' in targets",
+      "askAgent": "Ask only when builds are published and Android is a target; a reference name, never the key.",
+      "askWhen": "publish && 'android' in targets",
       "type": "secretRef",
       "effects": [
         {
@@ -867,8 +875,8 @@
     {
       "id": "webDeploy",
       "ask": "Under which name is your web deployment key kept in your secret store?",
-      "askAgent": "Ask only when the web is a target; a reference name, never the key.",
-      "askWhen": "'web' in targets",
+      "askAgent": "Ask only when builds are published and the web is a target; a reference name, never the key.",
+      "askWhen": "publish && 'web' in targets",
       "type": "secretRef",
       "effects": [
         {
@@ -1561,6 +1569,7 @@
       "lessons": true,
       "server": "cloudflare",
       "updates": false,
+      "publish": false,
       "videoKey": "ourpoker/video-key",
       "videoSecret": "ourpoker/video-secret",
       "hostingAccount": "ourpoker-cloudflare-account",
@@ -1593,6 +1602,7 @@
           "lessons": true,
           "server": "cloudflare",
           "updates": false,
+          "publish": true,
           "hostingAccount": "ourpoker-cloudflare-account",
           "storeCredentials": "ourpoker/store-credentials",
           "androidSigning": "ourpoker/android-signing"
@@ -1627,6 +1637,7 @@
           "lessons": true,
           "server": "cloudflare",
           "updates": true,
+          "publish": true,
           "videoKey": "ourpoker/video-key",
           "videoSecret": "ourpoker/video-secret",
           "hostingAccount": "ourpoker-cloudflare-account",
@@ -1666,11 +1677,7 @@
           "lessons": true,
           "server": "own-hardware",
           "updates": true,
-          "videoKey": "ourpoker/video-key",
-          "videoSecret": "ourpoker/video-secret",
-          "storeCredentials": "ourpoker/store-credentials",
-          "androidSigning": "ourpoker/android-signing",
-          "webDeploy": "ourpoker/web-deploy",
+          "publish": false,
           "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567",
           "webAddress": "https://poker.acme.io"
         }
@@ -1704,6 +1711,7 @@
           "lessons": true,
           "server": "cloudflare",
           "updates": true,
+          "publish": true,
           "videoKey": "ourpoker/video-key",
           "videoSecret": "ourpoker/video-secret",
           "hostingAccount": "ourpoker-cloudflare-account",
@@ -1735,6 +1743,7 @@
           "lessons": false,
           "server": "cloudflare",
           "updates": false,
+          "publish": false,
           "hostingAccount": "ourpoker-cloudflare-account"
         }
       },
@@ -1762,8 +1771,8 @@
           "lessons": false,
           "server": "cloudflare",
           "updates": false,
-          "hostingAccount": "ourpoker-cloudflare-account",
-          "webDeploy": "ourpoker/web-deploy"
+          "publish": false,
+          "hostingAccount": "ourpoker-cloudflare-account"
         }
       },
       {
@@ -1795,6 +1804,7 @@
           "lessons": true,
           "server": "cloudflare",
           "updates": false,
+          "publish": true,
           "videoKey": "ourpoker/video-key",
           "videoSecret": "ourpoker/video-secret",
           "hostingAccount": "ourpoker-cloudflare-account",
@@ -1829,7 +1839,7 @@
           "lessons": false,
           "server": "own-hardware",
           "updates": false,
-          "webDeploy": "ourpoker/web-deploy",
+          "publish": false,
           "webAddress": "https://clinic.example"
         }
       },
@@ -1858,11 +1868,8 @@
           "lessons": true,
           "server": "cloudflare",
           "updates": false,
-          "videoKey": "ourpoker/video-key",
-          "videoSecret": "ourpoker/video-secret",
+          "publish": false,
           "hostingAccount": "ourpoker-cloudflare-account",
-          "androidSigning": "ourpoker/android-signing",
-          "webDeploy": "ourpoker/web-deploy",
           "webAddress": "https://poker.acme.io"
         }
       },
@@ -1888,7 +1895,7 @@
           "lessons": false,
           "server": "own-hardware",
           "updates": false,
-          "webDeploy": "ourpoker/web-deploy"
+          "publish": false
         }
       },
       {
@@ -1915,12 +1922,23 @@
           "lessons": false,
           "server": "cloudflare",
           "updates": true,
-          "videoKey": "ourpoker/video-key",
-          "videoSecret": "ourpoker/video-secret",
+          "publish": false,
           "hostingAccount": "ourpoker-cloudflare-account",
-          "storeCredentials": "ourpoker/store-credentials",
-          "androidSigning": "ourpoker/android-signing",
           "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567"
+        }
+      },
+      {
+        "id": "local-web",
+        "answers": {
+          "targets": [
+            "web"
+          ],
+          "scale": "small",
+          "languages": [
+            "en"
+          ],
+          "video": false,
+          "server": "own-hardware"
         }
       },
       {
@@ -1947,6 +1965,7 @@
           "lessons": true,
           "server": "own-hardware",
           "updates": false,
+          "publish": false,
           "serverAddress": "https://poker.clinic.example"
         }
       }

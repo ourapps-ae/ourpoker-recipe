@@ -277,7 +277,7 @@
       "type": "string",
       "required": true,
       "secret": false,
-      "default": "https://store.example/l/0123456789abcdef01234567"
+      "default": "http://localhost:5173"
     },
     {
       "id": "updatesEnabled",

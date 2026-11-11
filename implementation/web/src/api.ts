@@ -75,7 +75,8 @@ async function send<T>(path: string, init: RequestInit = {}, token?: string): Pr
 export const api = {
   display: (roomId: string) => send<DisplayResponse>(`/r/${roomId}/display`, { method: "POST", body: "{}" }),
   displayLeave: (roomId: string, token: string) => send<{ ok: boolean }>(`/r/${roomId}/display/leave`, { method: "POST", body: "{}" }, token),
-  join: (roomId: string, name: string) => send<JoinResponse>(`/r/${roomId}/join`, { method: "POST", body: JSON.stringify({ name }) }),
+  // `token`: the seat token this device holds for the room; a name in use is given back only with it.
+  join: (roomId: string, name: string, token?: string) => send<JoinResponse>(`/r/${roomId}/join`, { method: "POST", body: JSON.stringify({ name }) }, token),
   action: (roomId: string, token: string, expectedVersion: number, type: string, fields: Record<string, unknown> = {}, odds = false) =>
     send<View>(`/r/${roomId}/action`, { method: "POST", body: JSON.stringify({ type, expectedVersion, odds, ...fields }) }, token),
 };

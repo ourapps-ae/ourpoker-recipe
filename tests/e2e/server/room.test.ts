@@ -17,8 +17,8 @@ async function post(path: string, body: unknown, token?: string) {
   });
 }
 
-async function join(name: string): Promise<JoinResponse> {
-  const r = await post("/join", { name });
+async function join(name: string, token?: string): Promise<JoinResponse> {
+  const r = await post("/join", { name }, token);
   expect(r.status).toBe(200);
   return (await r.json()) as JoinResponse;
 }
@@ -125,11 +125,16 @@ describe("room", () => {
     expect((await SELF.fetch(BASE + "/state", { headers: { authorization: "Bearer nope" } })).status).toBe(401);
   });
 
-  it("re-issues the token on rejoin and makes late arrivals spectators", async () => {
+  it("gives a seat back only with its token, re-issues the token on return and makes late arrivals spectators", async () => {
     const a = await join("Ann");
     const b = await join("Bob");
     await ok(a.token, { type: "start" });
-    const again = await join("Bob");
+    // A fresh browser typing a seated name has no token: it is refused, and the seat stays with its holder.
+    const stranger = await post("/join", { name: "Bob" });
+    expect(stranger.status).toBe(409);
+    expect(((await stranger.json()) as { error: string }).error).toBe("nameTaken");
+    expect((await state(b.token)).you).toBe(b.playerId);
+    const again = await join("Bob", b.token);
     expect(again.playerId).toBe(b.playerId);
     expect(again.spectator).toBe(false);
     expect((await SELF.fetch(BASE + "/state", { headers: { authorization: `Bearer ${b.token}` } })).status).toBe(401);

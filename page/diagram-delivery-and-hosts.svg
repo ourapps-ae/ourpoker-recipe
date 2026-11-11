@@ -189,10 +189,10 @@
 <text xml:space="preserve" text-anchor="start" x="167.38" y="-1716.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Applicationid: ourpoker</text>
 <text xml:space="preserve" text-anchor="start" x="167.38" y="-1691.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Applicationname: OurPoker</text>
 <text xml:space="preserve" text-anchor="start" x="167.38" y="-1666.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Manifesturl: https://ourapps.app</text>
-<text xml:space="preserve" text-anchor="start" x="167.38" y="-1641.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Storecredentials: [secret reference]</text>
+<text xml:space="preserve" text-anchor="start" x="167.38" y="-1641.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Storecredentials: [not set]</text>
 <text xml:space="preserve" text-anchor="start" x="167.38" y="-1616.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Bundleidentifier: app.ourapps.ourpoker</text>
-<text xml:space="preserve" text-anchor="start" x="167.38" y="-1591.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Androidsigning: [secret reference]</text>
-<text xml:space="preserve" text-anchor="start" x="167.38" y="-1566.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Webdeploy: [secret reference]</text>
+<text xml:space="preserve" text-anchor="start" x="167.38" y="-1591.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Androidsigning: [not set]</text>
+<text xml:space="preserve" text-anchor="start" x="167.38" y="-1566.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Webdeploy: [not set]</text>
 <polygon fill="none" stroke="#6b7d95" points="159.38,-1555.5 159.38,-1918.25 394.38,-1918.25 394.38,-1555.5 159.38,-1555.5"/>
 </g>
 </g>

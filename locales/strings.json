@@ -1,10 +1,40 @@
 {
-  "camera_select": {"en": "Select camera", "fr": "Choisir la caméra", "de": "Kamera auswählen", "es": "Seleccionar cámara"},
-  "camera_automatic": {"en": "Automatic camera", "fr": "Caméra automatique", "de": "Automatische Kamera", "es": "Cámara automática"},
-  "camera_unavailable": {"en": "Camera unavailable. Check system permissions or choose another camera.", "fr": "Caméra indisponible. Vérifiez les autorisations système ou choisissez une autre caméra.", "de": "Kamera nicht verfügbar. Systemberechtigungen prüfen oder eine andere Kamera wählen.", "es": "Cámara no disponible. Revisa los permisos del sistema o elige otra cámara."},
-  "mode_player": {"en":"Player","fr":"Joueur","de":"Spieler","es":"Jugador"},
-  "mode_board": {"en":"Board","fr":"Tableau","de":"Tischanzeige","es":"Mesa"},
-  "zoom_cards": {"en":"View cards","fr":"Voir les cartes","de":"Karten ansehen","es":"Ver las cartas"},
+  "camera_select": {
+    "en": "Select camera",
+    "fr": "Choisir la caméra",
+    "de": "Kamera auswählen",
+    "es": "Seleccionar cámara"
+  },
+  "camera_automatic": {
+    "en": "Automatic camera",
+    "fr": "Caméra automatique",
+    "de": "Automatische Kamera",
+    "es": "Cámara automática"
+  },
+  "camera_unavailable": {
+    "en": "Camera unavailable. Check system permissions or choose another camera.",
+    "fr": "Caméra indisponible. Vérifiez les autorisations système ou choisissez une autre caméra.",
+    "de": "Kamera nicht verfügbar. Systemberechtigungen prüfen oder eine andere Kamera wählen.",
+    "es": "Cámara no disponible. Revisa los permisos del sistema o elige otra cámara."
+  },
+  "mode_player": {
+    "en": "Player",
+    "fr": "Joueur",
+    "de": "Spieler",
+    "es": "Jugador"
+  },
+  "mode_board": {
+    "en": "Board",
+    "fr": "Tableau",
+    "de": "Tischanzeige",
+    "es": "Mesa"
+  },
+  "zoom_cards": {
+    "en": "View cards",
+    "fr": "Voir les cartes",
+    "de": "Karten ansehen",
+    "es": "Ver las cartas"
+  },
   "tut_remote_cards": {
     "en": "Use the buttons to fold, check or call. Choose an amount, then confirm your bet. Select a card to reveal it when allowed.",
     "fr": "Utilisez les boutons pour vous coucher, checker ou suivre. Choisissez un montant, puis confirmez la mise. Sélectionnez une carte pour la montrer lorsque cela est permis.",
@@ -17,12 +47,42 @@
     "de": "Wähle Karten ansehen oder Auf dem Tisch, um Karten zu vergrößern. Wähle Fertig, um sie zu schließen.",
     "es": "Elige Ver las cartas o En la mesa para ampliar las cartas. Elige Listo para cerrarlas."
   },
-  "beginner_title": {"en":"Are you a beginner?","fr":"Vous débutez ?","de":"Bist du Anfänger?","es":"¿Eres principiante?"},
-  "beginner_yes": {"en":"Yes, show me how","fr":"Oui, expliquez-moi","de":"Ja, zeig es mir","es":"Sí, enséñame"},
-  "beginner_no": {"en":"No, I know how to play","fr":"Non, je sais jouer","de":"Nein, ich kenne das Spiel","es":"No, sé jugar"},
-  "move_fold": {"en":"Fold","fr":"Se coucher","de":"Passen","es":"Retirarse"},
-  "move_check": {"en":"Check","fr":"Parole","de":"Schieben","es":"Pasar"},
-  "move_raise": {"en":"Raise","fr":"Relancer","de":"Erhöhen","es":"Subir"},
+  "beginner_title": {
+    "en": "Are you a beginner?",
+    "fr": "Vous débutez ?",
+    "de": "Bist du Anfänger?",
+    "es": "¿Eres principiante?"
+  },
+  "beginner_yes": {
+    "en": "Yes, show me how",
+    "fr": "Oui, expliquez-moi",
+    "de": "Ja, zeig es mir",
+    "es": "Sí, enséñame"
+  },
+  "beginner_no": {
+    "en": "No, I know how to play",
+    "fr": "Non, je sais jouer",
+    "de": "Nein, ich kenne das Spiel",
+    "es": "No, sé jugar"
+  },
+  "move_fold": {
+    "en": "Fold",
+    "fr": "Se coucher",
+    "de": "Passen",
+    "es": "Retirarse"
+  },
+  "move_check": {
+    "en": "Check",
+    "fr": "Parole",
+    "de": "Schieben",
+    "es": "Pasar"
+  },
+  "move_raise": {
+    "en": "Raise",
+    "fr": "Relancer",
+    "de": "Erhöhen",
+    "es": "Subir"
+  },
   "app_name": {
     "en": "OurPoker",
     "fr": "OurPoker",
@@ -281,12 +341,6 @@
     "de": "Spiel starten",
     "es": "Empezar la partida"
   },
-  "need_two": {
-    "en": "Two players are needed",
-    "fr": "Il faut deux joueurs",
-    "de": "Zwei Spieler werden gebraucht",
-    "es": "Hacen falta dos jugadores"
-  },
   "add_computer": {
     "en": "Add a computer player",
     "fr": "Ajouter un joueur ordinateur",
@@ -394,6 +448,18 @@
     "fr": "Le nom doit comporter 1 à 20 caractères simples et ne pas être déjà pris.",
     "de": "Der Name muss 1 bis 20 einfache Zeichen haben und frei sein.",
     "es": "El nombre debe tener de 1 a 20 caracteres simples y no estar ya en uso."
+  },
+  "err_nameTaken": {
+    "en": "That name is in use at this table. Choose another name.",
+    "fr": "Ce nom est déjà utilisé à cette table. Choisissez-en un autre.",
+    "de": "Dieser Name wird an diesem Tisch schon verwendet. Wähle einen anderen Namen.",
+    "es": "Ese nombre ya se usa en esta mesa. Elige otro nombre."
+  },
+  "room_name_taken": {
+    "en": "Your name is in use at this table",
+    "fr": "Votre nom est déjà utilisé à cette table",
+    "de": "Dein Name wird an diesem Tisch schon verwendet",
+    "es": "Tu nombre ya se usa en esta mesa"
   },
   "err_roomFull": {
     "en": "The room is full.",
@@ -768,10 +834,16 @@
     "es": "Estás mirando esta mesa."
   },
   "p_lobbyWaiting": {
-    "en": "Waiting for players: {n} needed.",
-    "fr": "En attente de joueurs : {n} nécessaires.",
-    "de": "Warten auf Spieler: {n} nötig.",
-    "es": "Esperando jugadores: hacen falta {n}."
+    "en": "Waiting for {n} more players.",
+    "fr": "En attente de {n} joueurs de plus.",
+    "de": "Warten auf {n} weitere Spieler.",
+    "es": "Esperando a {n} jugadores más."
+  },
+  "p_lobbyWaitingOne": {
+    "en": "Waiting for {n} more player.",
+    "fr": "En attente d'{n} joueur de plus.",
+    "de": "Warten auf {n} weiteren Spieler.",
+    "es": "Esperando a {n} jugador más."
   },
   "p_lobbyReady": {
     "en": "Anyone can start the game.",

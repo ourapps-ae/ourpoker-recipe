@@ -2,9 +2,10 @@ import { updateUrlFor } from "../../components/store-update/server/store";
 import { settings } from "./settings";
 
 // The only server module that imports store-update: the manifest installs it only when the design includes that component.
+// Only an ourapps.app invitation link (one store-update can read releases from) is offered.
 export function updateLinks(inviteAddress: string | undefined, enabled = settings.updatesEnabled) {
-  const invitation = enabled ? inviteAddress : undefined;
-  return { inviteUrl: invitation ?? null, updateUrl: updateUrlFor(invitation) };
+  const updateUrl = enabled ? updateUrlFor(inviteAddress) : null;
+  return { inviteUrl: updateUrl ? inviteAddress! : null, updateUrl };
 }
 
 // `json` is realtime-rooms' response helper, passed in by index.ts.

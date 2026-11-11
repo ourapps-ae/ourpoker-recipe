@@ -1355,7 +1355,7 @@
           "type": "string",
           "required": true,
           "secret": false,
-          "default": "https://store.example/l/0123456789abcdef01234567"
+          "default": "http://localhost:5173"
         },
         {
           "id": "updatesEnabled",
@@ -1504,16 +1504,7 @@
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
         "bundleIdentifier": "app.ourapps.ourpoker",
-        "targets": "web ios android macos windows tvos",
-        "storeCredentials": {
-          "secretRef": "ourpoker/store-credentials"
-        },
-        "androidSigning": {
-          "secretRef": "ourpoker/android-signing"
-        },
-        "webDeploy": {
-          "secretRef": "ourpoker/web-deploy"
-        }
+        "targets": "web ios android macos windows tvos"
       }
     },
     {
@@ -1542,13 +1533,7 @@
       "name": "Video calls",
       "definition": "ourapps-ae.video-calls",
       "configuration": {
-        "enabled": true,
-        "keyReference": {
-          "secretRef": "ourpoker/video-key"
-        },
-        "secretReference": {
-          "secretRef": "ourpoker/video-secret"
-        }
+        "enabled": true
       }
     },
     {
@@ -1647,7 +1632,7 @@
         "serverAddress": "http://localhost:8788",
         "webAddress": "http://localhost:5173",
         "roomPrefix": "ourpoker-",
-        "inviteAddress": "https://store.example/l/0123456789abcdef01234567",
+        "inviteAddress": "http://localhost:5173",
         "updatesEnabled": false,
         "modeEvent": "ourpoker-mode",
         "signingEnvironmentPrefix": "OURPOKER",

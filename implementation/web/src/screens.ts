@@ -85,13 +85,17 @@ export function modeLabel(mode: State["mode"]) {
   return text === key ? (mode === "player" ? "Player" : "Board") : text;
 }
 
-// Enter the selected room: sit down, rejoin, or watch a game under way; a lock while it is full.
+// Enter the selected room: sit down, go back to this device's seat, or watch a game under way; a lock while it is full or
+// while the name is someone else's there (a seat goes back only to the device holding its token).
 function enterButton(store: Store, s: State, r: RoomInfo | null): HTMLElement {
   const inGame = r ? r.status !== "lobby" : false;
-  const seated = Boolean(r?.names.includes(s.name));
-  const full = s.mode === "player" && r ? !canTakeSeat(r.names, r.playerCount, MAX_SEATS, s.name, inGame) && !seated && !inGame : false;
-  const label = L(s.mode === "board" ? "join_as_viewer" : seated ? "room_rejoin" : full ? "room_full" : inGame ? "room_watch" : "room_join");
-  return h("button", { class: "icbtn gold", "data-guide": "roomJoin", title: label, "aria-label": label, disabled: !r || full || s.busy, onClick: () => { if (r) store.join(r.id); } }, icon(full ? "lock" : "login"));
+  const named = Boolean(r?.names.includes(s.name));
+  const mine = Boolean(r && store.seatToken(r.id));
+  const seated = named && mine;
+  const taken = s.mode === "player" && named && !mine;
+  const full = s.mode === "player" && r ? !canTakeSeat(r.names, r.playerCount, MAX_SEATS, seated ? s.name : "", inGame) && !seated && !inGame : false;
+  const label = L(s.mode === "board" ? "join_as_viewer" : seated ? "room_rejoin" : taken ? "room_name_taken" : full ? "room_full" : inGame ? "room_watch" : "room_join");
+  return h("button", { class: "icbtn gold", "data-guide": "roomJoin", title: label, "aria-label": label, disabled: !r || full || taken || s.busy, onClick: () => { if (r) store.join(r.id); } }, icon(full || taken ? "lock" : "login"));
 }
 
 // The language in use, opening the list of languages; a native list, laid invisibly over the pill.
@@ -122,7 +126,7 @@ export function lobbyScreen(store: Store, s: State, view: View, video: Video): H
       view.legal.leave ? h("button", { class: "icbtn ghost", "data-guide": "leave", title: L("leave"), "aria-label": L("leave"), disabled: s.busy, onClick: () => leave(store) }, backIcon()) : null,
       view.legal.addBot ? h("button", { class: "icbtn ghost", "data-guide": "addBot", title: L("add_computer"), "aria-label": L("add_computer"), disabled: s.busy, onClick: () => store.act("addBot") }, addBotIcon(22)) : null,
     ),
-    me && !me.isBot ? h("button", { class: `icbtn gold${view.legal.start && !s.busy ? " glow" : ""}`, "data-guide": "start", title: L(view.legal.start ? "start_game" : "need_two"), "aria-label": L("start_game"), disabled: !view.legal.start || s.busy, onClick: () => store.act("start") }, icon("play")) : h("span"),
+    me && !me.isBot ? h("button", { class: `icbtn gold${view.legal.start && !s.busy ? " glow" : ""}`, "data-guide": "start", title: view.legal.start ? L("start_game") : promptText(view), "aria-label": L("start_game"), disabled: !view.legal.start || s.busy, onClick: () => store.act("start") }, icon("play")) : h("span"),
   );
   return h("div", { style: { display: "flex", flexDirection: "column", gap: "10px" } },
     h("div", { class: "row", style: { padding: "0 4px", minHeight: "40px" } }, h("h2", {}, roomName(view.roomId))),

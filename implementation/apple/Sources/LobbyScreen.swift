@@ -25,7 +25,7 @@ struct LobbyScreen: View {
                             }
                             Spacer()
                             if let me, !me.isBot {
-                                RoundIconButton(label: L(view.legal.start ? "start_game" : "need_two"), enabled: view.legal.start && !busy, filled: true, glow: true, action: model.start) { fg in
+                                RoundIconButton(label: view.legal.start ? L("start_game") : promptText(view), enabled: view.legal.start && !busy, filled: true, glow: true, action: model.start) { fg in
                                     Image(systemName: "play.fill").foregroundStyle(fg)
                                 }
                                 .guideAnchor("start")

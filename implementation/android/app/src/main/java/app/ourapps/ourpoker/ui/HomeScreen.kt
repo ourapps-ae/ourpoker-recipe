@@ -171,13 +171,16 @@ private fun RoomRow(r: RoomInfo, selected: Boolean, first: Boolean, onSelect: ()
     }
 }
 
-// Enter the selected room: sit down, rejoin, or watch a game under way; a lock while it is full.
+// Enter the selected room: sit down, go back to this device's seat, or watch a game under way; a lock while it is full or
+// while the name is someone else's there (a seat goes back only to the device holding its token).
 @Composable
 private fun EnterButton(r: RoomInfo?, ui: UiState, onJoin: () -> Unit) {
     val inGame = r != null && r.status != Status.LOBBY && r.status != Status.UNKNOWN
-    val seated = r != null && ui.name in r.names
-    val full = r != null && r.playerCount >= 9 && !seated && !inGame
-    val label = L(if (seated) "room_rejoin" else if (full) "room_full" else if (inGame) "room_watch" else "room_join")
+    val named = r != null && ui.name in r.names
+    val seated = named && ui.token != null && ui.roomId == r?.id
+    val taken = named && !seated
+    val full = r != null && (r.playerCount >= 9 || taken) && !seated && !inGame
+    val label = L(if (seated) "room_rejoin" else if (taken) "room_name_taken" else if (full) "room_full" else if (inGame) "room_watch" else "room_join")
     if (ui.busy) CircularProgressIndicator(Modifier.size(40.dp).padding(8.dp))
     else RoundIconButton(if (full) Icons.Filled.Lock else Icons.AutoMirrored.Filled.Login, label, enabled = r != null && !full, filled = true, onClick = onJoin)
 }

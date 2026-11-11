@@ -244,8 +244,8 @@
 <text xml:space="preserve" text-anchor="start" x="199.12" y="-1074" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">provided output</text>
 <text xml:space="preserve" text-anchor="start" x="11.75" y="-1042.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Enabled: true</text>
 <text xml:space="preserve" text-anchor="start" x="11.75" y="-1017.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Serviceurl: [not set]</text>
-<text xml:space="preserve" text-anchor="start" x="11.75" y="-992.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Keyreference: [secret reference]</text>
-<text xml:space="preserve" text-anchor="start" x="11.75" y="-967.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Secretreference: [secret reference]</text>
+<text xml:space="preserve" text-anchor="start" x="11.75" y="-992.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Keyreference: [not set]</text>
+<text xml:space="preserve" text-anchor="start" x="11.75" y="-967.5" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#edf2fa">Secretreference: [not set]</text>
 <polygon fill="none" stroke="#6b7d95" points="3.75,-956.5 3.75,-1229.25 310.25,-1229.25 310.25,-956.5 3.75,-956.5"/>
 </g>
 <!-- n8 -->
