@@ -394,7 +394,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/realtime-rooms",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "ports": [
         {
           "id": "game",
@@ -763,7 +763,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/turn-engine",
-      "version": "0.5.2",
+      "version": "0.5.3",
       "ports": [
         {
           "id": "game-rules",
@@ -2030,7 +2030,7 @@
       "name": "OurPoker",
       "kind": "application",
       "status": "example",
-      "revision": "0.4.2",
+      "revision": "0.4.3",
       "ports": [
         {
           "id": "game-adapter",

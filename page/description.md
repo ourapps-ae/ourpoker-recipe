@@ -55,10 +55,10 @@ Secrets are given by reference only; no key is written into the recipe, the answ
 
 ## Building it
 
-With aepm and the published catalogue: `aepm fetch ourpoker@0.4.2 --with-dependencies --store STORE`, then read the recipe's INSTRUCTIONS.md from the fetched archive:
+With aepm and the published catalogue: `aepm fetch ourpoker@0.4.3 --with-dependencies --store STORE`, then read the recipe's INSTRUCTIONS.md from the fetched archive:
 
 ```
-python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e in json.load(open(s+"/catalogue.json"))["entries"] if e["name"]=="ourapps-ae/ourpoker" and e["version"]==v); sys.stdout.write(tarfile.open(f"{s}/objects/{d}.tar").extractfile("INSTRUCTIONS.md").read().decode())' STORE 0.4.2 > INSTRUCTIONS.md
+python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e in json.load(open(s+"/catalogue.json"))["entries"] if e["name"]=="ourapps-ae/ourpoker" and e["version"]==v); sys.stdout.write(tarfile.open(f"{s}/objects/{d}.tar").extractfile("INSTRUCTIONS.md").read().decode())' STORE 0.4.3 > INSTRUCTIONS.md
 ```
 
 It takes you through `aepm questions`, `aepm design`, `aepm resolve` and `aepm install`, then the build and run commands for each device.
@@ -69,4 +69,4 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.4.2. Installed with `aepm install` from signed packages and built and run: the default answers, `browser-only-no-extras`, `book-club`, `local-web` (web and a Node server, English, no video), `native-no-lessons`, `clinic` and `windows-only`. For each, the server and web code type-check, the server tests pass, the server runs on Node, and the web client loads in a browser, seats a player and deals a hand. The iPhone, iPad and Apple TV apps build for their simulators. Not run: Android builds (no Android SDK where the recipe is maintained; the Kotlin is type-checked in part), Windows packaging (needs Windows) and deploying to Cloudflare (needs an account). The open items are in `INTEGRATION-GAPS.md`.
+Version 0.4.3. Installed with `aepm install` from signed packages and built and run: the default answers, `browser-only-no-extras`, `book-club`, `local-web` (web and a Node server, English, no video), `native-no-lessons`, `clinic` and `windows-only`. For each, the server and web code type-check, the server tests pass, the server runs on Node, and the web client loads in a browser, seats a player and deals a hand. The iPhone, iPad and Apple TV apps build for their simulators. Not run: Android builds (no Android SDK where the recipe is maintained; the Kotlin is type-checked in part), Windows packaging (needs Windows) and deploying to Cloudflare (needs an account). The open items are in `INTEGRATION-GAPS.md`.

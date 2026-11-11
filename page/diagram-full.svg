@@ -51,7 +51,7 @@
 <text xml:space="preserve" text-anchor="start" x="3452.75" y="-3233.47" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="12.00" fill="#edf2fa">OurPoker</text>
 <text xml:space="preserve" text-anchor="start" x="3384.12" y="-3223.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Application&#45;owned code | Example definition</text>
 <text xml:space="preserve" text-anchor="start" x="3459.5" y="-3213.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">OurPoker</text>
-<text xml:space="preserve" text-anchor="start" x="3430.25" y="-3203.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example revision 0.4.2</text>
+<text xml:space="preserve" text-anchor="start" x="3430.25" y="-3203.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example revision 0.4.3</text>
 <text xml:space="preserve" text-anchor="start" x="3330" y="-3175.12" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">INPUTS</text>
 <text xml:space="preserve" text-anchor="start" x="3571.75" y="-3175.12" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">OUTPUTS</text>
 <polygon fill="#222b3a" stroke="none" points="3324,-3105.12 3324,-3165.12 3487.5,-3165.12 3487.5,-3105.12 3324,-3105.12"/>
@@ -418,7 +418,7 @@
 <text xml:space="preserve" text-anchor="start" x="3814.25" y="-2711.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Component | Example definition</text>
 <text xml:space="preserve" text-anchor="start" x="3849.12" y="-2701.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Realtime rooms</text>
 <text xml:space="preserve" text-anchor="start" x="3825.88" y="-2691.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">ourapps&#45;ae/realtime&#45;rooms</text>
-<text xml:space="preserve" text-anchor="start" x="3834.88" y="-2681.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example version 0.6.2</text>
+<text xml:space="preserve" text-anchor="start" x="3834.88" y="-2681.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example version 0.6.3</text>
 <text xml:space="preserve" text-anchor="start" x="3741.75" y="-2653.12" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">INPUTS</text>
 <text xml:space="preserve" text-anchor="start" x="3967" y="-2653.12" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">OUTPUTS</text>
 <polygon fill="#222b3a" stroke="none" points="3735.75,-2583.12 3735.75,-2643.12 3883.5,-2643.12 3883.5,-2583.12 3735.75,-2583.12"/>
@@ -603,7 +603,7 @@
 <text xml:space="preserve" text-anchor="start" x="2999" y="-1979.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Component | Example definition</text>
 <text xml:space="preserve" text-anchor="start" x="3042.88" y="-1969.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Turn engine</text>
 <text xml:space="preserve" text-anchor="start" x="3018.88" y="-1959.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">ourapps&#45;ae/turn&#45;engine</text>
-<text xml:space="preserve" text-anchor="start" x="3019.62" y="-1949.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example version 0.5.2</text>
+<text xml:space="preserve" text-anchor="start" x="3019.62" y="-1949.38" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example version 0.5.3</text>
 <text xml:space="preserve" text-anchor="start" x="2918.25" y="-1921.12" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">INPUTS</text>
 <text xml:space="preserve" text-anchor="start" x="3160" y="-1921.12" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">OUTPUTS</text>
 <polygon fill="#222b3a" stroke="none" points="2912.25,-1851.12 2912.25,-1911.12 3075.75,-1911.12 3075.75,-1851.12 2912.25,-1851.12"/>

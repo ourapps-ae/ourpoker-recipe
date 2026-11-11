@@ -1,7 +1,7 @@
 {
   "format": 1,
   "name": "ourapps-ae/ourpoker",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "title": "OurPoker",
   "summary": "A complete Texas hold'em game for two to nine players: phones, tablets, computers, the web and a television as a shared table, optional video, computer players, lessons, rebuys and rising blinds.",
   "category": "games",
@@ -98,7 +98,7 @@
     {
       "id": "realtime-rooms",
       "name": "ourapps-ae/realtime-rooms",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "configuration": {},
       "includedWhen": null
     },
@@ -171,7 +171,7 @@
     {
       "id": "turn-engine",
       "name": "ourapps-ae/turn-engine",
-      "version": "0.5.2",
+      "version": "0.5.3",
       "configuration": {
         "settleMs": 4000,
         "staleMinutes": 30,
