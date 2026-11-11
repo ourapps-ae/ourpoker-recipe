@@ -15,6 +15,7 @@ const LANGUAGES = ["en", "fr", "de", "es"];
 function walk(directory: string): string[] {
   const out: string[] = [];
   for (const name of readdirSync(directory).sort()) {
+    if (name === ".DS_Store") continue;
     const full = join(directory, name);
     if (statSync(full).isDirectory()) out.push(...walk(full));
     else out.push(relative(root, full).split("\\").join("/"));
@@ -172,8 +173,11 @@ test("the manifest lists every packaged file, and every artefact has a source an
     assert.ok(listed.includes(artefact.source), artefact.source);
     if ("component" in artefact) assert.ok(json("recipe.json").components.some((c: { name: string }) => c.name === artefact.component), `${artefact.source}: ${artefact.component} is not a component of the recipe`);
     assert.ok(!artefact.destination.startsWith("components/"), `${artefact.destination} is inside components/`);
-    assert.ok(!destinations.has(artefact.destination.toLowerCase()), `${artefact.destination} twice`);
-    destinations.add(artefact.destination.toLowerCase());
+    // a stand-in shares its destination with the real file: one is installed with the component, the other without it
+    const key = artefact.destination.toLowerCase() + ("withoutComponent" in artefact ? " without" : "");
+    assert.ok(!destinations.has(key), `${artefact.destination} twice`);
+    destinations.add(key);
+    if ("withoutComponent" in artefact && !artefact.source.endsWith(".swift")) assert.ok(manifest.artefacts.some((a: { destination: string; component?: string }) => a.destination === artefact.destination && a.component === artefact.withoutComponent), `${artefact.source} stands in for no file`);
     const text = readFileSync(join(root, artefact.source), artefact.template ? "utf8" : undefined);
     if (artefact.template) for (const m of (text as string).matchAll(/\{\{([A-Za-z][A-Za-z0-9_.-]*)\}\}/g)) assert.ok(settings.has(m[1]), `${artefact.source} names ${m[1]}`);
   }

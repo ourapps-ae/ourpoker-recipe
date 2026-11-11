@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/web-host",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "theme",
@@ -91,7 +91,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/apple-host",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -158,7 +158,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/android-host",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "theme",
@@ -210,7 +210,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/windows-desktop",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "configuration",
@@ -239,7 +239,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/server-host",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "room-session",
@@ -317,7 +317,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/ourapps-release",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "release-pipeline",

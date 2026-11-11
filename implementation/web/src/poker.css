@@ -1,6 +1,7 @@
 /* The recipe's own styling: the page, the screens' layout and the poker table. Buttons, panels, banners,
    toggles and dialogs are controls.css; cards cards.css; chips chips.css; the lessons tour.css; the
    colours and spacing theme.css; the oval felt table-layout.css. */
+:root {
   --gold: #e0b35a;
   --bg: #0b0908;
   --surface: rgba(38, 36, 31, 0.35);

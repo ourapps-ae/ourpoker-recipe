@@ -1,8 +1,8 @@
 // The house rules file is the one place the game's numbers live. The design's answers (see settings.ts) are written
 // over six of its values when the server starts, and every component below is built from the result. Workers have no
 // file access, so the file and its schema are imported as data and checked with the rules-settings checker.
-import base from "../../rules/texas-holdem-house-rules.json";
-import schema from "../../rules/texas-holdem-house-rules.schema.json";
+import base from "../../rules/texas-holdem-house-rules.json" with { type: "json" };
+import schema from "../../rules/texas-holdem-house-rules.schema.json" with { type: "json" };
 import { createRulesSettings, validate } from "../../components/rules-settings/web/schema";
 import { settings } from "./settings";
 

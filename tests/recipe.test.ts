@@ -97,7 +97,7 @@ test("recipe.json passes the ourapps catalogue validator, with the components' s
   assert.equal(recipe.name, "ourapps-ae/ourpoker");
   assert.equal(recipe.version, "0.4.0");
   assert.equal(recipe.components.length, 39);
-  assert.equal(recipe.questions.length, 24);
+  assert.equal(recipe.questions.length, 25);
 });
 
 test("page, instructions and diagram files exist; the diagrams are safe SVG", () => {
@@ -226,7 +226,7 @@ test("secret references come only from secretRef questions guarded by askWhen, e
 
 test("inclusion is by includedWhen only, with the decided conditions", () => {
   const when = (id: string) => byId.get(id)!.includedWhen;
-  assert.equal(when("web-host"), "'web' in targets");
+  assert.equal(when("web-host"), "'web' in targets || 'windows' in targets", "the Windows build packs the web client");
   assert.equal(when("apple-host"), "'ios' in targets || 'macos' in targets || 'tvos' in targets");
   assert.equal(when("android-host"), "'android' in targets");
   assert.equal(when("windows-desktop"), "'windows' in targets");
@@ -392,10 +392,17 @@ test("addresses: no address setting in configuration; the web address and the fo
   assert.equal(web.default, "http://localhost:5173");
   assert.equal(web.askWhen, "'web' in targets");
   assert.equal(web.effects[0].sets["web-host.webAddress"], "$answer", "web-host.webAddress is never missing");
+  // server-host refuses an allowed origin that is plain http and not localhost, so every answer set's web address is https or localhost
+  for (const set of [{ id: "default", answers: recipe.tests.defaultAnswers }, ...recipe.tests.answerSets]) {
+    const address = set.answers.webAddress ?? web.default;
+    assert.match(address, /^(https:\/\/|http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$)/, `${set.id}: webAddress ${address}`);
+  }
   const video = questions.get("videoServiceUrl")!;
   assert.deepEqual([video.type, video.default, video.askWhen, video.effects[0].sets["video-calls.serviceUrl"]], ["text", "", "video", "$answer"]);
   const invite = questions.get("storeInvitation")!;
   assert.deepEqual([invite.type, invite.default, invite.askWhen, invite.effects[0].sets["store-update.inviteAddress"]], ["text", "", "updates", "$answer"]);
+  const server = questions.get("serverAddress")!;
+  assert.deepEqual([server.type, server.default, server.askWhen ?? null, server.effects[0].sets["application.serverAddress"]], ["text", "http://localhost:8788", null, "$answer"]);
   const bundle = questions.get("bundleId")!;
   assert.deepEqual([bundle.type, bundle.default, bundle.askWhen ?? null], ["text", "", null]);
   assert.deepEqual(Object.keys(bundle.effects[0].sets).sort(), ["android-host.packageId", "apple-host.bundleIdentifier", "application.packageId", "ourapps-release.bundleIdentifier"]);
@@ -418,8 +425,8 @@ test("the questions of paper Section 5.4 are present, in order, with the follow-
   const paper = ["targets", "scale", "languages", "look", "players", "startingChips", "levelSeconds", "rebuys", "decisionSeconds", "computerPlayers", "video", "lessons", "server", "updates"];
   assert.deepEqual(ids.filter((id: string) => paper.includes(id)), paper);
   const followUps = ids.filter((id: string) => !paper.includes(id));
-  assert.deepEqual(followUps, ["webAddress", "bundleId", "videoServiceUrl", "videoKey", "videoSecret", "hostingAccount", "storeInvitation", "storeCredentials", "androidSigning", "webDeploy"]);
-  for (const id of followUps) if (!["bundleId", "storeCredentials"].includes(id)) assert.ok(questions.get(id)!.askWhen, `${id} has askWhen`);
+  assert.deepEqual(followUps, ["webAddress", "bundleId", "videoServiceUrl", "videoKey", "videoSecret", "hostingAccount", "serverAddress", "storeInvitation", "storeCredentials", "androidSigning", "webDeploy"]);
+  for (const id of followUps) if (!["bundleId", "serverAddress", "storeCredentials"].includes(id)) assert.ok(questions.get(id)!.askWhen, `${id} has askWhen`);
   for (const q of recipe.questions) {
     assert.ok(q.ask && q.askAgent, `${q.id} has wording for people and for the agent`);
     if (q.askWhen) assert.ok(q.type === "secretRef" || (q.default !== undefined && q.default !== null), `${q.id}: a question with askWhen has a default`);

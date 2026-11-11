@@ -5,6 +5,8 @@ import { allowed } from "../src/index";
 import { settings } from "../src/settings";
 
 const BASE = "https://poker.test/r/casino";
+// A design whose computer players answer is none has no computer player to add.
+const computers = settings.computerPlayers !== "none";
 const ROOT = "https://poker.test";
 
 async function post(path: string, body: unknown, token?: string) {
@@ -88,8 +90,15 @@ describe("room", () => {
     const b = await join("Bob");
     expect(a.spectator).toBe(false);
     expect(a.view.legal.start).toBe(false);
-    let v = await ok(a.token, { type: "addBot" });
-    expect(v.players.map((p) => p.name)).toEqual(["Ann", "Bob", "Robin"]);
+    let v = await state(a.token);
+    if (computers) {
+      v = await ok(a.token, { type: "addBot" });
+      expect(v.players.map((p) => p.name)).toEqual(["Ann", "Bob", "Robin"]);
+    } else {
+      expect(v.legal.addBot).toBe(false);
+      const refused = await act(a.token, { type: "addBot" }, v.version);
+      expect(refused.status).toBe(422);
+    }
     v = await ok(a.token, { type: "start" });
     expect(v.status).toBe("running");
     expect(v.hostId).toBe(a.playerId);
@@ -217,7 +226,7 @@ describe("room", () => {
     expect(next.players.map((p) => p.name)).toEqual(["Ann"]);
   });
 
-  it("a computer player acts from the alarm once its thinking time is up", async () => {
+  it.skipIf(!computers)("a computer player acts from the alarm once its thinking time is up", async () => {
     const { env, runDurableObjectAlarm } = await import("cloudflare:test");
     const a = await join("Ann");
     await ok(a.token, { type: "addBot" });
@@ -424,7 +433,7 @@ describe("live connections", () => {
 
   it("empties the room at once when the last person leaves after closing the connection", async () => {
     const a = await join("Ann");
-    await ok(a.token, { type: "addBot" });
+    if (computers) await ok(a.token, { type: "addBot" });
     const c = await connect(BASE + "/ws");
     c.ws.send(hello(a.token));
     const seen = await c.nextView(-1);

@@ -41,7 +41,7 @@ async function pack() {
   const sources = [
     ['desktop/src/main.cjs', 'src/main.cjs'], ['desktop/src/verify.cjs', 'src/verify.cjs'],
     ...['main', 'shell', 'policy'].map(name => [`components/windows-desktop/desktop/src/${name}.cjs`, `../components/windows-desktop/desktop/src/${name}.cjs`]),
-    ['components/video-calls/verification/result.mjs', '../components/video-calls/verification/result.mjs'],
+    ['components/windows-desktop/verification/result.mjs', '../components/windows-desktop/verification/result.mjs'],
   ];
   const stage = path.join(root, 'build/package-app');
   await fs.rm(stage, { recursive: true, force: true });
@@ -63,7 +63,7 @@ async function pack() {
   if (packaged.main !== 'desktop/src/main.cjs') throw new Error('Invalid packaged entrypoint');
   asar.extractFile(archive, packaged.main);
   asar.extractFile(archive, 'desktop/src/verify.cjs');
-  asar.extractFile(archive, 'components/video-calls/verification/result.mjs');
+  asar.extractFile(archive, 'components/windows-desktop/verification/result.mjs');
   const scriptDigests = {};
   for (const [entry, source] of sources) {
     const expected = await fs.readFile(path.join(root, source));

@@ -605,6 +605,10 @@
           "allowCleartext": {
             "type": "boolean",
             "description": "Allows plain http traffic."
+          },
+          "kotlinSerialization": {
+            "type": "boolean",
+            "description": "Applies the Kotlin serialization compiler plugin (for @Serializable classes)."
           }
         },
         "required": [],

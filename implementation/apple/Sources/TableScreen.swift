@@ -181,7 +181,7 @@ struct TableScreen: View {
                 else if model.video.canReconnect { ReconnectButton(action: model.resumeVideo) }
             }
             SoundToggle(session: model.video)
-            HelpBulb { Sound.play(.click); model.showHelp = true }
+            HelpBulb(label: L("how_to_play")) { Sound.play(.click); model.showHelp = true }
         }
         .padding(.horizontal, 4)
     }

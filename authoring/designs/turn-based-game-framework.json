@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/turn-engine",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "game-rules",
@@ -160,7 +160,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/game-clock",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "game-clock",
@@ -196,7 +196,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/seating",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "guest-identity",
@@ -266,7 +266,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/fair-shuffle",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "random-source",
@@ -301,7 +301,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/card-deck",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "random-source",
@@ -347,7 +347,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/computer-players",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "player-strategy",
@@ -445,7 +445,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/chip-ledger",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "chip-ledger",
@@ -505,7 +505,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/level-schedule",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "level-schedule",
@@ -549,7 +549,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/tournament",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "chip-ledger",
@@ -647,7 +647,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/round-history",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "round-history",
@@ -675,7 +675,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/rules-settings",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "rules-settings",

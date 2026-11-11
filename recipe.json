@@ -38,7 +38,7 @@
         "themeColour": "primary",
         "backgroundColour": "background"
       },
-      "includedWhen": "'web' in targets"
+      "includedWhen": "'web' in targets || 'windows' in targets"
     },
     {
       "id": "apple-host",
@@ -493,7 +493,7 @@
     {
       "id": "webAddress",
       "ask": "At which web address will the web version be served?",
-      "askAgent": "Ask only when the web is a target; keep http://localhost:5173 for local use, otherwise the developer's own https address.",
+      "askAgent": "Ask only when the web is a target; keep http://localhost:5173 for local use, otherwise the developer's own https address (the server refuses a plain http origin other than localhost).",
       "askWhen": "'web' in targets",
       "type": "text",
       "default": "http://localhost:5173",
@@ -783,6 +783,20 @@
             "server-host.accountReference": {
               "ref": "hostingAccount"
             }
+          }
+        }
+      ]
+    },
+    {
+      "id": "serverAddress",
+      "ask": "At which address does the server answer? Keep http://localhost:8788 until the server is deployed; after the first deploy, give the address it reports.",
+      "askAgent": "Keep http://localhost:8788 for local use and for the first install; after the server is deployed, answer with its https address (Cloudflare reports it, own hardware is the developer's own) and rebuild the clients. Never guess a domain.",
+      "type": "text",
+      "default": "http://localhost:8788",
+      "effects": [
+        {
+          "sets": {
+            "application.serverAddress": "$answer"
           }
         }
       ]
@@ -1815,7 +1829,7 @@
           "server": "own-hardware",
           "updates": false,
           "webDeploy": "ourpoker/web-deploy",
-          "webAddress": "http://clinic.local:8080"
+          "webAddress": "https://clinic.example"
         }
       },
       {
@@ -1849,6 +1863,58 @@
           "androidSigning": "ourpoker/android-signing",
           "webDeploy": "ourpoker/web-deploy",
           "webAddress": "https://poker.acme.io"
+        }
+      },
+      {
+        "id": "web-own-hardware",
+        "answers": {
+          "targets": [
+            "web"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "fr"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "none",
+          "video": false,
+          "lessons": false,
+          "server": "own-hardware",
+          "updates": false,
+          "webDeploy": "ourpoker/web-deploy"
+        }
+      },
+      {
+        "id": "windows-only",
+        "answers": {
+          "targets": [
+            "windows"
+          ],
+          "scale": "small",
+          "languages": [
+            "en",
+            "fr",
+            "de",
+            "es"
+          ],
+          "look": "night",
+          "players": 9,
+          "startingChips": 5000,
+          "levelSeconds": 600,
+          "rebuys": 1,
+          "decisionSeconds": 30,
+          "computerPlayers": "on-request",
+          "video": false,
+          "lessons": true,
+          "server": "own-hardware",
+          "updates": false,
+          "serverAddress": "https://poker.clinic.example"
         }
       }
     ]

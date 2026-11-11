@@ -72,7 +72,8 @@ def contains(value):
 
 # Inclusion is only by includedWhen (rule 4), a CEL expression over the answers. The question "targets" is which devices.
 INCLUDED_WHEN = {
-    "web-host": contains("web"),
+    # the Windows build packs the web client, so the web project is in for Windows too
+    "web-host": contains("web") + " || " + contains("windows"),
     "apple-host": " || ".join(contains(t) for t in ("ios", "macos", "tvos")),
     "android-host": contains("android"),
     "windows-desktop": contains("windows"),
@@ -97,7 +98,7 @@ QUESTIONS = [
      "type": "set", "options": ALL_TARGETS, "default": ALL_TARGETS,
      "effects": [{"sets": {"ourapps-release.targets": "$answer", "apple-host.targets": "$answer"}}]},
     {"id": "webAddress", "ask": "At which web address will the web version be served?",
-     "askAgent": "Ask only when the web is a target; keep http://localhost:5173 for local use, otherwise the developer's own https address.",
+     "askAgent": "Ask only when the web is a target; keep http://localhost:5173 for local use, otherwise the developer's own https address (the server refuses a plain http origin other than localhost).",
      "askWhen": contains("web"), "type": "text", "default": "http://localhost:5173",
      "effects": [{"sets": {"web-host.webAddress": "$answer", "application.webAddress": "$answer", "server-host.allowedOrigins": "$answer", "invitations.inviteAddress": "$answer"}}]},
     {"id": "bundleId", "ask": "Which bundle identifier should the phone, tablet, television and Mac apps carry (for example com.yourname.poker)? Leave empty to use the one the application derives.",
@@ -163,6 +164,10 @@ QUESTIONS = [
      "askAgent": "Ask only for a hosting provider; a reference name (lowercase letters, digits, hyphens), never the account key.",
      "askWhen": "server == 'cloudflare'", "type": "secretRef",
      "effects": [{"sets": {"server-host.accountReference": {"ref": "hostingAccount"}}}]},
+    {"id": "serverAddress", "ask": "At which address does the server answer? Keep http://localhost:8788 until the server is deployed; after the first deploy, give the address it reports.",
+     "askAgent": "Keep http://localhost:8788 for local use and for the first install; after the server is deployed, answer with its https address (Cloudflare reports it, own hardware is the developer's own) and rebuild the clients. Never guess a domain.",
+     "type": "text", "default": "http://localhost:8788",
+     "effects": [{"sets": {"application.serverAddress": "$answer"}}]},
     {"id": "updates", "ask": "Should installed apps offer new versions through ourapps.app?",
      "askAgent": "No unless the request mentions updates or keeping the app current.",
      "type": "boolean", "default": False, "effects": [{"sets": {"application.updatesEnabled": "$answer"}}]},
@@ -228,8 +233,10 @@ ANSWER_SETS = [
     {"id": "large-paid-host", "answers": answers(scale="large", server="cloudflare", look="lounge", players=6, rebuys=3, computerPlayers="fill-empty",
                                                  bundleId="io.acme.poker", webAddress="https://poker.acme.io", videoServiceUrl="https://video.acme.io")},
     {"id": "clinic", "answers": answers(targets=["web", "windows"], scale="small", server="own-hardware", languages=["en", "es"], video=False, lessons=False,
-                                        webAddress="http://clinic.local:8080")},
+                                        webAddress="https://clinic.example")},
     {"id": "no-computers", "answers": answers(targets=["web", "android"], computerPlayers="none", webAddress="https://poker.acme.io")},
+    {"id": "web-own-hardware", "answers": answers(targets=["web"], server="own-hardware", languages=["en", "fr"], video=False, lessons=False, computerPlayers="none")},
+    {"id": "windows-only", "answers": answers(targets=["windows"], server="own-hardware", video=False, serverAddress="https://poker.clinic.example")},
 ]
 
 

@@ -14,6 +14,17 @@ extension View {
     @ViewBuilder func tableStatusBarHidden() -> some View { shellStatusBarHidden() }
     @ViewBuilder func playerNameInput() -> some View { shellNameInput() }
     @ViewBuilder func platformButtonStyle() -> some View { shellButtonStyle() }
+
+    // A tap action only when there is one, so a view with nothing to do leaves taps to what holds it.
+    @ViewBuilder func tapIf(_ action: (() -> Void)?) -> some View {
+        if let action {
+            #if os(tvOS)
+            Button(action: action) { self }.platformButtonStyle()
+            #else
+            contentShape(Rectangle()).onTapGesture(perform: action)
+            #endif
+        } else { self }
+    }
 }
 
 let isPad = Platform.family == .pad

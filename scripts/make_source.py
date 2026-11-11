@@ -20,7 +20,7 @@ server = {
     "adapter.ts": (S + "adapter.ts 1-109", "The room's lobby, join, apply, advance and view moved to turn-engine; the rest wraps its view in the poker wire view and gives it the hand text and odds."),
     "contract.ts": (S + "contract.ts 1-257", "Wire types the four clients decode."),
     "directory.ts": (S + "directory.ts 1-3", "The room list class, over room-directory's createDirectoryClass."),
-    "host-settings": ("not present", "Not in this package: aepm renders components/server-host/server/host-settings.ts from server-host's settings, and index.ts imports it."),
+    "env.d.ts": ("new", "The worker's bindings and variables; the source generated it with `wrangler types`."),
     "index.ts": (S + "index.ts 1-28", "Worker entry over server-host and realtime-rooms; with the update and video routes."),
     "parts.ts": (S + "engine.ts 9-38, 209-250, 980-1005; bot.ts 1-60", "Selects the component for each turn-engine part through its own interface (game-clock, private-views, presence, round-history, chip-ledger, level-schedule, holdem-rules, tournament, computer-players, poker-strategy) and builds each from the house rules."),
     "room.ts": (S + "room.ts 1-20", "The room class with the invitation links added to its view; it takes guest-identity's identity as `services.identity`."),
@@ -60,7 +60,8 @@ web = {
 }
 
 apple = {
-    "Bridge.swift": ("ios/OurPoker/Sources/Sound.swift 1-75, Layout.swift 1-35, Platform.swift 1-41", "Names over the sound-cues player, preferences, apple-host platform rules and table-layout spots."),
+    "ApplicationSettings.swift": ("ApplicationSettings.swift 1-3", "Template: whether updates are offered."),
+    "Bridge.swift": ("ios/OurPoker/Sources/Sound.swift 1-75, Layout.swift 1-35, Platform.swift 1-41, Cards.swift 137-149", "Names over the sound-cues player, preferences, apple-host platform rules and table-layout spots; `tapIf`."),
     "DisplayScreen.swift": ("DisplayScreen.swift 1-628", "The table viewer for a television or shared screen."),
     "EndScreen.swift": ("EndScreen.swift 1-57", ""),
     "Guides.swift": ("Guide.swift 1-189", "Which lesson each moment asks for; the overlay moved to guided-tour."),
@@ -111,6 +112,7 @@ android = {
 
 desktop = {
     "package.json": ("desktop/package.json 1-21", "Name templated."),
+    "package-lock.json": ("desktop/package-lock.json", "Exact versions of electron and electron-builder."),
     "scripts/build.cjs": ("desktop/scripts/build.cjs 1-4", ""),
     "scripts/package.cjs": ("desktop/scripts/package.cjs 1-93", "Unsigned Windows installer settings."),
     "src/configuration.cjs": ("desktop/src/main.cjs 1-12, verify.cjs", "The windows-desktop configuration document, shared by main and verify."),
@@ -143,7 +145,29 @@ Everything here was taken from `OurPoker/recipe/` (read-only) at McInPoker revis
 ## Implementation: web (`implementation/web/`, destination `web/`)
 
 {table("Web", "implementation/web/src/", web, "implementation/web/src")}
-`implementation/web/page-body.html` ({lines("implementation/web/page-body.html")} lines) came from `web/index.html` 1-21 (the body only); the rest of the page is web-host's.
+## Build files
+
+| File | Lines | Origin | Notes |
+|---|---|---|---|
+| `implementation/server/package.json`, `package-lock.json` | {lines("implementation/server/package.json")}, {lines("implementation/server/package-lock.json")} | server/package.json 1-23, server/package-lock.json | Exact versions of the source lock; tsx and the simulation and fixture scripts left behind; scripts run server-host's `start.ts` and `wrangler.jsonc`. |
+| `implementation/server/tsconfig.json` | {lines("implementation/server/tsconfig.json")} | server/tsconfig.json 1-15 | Checks `src` and `test` with the Node, Workers and Workers test types. |
+| `implementation/server/vitest.config.ts` | {lines("implementation/server/vitest.config.ts")} | server/vitest.config.ts 1-19 | The room tests use server-host's `wrangler.jsonc`. |
+| `implementation/web/package.json`, `package-lock.json` | {lines("implementation/web/package.json")}, {lines("implementation/web/package-lock.json")} | web/package.json 1-20, web/package-lock.json | Exact versions; with `livekit-client` (installed with video-calls). |
+| `implementation/web/index.html` | {lines("implementation/web/index.html")} | web/index.html 1-21 | The body and the entry; web-host's Vite configuration writes the head. |
+| `implementation/web/vite.config.ts` | {lines("implementation/web/vite.config.ts")} | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
+| `implementation/web/tsconfig.json` | {lines("implementation/web/tsconfig.json")} | web/tsconfig.json 1-16 | |
+| `implementation/apple/generate-project.ts` | {lines("implementation/apple/generate-project.ts")} | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
+| `implementation/android/generate-project.ts` | {lines("implementation/android/generate-project.ts")} | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
+| `locales/generated/` | 6 files | i18n generator output | Written by `scripts/make_component.py` with translations' generator from `locales/strings.json`. |
+
+## Stand-ins (`implementation/stand-ins/`, installed when the design leaves the component out)
+
+| File | Lines | Stands in for |
+|---|---|---|
+| `server/src/computers.ts`, `update-links.ts`, `video.ts` | {count_dir("implementation/stand-ins/server/src", {".ts"})} | computer-players, store-update, video-calls (new) |
+| `web/src/guide.ts`, `guide-style.ts`, `shell.ts`, `update.ts`, `video.ts` | {count_dir("implementation/stand-ins/web/src", {".ts"})} | guided-tour, web-host, store-update, video-calls (new) |
+| `web/package.json`, `package-lock.json` | {lines("implementation/stand-ins/web/package.json")}, {lines("implementation/stand-ins/web/package-lock.json")} | video-calls: the web package without `livekit-client` |
+| `apple/Sources/StoreVersion.swift` | {lines("implementation/stand-ins/apple/Sources/StoreVersion.swift")} | store-update's Swift `isNewer` and `currentVersion` (new) |
 
 ## Implementation: Apple (`implementation/apple/Sources/`, destination `ios/OurPoker/Sources/`)
 
@@ -197,11 +221,11 @@ Copied from the source and mapped back to the application layout by the artefact
 
 ## Left behind (not ported)
 
-- Build and project files, rendered by the host components: web index.html, vite.config.ts, manifest, sw.js, _headers, package.json, package-lock.json, tsconfig.json, sync-art.py (web-host); server package.json, package-lock.json, tsconfig.json, vitest.config.ts, wrangler.jsonc (server-host, realtime-rooms); ios project.yml, Info.plist files, ExportOptions, MacCatalyst.entitlements, Package.resolved, prepare-project.py, sync-art.sh (apple-host); android build.gradle.kts files, gradle wrapper, gradle.lockfile, verification-metadata.xml, AndroidManifest.xml (android-host).
-- Generated files: web strings.json, ios Localizable.xcstrings, android values*/strings.xml, i18n/keys.txt, scripts/generate-resources.py (the translations generator makes them from locales/strings.json).
+- Project files the host components render: web manifest, sw.js, _headers, sync-art.py (web-host); wrangler.jsonc (server-host); ios project.yml, Info.plist files, ExportOptions, MacCatalyst.entitlements, Package.resolved, prepare-project.py, sync-art.sh (apple-host); android build.gradle.kts files, gradle wrapper, gradle.lockfile, verification-metadata.xml, AndroidManifest.xml (android-host).
+- i18n/keys.txt and scripts/generate-resources.py (translations' generator makes the text files from locales/strings.json).
 - Server tests of moved logic: engine.test.ts, bot.test.ts, cards.test.ts, evaluate.test.ts, odds.test.ts, pots.test.ts, view.test.ts, fixtures.test.ts, helpers.ts, sim.ts, fixture-data.ts travel in the components that now own the logic. Server scripts fixtures.ts, showdown-views.ts, prepare-proof.py and INTEGRATION.md.
 - Native tests of moved logic: ios CameraTests, LanguageTests, PlatformTests, RingTests, SoundTests and android tests of those parts belong to video-calls, translations, apple-host, table-layout and sound-cues.
-- Desktop: scripts/runtime-smoke.cjs and installed-smoke.cjs (they require `../src/policy.cjs`, which the source tree does not have; windows-desktop's own platform checks cover them), native-verify.ps1, icon.py, package-lock.json.
+- Desktop: scripts/runtime-smoke.cjs and installed-smoke.cjs (they require `../src/policy.cjs`, which the source tree does not have; windows-desktop's own platform checks cover them), native-verify.ps1, icon.py.
 - rules/texas-holdem-coding-handoff.md (110 lines): a build note for the hand-built game, replaced by holdem-rules' CONTRACT.md.
 - Android INSTRUMENTATION.md.
 - Artwork: the source tree holds only placeholder pictures; nothing personal existed to leave out.

@@ -14,5 +14,5 @@ export async function checkStoreUpdate(current: string, selection: UpdateSelecti
 }
 
 export function availableUpdate(current: string, selection: UpdateSelection | null) {
-  return checkStoreUpdate(current, selection, "{{updatesEnabled}}" === "true", `${SERVER}/update`);
+  return checkStoreUpdate(current, selection, {{updatesEnabled}} as boolean, `${SERVER}/update`);
 }

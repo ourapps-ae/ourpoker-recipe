@@ -7,7 +7,7 @@ export const settings = {
   webOrigin: "{{webAddress}}",
   nativeOrigin: "{{scheme}}://app",
   roomPrefix: "{{roomPrefix}}",
-  updatesEnabled: "{{updatesEnabled}}" === "true",
+  updatesEnabled: {{updatesEnabled}} as boolean,
   // The store invitation used when the room service has none of its own (env INVITE_URL).
   inviteAddress: "{{inviteAddress}}",
   // The answers that change the house rules (see rules.ts).

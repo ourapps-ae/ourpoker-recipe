@@ -123,7 +123,7 @@ EXPECTED = {
     "clinic": dict(
         out={"apple-host", "android-host", "store-update", "video-calls", "guided-tour"},
         settings={
-            "web-host": {"webAddress": "http://clinic.local:8080"}, "server-host": {"provider": "own-hardware", "accountReference": "none", "allowedOrigins": "http://clinic.local:8080"},
+            "web-host": {"webAddress": "https://clinic.example"}, "server-host": {"provider": "own-hardware", "accountReference": "none", "allowedOrigins": "https://clinic.example"},
             "translations": {"languages": "en es"}, "ourapps-release": {"targets": "web windows", "webDeploy": WEB_DEPLOY},
         },
         selections={"server": "own-hardware", "realtime": "own-hardware"}),
@@ -132,7 +132,18 @@ EXPECTED = {
         settings={"application": {"computerPlayers": "none"}, "ourapps-release": {"targets": "web android", "androidSigning": ANDROID, "webDeploy": WEB_DEPLOY}},
         selections={"server": "cloudflare-free", "realtime": "free", "video": "free"}),
 }
-for name in ("browser-only-no-extras", "no-computers"):
+EXPECTED["web-own-hardware"] = dict(
+    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
+    settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en fr"},
+              "application": {"computerPlayers": "none", "serverAddress": "http://localhost:8788"}, "ourapps-release": {"targets": "web", "webDeploy": WEB_DEPLOY}},
+    selections={"server": "own-hardware", "realtime": "own-hardware"})
+# Windows alone keeps the web project (web-host), which the Windows build packs; the deployed server address is an answer.
+EXPECTED["windows-only"] = dict(
+    out={"apple-host", "android-host", "store-update", "video-calls"},
+    settings={"web-host": {"webAddress": "http://localhost:5173"}, "server-host": {"provider": "own-hardware"}, "ourapps-release": {"targets": "windows"},
+              "application": {"serverAddress": "https://poker.clinic.example"}},
+    selections={"server": "own-hardware", "realtime": "own-hardware"})
+for name in ("browser-only-no-extras", "no-computers", "web-own-hardware"):
     EXPECTED[name]["out"] |= {"computer-players", "poker-strategy"}
 
 
@@ -307,7 +318,7 @@ class EveryAnswer(unittest.TestCase):
         for answers in itertools.islice(all_answers(), 0, None, 37):
             present = ids_of(evaluated(answers))
             t = set(answers["targets"])
-            self.assertEqual("web-host" in present, "web" in t)
+            self.assertEqual("web-host" in present, bool(t & {"web", "windows"}))
             self.assertEqual("apple-host" in present, bool(t & {"ios", "macos", "tvos"}))
             self.assertEqual("android-host" in present, "android" in t)
             self.assertEqual("windows-desktop" in present, "windows" in t)
@@ -576,7 +587,7 @@ class CelParity(unittest.TestCase):
 
     def test_the_python_evaluator_and_bufbuild_cel_agree(self):
         conditions = conditions_of(RECIPE)
-        self.assertEqual(len(conditions), 10, "distinct conditions of the recipe")
+        self.assertEqual(len(conditions), 11, "distinct conditions of the recipe")
         expressions = conditions + SAMPLES
         answer_sets = list(SETS.values()) + list(all_answers())
         lines = [{"kinds": KINDS, "bindings": E.bindings(WORLD, answers), "expressions": expressions} for answers in answer_sets]
@@ -592,7 +603,7 @@ class CelParity(unittest.TestCase):
                     differ.append((expression, line["bindings"], ours, result))
         self.assertEqual(differ[:3], [])
         self.assertEqual(compared, (len(SETS) + 63 * 2 * 2 * 2 * 3 * 2 * 3) * len(expressions))
-        self.assertEqual(compared, 9082 * 43)
+        self.assertEqual(compared, 9084 * 44)
 
     def test_each_condition_takes_both_values_over_the_combinations(self):
         lines = [E.bindings(WORLD, answers) for answers in all_answers()]

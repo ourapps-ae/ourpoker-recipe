@@ -46,7 +46,7 @@ struct RootView: View {
         .overlay(alignment: .topTrailing) {
             #if !os(tvOS)
             if !model.showHelp && !atTable {
-                HelpBulb { Sound.play(.click); model.showHelp = true }.padding(.top, 4).padding(.trailing, 8)
+                HelpBulb(label: L("how_to_play")) { Sound.play(.click); model.showHelp = true }.padding(.top, 4).padding(.trailing, 8)
             }
             #endif
         }

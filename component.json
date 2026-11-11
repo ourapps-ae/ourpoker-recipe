@@ -185,6 +185,10 @@
   ],
   "files": [
     {
+      "path": ".gitattributes",
+      "executable": false
+    },
+    {
       "path": "CONTRACT.md",
       "executable": false
     },
@@ -641,6 +645,14 @@
       "executable": false
     },
     {
+      "path": "implementation/android/generate-project.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/ApplicationSettings.swift",
+      "executable": false
+    },
+    {
       "path": "implementation/apple/Sources/Bridge.swift",
       "executable": false
     },
@@ -729,6 +741,14 @@
       "executable": false
     },
     {
+      "path": "implementation/apple/generate-project.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/desktop/package-lock.json",
+      "executable": false
+    },
+    {
       "path": "implementation/desktop/package.json",
       "executable": false
     },
@@ -757,6 +777,14 @@
       "executable": false
     },
     {
+      "path": "implementation/server/package-lock.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/package.json",
+      "executable": false
+    },
+    {
       "path": "implementation/server/src/adapter.ts",
       "executable": false
     },
@@ -770,6 +798,10 @@
     },
     {
       "path": "implementation/server/src/directory.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/src/env.d.ts",
       "executable": false
     },
     {
@@ -805,7 +837,67 @@
       "executable": false
     },
     {
-      "path": "implementation/web/page-body.html",
+      "path": "implementation/server/tsconfig.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/vitest.config.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/apple/Sources/StoreVersion.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/server/src/computers.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/server/src/update-links.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/server/src/video.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/package-lock.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/package.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/src/guide-style.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/src/guide.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/src/shell.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/src/update.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/stand-ins/web/src/video.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/index.html",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/package-lock.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/package.json",
       "executable": false
     },
     {
@@ -905,6 +997,14 @@
       "executable": false
     },
     {
+      "path": "implementation/web/tsconfig.json",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/vite.config.ts",
+      "executable": false
+    },
+    {
       "path": "interfaces/poker-game-adapter.json",
       "executable": false
     },
@@ -986,6 +1086,30 @@
     },
     {
       "path": "interfaces/required-web-shell.json",
+      "executable": false
+    },
+    {
+      "path": "locales/generated/android/values-de/strings.xml",
+      "executable": false
+    },
+    {
+      "path": "locales/generated/android/values-es/strings.xml",
+      "executable": false
+    },
+    {
+      "path": "locales/generated/android/values-fr/strings.xml",
+      "executable": false
+    },
+    {
+      "path": "locales/generated/android/values/strings.xml",
+      "executable": false
+    },
+    {
+      "path": "locales/generated/apple/Localizable.xcstrings",
+      "executable": false
+    },
+    {
+      "path": "locales/generated/web/strings.json",
       "executable": false
     },
     {
@@ -1471,6 +1595,19 @@
       "executable": false
     },
     {
+      "source": "implementation/android/generate-project.ts",
+      "destination": "android/generate-project.ts",
+      "template": true,
+      "executable": false,
+      "component": "ourapps-ae/android-host"
+    },
+    {
+      "source": "implementation/apple/Sources/ApplicationSettings.swift",
+      "destination": "ios/OurPoker/Sources/ApplicationSettings.swift",
+      "template": true,
+      "executable": false
+    },
+    {
       "source": "implementation/apple/Sources/Bridge.swift",
       "destination": "ios/OurPoker/Sources/Bridge.swift",
       "template": false,
@@ -1603,6 +1740,19 @@
       "executable": false
     },
     {
+      "source": "implementation/apple/generate-project.ts",
+      "destination": "ios/generate-project.ts",
+      "template": true,
+      "executable": false,
+      "component": "ourapps-ae/apple-host"
+    },
+    {
+      "source": "implementation/desktop/package-lock.json",
+      "destination": "desktop/package-lock.json",
+      "template": false,
+      "executable": false
+    },
+    {
       "source": "implementation/desktop/package.json",
       "destination": "desktop/package.json",
       "template": true,
@@ -1650,6 +1800,18 @@
       "component": "ourapps-ae/windows-desktop"
     },
     {
+      "source": "implementation/server/package-lock.json",
+      "destination": "server/package-lock.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/package.json",
+      "destination": "server/package.json",
+      "template": false,
+      "executable": false
+    },
+    {
       "source": "implementation/server/src/adapter.ts",
       "destination": "server/src/adapter.ts",
       "template": false,
@@ -1671,6 +1833,12 @@
     {
       "source": "implementation/server/src/directory.ts",
       "destination": "server/src/directory.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/src/env.d.ts",
+      "destination": "server/src/env.d.ts",
       "template": false,
       "executable": false
     },
@@ -1725,10 +1893,113 @@
       "executable": false
     },
     {
-      "source": "implementation/web/page-body.html",
-      "destination": "web/page-body.html",
+      "source": "implementation/server/tsconfig.json",
+      "destination": "server/tsconfig.json",
       "template": false,
       "executable": false
+    },
+    {
+      "source": "implementation/server/vitest.config.ts",
+      "destination": "server/vitest.config.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/stand-ins/apple/Sources/StoreVersion.swift",
+      "destination": "ios/OurPoker/Sources/StoreVersion.swift",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/store-update"
+    },
+    {
+      "source": "implementation/stand-ins/server/src/computers.ts",
+      "destination": "server/src/computers.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/computer-players"
+    },
+    {
+      "source": "implementation/stand-ins/server/src/update-links.ts",
+      "destination": "server/src/update-links.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/store-update"
+    },
+    {
+      "source": "implementation/stand-ins/server/src/video.ts",
+      "destination": "server/src/video.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/stand-ins/web/package-lock.json",
+      "destination": "web/package-lock.json",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/stand-ins/web/package.json",
+      "destination": "web/package.json",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/stand-ins/web/src/guide-style.ts",
+      "destination": "web/src/guide-style.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/guided-tour"
+    },
+    {
+      "source": "implementation/stand-ins/web/src/guide.ts",
+      "destination": "web/src/guide.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/guided-tour"
+    },
+    {
+      "source": "implementation/stand-ins/web/src/shell.ts",
+      "destination": "web/src/shell.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/web-host"
+    },
+    {
+      "source": "implementation/stand-ins/web/src/update.ts",
+      "destination": "web/src/update.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/store-update"
+    },
+    {
+      "source": "implementation/stand-ins/web/src/video.ts",
+      "destination": "web/src/video.ts",
+      "template": false,
+      "executable": false,
+      "withoutComponent": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/web/index.html",
+      "destination": "web/index.html",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/package-lock.json",
+      "destination": "web/package-lock.json",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/web/package.json",
+      "destination": "web/package.json",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/video-calls"
     },
     {
       "source": "implementation/web/src/api.ts",
@@ -1879,6 +2150,19 @@
       "template": false,
       "executable": false,
       "component": "ourapps-ae/video-calls"
+    },
+    {
+      "source": "implementation/web/tsconfig.json",
+      "destination": "web/tsconfig.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/vite.config.ts",
+      "destination": "web/vite.config.ts",
+      "template": false,
+      "executable": false,
+      "component": "ourapps-ae/web-host"
     },
     {
       "source": "rules/texas-holdem-house-rules.json",
@@ -2251,6 +2535,42 @@
     {
       "source": "locales/strings.json",
       "destination": "resources/strings.json",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/generated/android/values/strings.xml",
+      "destination": "android/app/src/main/res/values/strings.xml",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/generated/android/values-de/strings.xml",
+      "destination": "android/app/src/main/res/values-de/strings.xml",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/generated/android/values-es/strings.xml",
+      "destination": "android/app/src/main/res/values-es/strings.xml",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/generated/android/values-fr/strings.xml",
+      "destination": "android/app/src/main/res/values-fr/strings.xml",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/generated/apple/Localizable.xcstrings",
+      "destination": "ios/OurPoker/Resources/Localizable.xcstrings",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "locales/generated/web/strings.json",
+      "destination": "web/src/strings.json",
       "template": false,
       "executable": false
     },
@@ -3173,8 +3493,14 @@
       "android/app/src/main/res/raw/snd_turn.wav",
       "android/app/src/main/res/raw/snd_win.wav",
       "android/app/src/main/res/raw/sounds_manifest.json",
+      "android/app/src/main/res/values-de/strings.xml",
+      "android/app/src/main/res/values-es/strings.xml",
+      "android/app/src/main/res/values-fr/strings.xml",
+      "android/app/src/main/res/values/strings.xml",
       "android/app/src/test/java/app/ourapps/ourpoker/FixturesTest.kt",
       "android/app/src/test/java/app/ourapps/ourpoker/SoundSettingTest.kt",
+      "android/generate-project.ts",
+      "desktop/package-lock.json",
       "desktop/package.json",
       "desktop/scripts/build.cjs",
       "desktop/scripts/package.cjs",
@@ -3224,7 +3550,9 @@
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@1x.png",
       "ios/OurPoker/Resources/Assets.xcassets/AppIcon.appiconset/mac-512@2x.png",
       "ios/OurPoker/Resources/Assets.xcassets/Contents.json",
+      "ios/OurPoker/Resources/Localizable.xcstrings",
       "ios/OurPoker/Resources/lessons.json",
+      "ios/OurPoker/Sources/ApplicationSettings.swift",
       "ios/OurPoker/Sources/Bridge.swift",
       "ios/OurPoker/Sources/DisplayScreen.swift",
       "ios/OurPoker/Sources/EndScreen.swift",
@@ -3242,6 +3570,7 @@
       "ios/OurPoker/Sources/RoomLook.swift",
       "ios/OurPoker/Sources/RootView.swift",
       "ios/OurPoker/Sources/SeatScreen.swift",
+      "ios/OurPoker/Sources/StoreVersion.swift",
       "ios/OurPoker/Sources/Strings.swift",
       "ios/OurPoker/Sources/TableClient.swift",
       "ios/OurPoker/Sources/TableEffects.swift",
@@ -3263,6 +3592,7 @@
       "ios/OurPokerTests/SessionTests.swift",
       "ios/OurPokerUITests/HomeButtonsUITests.swift",
       "ios/VerificationSupport/ServerAddress.swift",
+      "ios/generate-project.ts",
       "resources/strings.json",
       "rules/texas-holdem-house-rules.json",
       "rules/texas-holdem-house-rules.md",
@@ -3282,10 +3612,13 @@
       "server/fixtures/showdownFive.json",
       "server/fixtures/showdownSeven.json",
       "server/fixtures/spectator.json",
+      "server/package-lock.json",
+      "server/package.json",
       "server/src/adapter.ts",
       "server/src/computers.ts",
       "server/src/contract.ts",
       "server/src/directory.ts",
+      "server/src/env.d.ts",
       "server/src/index.ts",
       "server/src/parts.ts",
       "server/src/room.ts",
@@ -3300,6 +3633,8 @@
       "server/test/update-links.test.ts",
       "server/test/video-services.test.ts",
       "server/test/video.test.ts",
+      "server/tsconfig.json",
+      "server/vitest.config.ts",
       "verification/application-assertions.mjs",
       "verification/application-assertions.test.mjs",
       "verification/application-bridge-fixture.mjs",
@@ -3315,7 +3650,9 @@
       "verification/update-runner.test.mjs",
       "verification/windows-package.mjs",
       "verification/windows-runtime.mjs",
-      "web/page-body.html",
+      "web/index.html",
+      "web/package-lock.json",
+      "web/package.json",
       "web/public/art/card-back-casino.png",
       "web/public/art/card-back-home.png",
       "web/public/art/card-casino-jack.png",
@@ -3368,6 +3705,7 @@
       "web/src/sound.ts",
       "web/src/store-response.ts",
       "web/src/store.ts",
+      "web/src/strings.json",
       "web/src/table.ts",
       "web/src/timers.ts",
       "web/src/ui.ts",
@@ -3382,7 +3720,9 @@
       "web/test/register.mjs",
       "web/test/session.test.mjs",
       "web/test/sound.test.mjs",
-      "web/test/update.test.mjs"
+      "web/test/update.test.mjs",
+      "web/tsconfig.json",
+      "web/vite.config.ts"
     ]
   },
   "infrastructure": {

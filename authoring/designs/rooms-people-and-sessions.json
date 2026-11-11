@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/realtime-rooms",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "game",
@@ -50,7 +50,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/room-directory",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "room-session",
@@ -96,7 +96,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/guest-identity",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "guest-identity",
@@ -140,7 +140,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/presence",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "guest-identity",
@@ -194,7 +194,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/invitations",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "ports": [
         {
           "id": "invitations",
@@ -229,7 +229,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/private-views",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "ports": [
         {
           "id": "private-views",
@@ -248,7 +248,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/display-mode",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "configuration",
@@ -277,7 +277,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/video-calls",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "configuration",
@@ -336,7 +336,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/preferences",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "ports": [
         {
           "id": "preferences",

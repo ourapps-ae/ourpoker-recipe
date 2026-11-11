@@ -5,7 +5,7 @@ const { createHash } = require('node:crypto');
 const { app, session } = require('electron');
 const { start } = require('../../components/windows-desktop/desktop/src/main.cjs');
 const { desktopConfiguration } = require('./configuration.cjs');
-const { validateContext, writeResult } = require('../../components/video-calls/verification/result.mjs');
+const { validateContext, writeResult } = require('../../components/windows-desktop/verification/result.mjs');
 
 async function waitFor(check, milliseconds = 10000) {
   const deadline = Date.now() + milliseconds;

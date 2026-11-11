@@ -29,27 +29,12 @@ WORLD = C.load_world()
 MANIFEST = WORLD.manifests[E.APPLICATION]
 RESULTS = C.run(WORLD)
 
-# Marks, derived from the import and path strings of each source file (tests also from the application files they import).
-EXPECTED_MARKS = {"computer-players": 1, "guided-tour": 3, "store-update": 9, "video-calls": 14, "web-host": 1, "windows-desktop": 6}
+# Marks, derived from the import and path strings of each source file (tests also from the application files they import), plus
+# the web package files, which declare livekit-client for video-calls.
+EXPECTED_MARKS = {"android-host": 1, "apple-host": 1, "computer-players": 1, "guided-tour": 3, "store-update": 9, "video-calls": 16, "web-host": 2, "windows-desktop": 6}
 
-# Windows verification (the desktop verify and package scripts, windows-package.mjs) needs the verification harness that
-# video-calls ships, so a design with Windows and without video installs three files that name an excluded component.
-KNOWN_EXCLUDED = {"clinic": {
-    "implementation/desktop/scripts/package.cjs: video-calls/verification/result.mjs",
-    "implementation/desktop/src/verify.cjs: video-calls/verification/result.mjs",
-    "tests/e2e/verification/windows-package.mjs: video-calls/verification/result.mjs",
-}}
-
-# Core files that import a module installed only for some designs: the seams the manifest cannot close (INTEGRATION-GAPS.md, G10.4).
-KNOWN_SEAMS = {
-    "implementation/server/src/index.ts": {"./update-links", "./video"},
-    "implementation/server/src/parts.ts": {"./computers"},
-    "implementation/server/src/room.ts": {"./update-links", "./video"},
-    "implementation/web/src/main.ts": {"./guide", "./guide-style", "./shell", "./update", "./video"},
-    "implementation/web/src/screens.ts": {"./guide", "./video"},
-    "implementation/web/src/store.ts": {"./guide"},
-    "implementation/web/src/table.ts": {"./guide", "./video"},
-}
+# Stand-ins (`withoutComponent`): installed at the destination of the optional module they replace when the design leaves its component out.
+EXPECTED_STAND_INS = {"computer-players": 1, "guided-tour": 2, "store-update": 3, "video-calls": 4, "web-host": 1}
 
 
 def names_in(design):
@@ -96,36 +81,47 @@ class Installed(unittest.TestCase):
                 design = E.evaluate(WORLD, answers)["design"]
                 present = names_in(design)
                 installed = application.installed_artefacts(MANIFEST, present)
-                expected = [a for a in MANIFEST["artefacts"] if "component" not in a or a["component"] in present]
+                expected = [a for a in MANIFEST["artefacts"] if ("component" not in a or a["component"] in present)
+                            and ("withoutComponent" not in a or a["withoutComponent"] not in present)]
                 self.assertEqual(installed, expected)
                 self.assertEqual(RESULTS[name]["installed"], len(expected))
                 for artefact in MANIFEST["artefacts"]:
                     if "component" in artefact:
                         self.assertEqual(artefact in installed, artefact["component"] in present)
+                    if "withoutComponent" in artefact:
+                        self.assertEqual(artefact in installed, artefact["withoutComponent"] not in present)
+                destinations = [a["destination"] for a in installed]
+                self.assertEqual(len(destinations), len(set(destinations)), "one file per destination")
 
     def test_every_included_conditional_component_brings_its_files_and_every_excluded_one_takes_them_away(self):
         everything = application.installed_artefacts(MANIFEST, names_in(E.evaluate(WORLD, C.answer_sets(WORLD)["poker-league"])["design"]))
-        self.assertEqual(len(everything), len(MANIFEST["artefacts"]), "poker-league includes every conditional component")
+        self.assertEqual(len(everything), len(MANIFEST["artefacts"]) - sum(EXPECTED_STAND_INS.values()), "poker-league includes every conditional component")
         none = application.installed_artefacts(MANIFEST, {"ourapps-ae/ourpoker"})
         self.assertEqual(len(none), len(MANIFEST["artefacts"]) - sum(EXPECTED_MARKS.values()))
+        self.assertEqual(sum(1 for a in none if "withoutComponent" in a), sum(EXPECTED_STAND_INS.values()))
 
-    def test_no_installed_file_names_an_excluded_component_apart_from_the_known_windows_verification_files(self):
+    def test_every_stand_in_replaces_a_conditional_file_at_its_destination(self):
+        stand_ins = {}
+        for artefact in MANIFEST["artefacts"]:
+            if "withoutComponent" in artefact:
+                twins = [a for a in MANIFEST["artefacts"] if a["destination"] == artefact["destination"] and a is not artefact]
+                # a Swift stand-in declares what the component's Swift files declare, so it has no twin in this package
+                self.assertEqual([a.get("component") for a in twins], [] if artefact["source"].endswith(".swift") else [artefact["withoutComponent"]], artefact["source"])
+                name = artefact["withoutComponent"].split("/")[1]
+                stand_ins[name] = stand_ins.get(name, 0) + 1
+        self.assertEqual(stand_ins, EXPECTED_STAND_INS)
+
+    def test_no_installed_file_names_an_excluded_component(self):
         for name, found in RESULTS.items():
-            self.assertEqual(set(found["excluded"]), KNOWN_EXCLUDED.get(name, set()), name)
+            self.assertEqual(found["excluded"], [], name)
 
     def test_every_component_path_of_an_installed_file_is_an_artefact_destination_of_an_included_component(self):
         for name, found in RESULTS.items():
             self.assertEqual(found["unresolved"], [], name)
 
-    def test_the_seams_are_the_known_ones(self):
-        seams = {}
-        for found in RESULTS.values():
-            for line in found["seams"]:
-                source, specifier = line.split(": ")
-                seams.setdefault(source, set()).add(specifier)
-        self.assertEqual(seams, KNOWN_SEAMS)
-        generated = {line for found in RESULTS.values() for line in found["generated"]}
-        self.assertEqual(generated, {"implementation/web/src/i18n.ts: ./strings.json"})
+    def test_every_relative_import_of_an_installed_file_is_installed_for_every_answer_set(self):
+        for name, found in RESULTS.items():
+            self.assertEqual((found["seams"], found["generated"]), ([], []), name)
 
 
 class Checker(unittest.TestCase):

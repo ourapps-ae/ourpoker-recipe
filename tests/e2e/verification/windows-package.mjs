@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readContext, requireOperations, makeResult, writeResult } from '../components/video-calls/verification/result.mjs';
+import { readContext, requireOperations, makeResult, writeResult } from '../components/windows-desktop/verification/result.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const context = await readContext();

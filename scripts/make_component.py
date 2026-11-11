@@ -133,15 +133,18 @@ def artefact_pairs(files):
         pairs.append((source, destination))
 
     for f in files:
-        if f.startswith("implementation/server/src/"):
-            add(f, "server/src/" + f[len("implementation/server/src/"):])
-        elif f.startswith("implementation/web/src/"):
-            add(f, "web/src/" + f[len("implementation/web/src/"):])
-        elif f == "implementation/web/page-body.html":
-            add(f, "web/page-body.html")
+        if f.startswith("implementation/stand-ins/apple/Sources/"):
+            add(f, "ios/OurPoker/Sources/" + f[len("implementation/stand-ins/apple/Sources/"):])
+        elif f.startswith("implementation/stand-ins/"):
+            # a stand-in has the destination of the real module it replaces (stand_ins() pairs them)
+            add(f, f[len("implementation/stand-ins/"):])
+        elif f.startswith(("implementation/server/", "implementation/web/")):
+            add(f, f[len("implementation/"):])
         elif f.startswith("implementation/apple/Sources/"):
             add(f, "ios/OurPoker/Sources/" + f[len("implementation/apple/Sources/"):])
-        elif f.startswith("implementation/android/app/src/main/java/app/ourapps/ourpoker/"):
+        elif f.startswith("implementation/apple/"):
+            add(f, "ios/" + f[len("implementation/apple/"):])
+        elif f.startswith("implementation/android/"):
             add(f, "android/" + f[len("implementation/android/"):])
         elif f.startswith("implementation/desktop/"):
             add(f, "desktop/" + f[len("implementation/desktop/"):])
@@ -164,6 +167,14 @@ def artefact_pairs(files):
         elif f.startswith("tests/fixtures/"):
             add(f, "server/fixtures/" + f[len("tests/fixtures/"):])
     add("locales/strings.json", "resources/strings.json")
+    # the translations component's generator output (generate_translations), shipped so install alone gives every client its text
+    for f in files:
+        if f == "locales/generated/web/strings.json":
+            add(f, "web/src/strings.json")
+        elif f == "locales/generated/apple/Localizable.xcstrings":
+            add(f, "ios/OurPoker/Resources/Localizable.xcstrings")
+        elif f.startswith("locales/generated/android/"):
+            add(f, "android/app/src/main/res/" + f[len("locales/generated/android/"):])
     add("locales/lessons.json", "web/src/lessons.json")
     add("locales/lessons.json", "ios/OurPoker/Resources/lessons.json")
     add("locales/lessons.json", "android/app/src/main/res/raw/lessons.json")
@@ -222,6 +233,29 @@ def conditional_components():
     return {s: json.dumps(c, sort_keys=True) for s, c in make_recipe.conditions(manifests).items() if c is not None}
 
 
+# Files that need an optional component without naming its path: the web project's package files declare livekit-client,
+# which only video-calls' web code imports (the stand-in package files at the same destinations declare no livekit-client).
+DECLARED = {"implementation/web/package.json": "video-calls", "implementation/web/package-lock.json": "video-calls"}
+
+
+# Swift stand-ins declare what a component's Swift files declare (one module, no import names them), so they have no twin.
+STANDS_IN_FOR = {"implementation/stand-ins/apple/Sources/StoreVersion.swift": "store-update"}
+
+
+def stand_ins(pairs, conditions):
+    """source -> the component whose absence installs it: a stand-in under implementation/stand-ins/ replaces the real file
+    with its destination, which must be conditional (aepm installs one when the component is in, the other when it is not)."""
+    real = {d: s for s, d in pairs if not s.startswith("implementation/stand-ins/")}
+    out = {s: "ourapps-ae/" + c for s, c in STANDS_IN_FOR.items()}
+    for source, destination in pairs:
+        if source.startswith("implementation/stand-ins/") and source not in STANDS_IN_FOR:
+            twin = real.get(destination)
+            if twin is None or twin not in conditions:
+                raise SystemExit(f"{source}: no conditional file at {destination} to stand in for")
+            out[source] = conditions[twin]
+    return out
+
+
 def conditions_of(pairs):
     """source -> the `component` its artefact is installed for, or nothing. A file is conditional on the optional components its
     paths name; a test file also on those of the application files it imports (a test of an optional part is installed with the
@@ -229,8 +263,9 @@ def conditions_of(pairs):
     name. Components under different conditions cannot be one value: a host component (web, Apple, Android, Windows) wins, then
     the first by name, and authoring/check_conditional_artefacts.py reports the file for any design that leaves out another."""
     conditional = conditional_components()
-    destinations = {d: s for s, d in pairs}
-    reached = {s: {c for c, _ in component_imports.references(ROOT / s) if c in conditional} for s, _ in pairs}
+    destinations = {d: s for s, d in pairs if not s.startswith("implementation/stand-ins/")}
+    reached = {s: {c for c, _ in component_imports.references(ROOT / s) if c in conditional} | ({DECLARED[s]} if s in DECLARED else set())
+               for s, _ in pairs if not s.startswith("implementation/stand-ins/")}
     changed = True
     while changed:
         changed = False
@@ -271,11 +306,14 @@ def build_manifest(files):
     templated = {src for src in {p[0] for p in pairs} if "{{" in (ROOT / src).read_text(encoding="utf-8", errors="ignore") and (ROOT / src).suffix not in (".png", ".jpg", ".wav")}
     # the rules documents mention double braces nowhere; templates are exactly the files that name a setting
     conditions = conditions_of(pairs)
+    without = stand_ins(pairs, conditions)
     artefacts = []
     for s, d in pairs:
         item = {"source": s, "destination": d, "template": s in templated, "executable": False}
         if s in conditions:
             item["component"] = conditions[s]
+        if s in without:
+            item["withoutComponent"] = without[s]
         artefacts.append(item)
     packaged = sorted(set(files) | {"INSTRUCTIONS.md"})
     return {
@@ -370,8 +408,22 @@ def interfaces_json(manifest):
     return out
 
 
+def generate_translations():
+    """Run the translations component's generator on locales/strings.json into locales/generated/ (web, apple, android)."""
+    out = ROOT / "locales/generated"
+    generator = COMPONENTS / "translations/implementation/scripts/generate.py"
+    if out.exists():
+        import shutil
+        shutil.rmtree(out)
+    result = subprocess.run([sys.executable, "-B", str(generator), "--strings", str(ROOT / "locales/strings.json"), "--web", str(out / "web"),
+                             "--apple", str(out / "apple"), "--android", str(out / "android")], capture_output=True, text=True, timeout=120)
+    if result.returncode:
+        raise SystemExit("translations generator failed: " + (result.stderr.strip() or result.stdout.strip()))
+
+
 def main(argv):
     do_render = "--render" in argv
+    generate_translations()
     dump(ROOT / "assets/ASSETS.json", assets_list())
     manifest = build_manifest(listed_files())
     for path, document in interfaces_json(manifest).items():
@@ -386,6 +438,7 @@ def main(argv):
     check_templates(manifest)
     dump(ROOT / "component.json", manifest)
     marked = [a for a in manifest["artefacts"] if "component" in a]
+    print("stand-ins", sum(1 for a in manifest["artefacts"] if "withoutComponent" in a))
     print("files", len(manifest["files"]), "artefacts", len(manifest["artefacts"]), "templates", sum(a["template"] for a in manifest["artefacts"]),
           "conditional", len(marked), {c: sum(1 for a in marked if a["component"] == c) for c in sorted({a["component"] for a in marked})})
 

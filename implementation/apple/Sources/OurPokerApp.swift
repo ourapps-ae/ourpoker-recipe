@@ -6,7 +6,7 @@ struct OurPokerApp: App {
     @State private var model = TableModel()
 
     var body: some Scene {
-        ApplicationShell(configuration: ShellConfiguration(
+        ApplicationShell(ShellConfiguration(
             displayName: "{{applicationName}}",
             tint: Palette.gold,
             colourScheme: .dark,

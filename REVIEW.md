@@ -1,6 +1,6 @@
 # OurPoker: review guide for George
 
-Everything is local and uncommitted; nothing is pushed or published. Paths are from `/Users/george/Projects/com/my`. Python is `PYTHONPATH=aepm /Users/george/.pyenv/versions/3.12.8/bin/python3.12 -B` (written `PY` below). Last full run: 2026-11-09.
+Everything is local; nothing is pushed or published. Paths are from `/Users/george/Projects/com/my`. Python is `PYTHONPATH=aepm /Users/george/.pyenv/versions/3.12.8/bin/python3.12 -B` (written `PY` below). Last full run: 2026-11-09.
 
 ## 1. What exists
 
@@ -93,12 +93,11 @@ Verified (2026-11-09):
 - Components: `check_component --all` 37 ok, 2 fail only in the checker's clean copy for lack of `node_modules`; run in their folders, realtime-rooms (11 + request bodies + typecheck + 12 migration and interface tests) and video-calls (typecheck, 12 provider, 18 behaviour, 3 Python suites) all pass. The checker counted 661 of 668 tests across all 39; the 7 not counted are 4 realtime-rooms and 2 video-calls tests lost to the missing `node_modules` and 1 server-host test skipped in the clean copy.
 - aepm: 406 tests, 1 failure, 8 skipped: `test_execution_context.ExecutionContextTests.test_expiry_after_real_execution_prevents_completion` (authorization expiry; fails when run alone; aepm is not edited here, so it is open for aepm's owner).
 - ourapps: typecheck clean; 667 tests pass (115 + 472 + 80); site build ok.
-- A throwaway copy of the `poker-league` design type-checked with `tsc` and 3 server unit tests ran; the only type errors left are the generated `strings.json`, the platform `Env` type and a missing `livekit-client` link.
+- `authoring/try_install.py` (2026-11-11): the 39 components and the recipe packed, released, reviewed (required-local passed for all 40) and guardian-signed with disposable identities; `default`, `browser-only-no-extras`, `web-own-hardware`, `clinic` and `windows-only` installed with `aepm install`; per design `tsc` clean for server and web, the server tests pass, the server runs on Node, the web build loads in headless Chrome, lists the rooms and seats a player. The `default` design's iOS app builds with XcodeGen and `xcodebuild` for the simulator.
 
 Not verified:
-- Android (Kotlin: no kotlinc), Gradle and Xcode builds, Windows packaging, wrangler and vite builds, the end-to-end specs in `tests/e2e/`, real deployments, real video and store services.
-- The assembler does not exist: nothing asks the questions, resolves, installs or builds from a recipe.
-- Designs without video, updates, lessons, computer players or the web do not compile (G10.4).
+- Android builds (no Android SDK or kotlinc), Windows packaging, the browser and native end-to-end specs in `tests/e2e/`, real deployments, real video and store services.
+- Apple and Android designs without video or lessons do not compile (G11.1).
 
 ## 5. Decisions taken (change by editing the named place)
 
@@ -106,7 +105,7 @@ Not verified:
 2. Computer players: choice none / on-request / fill-empty, default on-request; `none` leaves out computer-players and poker-strategy (`QUESTIONS`, `WITHOUT_COMPUTERS`).
 3. Addresses: three follow-up questions guarded by `askWhen` (`QUESTIONS`).
 4. Bundle identifier: empty by default, derived `app.ourapps.ourpoker` (`BUNDLE_ID`).
-5. Inclusion only by `includedWhen`; apple-host for ios, macos or tvos (`INCLUDED_WHEN`).
+5. Inclusion only by `includedWhen`; apple-host for ios, macos or tvos; web-host for web or windows (`INCLUDED_WHEN`).
 6. The whole devices answer goes to `apple-host.targets`.
 7. Server size by scale: cloudflare free up to medium, paid at large; own hardware costs nothing (`JOBS`, `SCALE`).
 8. Secrets are references only, set by `{ref}` effects (`QUESTIONS`).
@@ -115,15 +114,14 @@ Not verified:
 11. One answer feeds every copy of a number; the rules file is the source (`CONFIGURATION`).
 12. The page overview omits the application; it has its own drawing (`draw_default_design.py`).
 13. Artefacts are marked by the optional components their import and path strings name (`conditions_of` in `scripts/make_component.py`); Swift and Kotlin are not marked; display-mode is always included so never marked.
-14. Mixed core files were split so each optional component is imported by one small module (server `video.ts`, `update-links.ts`, `computers.ts`; web `video.ts`, `shell.ts`, `guide-style.ts`).
-15. Windows verification files are marked windows-desktop, not video-calls.
+14. Each optional component is imported by one small module, with a stand-in at the same destination marked `withoutComponent` (`implementation/stand-ins/`).
+15. Windows verification takes its result writer from windows-desktop's `verification/result.mjs`.
 16. Rules 13 to 25 in component-standard.md fix the evaluator's choices (region and compliance not requested; provider written from the profile id; empty text writes nothing; asked beats unasked).
 17. `web/src/geometry.ts` now exports `Point` (a type error the typecheck found).
 
 ## 6. Open items
 
-- G10.4 (blocks assembly): 15 imports in 7 core files of modules installed only for some designs. Needs a stand-in condition in aepm, run-time discovery, or one interface per optional part.
-- G10.10 (blocks assembly): the Windows build packs the web client, but web-host is included only for the web target. Decide the condition.
-- G10.9: Windows verification needs video-calls' harness; Windows without video installs 3 files naming an excluded component (answer set `clinic`).
-- Deferred: G10.3 server address after deploy; G10.11 generated `strings.json`; client items G9.2 to G9.6; paper rows G7.15 and G7.16; G7.6 chip colours; G7.17 SVG safety rule.
-- Licence wording stays deferred. No commits, pushes or publishing done.
+- G11.1 (blocks assembly): Apple and Android designs without video or lessons do not compile; Swift and Kotlin stand-ins are needed.
+- G11.2: Apple and Android ship all four languages whatever the `languages` answer.
+- Deferred: client items G9.2 to G9.6; paper rows G7.15 and G7.16; G7.6 chip colours; G7.17 SVG safety rule.
+- Licence wording stays deferred. Nothing pushed or published.
