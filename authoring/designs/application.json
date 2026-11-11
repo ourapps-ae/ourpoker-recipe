@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/web-host",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "ports": [
         {
           "id": "theme",
@@ -394,7 +394,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/realtime-rooms",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "ports": [
         {
           "id": "game",
@@ -600,7 +600,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/turn-engine",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "ports": [
         {
           "id": "game-rules",
@@ -749,7 +749,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/theme",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "ports": [
         {
           "id": "theme",
@@ -1081,7 +1081,7 @@
       "name": "OurPoker",
       "kind": "application",
       "status": "example",
-      "revision": "0.4.1",
+      "revision": "0.4.2",
       "ports": [
         {
           "id": "game-adapter",

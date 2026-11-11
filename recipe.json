@@ -1,7 +1,7 @@
 {
   "format": 1,
   "name": "ourapps-ae/ourpoker",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "title": "OurPoker",
   "summary": "A complete Texas hold'em game for two to nine players: phones, tablets, computers, the web and a television as a shared table, optional video, computer players, lessons, rebuys and rising blinds.",
   "category": "games",
@@ -30,7 +30,7 @@
     {
       "id": "web-host",
       "name": "ourapps-ae/web-host",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "configuration": {
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
@@ -98,7 +98,7 @@
     {
       "id": "realtime-rooms",
       "name": "ourapps-ae/realtime-rooms",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "configuration": {},
       "includedWhen": null
     },
@@ -112,14 +112,14 @@
     {
       "id": "guest-identity",
       "name": "ourapps-ae/guest-identity",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "presence",
       "name": "ourapps-ae/presence",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "configuration": {
         "awayAfterSeconds": 30,
         "dropAfterSeconds": 1800,
@@ -171,7 +171,7 @@
     {
       "id": "turn-engine",
       "name": "ourapps-ae/turn-engine",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "configuration": {
         "settleMs": 4000,
         "staleMinutes": 30,
@@ -190,7 +190,7 @@
     {
       "id": "seating",
       "name": "ourapps-ae/seating",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "configuration": {
         "hostRemovesPeople": false
       },
@@ -309,7 +309,7 @@
     {
       "id": "theme",
       "name": "ourapps-ae/theme",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "configuration": {},
       "includedWhen": null
     },

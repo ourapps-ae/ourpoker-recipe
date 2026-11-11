@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/turn-engine",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "ports": [
         {
           "id": "game-rules",
@@ -196,7 +196,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/seating",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "ports": [
         {
           "id": "guest-identity",
