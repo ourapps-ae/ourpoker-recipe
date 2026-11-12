@@ -1,9 +1,20 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { mkdtemp, writeFile, rm } = require('node:fs/promises');
+const { mkdtemp, readFile, writeFile, rm } = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
 const { createPolicy } = require('../../components/windows-desktop/desktop/src/policy.cjs');
+
+test('every relative require of a packaged script is packaged', async () => {
+  const { sources } = require('../scripts/package.cjs');
+  const packaged = new Set(sources.map(([entry]) => entry));
+  for (const [entry, source] of sources) {
+    const text = await readFile(path.join(__dirname, '..', source), 'utf8');
+    for (const [, specifier] of text.matchAll(/(?:require\(|from\s+)'(\.{1,2}\/[^']+)'/g)) {
+      assert.ok(packaged.has(path.posix.join(path.posix.dirname(entry), specifier)), `${entry} needs ${specifier}`);
+    }
+  }
+});
 
 test('packaged layout resolves component and isolated web resources', async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), 'ourpoker-resources-'));

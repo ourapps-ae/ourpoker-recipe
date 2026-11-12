@@ -120,11 +120,11 @@ desktop = {
     "package.json": ("desktop/package.json 1-21", "Name templated."),
     "package-lock.json": ("desktop/package-lock.json", "Exact versions of electron and electron-builder."),
     "scripts/build.cjs": ("desktop/scripts/build.cjs 1-4", ""),
-    "scripts/package.cjs": ("desktop/scripts/package.cjs 1-93", "Unsigned Windows installer settings."),
+    "scripts/package.cjs": ("desktop/scripts/package.cjs 1-93", "Unsigned Windows installer settings; stages configuration.cjs; writes the icon, name, publisher and version into the executable."),
     "src/configuration.cjs": ("desktop/src/main.cjs 1-12, verify.cjs", "The windows-desktop configuration document, shared by main and verify."),
     "src/main.cjs": ("desktop/src/main.cjs 1-12", ""),
     "src/verify.cjs": ("desktop/src/verify.cjs 1-135", ""),
-    "test/integration.test.cjs": ("desktop/test/integration.test.cjs 1-20", ""),
+    "test/integration.test.cjs": ("desktop/test/integration.test.cjs 1-20", "Adds the check that every packaged script's relative requires are packaged."),
 }
 
 

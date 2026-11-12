@@ -152,11 +152,11 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/desktop/package.json` | 22 | desktop/package.json 1-21 | Name templated. |
 | `implementation/desktop/package-lock.json` | 3604 | desktop/package-lock.json | Exact versions of electron and electron-builder. |
 | `implementation/desktop/scripts/build.cjs` | 4 | desktop/scripts/build.cjs 1-4 |  |
-| `implementation/desktop/scripts/package.cjs` | 93 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings. |
+| `implementation/desktop/scripts/package.cjs` | 95 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings; stages configuration.cjs; writes the icon, name, publisher and version into the executable. |
 | `implementation/desktop/src/configuration.cjs` | 13 | desktop/src/main.cjs 1-12, verify.cjs | The windows-desktop configuration document, shared by main and verify. |
 | `implementation/desktop/src/main.cjs` | 8 | desktop/src/main.cjs 1-12 |  |
 | `implementation/desktop/src/verify.cjs` | 134 | desktop/src/verify.cjs 1-135 |  |
-| `implementation/desktop/test/integration.test.cjs` | 20 | desktop/test/integration.test.cjs 1-20 |  |
+| `implementation/desktop/test/integration.test.cjs` | 31 | desktop/test/integration.test.cjs 1-20 | Adds the check that every packaged script's relative requires are packaged. |
 
 ## Rules, text, assets
 

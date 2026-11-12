@@ -1,4 +1,3 @@
-const { build, Platform, Arch } = require('electron-builder');
 const path = require('node:path');
 const fs = require('node:fs/promises');
 const { createHash } = require('node:crypto');
@@ -25,24 +24,27 @@ function config(version) {
     directories: { output: 'artifacts', app: 'build/package-app' },
     files: ['desktop/src/**/*.cjs', 'components/**/*.cjs', 'components/**/*.mjs', 'package.json'],
     extraResources: [{ from: path.resolve(__dirname, '../build/web'), to: 'web' }],
-    extraMetadata: { version, main: 'desktop/src/main.cjs' }, asar: true, npmRebuild: false, publish: null,
+    extraMetadata: { version, main: 'desktop/src/main.cjs', author: { name: '{{applicationName}}' } }, asar: true, npmRebuild: false, publish: null,
     artifactName: '{{applicationId}}-${version}-windows-${arch}-unsigned.${ext}',
-    win: { target: [{ target: 'nsis', arch: ['x64'] }], signAndEditExecutable: false, signExecutable: false },
+    win: { target: [{ target: 'nsis', arch: ['x64'] }], icon: path.resolve(__dirname, '../build/web/icon.png'), signAndEditExecutable: true, signExecutable: false },
     nsis: { oneClick: false, perMachine: false, allowToChangeInstallationDirectory: true, runAfterFinish: false,
       },
   };
 }
 
+// [path in app.asar, path relative to the desktop folder]: every script the packaged main process loads.
+const sources = [
+  ...['main', 'verify', 'configuration'].map(name => [`desktop/src/${name}.cjs`, `src/${name}.cjs`]),
+  ...['main', 'shell', 'policy'].map(name => [`components/windows-desktop/desktop/src/${name}.cjs`, `../components/windows-desktop/desktop/src/${name}.cjs`]),
+  ['components/windows-desktop/verification/result.mjs', '../components/windows-desktop/verification/result.mjs'],
+];
+
 async function pack() {
+  const { build, Platform, Arch } = require('electron-builder');
   const version = process.env.APP_VERSION || require('../package.json').version;
   if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)) throw new Error('Invalid APP_VERSION');
   process.env.CSC_IDENTITY_AUTO_DISCOVERY = 'false';
   const root = path.resolve(__dirname, '..');
-  const sources = [
-    ['desktop/src/main.cjs', 'src/main.cjs'], ['desktop/src/verify.cjs', 'src/verify.cjs'],
-    ...['main', 'shell', 'policy'].map(name => [`components/windows-desktop/desktop/src/${name}.cjs`, `../components/windows-desktop/desktop/src/${name}.cjs`]),
-    ['components/windows-desktop/verification/result.mjs', '../components/windows-desktop/verification/result.mjs'],
-  ];
   const stage = path.join(root, 'build/package-app');
   await fs.rm(stage, { recursive: true, force: true });
   await fs.mkdir(stage, { recursive: true });
@@ -90,4 +92,4 @@ async function pack() {
   console.log('Unsigned Windows package built; native installation and runtime remain unverified.');
 }
 if (require.main === module) pack().catch((error) => { console.error(error); process.exitCode = 1; });
-module.exports = { config };
+module.exports = { config, sources };

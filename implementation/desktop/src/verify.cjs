@@ -54,7 +54,7 @@ async function verify() {
         assert.equal(createHash('sha256').update(executable).digest('hex'), evidence.executable.sha256);
         assert.equal(evidence.executable.machine, 0x8664);
         mark('executable-architecture');
-        assert.equal(Object.keys(evidence.scriptDigests).length, 6);
+        assert.equal(Object.keys(evidence.scriptDigests).length, 7);
         for (const [entry, expected] of Object.entries(evidence.scriptDigests)) {
           assert.ok(!path.isAbsolute(entry) && !entry.split('/').some(part => part === '..' || part === '.'));
           assert.equal(createHash('sha256').update(readFileSync(path.join(app.getAppPath(), entry))).digest('hex'), expected);
