@@ -152,6 +152,7 @@ test("every sound the manifest names is a file, and every file is a cue", () => 
   const files = readdirSync(join(root, "assets/sounds")).sort();
   assert.deepEqual(Object.values<string>(manifest.cues).sort(), files);
   for (const steps of Object.values<any[]>(manifest.events)) for (const step of steps) assert.ok((typeof step === "string" ? step : step.cue) in manifest.cues);
+  for (const name of [...Object.keys(manifest.cues), ...Object.keys(manifest.events)]) assert.match(name, /^[a-z][a-z0-9_-]{0,47}$/, `sound-cues rejects the name ${name}`);
 });
 
 test("every art file the web manifest lists exists", () => {

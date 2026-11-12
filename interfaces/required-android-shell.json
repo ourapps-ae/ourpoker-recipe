@@ -83,6 +83,31 @@
       ]
     },
     {
+      "name": "writeWrapper",
+      "description": "Copies the Gradle wrapper (gradlew, gradlew.bat and gradle/wrapper/gradle-wrapper.jar) into directory and makes gradlew executable, so ./gradlew builds the project with no Gradle installed.",
+      "params": [
+        {
+          "name": "directory",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
       "name": "validateSettings",
       "description": "Checks the settings against the collected grammars and the SDK range, and adds compileSdk.",
       "params": [
@@ -609,6 +634,49 @@
           "kotlinSerialization": {
             "type": "boolean",
             "description": "Applies the Kotlin serialization compiler plugin (for @Serializable classes)."
+          },
+          "testDependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Gradle coordinates group:name:version for the unit tests.",
+              "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_.-]+:[A-Za-z0-9_.+-]+$"
+            }
+          },
+          "repositories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Extra Maven repository, an https address such as https://jitpack.io.",
+              "pattern": "^https://[A-Za-z0-9.-]+(/[A-Za-z0-9._/-]*)?$"
+            }
+          },
+          "buildConfigStrings": {
+            "type": "array",
+            "description": "String BuildConfig fields; each is overridable at build time with ./gradlew -P<property>=<value>.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]*$"
+                },
+                "property": {
+                  "type": "string",
+                  "pattern": "^[a-z][A-Za-z0-9]*$"
+                },
+                "value": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9:/._-]*$"
+                }
+              },
+              "required": [
+                "name",
+                "property",
+                "value"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "required": [],

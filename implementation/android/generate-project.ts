@@ -1,8 +1,10 @@
-// Writes the Gradle project (settings, build files, manifest, launcher icon) for the design with android-host's
-// renderer and installed settings. Run from this folder: `node generate-project.ts`, then build with Gradle.
+// Writes the Gradle project (settings, build files, manifest, launcher icon, the Gradle wrapper) for the design with
+// android-host's renderer and installed settings. Run from this folder: `node generate-project.ts`, then `./gradlew assembleDebug`.
+// The server address is the design's; `./gradlew assembleDebug -PserverUrl=<address>` builds against another one (an emulator
+// reaches this Mac's localhost as http://10.0.2.2:<port>).
 import { cpSync, existsSync, readdirSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { renderAndroid, writeAndroid } from "../components/android-host/android/render.ts";
+import { renderAndroid, writeAndroid, writeWrapper } from "../components/android-host/android/render.ts";
 import { androidHostSettings } from "../components/android-host/android/settings.ts";
 
 const components = new URL("../components/", import.meta.url);
@@ -10,8 +12,13 @@ const has = (path: string) => existsSync(new URL(path, components));
 // Every installed component's Kotlin sources and resources join the application.
 const componentFolders = readdirSync(components).filter((name) => has(`${name}/android/src/main/java`)).sort().map((name) => `../components/${name}/android`);
 const video = has("video-calls/android/src/main/java");
-writeAndroid(fileURLToPath(new URL(".", import.meta.url)), renderAndroid(androidHostSettings, {
+const here = fileURLToPath(new URL(".", import.meta.url));
+writeWrapper(here);
+writeAndroid(here, renderAndroid(androidHostSettings, {
   componentFolders,
+  // LiveKit's audio switch is published on JitPack.
+  repositories: video ? ["https://jitpack.io"] : [],
+  buildConfigStrings: [{ name: "SERVER_URL", property: "serverUrl", value: "{{serverAddress}}" }],
   kotlinSerialization: true,
   activityName: "app.ourapps.ourpoker.MainActivity",
   orientation: "portrait",
@@ -27,6 +34,7 @@ writeAndroid(fileURLToPath(new URL(".", import.meta.url)), renderAndroid(android
     "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2",
     ...(video ? ["io.livekit:livekit-android:2.29.0", "io.livekit:livekit-android-compose-components:2.4.2"] : []),
   ],
+  testDependencies: ["junit:junit:4.13.2"],
 }));
 // The string resources of the design's languages only: the installed ones (strings/values*) hold all four.
 const languages = "{{languages}}".split(" ");

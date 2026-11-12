@@ -196,7 +196,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `locales/lessons.json` | {lines("locales/lessons.json")} | web/src/guide.ts 1-159, android ui/Guide.kt 90-105, ios Guide.swift | Lessons as data for guided-tour: ids, screens, steps naming string keys and anchors. |
 | `assets/ASSETS.json` | {lines("assets/ASSETS.json")} | new | The asset list; `tests/portable.test.ts` checks it against the files. |
 | `assets/art/icon.png`, `assets/web/manifest.json` | 1 file, an empty list | art/, web/public/art/manifest.json | The 1024 px icon; the source's court-card, card-back and scene pictures were single-colour placeholders and are not shipped, so cards and rooms are drawn by card-graphics and theme. A developer adds pictures to `web/public/art/` and lists them in its `manifest.json`. |
-| `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, myTurn and lowTime events). |
+| `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, my_turn and low_time events). |
 | `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files belong to apple-host (it writes them); only the TV images are mapped. |
 
 ## Tests (end-to-end specs)

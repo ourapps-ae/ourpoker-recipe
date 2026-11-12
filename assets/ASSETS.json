@@ -299,8 +299,8 @@
     },
     {
       "path": "web/sounds-manifest.json",
-      "bytes": 781,
-      "sha256": "48798539b432b5aaed1fee6580fa4557aecf1eea77ce433e23678beebb6d40f7"
+      "bytes": 783,
+      "sha256": "8d8e589faa2bb0498b69d63a52a201501e040285d362c6f508ec19002dd0b0d4"
     }
   ]
 }

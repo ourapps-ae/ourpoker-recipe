@@ -32,10 +32,10 @@
         "delayMs": 500
       }
     ],
-    "myTurn": [
+    "my_turn": [
       "turn"
     ],
-    "lowTime": [
+    "low_time": [
       "turn",
       {
         "cue": "turn",

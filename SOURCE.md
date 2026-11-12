@@ -65,7 +65,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/web/vite.config.ts` | 20 | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
 | `implementation/web/tsconfig.json` | 17 | web/tsconfig.json 1-16 | |
 | `implementation/apple/generate-project.ts` | 30 | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
-| `implementation/android/generate-project.ts` | 39 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
+| `implementation/android/generate-project.ts` | 47 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
 | `locales/generated/` | 6 files | i18n generator output | Written by `scripts/make_component.py` with translations' generator from `locales/strings.json`. |
 
 ## Stand-ins (`implementation/stand-ins/`, installed when the design leaves the component out)
@@ -121,7 +121,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `Updates.kt` | 4 | new | The update check's version comparison over store-update. |
 | `Video.kt` | 6 | new | The video session and room under the application's names (video-calls' `VideoSession`, LiveKit's `Room`). |
 | `ui/Lessons.kt` | 40 | TableViewModel.kt 87-92, ui/Guide.kt 170-184 | The lessons over guided-tour; the only application file that names it. |
-| `AppSettings.kt` | 13 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
+| `AppSettings.kt` | 14 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
 | `MainActivity.kt` | 107 | MainActivity.kt 1-137 | Subclass of the android-host's ShellActivity; screen flow. |
 | `Sound.kt` | 57 | Sound.kt 1-53 | Over the sound-cues player and preferences. |
 | `TableViewModel.kt` | 482 | TableViewModel.kt 1-493 | Lessons through the guided-tour component. |
@@ -169,7 +169,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `locales/lessons.json` | 248 | web/src/guide.ts 1-159, android ui/Guide.kt 90-105, ios Guide.swift | Lessons as data for guided-tour: ids, screens, steps naming string keys and anchors. |
 | `assets/ASSETS.json` | 306 | new | The asset list; `tests/portable.test.ts` checks it against the files. |
 | `assets/art/icon.png`, `assets/web/manifest.json` | 1 file, an empty list | art/, web/public/art/manifest.json | The 1024 px icon; the source's court-card, card-back and scene pictures were single-colour placeholders and are not shipped, so cards and rooms are drawn by card-graphics and theme. A developer adds pictures to `web/public/art/` and lists them in its `manifest.json`. |
-| `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, myTurn and lowTime events). |
+| `assets/sounds/` | 16 files | web/public/sounds/ | The game's 16 short sounds; `assets/web/sounds-manifest.json` is the sound-cues manifest (cues and the street, winner, my_turn and low_time events). |
 | `assets/apple/`, `assets/android/` | icon catalogues, launcher drawables | ios/OurPoker/Resources/Assets.xcassets, ios/OurPokerTV/Assets.xcassets, android res/drawable | Apple TV catalogue Contents.json files belong to apple-host (it writes them); only the TV images are mapped. |
 
 ## Tests (end-to-end specs)
@@ -184,7 +184,7 @@ Copied from the source and mapped back to the application layout by the artefact
 | `tests/e2e/apple/*` (6) | 339 | ios/OurPokerTests/{Contract,Session,Guide,ChallengeLayout}Tests.swift, OurPokerUITests/HomeButtonsUITests.swift, VerificationSupport/ServerAddress.swift |
 | `tests/e2e/android/*` (3) | 190 | android app/src/test FixturesTest.kt, SoundSettingTest.kt; androidTest FixtureScreenTest.kt (strings looked up by name) |
 | `tests/fixtures/*.json` (15) | 3575 | server/fixtures/* |
-| `tests/portable.test.ts` | 217 | new |
+| `tests/portable.test.ts` | 218 | new |
 | `examples/configuration.ts` | 46 | new |
 
 ## Moved to components
