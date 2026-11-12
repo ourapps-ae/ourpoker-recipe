@@ -259,11 +259,11 @@ On a Mac with Homebrew, once:
 
 ```
 brew install --cask temurin android-commandlinetools
-export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
+export ANDROID_HOME=$(brew --prefix)/share/android-commandlinetools
 export JAVA_HOME=$(/usr/libexec/java_home)
 yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
 sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-# for an emulator:
+# for an emulator (on an Intel Mac, x86_64 in place of arm64-v8a):
 sdkmanager --sdk_root=$ANDROID_HOME "emulator" "system-images;android-36;google_apis;arm64-v8a"
 avdmanager create avd -n ourpoker -k "system-images;android-36;google_apis;arm64-v8a" -d pixel_7
 ```
@@ -276,12 +276,12 @@ node generate-project.ts         # the Gradle files and wrapper, the manifest an
 ./gradlew :app:assembleDebug     # app/build/outputs/apk/debug/app-debug.apk
 ./gradlew :app:testDebugUnitTest
 $ANDROID_HOME/emulator/emulator -avd ourpoker &
-$ANDROID_HOME/platform-tools/adb wait-for-device
+$ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 1; done'
 $ANDROID_HOME/platform-tools/adb install -r app/build/outputs/apk/debug/app-debug.apk
 $ANDROID_HOME/platform-tools/adb shell am start -n <packageId>/.MainActivity
 ```
 
-The app calls the design's `serverAddress`; `./gradlew :app:assembleDebug -PserverUrl=<address>` builds it against another server. The emulator reaches the Mac's own server at `http://10.0.2.2:8788`, not `localhost`. `-PversionName=<version>` sets the version the app shows (local builds show `0.0.0-dev`). Release builds (`./gradlew :app:assembleRelease`) read the keystore from `OURPOKER_KEYSTORE`, `OURPOKER_KEYSTORE_PASSWORD`, `OURPOKER_KEY_ALIAS` and `OURPOKER_KEY_PASSWORD` (from the secret named by `androidSigning`).
+The app calls the design's `serverAddress`; `./gradlew :app:assembleDebug -PserverUrl=<address>` builds it against another server. In the emulator `localhost` is the emulator itself: for the server running on the Mac, build with `-PserverUrl=http://10.0.2.2:8788`. `-PversionName=<version>` sets the version the app shows (local builds show `0.0.0-dev`). Release builds (`./gradlew :app:assembleRelease`) read the keystore from `OURPOKER_KEYSTORE`, `OURPOKER_KEYSTORE_PASSWORD`, `OURPOKER_KEY_ALIAS` and `OURPOKER_KEY_PASSWORD` (from the secret named by `androidSigning`).
 
 ### Windows (built on a Mac or on Windows)
 
