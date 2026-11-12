@@ -184,7 +184,7 @@ components/   one folder per component of the design; server-host's server/ hold
 .aepm/        aepm's records: definition, lock, assembly, packages, receipts
 ```
 
-Every value that depends on an answer is already in the installed files (aepm renders the templates), and the generated string files are shipped, so nothing has to be generated before the commands below; the Apple and Android `generate-project.ts` steps write the native projects from them. Tools: Node 26.5 with npm 11. Apple: Xcode 26 or later and XcodeGen. Android: JDK 17, the Android SDK (platform 36) and Gradle 9.4. Windows: a Windows machine with Node 26.5.
+Every value that depends on an answer is already in the installed files (aepm renders the templates), and the generated string files are shipped, so nothing has to be generated before the commands below; the Apple and Android `generate-project.ts` steps write the native projects from them. Tools: Node 26.5 with npm 11. Apple: Xcode 26 or later and XcodeGen. Android: JDK 17 or later and the Android SDK (platform 36); the project carries its Gradle wrapper. Windows: Node 26.5 on a Mac or on Windows to build the installer; Windows 10 or 11 (x64) to run it.
 
 ### Local: the server on Node and the web client in a browser (no account)
 
@@ -216,21 +216,30 @@ The local commands are the deployment: run `npm ci` and `npm start` in `server/`
 ```
 cd <application>/server
 npm ci
-export CLOUDFLARE_ACCOUNT_ID=<from the secret named by hostingAccount>
-export CLOUDFLARE_API_TOKEN=<from the same secret>
+npx wrangler login       # once, in a browser; or export CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN from the secret named by hostingAccount
 npm run deploy           # wrangler deploy --config ../components/server-host/server/wrangler.jsonc
 ```
 
-Wrangler prints the worker's address (`https://<roomPrefix>server.<your subdomain>.workers.dev`). `npm run dev` runs the same worker in the local Workers runtime with no account. Video needs the LiveKit values as Worker secrets: `npx wrangler secret put LIVEKIT_API_KEY --config ../components/server-host/server/wrangler.jsonc` and the same for `LIVEKIT_URL` and `LIVEKIT_API_SECRET`.
+Wrangler prints the worker's address (`https://<roomPrefix>server.<your subdomain>.workers.dev`); `curl <address>/health` answers `{"ok":true,"app":"ourpoker"}`. `npm run deploy -- --name <name>` deploys under another worker name. `npm run dev` runs the same worker in the local Workers runtime with no account. Video needs the LiveKit values as Worker secrets: `npx wrangler secret put LIVEKIT_API_KEY --config ../components/server-host/server/wrangler.jsonc` and the same for `LIVEKIT_URL` and `LIVEKIT_API_SECRET`.
 
 ### Two-step deploy
 
 The clients carry the server's address, which is known only after the server's first deploy:
 
 1. Install with `serverAddress` left at its default, then deploy the server (Cloudflare above, or own hardware) and note its https address.
-2. Add `serverAddress` with that address to `answers.json`, run `aepm design`, `aepm resolve` and `aepm install` again into a new APP (part 3, steps 4, 5 and 7; or update the installed application with `aepm propose-update`, `aepm approve` and `aepm apply`), then build the clients below. For the web client alone, `VITE_SERVER=<address> npm run build` gives the same result without reinstalling.
+2. Add `serverAddress` with that address, and `webAddress` with the https address the web client will be served from, to `answers.json`. Run `aepm design`, `aepm resolve` and `aepm install` again into a new APP (part 3, steps 4, 5 and 7; or update the installed application with `aepm propose-update`, `aepm approve` and `aepm apply`).
+3. Deploy the server again from the new APP: it accepts the web client only from `webAddress` (and from localhost). Then build the clients below.
 
-Publishing the web client: copy `web/dist/` to the host at the `webAddress` answer (the account named by `webDeploy`).
+For a web client run on localhost, `VITE_SERVER=<address> npm run build` alone points it at the deployed server without reinstalling.
+
+Publishing the web client: copy `web/dist/` to the host at the `webAddress` answer (the account named by `webDeploy`). On Cloudflare, from `web/` after `npm run build`, with the server's Wrangler:
+
+```
+node -e 'const fs = require("fs"), d = fs.readFileSync("../components/server-host/server/wrangler.jsonc", "utf8").match(/"(\w+_date)": "([^"]+)"/); fs.writeFileSync("wrangler.jsonc", JSON.stringify({ name: process.argv[1], [d[1]]: d[2], assets: { directory: "./dist" } }))' <name>
+../server/node_modules/.bin/wrangler deploy
+```
+
+The first line writes `web/wrangler.jsonc`: the worker name, the server's date setting and the `dist` folder as static files. It serves at `https://<name>.<your subdomain>.workers.dev`, the subdomain the server's deploy printed; answer `webAddress` with that address in step 2.
 
 ### Apple (Xcode; an Apple developer membership only for devices and TestFlight)
 
@@ -246,28 +255,48 @@ The `OurPoker` scheme builds iPhone, iPad and Mac (Mac Catalyst); `OurPokerTV` e
 
 ### Android (the Android SDK; a signing key only for release builds)
 
+On a Mac with Homebrew, once:
+
+```
+brew install --cask temurin android-commandlinetools
+export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
+export JAVA_HOME=$(/usr/libexec/java_home)
+yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
+sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+# for an emulator:
+sdkmanager --sdk_root=$ANDROID_HOME "emulator" "system-images;android-36;google_apis;arm64-v8a"
+avdmanager create avd -n ourpoker -k "system-images;android-36;google_apis;arm64-v8a" -d pixel_7
+```
+
+Build, test and run:
+
 ```
 cd <application>/android
-node generate-project.ts         # settings.gradle.kts, build.gradle.kts, app/build.gradle.kts, the manifest and the design's languages' strings
-gradle wrapper --gradle-version 9.4.0
-ANDROID_HOME=<the Android SDK> ./gradlew :app:assembleDebug
+node generate-project.ts         # the Gradle files and wrapper, the manifest and the design's languages' strings
+./gradlew :app:assembleDebug     # app/build/outputs/apk/debug/app-debug.apk
+./gradlew :app:testDebugUnitTest
+$ANDROID_HOME/emulator/emulator -avd ourpoker &
+$ANDROID_HOME/platform-tools/adb wait-for-device
+$ANDROID_HOME/platform-tools/adb install -r app/build/outputs/apk/debug/app-debug.apk
+$ANDROID_HOME/platform-tools/adb shell am start -n <packageId>/.MainActivity
 ```
 
-Release builds read the keystore from `OURPOKER_KEYSTORE`, `OURPOKER_KEYSTORE_PASSWORD`, `OURPOKER_KEY_ALIAS` and `OURPOKER_KEY_PASSWORD` (from the secret named by `androidSigning`).
+The app calls the design's `serverAddress`; `./gradlew :app:assembleDebug -PserverUrl=<address>` builds it against another server. The emulator reaches the Mac's own server at `http://10.0.2.2:8788`, not `localhost`. `-PversionName=<version>` sets the version the app shows (local builds show `0.0.0-dev`). Release builds (`./gradlew :app:assembleRelease`) read the keystore from `OURPOKER_KEYSTORE`, `OURPOKER_KEYSTORE_PASSWORD`, `OURPOKER_KEY_ALIAS` and `OURPOKER_KEY_PASSWORD` (from the secret named by `androidSigning`).
 
-### Windows (on Windows)
+### Windows (built on a Mac or on Windows)
 
 ```
-cd <application>\web
+cd <application>/web
 npm ci
-cd <application>\desktop
+cd <application>/desktop
 npm ci
-npm run build            # builds the web client in desktop mode into desktop\build\web
-npm start                # runs the desktop application
-npm run package:win      # the installer under desktop\artifacts
+npm run check            # the desktop tests
+npm run build            # builds the web client in desktop mode into desktop/build/web
+npm start                # runs the desktop application on this machine
+APP_VERSION=<version> npm run package:win   # artifacts/<applicationId>-<version>-windows-x64-unsigned.exe, an unsigned x64 installer
 ```
 
-Building and packaging need no account.
+On Windows use the same commands in PowerShell, with `$env:APP_VERSION='<version>'; npm run package:win`. On a Windows 10 or 11 machine, `<installer>.exe /S /D=<folder>` installs without questions (or run it and follow the installer); `<folder>\<applicationName>.exe` starts the application and `"<folder>\Uninstall <applicationName>.exe" /S` removes it. The installer is unsigned: a copy marked as downloaded from the internet meets SmartScreen's warning, and Smart App Control, where it is on, can refuse it. The application calls the design's `serverAddress`; for the Mac's own server, forward it to the Windows machine, for example `ssh -R 127.0.0.1:8788:localhost:8788 <windows machine>`. Building and packaging need no account.
 
 ## 5. For maintainers of the recipe repository
 
@@ -293,7 +322,7 @@ PY authoring/draw_default_design.py
 - `tests/evaluate_recipe_test.py` runs aepm's evaluator (`aepm.recipe`, the same code as `aepm design`) on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code, and validates each design with aepm's definition validator. It evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination with aepm's CEL subset and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `OURAPPS`.
 - `tests/conditional_artefacts_test.py` and `authoring/check_conditional_artefacts.py` check, for every answer set, that the files aepm installs reach no component the design leaves out, that every stand-in replaces a marked module at its destination, and that every relative import of an installed file is installed.
 - `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
-- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with Gradle where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm.
+- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with `./gradlew` where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm. Options, for designs with the target: `--android` builds against the local server, runs the unit tests and plays a hand on the emulator `--avd` (default `ourpoker`); `--windows HOST` packages the installer, then over ssh installs it silently on HOST, plays a hand in the installed application and uninstalls it (where Smart App Control refuses the unsigned installer, it plays the unpacked application instead and the result says so); `--cloudflare NAME` runs the two-step deploy as workers NAME and NAME-web and the browser check against them (Wrangler logged in; the workers stay deployed).
 - `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. 
 
 ### What the test answer sets cover

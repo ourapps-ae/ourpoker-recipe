@@ -11,22 +11,40 @@ passed. Then, per answers: evaluates the design with aepm's evaluator (aepm.reci
   web     npm ci; tsc --noEmit; npm run build (pointed at the running server); vite preview
   desktop node scripts/build.cjs (Windows designs: the web client in desktop mode; Electron packaging needs Windows)
   apple   node generate-project.ts; xcodegen generate; xcodebuild for the iOS and tvOS simulators; only the answered languages
-  android node generate-project.ts; only the answered languages' strings; Gradle build where ANDROID_HOME is set
+  android node generate-project.ts; only the answered languages' strings; ./gradlew :app:assembleDebug where ANDROID_HOME is set
   browser headless Chrome over the DevTools protocol: the page loads with web-host's head, the room list comes from the
           server, a player names themself and sits down, the server lists them, a computer player (or a second person) joins,
           the game starts and the player's two cards are dealt, the table fits a 1280x800 window; no script error; screenshots
           of home, lobby and table are kept beside the design
 
+With options, for designs that have the target:
+  --android         the build points at a server of its own on this machine (-PserverUrl=http://10.0.2.2:PORT);
+                    ./gradlew :app:testDebugUnitTest; the AVD --avd (default ourpoker) boots headless as emulator-5584, the APK
+                    replaces any earlier install (its data too) with its permissions granted, and the app is played to a dealt hand:
+                    name, seat, a computer player, start, the action buttons; the server lists the player; no crash;
+                    android-table.png is kept. Needs ANDROID_HOME and the AVD (INSTRUCTIONS.md part 4, Android).
+  --windows HOST    npm ci, npm run check and npm run package:win here (unsigned x64 NSIS installer, APP_VERSION the recipe version);
+                    on HOST over ssh (PowerShell and Node): silent install, the installed exe played to a dealt hand over the DevTools
+                    protocol with a loopback server address forwarded to a server of its own on this machine, silent uninstall; the
+                    folder used on HOST is removed. windows-home.png and windows-table.png are kept.
+  --cloudflare NAME the two-step deploy of INSTRUCTIONS.md part 4: the installed server deployed as worker NAME, the design installed
+                    again with serverAddress and webAddress, the server deployed again, the web client built and deployed as the
+                    static worker NAME-web, and the browser check run against them. Needs Wrangler logged in (`npx wrangler login`);
+                    the workers stay deployed.
+
 Usage (from the recipe folder; python 3.12, node 26.5.0, Chrome):
   PYTHONPATH=<aepm checkout> python3.12 -B authoring/try_install.py [ANSWERS ...] [--components DIR] [--work DIR] [--chrome PATH]
+                                         [--android [--avd NAME]] [--windows HOST] [--cloudflare NAME]
 ANSWERS is an answer-set id of recipe.json (`default` for its default answers) or a path to an answers JSON file;
 without ANSWERS: default, local-web, fill-empty-own-hardware and lounge-web-ios. The work folder (default: a new temporary folder) keeps
 the store, identities, installed applications and logs; report.json there holds every result. Exit status 0 when every step passed.
 """
 import argparse
 import base64
+import html
 import json
 import os
+import re
 import shutil
 import signal
 import socket
@@ -213,7 +231,7 @@ def tree(app):
     return {"top": top, "components": components}
 
 
-def build_and_run(work, name, app, chrome, results):
+def build_and_run(work, name, app, options, results):
     processes = Processes()
     npm_env = {**os.environ, "NO_COLOR": "1", "npm_config_audit": "false", "npm_config_fund": "false", "npm_config_update_notifier": "false"}
     try:
@@ -223,14 +241,20 @@ def build_and_run(work, name, app, chrome, results):
         results["serverTsc"] = "passed"
         output = run(["npx", "vitest", "run"], work, f"{name}-server-tests", cwd=server, env=npm_env, timeout=600)
         results["serverTests"] = next((line.strip() for line in output.splitlines() if line.strip().startswith("Tests ")), "passed")
-        port = free_port()
-        log = log_path(work, f"{name}-server-run")
-        process = processes.start(["npm", "start"], server, {**npm_env, "PORT": str(port), "DATA_DIRECTORY": str(work / "designs" / name / "data")}, log)
-        wait_for("listening on", log, process)
+
+        def start_server(label):
+            """One server process with its own room data, so each check starts from empty rooms; returns its port."""
+            port = free_port()
+            log = log_path(work, f"{name}-server-run{label}")
+            process = processes.start(["npm", "start"], server, {**npm_env, "PORT": str(port), "DATA_DIRECTORY": str(work / "designs" / name / f"data{label}")}, log)
+            wait_for("listening on", log, process)
+            return port
+
+        port = start_server("")
         address = f"http://127.0.0.1:{port}"
         health = get_json(address + "/health")
         results["serverRun"] = f"{address} health {json.dumps(health)}"
-        native(work, name, app, results)
+        native(work, name, app, results, start_server, options)
         if not (app / "web/vite.config.ts").exists():
             return  # no web or windows target: the web sources are installed, but the web project's build comes with web-host
         run(["npm", "ci"], work, f"{name}-web-npm-ci", cwd=web, env=npm_env)
@@ -245,18 +269,20 @@ def build_and_run(work, name, app, chrome, results):
             if "manifest" in page or not (app / "desktop/build/web/assets").is_dir():
                 raise Step("desktop build: the desktop page links the manifest or has no assets")
             results["desktopWebBuild"] = "passed"
+            if options.windows:
+                results["windows"] = windows_run(work, name, app, start_server("-windows"), options.windows, npm_env)
         web_port = free_port()
         log = log_path(work, f"{name}-web-preview")
         process = processes.start(["npx", "vite", "preview", "--host", "127.0.0.1", "--port", str(web_port), "--strictPort"], web, npm_env, log)
         wait_for(str(web_port), log, process)
-        results["browser"] = browser_smoke(work, name, chrome, f"http://127.0.0.1:{web_port}/", address, processes)
+        results["browser"] = browser_smoke(work, name, options.chrome, f"http://127.0.0.1:{web_port}/", address, processes)
     finally:
         processes.stop()
 
 
 # ---- the native projects ----
 
-def native(work, name, app, results):
+def native(work, name, app, results, start_server, options):
     """Apple: generate the project and build each scheme for its simulator (needs Xcode and XcodeGen). Android: generate the
     project and check its string resources; build it with Gradle only where an Android SDK is set (ANDROID_HOME)."""
     languages = json.loads((app / ".aepm/definition.json").read_text())["configuration"].get("languages", "en fr de es").split()
@@ -288,12 +314,296 @@ def native(work, name, app, results):
         wanted = sorted("values" if code == "en" else f"values-{code}" for code in languages)
         if folders != wanted:
             raise Step(f"android: string folders {folders}, the design's languages want {wanted}")
-        if os.environ.get("ANDROID_HOME") and shutil.which("gradle"):
-            run(["gradle", "wrapper", "--gradle-version", "9.4.0"], work, f"{name}-android-wrapper", cwd=android)
-            run(["./gradlew", ":app:assembleDebug"], work, f"{name}-android-build", cwd=android, timeout=3600)
+        if os.environ.get("ANDROID_HOME"):
+            port = start_server("-android") if options.android else None
+            extra = [f"-PserverUrl=http://10.0.2.2:{port}"] if options.android else []
+            run(["./gradlew", ":app:assembleDebug", *extra], work, f"{name}-android-build", cwd=android, timeout=3600)
             results["android"] = f"built ({' '.join(folders)})"
+            if options.android:
+                output = run(["./gradlew", ":app:testDebugUnitTest"], work, f"{name}-android-unit-tests", cwd=android, timeout=1800)
+                results["androidUnitTests"] = "passed" if "BUILD SUCCESSFUL" in output else output[-500:]
+                results["androidRun"] = android_run(work, name, android, port, options.avd)
+        elif options.android:
+            raise Step("--android needs ANDROID_HOME (INSTRUCTIONS.md part 4, Android)")
         else:
             results["android"] = f"generated ({' '.join(folders)}); not built (no ANDROID_HOME)"
+
+
+# ---- the Android emulator (--android) ----
+
+def android_run(work, name, android, port, avd):
+    """Installs the debug build on a new emulator of AVD avd and plays to a dealt hand against the local server."""
+    sdk = Path(os.environ["ANDROID_HOME"])
+    adb, serial = str(sdk / "platform-tools/adb"), "emulator-5584"
+    package = re.search(r'applicationId = "([^"]+)"', (android / "app/build.gradle.kts").read_text()).group(1)
+    shots = work / "designs" / name
+    processes = Processes()
+    log = log_path(work, f"{name}-android-emulator")
+    emulator = processes.start([str(sdk / "emulator/emulator"), "-avd", avd, "-port", "5584", "-no-window", "-no-audio", "-no-snapshot",
+                                "-no-boot-anim", "-crash-report-mode", "never"], work, os.environ.copy(), log)
+    device = lambda *args, **kw: run([adb, "-s", serial, *args], work, f"{name}-android-adb", **kw)  # noqa: E731
+
+    def screen():
+        device("shell", "uiautomator", "dump", "/sdcard/ui.xml")
+        found = {}
+        for text, desc, bounds in re.findall(r'text="([^"]*)"[^>]*?content-desc="([^"]*)"[^>]*?bounds="([^"]*)"', device("exec-out", "cat", "/sdcard/ui.xml")):
+            x1, y1, x2, y2 = map(int, re.findall(r"\d+", bounds))
+            for key in (text, desc):
+                if key:
+                    found.setdefault(html.unescape(key), ((x1 + x2) // 2, (y1 + y2) // 2))
+        return found
+
+    def tap(label, seconds=60):
+        deadline = time.time() + seconds
+        while time.time() < deadline:
+            found = screen()
+            if label in found:
+                device("shell", "input", "tap", *map(str, found[label]))
+                return
+            time.sleep(1)
+        raise Step(f"android: no '{label}' on screen within {seconds}s; saw {sorted(found)[:30]}")
+
+    try:
+        for _ in range(300):
+            if emulator.poll() is not None:
+                raise Step(f"android emulator exited {emulator.returncode}; see logs/{name}-android-emulator.log")
+            if run([adb, "-s", serial, "shell", "getprop", "sys.boot_completed"], work, f"{name}-android-boot", check=False).strip().endswith("1"):
+                break
+            time.sleep(2)
+        else:
+            raise Step("android emulator did not boot within 600s")
+        run([adb, "-s", serial, "uninstall", package], work, f"{name}-android-uninstall", check=False)
+        device("install", "-g", str(android / "app/build/outputs/apk/debug/app-debug.apk"), timeout=300)
+        device("logcat", "-c")
+        device("shell", "am", "start", "-W", "-n", f"{package}/.MainActivity")
+        tap("No, I know how to play")
+        tap("Your name")
+        device("shell", "input", "text", "Droid")
+        device("shell", "input", "keyevent", "111")
+        tap("Save")
+        tap("Sit down")
+        tap("Add a computer player")
+        tap("Start the game")
+        deadline = time.time() + 60
+        while not {"Fold", "Check", "Call"} & {label.split(" ")[0] for label in screen()}:
+            if time.time() > deadline:
+                raise Step("android: no Fold, Check or Call button after the game started")
+            time.sleep(1)
+        rooms = get_json(f"http://127.0.0.1:{port}/rooms")
+        if not any("Droid" in room["names"] for room in rooms):
+            raise Step("android: the server does not list the player")
+        (shots / "android-table.png").write_bytes(subprocess.run([adb, "-s", serial, "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
+        crashes = device("logcat", "-d", "-b", "crash")
+        if package in crashes:
+            raise Step(f"android: the app crashed\n{crashes[-2000:]}")
+        return f"passed on AVD {avd}: launched, player seated (server lists \"Droid\"), a computer player added, a hand dealt with the action buttons shown, no crash"
+    finally:
+        run([adb, "-s", serial, "emu", "kill"], work, f"{name}-android-stop", check=False)
+        try:
+            emulator.wait(60)
+        except subprocess.TimeoutExpired:
+            pass
+        processes.stop()
+
+
+# ---- Windows (--windows HOST) ----
+
+def windows_run(work, name, app, port, host, npm_env):
+    """Packages the unsigned installer here, then on host (ssh to PowerShell, with Node) installs it silently, plays to a dealt hand in
+    the installed application over the DevTools protocol and uninstalls it. When Windows' application control (Smart App Control)
+    refuses the unsigned installer, the unpacked application (the files the installer places) is copied and played instead, and the
+    result says so. A loopback server address is forwarded to this machine's server. The folder used on host is removed, and the
+    application's data folder too when the run created it."""
+    desktop = app / "desktop"
+    version = json.loads((ROOT / "recipe.json").read_text())["version"]
+    run(["npm", "ci"], work, f"{name}-desktop-npm-ci", cwd=desktop, env=npm_env)
+    run(["npm", "run", "check"], work, f"{name}-desktop-check", cwd=desktop, env=npm_env)
+    run(["npm", "run", "package:win"], work, f"{name}-desktop-package", cwd=desktop,
+        env={**npm_env, "APP_VERSION": version, "CSC_IDENTITY_AUTO_DISCOVERY": "false"}, timeout=1800)
+    installer = next((desktop / "artifacts").glob("*-windows-x64-unsigned.exe"))
+    configuration = (desktop / "src/configuration.cjs").read_text()
+    app_name = re.search(r"appName: '([^']+)'", configuration).group(1)
+    server = re.search(r"serverOrigin: '([^']+)'", configuration).group(1)
+    folder = f"{app_name.lower()}-try-{time.strftime('%Y%m%d-%H%M%S')}"
+    script, smoke = work / "windows-run.ps1", work / "desktop-smoke.mjs"
+    script.write_text(WINDOWS_RUN.replace("{{applicationName}}", app_name).replace("{{server}}", server))
+    smoke.write_text(DESKTOP_SMOKE)
+    ssh = ["ssh", "-o", "BatchMode=yes", host]
+    processes = Processes()
+    loopback = re.match(r"http://(localhost|127\.0\.0\.1):(\d+)$", server)
+
+    def remote(argument, label):
+        output = run(ssh + [f"powershell -NoProfile -ExecutionPolicy Bypass -File {folder}\\windows-run.ps1 {argument}"],
+                     work, f"{name}-windows-{label}", timeout=1800, check=False)
+        return next((line[len("result: "):] for line in output.splitlines() if line.startswith("result: ")), "failed: no result line")
+
+    try:
+        run(ssh + [f"New-Item -ItemType Directory -Force {folder} | Out-Null"], work, f"{name}-windows-folder")
+        run(["scp", "-q", "-o", "BatchMode=yes", str(installer), str(script), str(smoke), f"{host}:{folder}/"], work, f"{name}-windows-copy", timeout=1800)
+        if loopback:
+            processes.start(["ssh", "-o", "BatchMode=yes", "-o", "ExitOnForwardFailure=yes", "-N", "-R", f"127.0.0.1:{loopback.group(2)}:127.0.0.1:{port}", host],
+                            work, os.environ.copy(), log_path(work, f"{name}-windows-tunnel"))
+            time.sleep(3)
+        result = remote(f"-Installer {installer.name}", "run")
+        if result.startswith("blocked"):
+            unpacked = work / "designs" / name / "windows-unpacked.tgz"
+            run(["tar", "-czf", str(unpacked), "-C", str(desktop / "artifacts"), "win-unpacked"], work, f"{name}-windows-unpacked", env={**os.environ, "COPYFILE_DISABLE": "1"})
+            run(["scp", "-q", "-o", "BatchMode=yes", str(unpacked), f"{host}:{folder}/"], work, f"{name}-windows-copy-unpacked", timeout=1800)
+            result = remote(f"-Unpacked {unpacked.name}", "run-unpacked").replace("passed: ", f"passed: installer {result}; instead ", 1)
+        for shot in ("home", "table"):
+            run(["scp", "-q", "-o", "BatchMode=yes", f"{host}:{folder}/desktop-{shot}.png", str(work / "designs" / name / f"windows-{shot}.png")],
+                work, f"{name}-windows-shots", check=False)
+    finally:
+        processes.stop()
+        run(ssh + [f"Remove-Item -Recurse -Force {folder}"], work, f"{name}-windows-cleanup", check=False)
+    if not result.startswith("passed"):
+        raise Step(f"windows on {host}: {result}; see logs/{name}-windows-run*.log")
+    return f"{installer.name} packaged here; on {host}: {result}"
+
+
+WINDOWS_RUN = r"""param([string]$Installer, [string]$Unpacked)
+$ErrorActionPreference = 'Continue'
+$R = Split-Path -Parent $MyInvocation.MyCommand.Path
+$I = "$R\installed"; $N = '{{applicationName}}'
+$hadData = Test-Path "$env:APPDATA\$N"
+$result = 'failed: nothing ran'
+try {
+  if ($Installer) {
+    try { $p = Start-Process "$R\$Installer" -ArgumentList '/S', "/D=$I" -Wait -PassThru -ErrorAction Stop }
+    catch { if ($_.Exception.Message -match 'Application Control') { "result: blocked by Smart App Control (unsigned)"; exit }; throw }
+    if ($p.ExitCode -ne 0 -or -not (Test-Path "$I\$N.exe")) { throw "silent install exit $($p.ExitCode)" }
+    $how = 'silent install'
+  } else {
+    New-Item -ItemType Directory -Force $I | Out-Null
+    tar -xzf "$R\$Unpacked" -C $I --strip-components 1
+    $how = 'the unpacked application'
+  }
+  $exe = Get-Item "$I\$N.exe"
+  $info = "$N.exe $($exe.VersionInfo.ProductVersion) by $($exe.VersionInfo.CompanyName), $((Get-AuthenticodeSignature $exe.FullName).Status)"
+  $info
+  Start-Process $exe.FullName -ArgumentList '--remote-debugging-port=9333' -ErrorAction Stop | Out-Null
+  $env:DEBUG_PORT = '9333'; $env:SERVER = '{{server}}'; $env:SHOT = "$R\desktop.png"
+  $smoke = cmd /c "node `"$R\desktop-smoke.mjs`" 2>&1"
+  $code = $LASTEXITCODE
+  $smoke
+  Get-Process $N -ErrorAction SilentlyContinue | Stop-Process -Force
+  Start-Sleep 2
+  if ($code -ne 0) { throw "smoke: $(($smoke | Select-Object -Last 3) -join ' ')" }
+  if ($Installer) {
+    Start-Process "$I\Uninstall $N.exe" -ArgumentList '/S' -Wait -ErrorAction Stop
+    Start-Sleep 5
+    if (Test-Path "$I\$N.exe") { throw "uninstall left $N.exe" }
+    $how += ', silent uninstall'
+  }
+  $result = "passed: $info; $how; $($smoke | Select-Object -Last 1)"
+} catch { $result = "failed: $($_.Exception.Message)" }
+finally {
+  Get-Process $N -ErrorAction SilentlyContinue | Stop-Process -Force
+  if (-not $hadData) { Start-Sleep 2; Remove-Item -Recurse -Force "$env:APPDATA\$N" -ErrorAction SilentlyContinue }
+}
+"result: $result"
+"""
+
+DESKTOP_SMOKE = r"""
+import { writeFileSync } from "node:fs";
+const port = process.env.DEBUG_PORT, server = process.env.SERVER, shot = process.env.SHOT;
+const pause = (ms) => new Promise((done) => setTimeout(done, ms));
+let target;
+for (let i = 0; i < 300 && !target; i++) {
+  try { target = (await (await fetch(`http://127.0.0.1:${port}/json/list`)).json()).find((t) => t.type === "page" && !t.url.startsWith("devtools")); } catch {}
+  if (!target) await pause(100);
+}
+if (!target) throw new Error("no application window");
+const socket = new WebSocket(target.webSocketDebuggerUrl);
+await new Promise((done, fail) => { socket.onopen = done; socket.onerror = fail; });
+let id = 0;
+const pending = new Map(), exceptions = [];
+socket.onmessage = ({ data }) => {
+  const message = JSON.parse(data);
+  if (message.id) { const task = pending.get(message.id); pending.delete(message.id); message.error ? task.reject(new Error(JSON.stringify(message.error))) : task.resolve(message.result); }
+  if (message.method === "Runtime.exceptionThrown") exceptions.push(message.params.exceptionDetails.exception?.description ?? message.params.exceptionDetails.text);
+};
+const command = (method, params = {}) => new Promise((resolve, reject) => { const n = ++id; pending.set(n, { resolve, reject }); socket.send(JSON.stringify({ id: n, method, params })); });
+const evaluate = async (expression) => (await command("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true })).result.value;
+const wait = async (expression, what, ms = 30000) => { const until = Date.now() + ms; while (!(await evaluate(expression))) { if (Date.now() > until) throw new Error(`timed out: ${what}; exceptions ${JSON.stringify(exceptions)}`); await pause(200); } };
+const shoot = async (suffix) => { const s = await command("Page.captureScreenshot", { format: "png" }); writeFileSync(shot.replace(/\.png$/, `-${suffix}.png`), Buffer.from(s.data, "base64")); };
+await command("Runtime.enable"); await command("Page.enable");
+await wait("document.readyState === 'complete'", "page load");
+const url = await evaluate("location.href");
+if (await evaluate("!!document.querySelector('.mode-picker [data-focus=player]')")) await evaluate("document.querySelector('.mode-picker [data-focus=player]').click()");
+await wait("[...document.querySelectorAll('[data-guide=roomJoin]')].some((b) => !b.disabled)", "room list from the server");
+await shoot("home");
+await evaluate("[...document.querySelectorAll('[data-guide=roomJoin]')].find((b) => !b.disabled).click()");
+await wait("!!document.querySelector('input')", "name entry");
+await evaluate("const i = document.querySelector('input'); i.value = 'Windows'; i.dispatchEvent(new Event('input', { bubbles: true })); [...document.querySelectorAll('button')].find((b) => b.textContent === 'Save').click()");
+await pause(300);
+await evaluate("localStorage.setItem('beginner', 'false'); [...document.querySelectorAll('[data-guide=roomJoin]')].find((b) => !b.disabled)?.click()");
+const seated = async () => (await (await fetch(`${server}/rooms`)).json()).some((room) => room.names.includes("Windows"));
+for (const until = Date.now() + 30000; !(await seated());) { if (Date.now() > until) throw new Error(`the server never listed the player; exceptions ${JSON.stringify(exceptions)}`); await pause(200); }
+await wait("!!document.querySelector('[data-guide=start]')", "the lobby");
+await evaluate("document.querySelector('[data-guide=addBot]')?.click()");
+await wait("!document.querySelector('[data-guide=start]').disabled", "start enabled");
+await evaluate("document.querySelector('[data-guide=start]').click()");
+await wait("document.querySelectorAll('.mycards .handcard .card:not(.back)').length === 2", "own cards dealt", 40000);
+await pause(1500);
+await shoot("table");
+if (exceptions.length) throw new Error(`script errors: ${JSON.stringify(exceptions)}`);
+socket.close();
+console.log(`page ${url}, room list from ${server}, player seated (server lists "Windows"), a computer player added, a hand dealt with own two cards face up, no script error`);
+process.exit(0);
+"""
+
+
+# ---- Cloudflare (--cloudflare NAME) ----
+
+# INSTRUCTIONS.md part 4's command that writes web/wrangler.jsonc for the static web worker.
+WEB_WRANGLER = ('const fs = require("fs"), d = fs.readFileSync("../components/server-host/server/wrangler.jsonc", "utf8").match(/"(\\w+_date)": "([^"]+)"/); '
+                'fs.writeFileSync("wrangler.jsonc", JSON.stringify({ name: process.argv[1], [d[1]]: d[2], assets: { directory: "./dist" } }))')
+
+def cloudflare_run(work, store, policy, world, name, answers, app, options):
+    """The two-step deploy of INSTRUCTIONS.md part 4: deploys the installed server as worker NAME, installs the design again with
+    serverAddress and webAddress (NAME-web on the same workers.dev subdomain), deploys the server again from that install, builds the
+    web client, deploys it as the static worker NAME-web, and runs the browser check against the two. Both workers stay deployed."""
+    if answers.get("server") != "cloudflare":
+        raise Step("--cloudflare needs a design whose server answer is cloudflare")
+    if f"node -e '{WEB_WRANGLER}' <name>" not in (ROOT / "INSTRUCTIONS.md").read_text():
+        raise Step("INSTRUCTIONS.md part 4 differs from try_install's web wrangler.jsonc command; make them the same")
+    worker, stamp = options.cloudflare, time.strftime("%Y%m%d%H%M%S")
+    env = {**os.environ, "NO_COLOR": "1", "npm_config_audit": "false", "npm_config_fund": "false", "npm_config_update_notifier": "false"}
+
+    def deploy(folder, label):
+        output = run(["npm", "run", "deploy", "--", "--name", worker, "--var", f"CODE_VERSION:{stamp}-{label}"], work, f"{name}-cloudflare-deploy-{label}",
+                     cwd=folder / "server", env=env, timeout=900)
+        found = re.search(rf"https://{re.escape(worker)}\.([a-z0-9-]+)\.workers\.dev", output)
+        if not found:
+            raise Step(f"cloudflare: no workers.dev address in logs/{name}-cloudflare-deploy-{label}.log")
+        return found.group(0), found.group(1)
+
+    def answering(url, what):
+        for _ in range(30):
+            if run(["curl", "-fsS", "-o", "/dev/null", url], work, f"{name}-cloudflare-wait", check=False, timeout=30) == "":
+                return
+            time.sleep(2)
+        raise Step(f"cloudflare: {what} {url} does not answer")
+
+    address, subdomain = deploy(app, "first")
+    answering(address + "/health", "server")
+    web_address = f"https://{worker}-web.{subdomain}.workers.dev"
+    second = f"{name}-cloudflare"
+    _, app2 = install(work, store, policy, world, second, {**answers, "serverAddress": address, "webAddress": web_address})
+    run(["npm", "ci"], work, f"{second}-server-npm-ci", cwd=app2 / "server", env=env)
+    deploy(app2, "second")
+    run(["npm", "ci"], work, f"{second}-web-npm-ci", cwd=app2 / "web", env=env)
+    run(["npm", "run", "build"], work, f"{second}-web-build", cwd=app2 / "web", env=env)
+    run(["node", "-e", WEB_WRANGLER, f"{worker}-web"], work, f"{second}-web-wrangler", cwd=app2 / "web")
+    run([str(app2 / "server/node_modules/.bin/wrangler"), "deploy"], work, f"{second}-web-deploy", cwd=app2 / "web", env=env, timeout=900)
+    answering(web_address + "/", "web client")
+    processes = Processes()
+    try:
+        browser = browser_smoke(work, second, options.chrome, web_address + "/", address, processes)
+    finally:
+        processes.stop()
+    return {"server": address, "web": web_address, "browser": browser}
 
 
 def kotlin_stand_ins(work):
@@ -405,6 +715,10 @@ def main(argv):
     parser.add_argument("--components", type=Path, default=ROOT.parent.parent / "components")
     parser.add_argument("--work", type=Path)
     parser.add_argument("--chrome", default=os.environ.get("CHROME", CHROME))
+    parser.add_argument("--android", action="store_true", help="build against this machine's server, run the unit tests, and play a hand on the emulator")
+    parser.add_argument("--avd", default="ourpoker", help="the Android virtual device --android starts (default ourpoker)")
+    parser.add_argument("--windows", metavar="HOST", help="package the Windows installer here, then install, play a hand and uninstall on HOST over ssh")
+    parser.add_argument("--cloudflare", metavar="NAME", help="deploy the server as worker NAME and the web client as NAME-web, two-step, and check them")
     args = parser.parse_args(argv)
     work = (args.work or Path(tempfile.mkdtemp(prefix="ourpoker-install-", dir=os.path.realpath(tempfile.gettempdir())))).resolve()
     work.mkdir(parents=True, exist_ok=True)
@@ -440,7 +754,9 @@ def main(argv):
             results["install"] = "passed"
             results["components"] = len(design["components"])
             results["tree"] = tree(app)
-            build_and_run(work, name, app, args.chrome, results)
+            build_and_run(work, name, app, args, results)
+            if args.cloudflare:
+                results["cloudflare"] = cloudflare_run(work, store, policy, world, name, answers, app, args)
         except (Step, subprocess.TimeoutExpired) as error:
             ok = False
             results["error"] = str(error)
