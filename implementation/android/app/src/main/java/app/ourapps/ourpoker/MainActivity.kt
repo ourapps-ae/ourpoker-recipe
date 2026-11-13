@@ -7,6 +7,8 @@ import ae.controls.ControlsTheme
 import ae.controls.HelpBulb
 import ae.theme.ThemeSet
 import android.Manifest
+import androidx.activity.result.contract.ActivityResultContracts
+import android.content.pm.PackageManager
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,19 +38,23 @@ import app.ourapps.ourpoker.ui.soloGame
 class MainActivity : ShellActivity() {
     private val vm: TableViewModel by viewModels()
 
-    override val permissions = listOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+    // The camera and microphone are asked for only when the person turns video on (the header's toggles).
+    private val media = listOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+    private val askMedia = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+        vm.permissionsGranted = result[Manifest.permission.CAMERA] == true
+    }
     override val language: ShellLanguage = AppLanguage.shell
     override val palette: ShellPalette = appTheme.colour.let { ShellPalette(it.primary, 0xFF9FB3C8, it.background, it.surface, it.onPrimary) }
 
-    override fun onShellCreated() { Sound.init(applicationContext) }
+    override fun onShellCreated() {
+        Sound.init(applicationContext)
+        vm.askForMedia = { askMedia.launch(media.toTypedArray()) }
+        vm.permissionsGranted = checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+    }
 
     @Composable
     override fun Content() {
         ControlsTheme(appTheme) { Root(vm) }
-    }
-
-    override fun onPermissionsChecked(allGranted: Boolean, result: Map<String, Boolean>) {
-        vm.permissionsGranted = result[Manifest.permission.CAMERA] == true
     }
 
     override fun onShellResumed() = vm.resumed()

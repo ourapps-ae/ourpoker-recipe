@@ -62,7 +62,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/server/vitest.config.ts` | 16 | server/vitest.config.ts 1-19 | The room tests use server-host's `wrangler.jsonc`. |
 | `implementation/web/package.json`, `package-lock.json` | 23, 1075 | web/package.json 1-20, web/package-lock.json | Exact versions; with `livekit-client` (installed with video-calls). |
 | `implementation/web/index.html` | 10 | web/index.html 1-21 | The body and the entry; web-host's Vite configuration writes the head. |
-| `implementation/web/vite.config.ts` | 18 | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
+| `implementation/web/vite.config.ts` | 21 | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
 | `implementation/web/tsconfig.json` | 17 | web/tsconfig.json 1-16 | |
 | `implementation/apple/generate-project.ts` | 29 | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
 | `implementation/android/generate-project.ts` | 46 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
@@ -122,9 +122,9 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `Video.kt` | 6 | new | The video session and room under the application's names (video-calls' `VideoSession`, LiveKit's `Room`). |
 | `ui/Lessons.kt` | 40 | TableViewModel.kt 87-92, ui/Guide.kt 170-184 | The lessons over guided-tour; the only application file that names it. |
 | `AppSettings.kt` | 14 | app/build.gradle.kts buildConfigField SERVER_URL, UPDATES_ENABLED | Template. |
-| `MainActivity.kt` | 107 | MainActivity.kt 1-137 | Subclass of the android-host's ShellActivity; screen flow. |
+| `MainActivity.kt` | 113 | MainActivity.kt 1-137 | Subclass of the android-host's ShellActivity; screen flow. |
 | `Sound.kt` | 57 | Sound.kt 1-53 | Over the sound-cues player and preferences. |
-| `TableViewModel.kt` | 482 | TableViewModel.kt 1-493 | Lessons through the guided-tour component. |
+| `TableViewModel.kt` | 492 | TableViewModel.kt 1-493 | Lessons through the guided-tour component. |
 | `net/Model.kt` | 212 | net/Model.kt 1-212 | Wire model. |
 | `net/TableClient.kt` | 90 | net/TableClient.kt 1-87 | REST client; the live connection is realtime-rooms'. |
 | `ui/EndScreen.kt` | 80 | ui/EndScreen.kt 1-72 | Rows from tournament. |
@@ -175,7 +175,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/repository/scripts/build-ipa.sh` | 30 | McInPoker ios/build-ipa.sh 1-19 | The generated project, its signing variables and export options. |
 | `implementation/repository/scripts/build-apple-testflight.sh` | 93 | McInPoker scripts/build-apple-testflight.sh 1-81 | Stops first when the Apple helpers are missing. |
 | `implementation/repository/release/app.json` | 11 | new | The application description publish_release.py turns into my-app.json (a template). |
-| `implementation/repository/gitignore` | 32 | new | Installed as .gitignore. |
+| `implementation/repository/gitignore` | 58 | new | Installed as .gitignore. |
 
 ## Rules, text, assets
 

@@ -1,6 +1,8 @@
 # Installed packages and build outputs
 node_modules/
 web/dist/
+web/dist-desktop/
+web/.wrangler/
 desktop/build/
 desktop/artifacts/
 server/.wrangler/
@@ -12,8 +14,32 @@ android/app/build/
 android/local.properties
 ios/build/
 ios/DerivedData/
-*.xcodeproj/xcuserdata/
-*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Written by web/'s Cloudflare deploy step (INSTRUCTIONS.md part 4)
+web/wrangler.jsonc
+
+# Written by ios/generate-project.ts and xcodegen from the installed files
+ios/project.yml
+ios/OurPoker.xcodeproj/
+ios/ExportOptions-*.plist
+ios/OurPoker/Info.plist
+ios/OurPoker/MacCatalyst.entitlements
+ios/OurPoker/Resources/Localizable.xcstrings
+ios/OurPokerTV/Info.plist
+ios/OurPokerTV/Assets.xcassets/**/Contents.json
+
+# Written by android/generate-project.ts from the installed files
+android/settings.gradle.kts
+android/build.gradle.kts
+android/gradle.properties
+android/gradlew
+android/gradlew.bat
+android/gradle/
+android/app/build.gradle.kts
+android/app/src/main/AndroidManifest.xml
+android/app/src/main/res/mipmap-anydpi-v26/
+android/app/src/main/res/values/strings.xml
+android/app/src/main/res/values-*/strings.xml
 
 # aepm's records stay (definition, lock, assembly, receipts, evidence); its package copies and archives stay on the
 # machine that installed the application.

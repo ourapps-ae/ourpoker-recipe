@@ -22,7 +22,7 @@ An agent answers them from your description and asks you only what it cannot inf
 2. How many people play at the same time? (small: up to 10; medium: 11 to 100; large: 101 to 1,000)
 3. Which languages? (en, fr, de, es)
 4. Which look? (night: dark green felt and striped card backs; lounge: warm brown and plain card backs; for the whole application)
-5. How many players per table? (2 to 9; a larger group splits across the two tables)
+5. How many players per table? (2 to 9; there are always two tables, so at most 18 play at once and anyone else watches)
 6. Starting chips? (5,000)
 7. How long is each blind level? (600 seconds)
 8. How many rebuys? (1, until level 3)

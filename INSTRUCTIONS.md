@@ -15,10 +15,10 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 1 | `targets` | set of `web ios android macos windows tvos` | always | all six | "phones" is ios and android; "television" is tvos; "computers" is macos and windows; "browser" is web | no device is named |
 | 2 | `webAddress` | text, an https address, or `http://localhost` with a port | `'web' in targets` | `http://localhost:5173` | the developer's own address | the web version is to be served somewhere other than this machine (the server refuses a plain http origin other than localhost) |
 | 3 | `bundleId` | text, for example `com.yourname.poker` | always | empty: the application derives `app.ourapps.ourpoker` | a name the developer gives | never |
-| 4 | `scale` | `small` `medium` `large` | always | small | the most people playing at the same time, not the seats at one table: up to 10 is small (9 friends); 11 to 100 is medium (a dozen or 15 friends, a club); 101 to 1,000 is large (a company event) | the group size is not stated |
+| 4 | `scale` | `small` `medium` `large` | always | small | the most people playing at the same time, not the seats at one table: up to 10 is small (9 friends); 11 to 100 is medium (a dozen or 15 friends, a club); 101 to 1,000 is large (a company event) | the group size is not stated; over 18 people, say that only 18 play at once (two tables of up to 9) and the rest watch |
 | 5 | `languages` | set of `en fr de es` | always | all four | the languages named | never |
 | 6 | `look` | `night` `lounge` | always | night | dark or warm style words: the look of the whole application on every device (both rooms, every screen, the felt and the card backs) | never |
-| 7 | `players` | integer 2 to 9 | always | 9 | seats at one table; the game has two tables (rooms Casino and Home, both in the room list), so a larger group splits across them: about a dozen is 9 (or 6 for two even tables); once a game runs, newcomers watch | never |
+| 7 | `players` | integer 2 to 9 | always | 9 | seats at one table; the game always has two tables (rooms Casino and Home), so at most twice this number play at once (18 with 9) and everyone else watches: the scale answer sizes the servers, not the tables; about a dozen is 9 (or 6 for two even tables) | never |
 | 8 | `startingChips` | integer 100 to 1000000 | always | 5000 | the number named | never |
 | 9 | `levelSeconds` | integer 60 to 3600 | always | 600 | minutes converted to seconds | never |
 | 10 | `rebuys` | integer 0 to 5 | always | 1 (until level 3) | "no rebuys" is 0 | never |
@@ -276,7 +276,7 @@ npx wrangler login       # once, in a browser; or export CLOUDFLARE_ACCOUNT_ID a
 npm run deploy           # wrangler deploy --config ../components/server-host/server/wrangler.jsonc
 ```
 
-Wrangler prints the worker's address (`https://<roomPrefix>server.<your subdomain>.workers.dev`); `curl <address>/health` answers `{"ok":true,"app":"ourpoker"}`. `npm run deploy -- --name <name>` deploys under another worker name. `npm run dev` runs the same worker in the local Workers runtime with no account. Video needs the LiveKit values as Worker secrets: `npx wrangler secret put LIVEKIT_API_KEY --config ../components/server-host/server/wrangler.jsonc` and the same for `LIVEKIT_URL` and `LIVEKIT_API_SECRET`.
+Wrangler prints the worker's address. The worker's name is the `name` in `components/server-host/server/wrangler.jsonc`, `<roomPrefix>server` (`ourpoker-server` for the default answers), so the address is `https://ourpoker-server.<your subdomain>.workers.dev`; with `npm run deploy -- --name <name>` the worker is `<name>` and the address `https://<name>.<your subdomain>.workers.dev`. `curl <address>/health` answers `{"ok":true,"app":"ourpoker"}`. `npm run dev` runs the same worker in the local Workers runtime with no account. Video needs the LiveKit values as Worker secrets: `npx wrangler secret put LIVEKIT_API_KEY --config ../components/server-host/server/wrangler.jsonc` and the same for `LIVEKIT_URL` and `LIVEKIT_API_SECRET`.
 
 ### Two-step deploy
 
@@ -304,6 +304,7 @@ cd <application>/ios
 node generate-project.ts         # project.yml, the Info.plist files and the string catalogue of the design's languages (SERVER_ADDRESS=<address> overrides the address)
 xcodegen generate
 xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=macOS,variant=Mac Catalyst' CODE_SIGNING_ALLOWED=NO build
 xcodebuild -project OurPoker.xcodeproj -scheme OurPokerTV -destination 'generic/platform=tvOS Simulator' CODE_SIGNING_ALLOWED=NO build
 ```
 
@@ -353,6 +354,17 @@ APP_VERSION=<version> npm run package:win   # artifacts/<applicationId>-<version
 ```
 
 On Windows use the same commands in PowerShell, with `$env:APP_VERSION='<version>'; npm run package:win`. On a Windows 10 or 11 machine, `<installer>.exe /S /D=<folder>` installs without questions (or run it and follow the installer); `<folder>\<applicationName>.exe` starts the application and `"<folder>\Uninstall <applicationName>.exe" /S` removes it. The installer is unsigned: a copy marked as downloaded from the internet meets SmartScreen's warning, and Smart App Control, where it is on, can refuse it. The application calls the design's `serverAddress`; for the Mac's own server, forward it to the Windows machine, for example `ssh -R 127.0.0.1:8788:localhost:8788 <windows machine>`. Building and packaging need no account.
+
+### Versions
+
+Every client shows the version it was built with; a build given none shows `dev` (web and Windows), `0.0.0-dev` (Android) or `0.0.0` (Apple). The release workflow sets them from the `v<version>` tag. For a local build:
+
+| Client | How to give the version |
+|---|---|
+| Web | `VITE_APP_VERSION=<version> npm run build` in `web/` (`APP_VERSION` is read when `VITE_APP_VERSION` is not set) |
+| Windows | `APP_VERSION=<version> npm run package:win` in `desktop/`: the installer, the executable and the page inside it |
+| Android | `./gradlew :app:assembleDebug -PversionName=<version> -PversionCode=<number>` (the code is a whole number that rises with each release) |
+| Apple | `xcodebuild ... MARKETING_VERSION=<version> CURRENT_PROJECT_VERSION=<number> build` |
 
 ## 5. For maintainers of the recipe repository
 

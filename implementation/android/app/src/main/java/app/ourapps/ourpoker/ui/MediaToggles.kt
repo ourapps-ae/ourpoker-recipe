@@ -63,7 +63,7 @@ fun SoundToggle(vm: TableViewModel, modifier: Modifier = Modifier) {
 }
 
 // The table header's microphone and camera: the toggles while in the video room; a reconnect
-// button when the room was cut or could not be joined; struck through without camera permission.
+// button when the room was cut or could not be joined; struck through until the person turns video on (asking for the camera).
 // Nothing for a seat without video.
 @Composable
 fun HeaderMedia(vm: TableViewModel, spacing: Dp) {
@@ -72,10 +72,10 @@ fun HeaderMedia(vm: TableViewModel, spacing: Dp) {
     val room by vm.video.room.collectAsState()
     if (!hasVideo) return
     if (!permitted) {
-        val label = L("camera_unavailable")
+        // Video is off until the person turns it on: either toggle asks for the camera and microphone.
         Row(horizontalArrangement = Arrangement.spacedBy(spacing)) {
-            FilledTonalIconToggleButton(checked = false, onCheckedChange = {}, enabled = false, colors = toggleColours()) { Icon(Icons.Filled.MicOff, contentDescription = label) }
-            FilledTonalIconToggleButton(checked = false, onCheckedChange = {}, enabled = false, colors = toggleColours()) { Icon(Icons.Filled.VideocamOff, contentDescription = label) }
+            FilledTonalIconToggleButton(checked = false, onCheckedChange = { vm.askForMedia() }, colors = toggleColours()) { Icon(Icons.Filled.MicOff, contentDescription = L("mic_off")) }
+            FilledTonalIconToggleButton(checked = false, onCheckedChange = { vm.askForMedia() }, colors = toggleColours()) { Icon(Icons.Filled.VideocamOff, contentDescription = L("cam_off")) }
         }
     } else if (room != null) {
         MediaToggles(vm, spacing = spacing)

@@ -64,7 +64,7 @@ data class UiState(
 enum class Zoom { BOARD, SHOWCASE, MINE, FOLDED, HAND }
 
 class TableViewModel(app: Application) : AndroidViewModel(app) {
-    private val prefs = app.getSharedPreferences("ourpoker", 0)
+    private val prefs = app.getSharedPreferences("ourpoker", 0).also { forgetSeatAfterInstall(app, it) }
     private val client = TableClient(AppSettings.SERVER_URL)
     val video = Video(app) { DisplayPolicy.canCapture(false) }
     // Video grant from the last join; reconnects after a relaunch need a fresh join, so it is kept in memory only.
@@ -77,6 +77,8 @@ class TableViewModel(app: Application) : AndroidViewModel(app) {
     val permitted: StateFlow<Boolean> = _permitted
     var permissionsGranted = false
         set(value) { field = value; _permitted.value = value; if (value) connectVideo() }
+    // Asks for the camera and microphone; set by the activity, called when the person turns video on.
+    var askForMedia: () -> Unit = {}
     val sound = SoundSetting(prefs)
     // Lessons run by the guided-tour component (ui/Lessons.kt).
     val tour = Lessons(app, prefs)
@@ -480,3 +482,11 @@ private fun UiState.withView(v: View): UiState = copy(view = v, viewAt = System.
 // A view only replaces one from the same room with a lower version: an action's reply and the
 // pushed view can arrive in either order.
 private fun newer(v: View, current: View?): Boolean = current == null || current.roomId != v.roomId || v.version > current.version
+
+// A new install (a new version, or the same one installed again) starts at the room list: the seat remembered by the
+// previous install is forgotten, so the app does not open at a table the person left long ago.
+private fun forgetSeatAfterInstall(app: Application, prefs: android.content.SharedPreferences) {
+    val installed = runCatching { app.packageManager.getPackageInfo(app.packageName, 0).lastUpdateTime }.getOrDefault(0L)
+    if (prefs.getLong("installedAt", -1L) == installed) return
+    prefs.edit().remove("token").remove("roomId").putLong("installedAt", installed).apply()
+}

@@ -310,14 +310,18 @@ def native(work, name, app, results, start_server, options):
             run(["xcodegen", "generate"], work, f"{name}-ios-xcodegen", cwd=ios)
             project = (ios / "project.yml").read_text()
             built = []
-            for scheme, platform in (("OurPoker", "iOS"), ("OurPokerTV", "tvOS")):
-                if f"\n  {scheme}:\n" not in project.split("schemes:")[1]:
+            mac = "macCatalyst" in project
+            builds = [("OurPoker", "iOS", "generic/platform=iOS Simulator", "*-iphonesimulator"),
+                      ("OurPoker", "macOS", "generic/platform=macOS,variant=Mac Catalyst", "*-maccatalyst"),
+                      ("OurPokerTV", "tvOS", "generic/platform=tvOS Simulator", "*-appletvsimulator")]
+            for scheme, platform, destination, products in builds:
+                if f"\n  {scheme}:\n" not in project.split("schemes:")[1] or (platform == "macOS" and not mac):
                     continue
                 derived = work / "designs" / name / "derived"
-                run(["xcodebuild", "-project", "OurPoker.xcodeproj", "-scheme", scheme, "-destination", f"generic/platform={platform} Simulator",
+                run(["xcodebuild", "-project", "OurPoker.xcodeproj", "-scheme", scheme, "-destination", destination,
                      "-derivedDataPath", str(derived), "CODE_SIGNING_ALLOWED=NO", "build"], work, f"{name}-xcodebuild-{platform}", cwd=ios, timeout=3600)
-                bundle = next(derived.glob(f"Build/Products/*/{scheme}.app"))
-                found = sorted(p.stem for p in bundle.glob("*.lproj"))
+                bundle = next(derived.glob(f"Build/Products/{products}/{scheme}.app"))
+                found = sorted(p.stem for p in [*bundle.glob("*.lproj"), *bundle.glob("Contents/Resources/*.lproj")] if p.stem != "Base")
                 if found != sorted(languages):
                     raise Step(f"{scheme}: the app carries {found}, the design's languages are {languages}")
                 built.append(f"{platform} ({' '.join(found)})")
@@ -425,10 +429,20 @@ def android_run(work, name, apk, package, port, avd, reverse=None, shot="android
         else:
             raise Step(f"android: the server does not list the player: {rooms}")
         (shots / shot).write_bytes(subprocess.run([adb, "-s", serial, "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
+        # Installed again over its data (`adb install -r`, as an update arrives): the app opens at the room list, not the table.
+        device("shell", "am", "force-stop", package)
+        device("install", "-r", "-g", str(apk), timeout=300)
+        device("shell", "am", "start", "-W", "-n", f"{package}/.MainActivity")
+        deadline = time.time() + 60
+        while "Select a room to play in, then enter" not in screen():
+            if time.time() > deadline:
+                raise Step(f"android: after `adb install -r` the app did not open at the room list; saw {sorted(screen())[:20]}")
+            time.sleep(1)
         crashes = device("logcat", "-d", "-b", "crash")
         if package in crashes:
             raise Step(f"android: the app crashed\n{crashes[-2000:]}")
-        return f"passed on AVD {avd}: launched, player seated (server lists \"Droid\"), a computer player added, a hand dealt with the action buttons shown, no crash"
+        return (f"passed on AVD {avd}: launched, player seated (server lists \"Droid\"), a computer player added, a hand dealt with the action "
+                "buttons shown; installed again over its data, it opened at the room list; no crash")
     finally:
         run([adb, "-s", serial, "emu", "kill"], work, f"{name}-android-stop", check=False)
         try:
@@ -900,6 +914,25 @@ process.exit(0);
 """
 
 
+def working_tree(work, name, app):
+    """After building and deploying, a repository made of the application folder holds only what aepm installed: every file
+    a build or deploy wrote is left out by the installed .gitignore (and no installed file is)."""
+    if not (app / ".gitignore").is_file():
+        return "no .gitignore installed"
+    owned = {item["path"] for item in json.loads((app / ".aepm/assembly.json").read_text())["files"]}
+    probe = work / "designs" / name / "git-probe"
+    shutil.rmtree(probe, ignore_errors=True)
+    env = {**os.environ, "GIT_DIR": str(probe), "GIT_WORK_TREE": str(app)}
+    run(["git", "init", "-q"], work, f"{name}-git-probe", env=env)
+    listed = run(["git", "ls-files", "--others", "--exclude-standard"], work, f"{name}-git-probe-files", env=env, cwd=app).splitlines()
+    shutil.rmtree(probe, ignore_errors=True)
+    extra = sorted(p for p in listed if p not in owned and not p.startswith(".aepm/"))
+    lost = sorted(owned - set(listed))
+    if extra or lost:
+        raise Step(f"working tree: {len(extra)} files a build wrote are not ignored {extra[:12]}; {len(lost)} installed files are ignored {lost[:12]}")
+    return f"clean: {len(owned)} installed files, nothing else"
+
+
 def kotlin_stand_ins(work):
     """The Kotlin stand-ins type-checked on the JVM (authoring/kotlin-stand-ins), when Gradle is installed."""
     if not shutil.which("gradle"):
@@ -1056,8 +1089,10 @@ def main(argv):
             results["components"] = len(design["components"])
             results["tree"] = tree(app)
             build_and_run(work, name, app, args, results)
+            results["workingTree"] = working_tree(work, name, app)
             if args.cloudflare:
                 results["cloudflare"] = cloudflare_run(work, store, policy, world, name, answers, app, args)
+                results["workingTreeAfterDeploy"] = working_tree(work, f"{name}-cloudflare", work / "designs" / f"{name}-cloudflare" / "app")
             if args.github:
                 results["github"] = github_run(work, store, policy, world, name, answers, args.github, args, app)
         except (Step, subprocess.TimeoutExpired) as error:
