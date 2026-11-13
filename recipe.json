@@ -2101,7 +2101,7 @@
     {
       "id": "hostingAccount",
       "ask": "Under which name is your Cloudflare account kept in your secret store?",
-      "askAgent": "Ask only when the server runs on Cloudflare (the server needs it to start as a Cloudflare server and to deploy); a reference name (lowercase letters, digits, hyphens), never the account key.",
+      "askAgent": "Ask only when the server runs on Cloudflare; a reference name (lowercase letters, digits, hyphens), never a key. Deploying from a computer uses the wrangler login; the name only chooses the GitHub secrets the release workflow deploys the server with.",
       "askWhen": "server == 'cloudflare'",
       "type": "secretRef",
       "effects": [
@@ -2148,7 +2148,7 @@
     {
       "id": "publish",
       "ask": "Will builds be signed and published (web hosting, Android and Apple stores, updates through ourapps.app)?",
-      "askAgent": "No for building and running it locally or on the developer's own machine; yes only when the request is to publish. Every signing and deployment reference is asked only when this is yes.",
+      "askAgent": "No for building and running it locally or on the developer's own machine; yes only when the request is to publish. Every signing and deployment reference is asked only when this is yes. GitHub builds and releases without store publishing is releases yes, publish no.",
       "type": "boolean",
       "default": false,
       "effects": []
@@ -2175,7 +2175,7 @@
     {
       "id": "releases",
       "ask": "Should GitHub Actions check every change and publish a release for each version tag? (Publishing builds always sets this up.)",
-      "askAgent": "Yes when builds are published (publish yes sets it up whatever this answer is); otherwise yes only when the developer wants GitHub to build and check each change, which uses the repository's GitHub Actions minutes.",
+      "askAgent": "Yes when GitHub should build, check and release each version: GitHub builds and releases without store publishing is releases yes, publish no (publish yes sets it up whatever this answer is). It uses the repository's Actions minutes.",
       "type": "boolean",
       "default": false,
       "effects": []

@@ -30,12 +30,12 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 16 | `videoSecret` | secret reference name | `video && publish` | none | never a value | video is on and builds are published |
 | 17 | `lessons` | yes or no | always | yes | "everyone already knows the game" is no | never |
 | 18 | `server` | `cloudflare` `own-hardware` | always | none | nothing: ask | always, unless the person already named the provider |
-| 19 | `hostingAccount` | reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | the server runs on Cloudflare (a Cloudflare server needs it to start and to deploy; the release workflow reads the account from the repository secrets it names) |
+| 19 | `hostingAccount` | reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | the server runs on Cloudflare. Deploying from this computer uses the wrangler login and never reads the name; the name only chooses the repository secrets (`<NAME>_API_TOKEN`, `<NAME>_ACCOUNT_ID`) the release workflow deploys the server with |
 | 20 | `serverAddress` | text, an http or https address | always | `http://localhost:8788` | the deployed server's address, once known | after the first deploy (see "Two-step deploy") |
 | 21 | `updates` | yes or no | always | no | updates or keeping apps current is yes | never |
-| 22 | `publish` | yes or no | always | no | yes only when the request is to publish builds (web hosting, app stores, updates) | the request asks for publishing |
+| 22 | `publish` | yes or no | always | no | yes only when the request is to publish builds (web hosting, app stores, updates); GitHub builds and releases without store publishing is `releases` yes, `publish` no | the request asks for publishing |
 | 23 | `repository` | text, `owner/name` (letters, digits, hyphens, underscores) | always | empty | a repository the developer names; otherwise propose `<login>/ourpoker`, the login from `gh api user -q .login` | to confirm the proposed repository (made private when it does not exist) |
-| 24 | `releases` | yes or no | always | no (publishing sets up GitHub Actions whatever this answer) | yes when builds are published; otherwise yes only when GitHub should build and check each change | never |
+| 24 | `releases` | yes or no | always | no (publishing sets up GitHub Actions whatever this answer) | yes when builds are published or GitHub should build, check and release each version: GitHub builds and releases without store publishing is `releases` yes, `publish` no | never |
 | 25 | `storeInvitation` | text, an address (empty to set it later) | `updates` | empty | the developer's ourapps.app invitation | updates are on |
 | 26 | `storeCredentials` | reference name (lowercase letters, digits, hyphens) | `publish && (updates \|\| 'ios' in targets)` | none | never a value | builds are published and updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
 | 27 | `androidSigning` | reference name (lowercase letters, digits, hyphens) | `publish && 'android' in targets` | none | never a value | builds are published and Android is a target |
@@ -272,7 +272,7 @@ The local commands are the deployment: run `npm ci` and `npm start` in `server/`
 ```
 cd <application>/server
 npm ci
-npx wrangler login       # once, in a browser; or export CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN from the secret named by hostingAccount
+npx wrangler login       # once, in a browser (or export CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN); hostingAccount is not read here
 npm run deploy           # wrangler deploy --config ../components/server-host/server/wrangler.jsonc
 ```
 
@@ -297,15 +297,24 @@ node -e 'const fs = require("fs"), d = fs.readFileSync("../components/server-hos
 
 The first line writes `web/wrangler.jsonc`: the worker name, the server's date setting and the `dist` folder as static files. It serves at `https://<name>.<your subdomain>.workers.dev`, the subdomain the server's deploy printed; answer `webAddress` with that address in step 2.
 
+To check a web client in a browser, built and served here or deployed (headless Chrome; it sits at an empty table, plays to a dealt hand through the page's own controls, ends that game and leaves):
+
+```
+cd <application>/web
+WEB_CHECK_URL=https://<web worker>.<your subdomain>.workers.dev/ WEB_CHECK_SERVER=https://<server worker>.<your subdomain>.workers.dev WEB_CHECK_OUT=/tmp/web-check node test/browser.mjs
+```
+
+It prints one `PASS` line per step and keeps screenshots of home, lobby and the table (1280x800 and 390x844) in `WEB_CHECK_OUT`. Any http or https addresses work, so the same command checks `npx vite preview` against the server on this machine.
+
 ### Apple (Xcode; an Apple developer membership only for devices and TestFlight)
 
 ```
 cd <application>/ios
 node generate-project.ts         # project.yml, the Info.plist files and the string catalogue of the design's languages (SERVER_ADDRESS=<address> overrides the address)
 xcodegen generate
-xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=macOS,variant=Mac Catalyst' CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project OurPoker.xcodeproj -scheme OurPokerTV -destination 'generic/platform=tvOS Simulator' CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=iOS Simulator' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project OurPoker.xcodeproj -scheme OurPoker -destination 'generic/platform=macOS,variant=Mac Catalyst' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project OurPoker.xcodeproj -scheme OurPokerTV -destination 'generic/platform=tvOS Simulator' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build
 ```
 
 The `OurPoker` scheme builds iPhone, iPad and Mac (Mac Catalyst); `OurPokerTV` exists when `tvos` is a target. Signed builds read the team and profile from `OURPOKER_TEAM` and `OURPOKER_PROFILE` (the prefix is the application's `signingEnvironmentPrefix`).
@@ -364,7 +373,7 @@ Every client shows the version it was built with; a build given none shows `dev`
 | Web | `VITE_APP_VERSION=<version> npm run build` in `web/` (`APP_VERSION` is read when `VITE_APP_VERSION` is not set) |
 | Windows | `APP_VERSION=<version> npm run package:win` in `desktop/`: the installer, the executable and the page inside it |
 | Android | `./gradlew :app:assembleDebug -PversionName=<version> -PversionCode=<number>` (the code is a whole number that rises with each release) |
-| Apple | `xcodebuild ... MARKETING_VERSION=<version> CURRENT_PROJECT_VERSION=<number> build` |
+| Apple | `xcodebuild ... -derivedDataPath build/DerivedData MARKETING_VERSION=<version> CURRENT_PROJECT_VERSION=<number> build` |
 
 ## 5. For maintainers of the recipe repository
 

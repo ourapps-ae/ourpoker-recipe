@@ -83,4 +83,11 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.5.1. Installed with `aepm install` from signed packages and built and run: the default answers, `browser-only-no-extras`, `book-club`, `local-web` (web and a Node server, English, no video), `native-no-lessons`, `clinic` and `windows-only`. For each, the server and web code type-check, the server tests pass, the server runs on Node, and the web client loads in a browser, seats a player and deals a hand. The iPhone, iPad and Apple TV apps build for their simulators. Not run: Android builds (no Android SDK where the recipe is maintained; the Kotlin is type-checked in part), Windows packaging (needs Windows) and deploying to Cloudflare (needs an account). The open items are in `INTEGRATION-GAPS.md`.
+Version 0.5.1. Installed with `aepm install` from signed packages and built and run with the recipe's own install proof and by fresh agents following INSTRUCTIONS.md:
+
+- Server on Node and on Cloudflare Workers (deployed, two-step with the web client on its own worker); the web client in a browser, locally and deployed: a player sits, a computer player joins and a hand is dealt.
+- iPhone and iPad, Mac (Mac Catalyst) and Apple TV apps built for their simulators and Mac; the Android app built, unit-tested and played to a dealt hand on the emulator; the Windows installer built, installed, played and uninstalled on a Windows PC.
+- GitHub: every workflow green and a tagged release carrying the web bundle, the Android app, the Windows installer and `my-app.json`.
+- Substitution: the `theme` slot filled with `ourapps-ae/theme-high-contrast`.
+
+Not run: signed Android, Windows and Apple builds; App Store, TestFlight and store publishing; video with a real LiveKit account and keys. The open items are in `INTEGRATION-GAPS.md`.

@@ -93,7 +93,7 @@ async function pack() {
     electron: require('../package.json').devDependencies.electron, products, executable, installers,
     packagedResourcesVerified: true, scriptDigests, nativeWindowsRuntimeVerified: false,
   }, null, 2) + '\n');
-  console.log('Unsigned Windows package built; native installation and runtime remain unverified.');
+  console.log(`Unsigned x64 Windows installer ${version} built; checked here: the executable is x64 and unsigned, the packaged scripts match their sources, the page and its files are inside. Not checked here: installing and starting it on Windows (scripts/inspect-windows.ps1 does that on Windows).`);
 }
 if (require.main === module) pack().catch((error) => { console.error(error); process.exitCode = 1; });
 module.exports = { config, sources };

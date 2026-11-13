@@ -198,7 +198,7 @@ Copied from the source and mapped back to the application layout by the artefact
 | Files | Lines | Origin |
 |---|---|---|
 | `tests/e2e/server/*.test.ts` (6) | 678 | server/test/room.test.ts, adapter.test.ts, video.test.ts and services.test.ts (split into update-links.test.ts and video-services.test.ts, one optional component each); hand.test.ts is new (a server hand without a network) |
-| `tests/e2e/web/*` (10) | 1056 | web/test/* (browser.mjs is the two-player hand with a display; session.test.mjs the reconnect) |
+| `tests/e2e/web/*` (10) | 1184 | web/test/* (browser.mjs checks a built or deployed client through its controls; dev-build.mjs the development build's board mode and layouts; session.test.mjs the reconnect) |
 | `tests/e2e/verification/*` (15) | 691 | verification/* |
 | `tests/e2e/apple/*` (6) | 339 | ios/OurPokerTests/{Contract,Session,Guide,ChallengeLayout}Tests.swift, OurPokerUITests/HomeButtonsUITests.swift, VerificationSupport/ServerAddress.swift |
 | `tests/e2e/android/*` (3) | 190 | android app/src/test FixturesTest.kt, SoundSettingTest.kt; androidTest FixtureScreenTest.kt (strings looked up by name) |

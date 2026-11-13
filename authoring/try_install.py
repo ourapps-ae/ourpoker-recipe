@@ -10,7 +10,7 @@ passed. Then, per answers: evaluates the design with aepm's evaluator (aepm.reci
   server  npm ci; tsc --noEmit; vitest run (the application's tests from tests/e2e/server); npm start (Node, own hardware)
   web     npm ci; tsc --noEmit; npm run build (pointed at the running server); vite preview
   desktop node scripts/build.cjs (Windows designs: the web client in desktop mode; Electron packaging needs Windows)
-  apple   node generate-project.ts; xcodegen generate; xcodebuild for the iOS and tvOS simulators; only the answered languages
+  apple   node generate-project.ts; xcodegen generate; xcodebuild for the iOS and tvOS simulators and Mac Catalyst (-derivedDataPath build/DerivedData); only the answered languages
   android node generate-project.ts; only the answered languages' strings; ./gradlew :app:assembleDebug where ANDROID_HOME is set
   browser headless Chrome over the DevTools protocol: the page loads with web-host's head, the room list comes from the
           server, a player names themself and sits down, the server lists them, a computer player (or a second person) joins,
@@ -317,7 +317,7 @@ def native(work, name, app, results, start_server, options):
             for scheme, platform, destination, products in builds:
                 if f"\n  {scheme}:\n" not in project.split("schemes:")[1] or (platform == "macOS" and not mac):
                     continue
-                derived = work / "designs" / name / "derived"
+                derived = ios / "build/DerivedData"  # as INSTRUCTIONS.md part 4 builds: inside the application, ignored by its .gitignore
                 run(["xcodebuild", "-project", "OurPoker.xcodeproj", "-scheme", scheme, "-destination", destination,
                      "-derivedDataPath", str(derived), "CODE_SIGNING_ALLOWED=NO", "build"], work, f"{name}-xcodebuild-{platform}", cwd=ios, timeout=3600)
                 bundle = next(derived.glob(f"Build/Products/{products}/{scheme}.app"))

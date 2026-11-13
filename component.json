@@ -1125,6 +1125,12 @@
       "template": false
     },
     {
+      "destination": "web/test/dev-build.mjs",
+      "executable": false,
+      "source": "tests/e2e/web/dev-build.mjs",
+      "template": false
+    },
+    {
       "destination": "web/test/fake-livekit.mjs",
       "executable": false,
       "source": "tests/e2e/web/fake-livekit.mjs",
@@ -2067,6 +2073,7 @@
       "web/src/update.ts",
       "web/src/video.ts",
       "web/test/browser.mjs",
+      "web/test/dev-build.mjs",
       "web/test/fake-livekit.mjs",
       "web/test/fixtures/store-latest.json",
       "web/test/local-application.mjs",
@@ -3424,6 +3431,10 @@
     {
       "executable": false,
       "path": "tests/e2e/web/browser.mjs"
+    },
+    {
+      "executable": false,
+      "path": "tests/e2e/web/dev-build.mjs"
     },
     {
       "executable": false,

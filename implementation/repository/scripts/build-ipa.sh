@@ -20,7 +20,7 @@ SCHEME=$(basename "$PROJECT" .xcodeproj)
 # The application target signs manually with the team and profile in <PREFIX>_TEAM and <PREFIX>_PROFILE.
 PREFIX=$(sed -nE 's/.*DEVELOPMENT_TEAM: "\$\(([A-Z0-9_]+)_TEAM\)".*/\1/p' project.yml | head -1)
 [[ -n "$PREFIX" ]] || { echo 'project.yml names no signing team variable' >&2; exit 1; }
-xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -destination 'generic/platform=iOS' \
+xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -destination 'generic/platform=iOS' -derivedDataPath build/DerivedData \
   -archivePath "$OUT/$SCHEME.xcarchive" -quiet archive \
   MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$BUILD" "${PREFIX}_TEAM=$TEAM_ID" "${PREFIX}_PROFILE=$PROFILE"
 python3 -c 'import html, sys; sys.stdout.write(sys.stdin.read().replace("PROFILE_NAME", html.escape(sys.argv[1])).replace("TEAM_ID", html.escape(sys.argv[2])))' \
