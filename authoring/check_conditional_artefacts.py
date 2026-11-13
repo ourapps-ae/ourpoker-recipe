@@ -4,7 +4,8 @@
 For each answer set it evaluates the design with aepm's evaluator (aepm.recipe), takes the artefacts
 aepm would install for that design (aepm.application.installed_artefacts), and reads each installed file, without assembling anything:
 
-  marks       every `component` mark names a component the recipe can leave out (it has an includedWhen) and is in the recipe;
+  marks       every `component` mark (one name or a list) names components the recipe can leave out (they have an includedWhen)
+              and are in the recipe;
   excluded    no installed file names a component path (an import, a require or a path string) of a component the design excludes;
   unresolved  every such path of an installed file is a destination of the artefacts of the component it names (that component's
               own manifest), allowing the extension or index file a bundler adds; paths into `node_modules` and paths built at run
@@ -17,7 +18,7 @@ aepm would install for that design (aepm.application.installed_artefacts), and r
 
 Exit status 0 when marks, excluded and unresolved are empty for every answer set; `seams` are listed and counted but do not
 change the status (tests/conditional_artefacts_test.py states the expected list). Nothing here resolves, installs or runs
-components. Usage: PYTHONPATH=/Users/george/Projects/com/my/aepm python3.12 -B authoring/check_conditional_artefacts.py [-v]
+components. Usage: PYTHONPATH=<aepm checkout> python3.12 -B authoring/check_conditional_artefacts.py [-v]
 """
 import sys
 from pathlib import Path
@@ -52,15 +53,16 @@ def check_design(world, design) -> dict:
     found = {"marks": [], "excluded": [], "unresolved": [], "seams": [], "generated": []}
 
     for artefact in manifest["artefacts"]:
-        if "component" in artefact and (artefact["component"] not in recipe_names or artefact["component"].split("/")[1] not in conditional):
-            found["marks"].append(f"{artefact['source']}: {artefact['component']} is not a component the recipe can leave out")
+        for name in ([artefact["component"]] if isinstance(artefact.get("component"), str) else artefact.get("component", [])):
+            if name not in recipe_names or name.split("/")[1] not in conditional:
+                found["marks"].append(f"{artefact['source']}: {name} is not a component the recipe can leave out")
 
     installed = application.installed_artefacts(manifest, present)
     installed_destinations = {a["destination"] for a in installed}
     all_destinations = {a["destination"] for a in manifest["artefacts"]}
     for artefact in installed:
         source = ROOT / artefact["source"]
-        for component, rest in sorted(set(component_imports.references(source))):
+        for component, rest in sorted(set(component_imports.references(source)) | set(component_imports.repository_references(source))):
             if component not in ids:
                 found["excluded"].append(f"{artefact['source']}: {component}/{rest}")
             elif "node_modules/" not in rest and not component_imports.resolves(rest, destinations(world, component)):

@@ -1,0 +1,36 @@
+# The server's type check and tests, when the server, the rules or a component changes.
+name: ci-server
+
+on:
+  push:
+    branches: [main]
+    paths: ["server/**", "rules/**", "components/**", ".github/workflows/ci-server.yml"]
+  pull_request:
+    paths: ["server/**", "rules/**", "components/**", ".github/workflows/ci-server.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push replaces a check still running.
+concurrency:
+  group: ci-server-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "26.5"
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test

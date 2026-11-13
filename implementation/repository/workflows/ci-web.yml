@@ -1,0 +1,36 @@
+# The web client's type check and build, when the web client, its text, the rules or a component changes.
+name: ci-web
+
+on:
+  push:
+    branches: [main]
+    paths: ["web/**", "resources/**", "rules/**", "components/**", ".github/workflows/ci-web.yml"]
+  pull_request:
+    paths: ["web/**", "resources/**", "rules/**", "components/**", ".github/workflows/ci-web.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push replaces a check still running.
+concurrency:
+  group: ci-web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "26.5"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build

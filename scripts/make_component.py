@@ -2,7 +2,7 @@
 """Write the recipe component's manifest, asset list and visual files from what is on disk.
 
 Usage (from anywhere):
-  PYTHONPATH=/Users/george/Projects/com/my/aepm python3.12 -B scripts/make_component.py [--render]
+  PYTHONPATH=<aepm checkout> python3.12 -B scripts/make_component.py [--render]
 
 Computes `files` (everything packaged), `artefacts` (the destination map below), the asset list
 (assets/ASSETS.json) and the visual definition and example, and checks every template against the
@@ -76,7 +76,7 @@ PROVIDES = [
 
 # Requirements whose provider the recipe can leave out of a design (its includedWhen is not null): optional in this manifest, so
 # the assembler drops the connection and the requirement may stay open (rule 8). authoring/make_recipe.py checks this list.
-OPTIONAL = {"web-shell", "apple-shell", "android-shell", "desktop-host", "media-session", "guided-tour", "updates"}
+OPTIONAL = {"web-shell", "apple-shell", "android-shell", "desktop-host", "media-session", "guided-tour", "updates", "release-pipeline"}
 
 # Port id (the type's last segment) -> providing component.
 REQUIRES = [
@@ -176,6 +176,12 @@ def artefact_pairs(files):
             add(f, f"android/app/src/test/java/{KOTLIN}/" + f[len("tests/e2e/android/"):])
         elif f.startswith("tests/fixtures/"):
             add(f, "server/fixtures/" + f[len("tests/fixtures/"):])
+        elif f.startswith("implementation/repository/workflows/"):
+            add(f, ".github/workflows/" + f[len("implementation/repository/workflows/"):])
+        elif f == "implementation/repository/gitignore":
+            add(f, ".gitignore")
+        elif f.startswith("implementation/repository/"):
+            add(f, f[len("implementation/repository/"):])
     add("locales/strings.json", "resources/strings.json")
     # the translations component's generator output (generate_translations), shipped so install alone gives every client its text
     for f in files:
@@ -262,6 +268,23 @@ DECLARED = {
 }
 
 
+# The repository files (GitHub Actions, their scripts, the release description): installed with the release pipeline
+# (ourapps-release, in the design when builds are published or the releases answer is yes) and the host each one builds.
+RELEASE = "ourapps-ae/ourapps-release"
+REPOSITORY = {
+    "workflows/ci-server.yml": [], "workflows/release.yml": [], "release/app.json": [],
+    "workflows/ci-web.yml": ["web-host"], "workflows/ci-android.yml": ["android-host"],
+    "workflows/platform-packages.yml": ["windows-desktop"], "scripts/build-windows.sh": ["windows-desktop"], "scripts/inspect-windows.ps1": ["windows-desktop"],
+    "workflows/apple-testflight.yml": ["apple-host"], "scripts/build-apple-testflight.sh": ["apple-host"], "scripts/build-ipa.sh": ["apple-host"],
+}
+
+
+def repository_condition(source):
+    """The `component` of a repository file: the release pipeline, and with it the host the file builds (a list: all of them)."""
+    hosts = REPOSITORY[source[len("implementation/repository/"):]]
+    return RELEASE if not hosts else sorted([RELEASE, *("ourapps-ae/" + host for host in hosts)])
+
+
 def stand_ins(pairs, conditions):
     """source -> the component whose absence installs it: a stand-in under implementation/stand-ins/ replaces the real file
     with its destination, which must be conditional (aepm installs one when the component is in, the other when it is not)."""
@@ -323,14 +346,18 @@ def build_manifest(files):
         requires.append(entry)
     provides = [{"id": i, "type": t, "version": "1.0.0", "path": f"interfaces/{i}.json"} for i, t in PROVIDES]
     pairs = artefact_pairs(files)
-    templated = {src for src in {p[0] for p in pairs} if "{{" in (ROOT / src).read_text(encoding="utf-8", errors="ignore") and (ROOT / src).suffix not in (".png", ".jpg", ".wav")}
-    # the rules documents mention double braces nowhere; templates are exactly the files that name a setting
+    settings = {s[0] for s in COLLECT}
+    # templates are exactly the files that name a setting as {{id}}; GitHub's ${{ ... }} expressions are not tokens
+    templated = {src for src in {p[0] for p in pairs} if (ROOT / src).suffix not in (".png", ".jpg", ".wav")
+                 and settings & set(application.TOKEN.findall((ROOT / src).read_text(encoding="utf-8", errors="ignore")))}
     conditions = conditions_of(pairs)
     without = stand_ins(pairs, conditions)
     artefacts = []
     for s, d in pairs:
         item = {"source": s, "destination": d, "template": s in templated, "executable": False}
-        if s in conditions:
+        if s.startswith("implementation/repository/") and s != "implementation/repository/gitignore":
+            item["component"] = repository_condition(s)
+        elif s in conditions:
             item["component"] = conditions[s]
         if s in without:
             item["withoutComponent"] = without[s]
@@ -487,7 +514,8 @@ def main(argv):
     marked = [a for a in manifest["artefacts"] if "component" in a]
     print("stand-ins", sum(1 for a in manifest["artefacts"] if "withoutComponent" in a))
     print("files", len(manifest["files"]), "artefacts", len(manifest["artefacts"]), "templates", sum(a["template"] for a in manifest["artefacts"]),
-          "conditional", len(marked), {c: sum(1 for a in marked if a["component"] == c) for c in sorted({a["component"] for a in marked})})
+          "conditional", len(marked), {c: sum(1 for a in marked if a["component"] == c) for c in sorted({a["component"] for a in marked if isinstance(a["component"], str)})},
+          "with the release pipeline", {"+".join(a["component"]): sum(1 for b in marked if b["component"] == a["component"]) for a in marked if isinstance(a["component"], list)})
 
 
 if __name__ == "__main__":

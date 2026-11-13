@@ -1,0 +1,114 @@
+# The Mac or Apple TV build for TestFlight through the store, which starts this workflow with the platform and, when it
+# has reserved them, the version and build number. Without the store credentials (the storeCredentials answer's secrets)
+# the export job is skipped. Secret names come from components/ourapps-release/server/release.json.
+name: apple-platform-testflight
+run-name: Apple TestFlight ${{ inputs.platform }} ${{ inputs.version || 'pending' }} (${{ inputs.build || 'pending reservation' }})
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Apple platform
+        type: choice
+        options: [macos, tvos]
+        required: true
+      version:
+        description: Reserved version, or empty to reserve one in the job
+        type: string
+        required: false
+      build:
+        description: Reserved build number (with the version), or empty to reserve one in the job
+        type: string
+        required: false
+      upload:
+        description: Upload the verified export to TestFlight
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apple-platform-testflight-${{ inputs.platform }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      store_secret: ${{ steps.plan.outputs.store }}
+      store_address: ${{ steps.plan.outputs.store_address }}
+      ready: ${{ steps.secrets.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: plan
+        run: python3 components/ourapps-release/server/scripts/release_plan.py components/ourapps-release/server/release.json
+      - id: secrets
+        env:
+          STORE: ${{ steps.plan.outputs.store }}
+          STORE_APP_ID: ${{ secrets[format('{0}_APP_ID', steps.plan.outputs.store)] }}
+          STORE_BUILD_TOKEN: ${{ secrets[format('{0}_BUILD_TOKEN', steps.plan.outputs.store)] }}
+        run: |
+          ready=false
+          if [[ -n "$STORE" && -n "$STORE_APP_ID" && -n "$STORE_BUILD_TOKEN" ]]; then ready=true; fi
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          echo "store credentials set: $ready"
+
+  export:
+    needs: plan
+    if: needs.plan.outputs.ready == 'true'
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      STORE_API: ${{ needs.plan.outputs.store_address }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Target switched on in the store
+        env:
+          PLATFORM: ${{ inputs.platform }}
+          STORE_APP_ID: ${{ secrets[format('{0}_APP_ID', needs.plan.outputs.store_secret)] }}
+          STORE_BUILD_TOKEN: ${{ secrets[format('{0}_BUILD_TOKEN', needs.plan.outputs.store_secret)] }}
+        run: python3 components/ourapps-release/server/scripts/release_targets.py require "$PLATFORM"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "26.5"
+      - run: brew install xcodegen
+      # The store's reservation when the run did not bring one (once per run attempt).
+      - name: Version and build
+        id: reservation
+        env:
+          PLATFORM: ${{ inputs.platform }}
+          VERSION: ${{ inputs.version }}
+          BUILD: ${{ inputs.build }}
+          STORE_APP_ID: ${{ secrets[format('{0}_APP_ID', needs.plan.outputs.store_secret)] }}
+          STORE_BUILD_TOKEN: ${{ secrets[format('{0}_BUILD_TOKEN', needs.plan.outputs.store_secret)] }}
+        run: |
+          if [[ -z "$VERSION" || -z "$BUILD" ]]; then
+            jq -n --arg r "$GITHUB_RUN_ID" --arg a "$GITHUB_RUN_ATTEMPT" '{runId: $r, runAttempt: $a}' |
+              curl -sSf -X POST -A "ourapps-release/1.0" -H "Authorization: Bearer $STORE_BUILD_TOKEN" -H "Content-Type: application/json" \
+                --data-binary @- "$STORE_API/api/build/$STORE_APP_ID/$PLATFORM/testflight/reserve-build" > "$RUNNER_TEMP/reservation.json"
+            VERSION=$(jq -r .version "$RUNNER_TEMP/reservation.json"); BUILD=$(jq -r .buildNumber "$RUNNER_TEMP/reservation.json")
+          fi
+          { echo "version=$VERSION"; echo "build=$BUILD"; } >> "$GITHUB_OUTPUT"
+      - name: Signing, build and verified export
+        env:
+          PLATFORM: ${{ inputs.platform }}
+          VERSION: ${{ steps.reservation.outputs.version }}
+          BUILD: ${{ steps.reservation.outputs.build }}
+          TESTFLIGHT_UPLOAD: ${{ inputs.upload }}
+          STORE_APP_ID: ${{ secrets[format('{0}_APP_ID', needs.plan.outputs.store_secret)] }}
+          STORE_BUILD_TOKEN: ${{ secrets[format('{0}_BUILD_TOKEN', needs.plan.outputs.store_secret)] }}
+        run: bash scripts/build-apple-testflight.sh "$PLATFORM" "$VERSION" "$BUILD" "$RUNNER_TEMP/testflight"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: apple-${{ inputs.platform }}-export-evidence
+          path: |
+            ${{ runner.temp }}/testflight/status.txt
+            ${{ runner.temp }}/testflight/result.json
+            ${{ runner.temp }}/testflight/export-verification.json
+            ${{ runner.temp }}/testflight/installer-identity.json
+            ${{ runner.temp }}/testflight/upload-result.json
+          if-no-files-found: warn
+          retention-days: 7

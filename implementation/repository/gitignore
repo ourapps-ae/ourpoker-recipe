@@ -1,0 +1,32 @@
+# Installed packages and build outputs
+node_modules/
+web/dist/
+desktop/build/
+desktop/artifacts/
+server/.wrangler/
+server/data/
+android/.gradle/
+android/.kotlin/
+android/build/
+android/app/build/
+android/local.properties
+ios/build/
+ios/DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# aepm's records stay (definition, lock, assembly, receipts, evidence); its package copies and archives stay on the
+# machine that installed the application.
+.aepm/packages/
+.aepm/archives/
+
+# Signing keys and local secrets
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+.env
+.env.*
+.dev.vars
+
+.DS_Store

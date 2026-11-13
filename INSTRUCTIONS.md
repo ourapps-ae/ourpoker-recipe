@@ -30,18 +30,20 @@ Ask in this order. A question only matters if the earlier ones left it open.
 | 16 | `videoSecret` | secret reference name | `video && publish` | none | never a value | video is on and builds are published |
 | 17 | `lessons` | yes or no | always | yes | "everyone already knows the game" is no | never |
 | 18 | `server` | `cloudflare` `own-hardware` | always | none | nothing: ask | always, unless the person already named the provider |
-| 19 | `hostingAccount` | secret reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | the server runs on Cloudflare (a Cloudflare server needs it to start and to deploy) |
+| 19 | `hostingAccount` | reference name (lowercase letters, digits, hyphens) | `server == 'cloudflare'` | none | never a value | the server runs on Cloudflare (a Cloudflare server needs it to start and to deploy; the release workflow reads the account from the repository secrets it names) |
 | 20 | `serverAddress` | text, an http or https address | always | `http://localhost:8788` | the deployed server's address, once known | after the first deploy (see "Two-step deploy") |
 | 21 | `updates` | yes or no | always | no | updates or keeping apps current is yes | never |
 | 22 | `publish` | yes or no | always | no | yes only when the request is to publish builds (web hosting, app stores, updates) | the request asks for publishing |
-| 23 | `storeInvitation` | text, an address (empty to set it later) | `updates` | empty | the developer's ourapps.app invitation | updates are on |
-| 24 | `storeCredentials` | secret reference name | `publish && (updates \|\| 'ios' in targets)` | none | never a value | builds are published and updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
-| 25 | `androidSigning` | secret reference name | `publish && 'android' in targets` | none | never a value | builds are published and Android is a target |
-| 26 | `webDeploy` | secret reference name | `publish && 'web' in targets` | none | never a value | builds are published and the web is a target |
+| 23 | `repository` | text, `owner/name` (letters, digits, hyphens, underscores) | always | empty | a repository the developer names; otherwise propose `<login>/ourpoker`, the login from `gh api user -q .login` | to confirm the proposed repository (made private when it does not exist) |
+| 24 | `releases` | yes or no | always | no (publishing sets up GitHub Actions whatever this answer) | yes when builds are published; otherwise yes only when GitHub should build and check each change | never |
+| 25 | `storeInvitation` | text, an address (empty to set it later) | `updates` | empty | the developer's ourapps.app invitation | updates are on |
+| 26 | `storeCredentials` | reference name (lowercase letters, digits, hyphens) | `publish && (updates \|\| 'ios' in targets)` | none | never a value | builds are published and updates are on or an iPhone and iPad build is wanted (without it the release has no store call and no iOS job) |
+| 27 | `androidSigning` | reference name (lowercase letters, digits, hyphens) | `publish && 'android' in targets` | none | never a value | builds are published and Android is a target |
+| 28 | `webDeploy` | reference name (lowercase letters, digits, hyphens) | `publish && 'web' in targets` | none | never a value | builds are published and the web is a target |
 
 ### What each answer changes
 
-An empty text answer writes nothing: the setting keeps its recipe value or default. A secret reference answer is a name, never a value; the design records `{"secretRef": name}` for a secret setting and the plain name for `server-host.accountReference`.
+An empty text answer writes nothing: the setting keeps its recipe value or default. A secret reference answer is a name, never a value; the design records `{"secretRef": name}` for a secret setting and the plain name for `server-host.accountReference` and for the four reference settings of `ourapps-release`, because aepm renders those into `components/ourapps-release/server/release.json` (a template cannot render a secret setting) and the release workflow takes the repository secret names from there.
 
 | Answer | Components included | Settings set |
 |---|---|---|
@@ -59,17 +61,19 @@ An empty text answer writes nothing: the setting keeps its recipe value or defau
 | `computerPlayers` | `none` leaves out `computer-players` and `poker-strategy` (turn-engine's requirement is optional) | `computer-players.mode`, `application.computerPlayers`; with `fill-empty` one person may press Start alone and computers take every empty seat |
 | `video` yes | `video-calls` | none; `videoServiceUrl` sets `video-calls.serviceUrl`; `videoKey` and `videoSecret` set `video-calls.keyReference` and `video-calls.secretReference` |
 | `lessons` yes | `guided-tour` | none |
-| `server` | none | none directly: it restricts the `server` and `realtime` jobs (see "Scale and profiles"); `hostingAccount` sets `server-host.accountReference` |
+| `server` | none | none directly: it restricts the `server` and `realtime` jobs (see "Scale and profiles"); `hostingAccount` sets `server-host.accountReference` and `ourapps-release.hostingAccount` |
 | `serverAddress` | none | `application.serverAddress`: the address the web, Apple, Android and Windows clients call |
 | `updates` yes | `store-update` | `application.updatesEnabled`; `storeInvitation` sets `store-update.inviteAddress` and `application.inviteAddress` (until it is answered, `application.inviteAddress` is the local web address, which is no invitation and is never offered) |
-| `publish` | none | none directly: it decides whether the signing and deployment references are asked |
-| `storeCredentials`, `androidSigning`, `webDeploy` | none | `ourapps-release.storeCredentials`, `.androidSigning`, `.webDeploy` |
+| `publish` | yes: `ourapps-release` | none directly: it decides whether the signing and deployment references are asked |
+| `repository` | none | `ourapps-release.repository` (`https://github.com/<owner>/<name>`) and `ourapps-release.manifestUrl` (`https://api.github.com/repos/<owner>/<name>/releases/latest`, the latest release, where ourapps.app reads `my-app.json`) |
+| `releases` yes | `ourapps-release` (also with `publish` yes): GitHub Actions and releases (part 4, "Repository and releases") | none |
+| `storeCredentials`, `androidSigning`, `webDeploy` | none | `ourapps-release.storeCredentials`, `.androidSigning`, `.webDeploy` (reference names; `none` when not asked) |
 
-A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `web-host` is in when `'web' in targets || 'windows' in targets`; `apple-host` when `'ios' in targets || 'macos' in targets || 'tvos' in targets`. `computer-players` and `poker-strategy` are in when `computerPlayers != 'none'` (turn-engine's `computer-players` requirement is optional). The application's files that use an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it. Each optional module the rest of the application uses has a stand-in at the same destination marked `withoutComponent: "ourapps-ae/<name>"`, installed when the design leaves the component out, so every design installs one of the two and every client compiles: server `video.ts`, `update-links.ts`, `computers.ts`; web `video.ts`, `shell.ts`, `guide.ts`, `guide-style.ts`, `update.ts` and the web package files (which declare `livekit-client`); Apple `Video.swift`, `SeatScreen.swift`, `Lessons.swift`, `Updates.swift`; Android `Video.kt`, `ui/SeatScreen.kt`, `ui/Lessons.kt`, `Updates.kt`.
+A component is in the design only through its `includedWhen` in `recipe.json`; no question effect includes anything. `web-host` is in when `'web' in targets || 'windows' in targets`; `apple-host` when `'ios' in targets || 'macos' in targets || 'tvos' in targets`. `computer-players` and `poker-strategy` are in when `computerPlayers != 'none'` (turn-engine's `computer-players` requirement is optional). `ourapps-release` is in when `publish || releases`. The application's files that use an optional component carry `component: "ourapps-ae/<name>"` in `component.json` and are installed only with it. Each optional module the rest of the application uses has a stand-in at the same destination marked `withoutComponent: "ourapps-ae/<name>"`, installed when the design leaves the component out, so every design installs one of the two and every client compiles: server `video.ts`, `update-links.ts`, `computers.ts`; web `video.ts`, `shell.ts`, `guide.ts`, `guide-style.ts`, `update.ts` and the web package files (which declare `livekit-client`); Apple `Video.swift`, `SeatScreen.swift`, `Lessons.swift`, `Updates.swift`; Android `Video.kt`, `ui/SeatScreen.kt`, `ui/Lessons.kt`, `Updates.kt`. The repository files at the application root (`.github/workflows/*.yml`, `scripts/*`, `release/app.json`) are the recipe's own, because aepm installs a component's files only under `components/<name>/`; each carries `component: "ourapps-ae/ourapps-release"`, or a list such as `["ourapps-ae/ourapps-release", "ourapps-ae/web-host"]` for `ci-web.yml`, installed only when every component in it is in the design. `.gitignore` is installed in every design.
 
 `application.<setting>` names a setting of the recipe's own component (`component.json`). The six that change the house rules (`maximumPlayers`, `startingStack`, `levelSeconds`, `rebuysPerPlayer`, `decisionSeconds`, `computerPlayers`) are written over `rules/texas-holdem-house-rules.json` by the server when it starts, and each component is built from the result; the rules file is the one source of those numbers, and `recipe.json` does not restate any number the rules file states (`rules-settings.rulesFile` is `texas-holdem-house-rules`). `guest-identity` keeps its own defaults, which the application uses too.
 
-Forms of a `sets` value in `recipe.json` (aepm's recipe evaluation rules): a literal; `"$answer"` (the answer; a set joined with spaces); `{"map": {...}}` (a choice answer to a value, covering every option); `{"fromScale": "<load key>"}`; `{"template": "prefix-{{answer}}"}`; `{"ref": "<secretRef question>"}`. This recipe uses `$answer`, `map` and `ref`. There is no `includes`, `$job`, `null` or `mapEach`.
+Forms of a `sets` value in `recipe.json` (aepm's recipe evaluation rules): a literal; `"$answer"` (the answer; a set joined with spaces); `{"map": {...}}` (a choice answer to a value, covering every option); `{"fromScale": "<load key>"}`; `{"template": "prefix-{{answer}}"}`; `{"ref": "<secretRef question>"}`. This recipe uses `$answer`, `map`, `template` and `ref`. There is no `includes`, `$job`, `null` or `mapEach`.
 
 ### Scale and profiles
 
@@ -103,6 +107,7 @@ Supply each secret to the tool that runs the build as a named reference, never a
 | `publish` with `web` | A hosting account for the web files | `webDeploy` | |
 | `video` yes | A LiveKit Cloud account | `videoKey`, `videoSecret` when `publish` (the API key and secret); the service address is `videoServiceUrl` | the deployment resolves the references into `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`; a local run sets those three in the server's environment |
 | `server` = `own-hardware` | A machine that runs Node and a way to deploy to it | none | no account; server-host's `start.ts` runs the worker module on Node |
+| always | A GitHub account with the GitHub CLI signed in (`gh auth login`) | `repository` (owner/name, not a reference) | the code goes to a private repository; with `publish` or `releases` yes its GitHub Actions use the account's Actions minutes. The repository secrets each reference names are in part 4, "Repository and releases" |
 
 ### Free tiers and limits (from each component's `suitability.json`, checked 2026-11-09)
 
@@ -165,7 +170,7 @@ STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder 
    ```
    aepm install definition.json --lock lock.json --store STORE --policy POLICY --target APP
    ```
-   aepm checks every package's release and guardian signatures against POLICY, places the files, renders each setting into the files that name it, and records the design in `APP/.aepm/`. It runs no package code. Then build and run (part 4).
+   aepm checks every package's release and guardian signatures against POLICY, places the files, renders each setting into the files that name it, and records the design in `APP/.aepm/`. It runs no package code. Then put the application in its repository and build and run it (part 4).
 
 ## 4. Build and run
 
@@ -182,9 +187,52 @@ resources/    strings.json, the text table the generated string files come from
 verification/ end-to-end checks for the platforms
 components/   one folder per component of the design; server-host's server/ holds wrangler.jsonc and start.ts
 .aepm/        aepm's records: definition, lock, assembly, packages, receipts
+.gitignore    what the repository leaves out (part 4, "Repository and releases")
+.github/      workflows/: ci-server, release; ci-web (web), ci-android (android), platform-packages (windows),
+              apple-testflight (ios, macos, tvos)                                         (publish or releases)
+scripts/      build-windows.sh, inspect-windows.ps1 (windows); build-ipa.sh, build-apple-testflight.sh (ios, macos, tvos)
+release/      app.json, what my-app.json says about the application                       (publish or releases)
 ```
 
 Every value that depends on an answer is already in the installed files (aepm renders the templates), and the generated string files are shipped, so nothing has to be generated before the commands below; the Apple and Android `generate-project.ts` steps write the native projects from them. Tools: Node 26.5 with npm 11. Apple: Xcode 26 or later and XcodeGen. Android: JDK 17 or later and the Android SDK (platform 36); the project carries its Gradle wrapper. Windows: Node 26.5 on a Mac or on Windows to build the installer; Windows 10 or 11 (x64) to run it.
+
+### Repository and releases
+
+The application goes to the GitHub repository the `repository` answer names (the agent proposes `<login>/ourpoker`, with the login from `gh api user -q .login`). Needs git and the GitHub CLI signed in (`gh auth login`). From the application folder, with `<owner>/<name>` the repository and `<version>` the recipe version:
+
+```
+printf '# Changelog\n\n## [0.1.0]\n\n### Added\n\n- First release.\n' > CHANGELOG.md
+git init -b main && git add -A && git commit -m "OurPoker from ourapps-ae/ourpoker <version>"
+gh repo create <owner>/<name> --private --source . --push
+```
+
+When the repository already exists, push to it instead: `git remote add origin https://github.com/<owner>/<name>.git && git push -u origin main`.
+
+`.gitignore` leaves out dependencies, build outputs, signing keys and aepm's package copies and archives (`.aepm/packages/`, `.aepm/archives/`, 37 MB for the default design). aepm's records in `.aepm/` (definition, lock, assembly, receipts, evidence) are committed: they show which packages built the application. The machine that installed the application keeps the full `.aepm/` that `aepm verify` and updates need; aepm's update work folder (`.<name>.aepm-transaction/`) sits beside the application folder, outside the repository.
+
+With `publish` or `releases` yes the application has GitHub Actions. A push to main runs `ci-server`, `ci-web`, `ci-android` and `platform-packages` (the unsigned Windows installer built, installed silently, started and uninstalled on Windows) for the parts that changed; each can also be started by hand (`gh workflow run ci-web.yml`). A version tag runs `release`: it builds the web client, the Android APK and the Windows installer the design has and publishes a GitHub Release (not a draft or pre-release) carrying `ourpoker.apk`, `web.zip`, the installer `ourpoker-<version>-windows-x64-unsigned.exe`, `icon.png`, `CHANGELOG.md` and, uploaded last, `my-app.json` for ourapps.app. The installer is attached but not offered in `my-app.json`: the ourapps contract lists a desktop package only after that package has passed download, install and start checks. `apple-platform-testflight` runs only when the store starts it for a Mac or Apple TV build.
+
+The workflows read the secret names from `components/ourapps-release/server/release.json`, which aepm rendered from the reference answers: the reference in capitals, with hyphens as underscores, then a suffix. A secret that is not set is skipped, and that part stays unsigned or is not deployed:
+
+| Answer (reference name) | Repository secrets, for the reference `ourpoker-...` shown | Without them |
+|---|---|---|
+| `androidSigning`: `ourpoker-android-signing` | `OURPOKER_ANDROID_SIGNING_KEYSTORE_BASE64` (the keystore file in base64), `OURPOKER_ANDROID_SIGNING_KEYSTORE_PASSWORD`, `OURPOKER_ANDROID_SIGNING_KEY_ALIAS`, `OURPOKER_ANDROID_SIGNING_KEY_PASSWORD` | the APK is signed with a debug key made for that run: it installs, but a later release installs only after the earlier one is removed |
+| `webDeploy`: `ourpoker-web-deploy` | `OURPOKER_WEB_DEPLOY_API_TOKEN` (a Cloudflare token from the "Edit Cloudflare Workers" template), `OURPOKER_WEB_DEPLOY_ACCOUNT_ID` | the web client is released as `web.zip`, which ourapps.app serves |
+| `hostingAccount`: `ourpoker-cloudflare-account` | `OURPOKER_CLOUDFLARE_ACCOUNT_API_TOKEN`, `OURPOKER_CLOUDFLARE_ACCOUNT_ACCOUNT_ID` | the release deploys no server |
+| `storeCredentials`: `ourpoker-store-credentials` | `OURPOKER_STORE_CREDENTIALS_APP_ID`, `OURPOKER_STORE_CREDENTIALS_BUILD_TOKEN` (the app's id and build token from ourapps.app) | no store call: every target the release builds is on, and there is no iPhone, Mac or Apple TV TestFlight build |
+
+The developer sets each secret; the agent never sees a value. `gh secret set OURPOKER_ANDROID_SIGNING_KEY_PASSWORD --repo <owner>/<name>` asks for the value; for the keystore, `base64 -i release.jks | gh secret set OURPOKER_ANDROID_SIGNING_KEYSTORE_BASE64 --repo <owner>/<name>`.
+
+To offer the application on ourapps.app (optional), register it once: with the second prompt at https://ourapps.app/dev/agents, or `POST https://ourapps.app/api/dev/apps` with a developer key and `{"name": "OurPoker", "repo": "<owner>/<name>", "bundleId": "app.ourapps.ourpoker"}` (agents.md, Apps). Store the app id and the build token it returns as the two `storeCredentials` secrets, passing the values on standard input (`printf '%s' "$BUILD_TOKEN" | gh secret set OURPOKER_STORE_CREDENTIALS_BUILD_TOKEN --repo <owner>/<name>`). ourapps.app reads `my-app.json` from the repository's latest release, the address `ourapps-release.manifestUrl` holds.
+
+Release a version:
+
+```
+git tag v0.1.0 && git push --tags
+gh run watch
+```
+
+`gh run watch` follows the run (pick the release run). Each later version needs its own section in `CHANGELOG.md` (`## [0.1.1]`) before its tag; the release fails without one.
 
 ### Local: the server on Node and the web client in a browser (no account)
 
@@ -322,16 +370,16 @@ PY authoring/draw_default_design.py
 - `tests/evaluate_recipe_test.py` runs aepm's evaluator (`aepm.recipe`, the same code as `aepm design`) on each answer set, on every combination of the answers that change inclusion, asking and selection, and on each error code, and validates each design with aepm's definition validator. It evaluates every condition of `recipe.json` and a set of sample expressions for every answer set and every combination with aepm's CEL subset and compares each result with `@bufbuild/cel` (`authoring/cel_evaluate.mjs`, installed under `authoring/`, which is not packaged). `tests/recipe.test.ts` reads the ourapps validator from `OURAPPS`.
 - `tests/conditional_artefacts_test.py` and `authoring/check_conditional_artefacts.py` check, for every answer set, that the files aepm installs reach no component the design leaves out, that every stand-in replaces a marked module at its destination, and that every relative import of an installed file is installed.
 - `make_recipe.py` rewrites `recipe.json` from the components' manifests and the settings written in the script. `draw_default_design.py` evaluates the default answers and draws the result with aepm's generator.
-- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with `./gradlew` where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm. Options, for designs with the target: `--android` builds against the local server, runs the unit tests and plays a hand on the emulator `--avd` (default `ourpoker`); `--windows HOST` packages the installer, then over ssh installs it silently on HOST, plays a hand in the installed application and uninstalls it (where Smart App Control refuses the unsigned installer, it plays the unpacked application instead and the result says so); `--cloudflare NAME` runs the two-step deploy as workers NAME and NAME-web and the browser check against them (Wrangler logged in; the workers stay deployed).
+- `authoring/try_install.py [ANSWERS ...]` proves parts 3 and 4 for answer sets (default: `default`, `local-web`, `fill-empty-own-hardware`, `lounge-web-ios`): it packs the 39 components and this recipe into a temporary store, signs releases and reviews with disposable identities, installs each design with `aepm install`, type-checks the server and web code, runs the server tests, starts the server on Node, checks in headless Chrome at 1280x800 that the built web client loads, lists the rooms from the server, seats a player and deals a hand with a computer player (or a second person) with the table inside the window, keeping screenshots of home, lobby and table, builds the Apple schemes for the iOS and tvOS simulators and checks that the app carries only the answered languages, and generates the Android project and checks its string folders (it builds it with `./gradlew` where `ANDROID_HOME` names an Android SDK). It needs Chrome (`--chrome` or `CHROME`), Xcode and XcodeGen for Apple designs, and network access for npm. Options, for designs with the target: `--android` builds against the local server, runs the unit tests and plays a hand on the emulator `--avd` (default `ourpoker`); `--windows HOST` packages the installer, then over ssh installs it silently on HOST, plays a hand in the installed application and uninstalls it (where Smart App Control refuses the unsigned installer, it plays the unpacked application instead and the result says so); `--cloudflare NAME` runs the two-step deploy as workers NAME and NAME-web and the browser check against them (Wrangler logged in; the workers stay deployed); `--github REPO` follows "Repository and releases" for a design with the release pipeline: it pushes a fresh install with `CHANGELOG.md` to the private repository REPO, waits for every workflow a push starts (starting by hand any the push left untouched), pushes the tag (`--github-tag`, default `v0.1.0`), waits for the release run, and checks the release: published, `my-app.json` valid and pointing at the APK and `web.zip`, the APK of that version played on the emulator with `--android`, the Windows installer an unsigned NSIS installer of the unsigned x64 application of that version, and `web.zip` served and drawn in Chrome (gh signed in; the repository stays).
 - `INTEGRATION-GAPS.md` is the integration status: the open items between the components and the recipe, the decisions taken, and what is not built. 
 
 ### What the test answer sets cover
 
 | id | what differs from the defaults | covers |
 |---|---|---|
-| `default` | nothing: all six devices, small, four languages, 9 players, 5,000 chips, 600 s levels, one rebuy, 30 s decisions, computer players on request, video, lessons, Cloudflare, no updates, not published | every component but `store-update`; no signing or deployment reference |
-| `book-club` | `ios`, `android`, `tvos`; `en`, `fr`; no video; 3,000 chips; small; published | the worked example: `web-host`, `windows-desktop`, `video-calls` and `store-update` out; free tiers |
-| `poker-league` | medium; published; updates on, with an invitation and a web address | `store-update` in; medium load still on free tiers |
+| `default` | nothing: all six devices, small, four languages, 9 players, 5,000 chips, 600 s levels, one rebuy, 30 s decisions, computer players on request, video, lessons, Cloudflare, no updates, not published | every component but `store-update` and `ourapps-release` (no GitHub Actions: not published, no releases answer); no signing or deployment reference |
+| `book-club` | `ios`, `android`, `tvos`; `en`, `fr`; no video; 3,000 chips; small; published | the worked example: `web-host`, `windows-desktop`, `video-calls` and `store-update` out; free tiers; GitHub Actions with the Android and Apple workflows |
+| `poker-league` | medium; published; updates on, with an invitation and a web address | `store-update` and `ourapps-release` in: every conditional component; medium load still on free tiers |
 | `company-event` | large; `own-hardware`; updates on | `own-hardware` server and realtime profiles; paid video |
 | `company-event-hosted` | large; Cloudflare; published; updates on | `cloudflare-paid`, realtime `paid`, video `paid`, with the Cloudflare account reference set |
 | `tv-only` | `tvos` only; `en`; no video; no lessons | a single client target; `apple-host` only |

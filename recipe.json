@@ -86,7 +86,7 @@
         "applicationName": "OurPoker",
         "bundleIdentifier": "app.ourapps.ourpoker"
       },
-      "includedWhen": null
+      "includedWhen": "publish || releases"
     },
     {
       "id": "store-update",
@@ -790,6 +790,9 @@
           "sets": {
             "server-host.accountReference": {
               "ref": "hostingAccount"
+            },
+            "ourapps-release.hostingAccount": {
+              "ref": "hostingAccount"
             }
           }
         }
@@ -827,6 +830,33 @@
       "id": "publish",
       "ask": "Will builds be signed and published (web hosting, Android and Apple stores, updates through ourapps.app)?",
       "askAgent": "No for building and running it locally or on the developer's own machine; yes only when the request is to publish. Every signing and deployment reference is asked only when this is yes.",
+      "type": "boolean",
+      "default": false,
+      "effects": []
+    },
+    {
+      "id": "repository",
+      "ask": "In which GitHub repository should the application's code go (owner/name)? Leave empty for your own account and the name ourpoker.",
+      "askAgent": "The repository the developer names, else <login>/ourpoker (the login from `gh api user -q .login`); created private when it does not exist (INSTRUCTIONS.md part 4, Repository and releases). owner/name: letters, digits, hyphens, underscores.",
+      "type": "text",
+      "default": "",
+      "effects": [
+        {
+          "sets": {
+            "ourapps-release.repository": {
+              "template": "https://github.com/{{answer}}"
+            },
+            "ourapps-release.manifestUrl": {
+              "template": "https://api.github.com/repos/{{answer}}/releases/latest"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "releases",
+      "ask": "Should GitHub Actions check every change and publish a release for each version tag? (Publishing builds always sets this up.)",
+      "askAgent": "Yes when builds are published (publish yes sets it up whatever this answer is); otherwise yes only when the developer wants GitHub to build and check each change, which uses the repository's GitHub Actions minutes.",
       "type": "boolean",
       "default": false,
       "effects": []
@@ -1580,9 +1610,9 @@
       "videoKey": "ourpoker/video-key",
       "videoSecret": "ourpoker/video-secret",
       "hostingAccount": "ourpoker-cloudflare-account",
-      "storeCredentials": "ourpoker/store-credentials",
-      "androidSigning": "ourpoker/android-signing",
-      "webDeploy": "ourpoker/web-deploy"
+      "storeCredentials": "ourpoker-store-credentials",
+      "androidSigning": "ourpoker-android-signing",
+      "webDeploy": "ourpoker-web-deploy"
     },
     "answerSets": [
       {
@@ -1611,8 +1641,8 @@
           "updates": false,
           "publish": true,
           "hostingAccount": "ourpoker-cloudflare-account",
-          "storeCredentials": "ourpoker/store-credentials",
-          "androidSigning": "ourpoker/android-signing"
+          "storeCredentials": "ourpoker-store-credentials",
+          "androidSigning": "ourpoker-android-signing"
         }
       },
       {
@@ -1648,9 +1678,9 @@
           "videoKey": "ourpoker/video-key",
           "videoSecret": "ourpoker/video-secret",
           "hostingAccount": "ourpoker-cloudflare-account",
-          "storeCredentials": "ourpoker/store-credentials",
-          "androidSigning": "ourpoker/android-signing",
-          "webDeploy": "ourpoker/web-deploy",
+          "storeCredentials": "ourpoker-store-credentials",
+          "androidSigning": "ourpoker-android-signing",
+          "webDeploy": "ourpoker-web-deploy",
           "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567",
           "webAddress": "https://poker.acme.io"
         }
@@ -1722,9 +1752,9 @@
           "videoKey": "ourpoker/video-key",
           "videoSecret": "ourpoker/video-secret",
           "hostingAccount": "ourpoker-cloudflare-account",
-          "storeCredentials": "ourpoker/store-credentials",
-          "androidSigning": "ourpoker/android-signing",
-          "webDeploy": "ourpoker/web-deploy",
+          "storeCredentials": "ourpoker-store-credentials",
+          "androidSigning": "ourpoker-android-signing",
+          "webDeploy": "ourpoker-web-deploy",
           "storeInvitation": "https://ourapps.app/l/0123456789abcdef01234567",
           "webAddress": "https://poker.acme.io"
         }
@@ -1815,9 +1845,9 @@
           "videoKey": "ourpoker/video-key",
           "videoSecret": "ourpoker/video-secret",
           "hostingAccount": "ourpoker-cloudflare-account",
-          "storeCredentials": "ourpoker/store-credentials",
-          "androidSigning": "ourpoker/android-signing",
-          "webDeploy": "ourpoker/web-deploy",
+          "storeCredentials": "ourpoker-store-credentials",
+          "androidSigning": "ourpoker-android-signing",
+          "webDeploy": "ourpoker-web-deploy",
           "bundleId": "io.acme.poker",
           "webAddress": "https://poker.acme.io",
           "videoServiceUrl": "https://video.acme.io"

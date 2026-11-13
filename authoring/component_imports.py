@@ -38,6 +38,25 @@ def references(path: Path) -> list[tuple[str, str]]:
     return found
 
 
+# Workflows and scripts of the repository name component files in commands, not in quoted imports.
+REPOSITORY_SUFFIXES = {".yml", ".yaml", ".sh", ".ps1"}
+
+
+def repository_references(path: Path) -> list[tuple[str, str]]:
+    """(component, path inside the component) for every `components/<name>/<path>` a workflow or script names, quoted or not; a
+    path ending in `**` or a `"$ROOT/components/...` string counts too (a glob reads as a prefix)."""
+    if path.suffix not in REPOSITORY_SUFFIXES or "repository" not in path.parts:
+        return []
+    found = []
+    for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if line.strip().startswith("#"):
+            continue
+        for m in re.finditer(r"""components/([a-z][a-z0-9-]*)/([^\s"'`)]*)""", line):
+            rest = m.group(2)
+            found.append((m.group(1), rest.split("*")[0] + "*" if "*" in rest else rest))
+    return found
+
+
 def relative_imports(path: Path) -> list[str]:
     """Relative module specifiers (`./x`, `../x`) of import, export-from, dynamic import and require, in code files."""
     if path.suffix not in {".ts", ".tsx", ".js", ".mjs", ".cjs"}:

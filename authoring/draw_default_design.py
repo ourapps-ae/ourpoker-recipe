@@ -6,7 +6,7 @@ draws it. It does not assemble, resolve, install or run anything.
 
 Writes authoring/designs/*.json and renders page/diagram.{svg,png} (every component by name, grouped as in paper Section 5.3), page/diagram-<group>.{svg,png}
 (each group's components) and page/diagram-full.svg (every included component; over the generator's PNG size limit, so SVG only).
-Usage: PYTHONPATH=/Users/george/Projects/com/my/aepm python3.12 -B authoring/draw_default_design.py
+Usage: PYTHONPATH=<aepm checkout> python3.12 -B authoring/draw_default_design.py
 """
 import copy
 import os

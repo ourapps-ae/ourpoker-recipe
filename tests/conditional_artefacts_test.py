@@ -31,7 +31,16 @@ RESULTS = C.run(WORLD)
 
 # Marks, derived from the import and path strings of each source file (tests also from the application files they import), plus
 # the web package files, which declare livekit-client for video-calls.
-EXPECTED_MARKS = {"android-host": 1, "apple-host": 1, "computer-players": 1, "guided-tour": 5, "store-update": 11, "video-calls": 20, "web-host": 2, "windows-desktop": 9}
+EXPECTED_MARKS = {"android-host": 1, "apple-host": 1, "computer-players": 1, "guided-tour": 5, "ourapps-release": 3, "store-update": 11, "video-calls": 20,
+                  "web-host": 2, "windows-desktop": 9}
+# The repository files that build one host: installed with the release pipeline and that host (a list mark: both).
+EXPECTED_RELEASE_MARKS = {"android-host": 1, "apple-host": 3, "web-host": 1, "windows-desktop": 3}
+RELEASE = "ourapps-ae/ourapps-release"
+
+
+def marks(artefact):
+    value = artefact.get("component")
+    return [] if value is None else [value] if isinstance(value, str) else list(value)
 
 # Stand-ins (`withoutComponent`): installed at the destination of the optional module they replace when the design leaves its component out.
 EXPECTED_STAND_INS = {"computer-players": 1, "guided-tour": 4, "store-update": 4, "video-calls": 8, "web-host": 1}
@@ -48,20 +57,45 @@ class Marks(unittest.TestCase):
 
     def test_every_source_that_names_an_optional_component_is_marked(self):
         optional = {c["id"] for c in WORLD.recipe["components"] if c.get("includedWhen") is not None}
-        self.assertEqual(optional, {"web-host", "apple-host", "android-host", "windows-desktop", "guided-tour", "video-calls", "store-update", "computer-players", "poker-strategy"})
+        self.assertEqual(optional, {"web-host", "apple-host", "android-host", "windows-desktop", "guided-tour", "video-calls", "store-update", "computer-players", "poker-strategy", "ourapps-release"})
         for artefact in MANIFEST["artefacts"]:
             reached = {c for c, _ in component_imports.references(ROOT / artefact["source"]) if c in optional}
             if reached:
                 self.assertIn("component", artefact, artefact["source"])
-                mark = artefact["component"].split("/")[1]
-                self.assertTrue(mark in reached or artefact["source"].startswith("tests/"), f"{artefact['source']}: {mark} not in {reached}")
+                names = [mark.split("/")[1] for mark in marks(artefact)]
+                self.assertTrue(set(names) & reached or artefact["source"].startswith("tests/"), f"{artefact['source']}: {names} not in {reached}")
 
     def test_the_count_of_marked_artefacts_per_component(self):
-        marked = {}
+        marked, listed = {}, {}
         for artefact in MANIFEST["artefacts"]:
-            if "component" in artefact:
+            if isinstance(artefact.get("component"), str):
                 marked[artefact["component"].split("/")[1]] = marked.get(artefact["component"].split("/")[1], 0) + 1
+            elif "component" in artefact:
+                hosts = [name.split("/")[1] for name in artefact["component"] if name != RELEASE]
+                self.assertEqual((len(artefact["component"]), len(hosts)), (2, 1), artefact["source"])
+                listed[hosts[0]] = listed.get(hosts[0], 0) + 1
         self.assertEqual(marked, EXPECTED_MARKS)
+        self.assertEqual(listed, EXPECTED_RELEASE_MARKS)
+
+    def test_repository_files_install_only_with_the_release_pipeline(self):
+        repository = [a for a in MANIFEST["artefacts"] if a["source"].startswith("implementation/repository/")]
+        self.assertEqual(sorted(a["destination"] for a in repository), [
+            ".github/workflows/apple-testflight.yml", ".github/workflows/ci-android.yml", ".github/workflows/ci-server.yml", ".github/workflows/ci-web.yml",
+            ".github/workflows/platform-packages.yml", ".github/workflows/release.yml", ".gitignore", "release/app.json", "scripts/build-apple-testflight.sh",
+            "scripts/build-ipa.sh", "scripts/build-windows.sh", "scripts/inspect-windows.ps1"])
+        for artefact in repository:
+            self.assertEqual(artefact["destination"] == ".gitignore", RELEASE not in marks(artefact), artefact["source"])
+            self.assertEqual(artefact["template"], artefact["destination"] == "release/app.json", artefact["source"])
+        for name, answers in C.answer_sets(WORLD).items():
+            with self.subTest(name):
+                design = E.evaluate(WORLD, answers)["design"]
+                present = names_in(design)
+                installed = {a["destination"] for a in application.installed_artefacts(MANIFEST, present)}
+                workflows = {d for d in installed if d.startswith(".github/")}
+                self.assertEqual(bool(workflows), RELEASE in present)
+                self.assertEqual(RELEASE in present, bool(answers.get("publish") or answers.get("releases")))
+                self.assertEqual(".github/workflows/ci-android.yml" in installed, RELEASE in present and "ourapps-ae/android-host" in present)
+                self.assertIn(".gitignore", installed)
 
     def test_native_files_that_name_an_optional_components_types_are_marked(self):
         # Swift and Kotlin reach a component through its types, not a path: only the marked modules may name them.
@@ -81,7 +115,7 @@ class Marks(unittest.TestCase):
 
     def test_a_package_with_these_marks_is_a_valid_component_to_aepm(self):
         model.validate_component(load(ROOT / "component.json"))
-        self.assertEqual(sum(1 for a in MANIFEST["artefacts"] if "component" in a), sum(EXPECTED_MARKS.values()))
+        self.assertEqual(sum(1 for a in MANIFEST["artefacts"] if "component" in a), sum(EXPECTED_MARKS.values()) + sum(EXPECTED_RELEASE_MARKS.values()))
 
     def test_aepm_refuses_a_mark_naming_the_component_itself(self):
         broken = json.loads((ROOT / "component.json").read_text())
@@ -97,13 +131,13 @@ class Installed(unittest.TestCase):
                 design = E.evaluate(WORLD, answers)["design"]
                 present = names_in(design)
                 installed = application.installed_artefacts(MANIFEST, present)
-                expected = [a for a in MANIFEST["artefacts"] if ("component" not in a or a["component"] in present)
+                expected = [a for a in MANIFEST["artefacts"] if all(name in present for name in marks(a))
                             and ("withoutComponent" not in a or a["withoutComponent"] not in present)]
                 self.assertEqual(installed, expected)
                 self.assertEqual(RESULTS[name]["installed"], len(expected))
                 for artefact in MANIFEST["artefacts"]:
                     if "component" in artefact:
-                        self.assertEqual(artefact in installed, artefact["component"] in present)
+                        self.assertEqual(artefact in installed, all(name in present for name in marks(artefact)))
                     if "withoutComponent" in artefact:
                         self.assertEqual(artefact in installed, artefact["withoutComponent"] not in present)
                 destinations = [a["destination"] for a in installed]
@@ -113,7 +147,7 @@ class Installed(unittest.TestCase):
         everything = application.installed_artefacts(MANIFEST, names_in(E.evaluate(WORLD, C.answer_sets(WORLD)["poker-league"])["design"]))
         self.assertEqual(len(everything), len(MANIFEST["artefacts"]) - sum(EXPECTED_STAND_INS.values()), "poker-league includes every conditional component")
         none = application.installed_artefacts(MANIFEST, {"ourapps-ae/ourpoker"})
-        self.assertEqual(len(none), len(MANIFEST["artefacts"]) - sum(EXPECTED_MARKS.values()))
+        self.assertEqual(len(none), len(MANIFEST["artefacts"]) - sum(EXPECTED_MARKS.values()) - sum(EXPECTED_RELEASE_MARKS.values()))
         self.assertEqual(sum(1 for a in none if "withoutComponent" in a), sum(EXPECTED_STAND_INS.values()))
 
     def test_every_stand_in_replaces_a_conditional_file_at_its_destination(self):

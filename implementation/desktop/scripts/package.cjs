@@ -61,19 +61,21 @@ async function pack() {
   const asar = await import('@electron/asar');
   const resources = path.join(root, 'artifacts/win-unpacked/resources');
   const archive = path.join(resources, 'app.asar');
-  const packaged = JSON.parse(asar.extractFile(archive, 'package.json').toString());
+  // asar finds a file by the platform's separator, so on Windows a path inside the archive uses backslashes.
+  const read = (name) => asar.extractFile(archive, name.split('/').join(path.sep));
+  const packaged = JSON.parse(read('package.json').toString());
   if (packaged.main !== 'desktop/src/main.cjs') throw new Error('Invalid packaged entrypoint');
-  asar.extractFile(archive, packaged.main);
-  asar.extractFile(archive, 'desktop/src/verify.cjs');
-  asar.extractFile(archive, 'components/windows-desktop/verification/result.mjs');
+  read(packaged.main);
+  read('desktop/src/verify.cjs');
+  read('components/windows-desktop/verification/result.mjs');
   const scriptDigests = {};
   for (const [entry, source] of sources) {
     const expected = await fs.readFile(path.join(root, source));
-    if (!expected.equals(asar.extractFile(archive, entry))) throw new Error('Packaged script mismatch');
+    if (!expected.equals(read(entry))) throw new Error('Packaged script mismatch');
     scriptDigests[entry] = createHash('sha256').update(expected).digest('hex');
   }
   const module = { exports: {} };
-  new Function('require', 'module', 'exports', asar.extractFile(archive, 'components/windows-desktop/desktop/src/policy.cjs').toString())(require, module, module.exports);
+  new Function('require', 'module', 'exports', read('components/windows-desktop/desktop/src/policy.cjs').toString())(require, module, module.exports);
   const policy = module.exports.createPolicy({ scheme: '{{scheme}}', serverOrigin: '{{serverAddress}}', externalOrigins: [] });
   const response = await policy.assetResponse(path.join(resources, 'web'), new Request(policy.ENTRY));
   if (response.status !== 200) throw new Error('Packaged web resources unavailable');

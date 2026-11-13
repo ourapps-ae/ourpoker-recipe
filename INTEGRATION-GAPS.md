@@ -18,14 +18,15 @@ Evidence: `node --test tests/recipe.test.ts` checks the recipe against the compo
 | G9.5 | application Android client | video-calls | no seat video tile | needs adapter | deferred | drawn in `SeatScreen.kt` | video-calls |
 | G9.6 | application Android client | table-layout | the table draws its own felt, cards, bets and flights over one coordinate box | needs adapter | deferred | `TableScreen.kt` draws them; table-layout gives card and stake spots the client is not built on | application |
 | G11.3 | application web, Apple and Android clients | aepm | each client's sources (`web/`, `ios/`, `android/`) are installed for every design; only what builds them comes with the target (`vite.config.ts` with web-host, `generate-project.ts` with apple-host or android-host) | cosmetic | deferred | an artefact condition takes one component, and the files that are pairs already depend on video-calls, guided-tour or store-update; marking the rest with the host would leave those pairs behind on their own; nothing builds a client folder without its host's build file | aepm |
+| G12.1 | recipe `apple-testflight.yml` | ourapps-release, apple-host | the Mac and Apple TV TestFlight export needs `apple-testflight.py` and `apple-testflight-upload.py`, which ourapps-release does not ship, and `ios/build-platform.sh` for the generated Xcode project | needs adapter | open | ship the two helpers in ourapps-release and the platform build script; until then `scripts/build-apple-testflight.sh` stops before any output, signing material or store call and names what is missing | ourapps-release, apple-host |
 
 ## Counts
 
 Counted from the status and severity columns above (`tests/recipe.test.ts` checks them).
 
-Total 10 open items: open 0, deferred 10.
+Total 11 open items: open 1, deferred 10.
 
-By severity: blocks assembly 0, needs adapter 4, cosmetic 6.
+By severity: blocks assembly 0, needs adapter 5, cosmetic 6.
 
 ## Decisions
 
@@ -40,7 +41,7 @@ Made without asking so that a complete recipe exists; each is easy to change.
 7. **Server provider and size.** Selection by aepm's evaluator chooses it. The `server` answer is the `overrideQuestion` of the `server` and `realtime` jobs; the scale picks the tier: `cloudflare` at small or medium is free, at large paid; `own-hardware` costs nothing at every band. The `video` job follows the scale only.
 8. **References.** `hostingAccount` (server `cloudflare`: a Cloudflare server needs it to start and to deploy) and, only when `publish` is yes, `videoKey` and `videoSecret` (video on), `androidSigning` (Android a target), `webDeploy` (web a target) and `storeCredentials` (updates on or `ios` a target) are secretRef questions set only by `{ref}` effects; none is in configuration. A local design (`publish` no, own hardware) asks for none.
 9. **Store credentials guard.** Asked when builds are published and `updates` is yes or the devices include `ios`: ourapps-release has no store call and no iOS job without it. Other Apple targets and Android do not need it.
-10. **Application ports.** It provides only `poker-game-adapter` (connected to realtime-rooms' `game`); seven of its twenty requirements are optional, exactly those whose providers can be left out.
+10. **Application ports.** It provides only `poker-game-adapter` (connected to realtime-rooms' `game`); eight of its twenty requirements are optional, exactly those whose providers can be left out.
 11. **One source for numbers.** Players, chips, level length, rebuys and decision time reach every component and the application from one answer each; only the tournament's `startingStack` and `rebuyStack` are set from the chips answer.
 12. **Page drawings.** The grouped overview does not draw the application (with it the image passes the generator's size limit); the application and its neighbours are drawn on their own (`page/diagram-application.svg`, SVG only).
 13. **Conditional artefacts.** A file is marked by the optional components its import and path strings name; a test file also by the application files it imports; several components under one condition (computer-players, poker-strategy) count as one; under different conditions a host component wins, then the first by name. `display-mode` is never marked: the recipe always includes it. Swift and Kotlin name a component's types, not its path: the few native modules that do are listed in `scripts/make_component.py` and marked, and `tests/conditional_artefacts_test.py` refuses any other native file that names video-calls', guided-tour's or store-update's types.
@@ -58,9 +59,10 @@ Made without asking so that a complete recipe exists; each is easy to change.
 25. **Look.** The `look` answer is the theme of the whole application on every client: both rooms, every screen, the felt and the card backs (night: striped, lounge: plain). It reaches the clients as `application.look` and `application.cardBack`; the rooms differ only by name.
 26. **Fill-empty.** With `fill-empty`, one person may press Start alone: turn-engine offers Start when the computers would fill enough seats, and they take every empty seat.
 27. **A seat left by a closed app.** In the waiting room it is freed one minute after the app closed (turn-engine's `lobbyDropSeconds`); during a game it is kept, with a computer playing it, so its holder can come back with their device, and freed when the game ends. A game everyone has left for 30 minutes ends. realtime-rooms frees a name as soon as the game lets its seat go.
+28. **Repository files.** aepm installs a component's files only under `components/<name>/` and renders no `${{ }}` in a template, so the workflows, their scripts and `.gitignore` are the recipe's own plain files at the application root, installed with ourapps-release (in the design when `publish` or `releases` is yes) and, for the per-host ones, their host too (a `component` list). The values a run needs come from ourapps-release's `release.json`, which aepm renders at install; its four references are plain reference names (a template cannot render a secret setting), turned into repository secret names in capitals.
 
 ## What is not specified or built
 
 - **The assembler.** Nothing here asks the questions for a person: that is the agent's (INSTRUCTIONS.md part 1); `aepm questions`, `aepm design`, `aepm resolve` and `aepm install` do the rest (part 3).
 - **Client items** G9.2 to G9.6 and the paper rows G7.15 and G7.16.
-- **Builds not run.** The Android build (no Android SDK where the recipe is maintained; the Kotlin stand-ins are type-checked on the JVM), Windows packaging (needs Windows), the end-to-end specs under `tests/e2e/` that need a LiveKit service, Xcode test runs or Windows, and deploys to Cloudflare (need an account). The Apple builds ran for the iOS and tvOS simulators (`default`, `book-club`, `native-no-lessons`).
+- **Builds not run.** The end-to-end specs under `tests/e2e/` that need a LiveKit service, Xcode test runs or Windows; signed Android, Windows and Apple builds and TestFlight uploads (the proofs hold no signing keys or store credentials). The Apple builds ran for the iOS and tvOS simulators (`default`, `book-club`, `native-no-lessons`); `authoring/try_install.py` with `--android`, `--windows`, `--cloudflare` and `--github` builds, runs, deploys and releases the default design.

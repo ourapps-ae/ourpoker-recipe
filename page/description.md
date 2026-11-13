@@ -16,7 +16,7 @@ Two to nine players at a table, 5,000 chips each, blind levels of 10 minutes tha
 
 ## The questions
 
-An agent answers them from your description and asks you only what it cannot infer; the server location is always asked. Fourteen are the main questions; twelve follow-ups, most asked only when they apply (a web address, a bundle identifier, the server address after the first deploy, whether builds are published, the video service address, the store invitation, and the references to your hosting account and, only when publishing, your video, store, Android and web deployment secrets). Building and running it on your own machine needs no secret at all.
+An agent answers them from your description and asks you only what it cannot infer; the server location is always asked. Fourteen are the main questions; fourteen follow-ups, most asked only when they apply (a web address, a bundle identifier, the server address after the first deploy, whether builds are published, the GitHub repository for the code, whether GitHub Actions build releases, the video service address, the store invitation, and the references to your hosting account and, only when publishing, your video, store, Android and web deployment secrets). Building and running it on your own machine needs no secret at all.
 
 1. Which devices? (any of web, ios, android, macos, windows, tvos)
 2. How many people play at the same time? (small: up to 10; medium: 11 to 100; large: 101 to 1,000)
@@ -45,7 +45,8 @@ An agent answers them from your description and asks you only what it cannot inf
 - A Cloudflare account, or a machine of your own, for the server.
 - An Apple developer membership for iPhone, iPad, Mac and Apple TV builds.
 - A LiveKit Cloud account if video is on.
-- Signing and deployment keys for the targets you publish.
+- A GitHub account: the code goes to a private repository of yours.
+- Signing and deployment keys for the targets you publish, kept as the repository's secrets.
 
 Secrets are given by reference only; no key is written into the recipe, the answers or the application.
 
@@ -62,6 +63,17 @@ python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e 
 ```
 
 It takes you through `aepm questions`, `aepm design`, `aepm resolve` and `aepm install`, then the build and run commands for each device.
+
+### Repository and releases
+
+The installed application goes to your GitHub repository (the agent proposes `<your login>/ourpoker`, made private):
+
+```
+git init -b main && git add -A && git commit -m "OurPoker from ourapps-ae/ourpoker <version>"
+gh repo create <owner>/<name> --private --source . --push
+```
+
+When builds are published (or the releases answer is yes), the installation also holds GitHub Actions: checks of the server, web, Android and Windows parts on every push, and a release workflow. `git tag v0.1.0 && git push --tags` builds the web client, the Android APK and the Windows installer and publishes a GitHub Release with `my-app.json`, the file ourapps.app reads to offer the app. Signing and deployment keys are repository secrets you set yourself with `gh secret set`, named from your reference answers (INSTRUCTIONS.md lists every name); without them the Android build is signed with a temporary key, the Windows installer is unsigned and the web client is released as `web.zip`. Registering the app on ourapps.app is optional.
 
 ## Tested answer sets
 

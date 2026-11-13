@@ -1,0 +1,48 @@
+# The unsigned Windows installer, built and checked on Windows: installed silently, started (its window loads) and
+# uninstalled. Evidence only: my-app.json offers no unsigned package for download.
+name: platform-packages
+
+on:
+  push:
+    branches: [main]
+    paths: ["desktop/**", "components/windows-desktop/**", "scripts/build-windows.sh", "scripts/inspect-windows.ps1", ".github/workflows/platform-packages.yml"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Installer version
+        type: string
+        default: "0.0.0"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: platform-packages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "26.5"
+      - name: Dependencies
+        run: npm ci --prefix web && npm ci --prefix desktop
+      - name: Build, install, start and uninstall the unsigned installer
+        env:
+          VERSION: ${{ inputs.version || '0.0.0' }}
+        run: bash scripts/build-windows.sh "$RUNNER_TEMP/windows" "$VERSION"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: unsigned-windows-evidence
+          path: ${{ runner.temp }}/windows/
+          if-no-files-found: error
+          retention-days: 7

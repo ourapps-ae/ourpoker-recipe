@@ -152,11 +152,30 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/desktop/package.json` | 22 | desktop/package.json 1-21 | Name templated. |
 | `implementation/desktop/package-lock.json` | 3604 | desktop/package-lock.json | Exact versions of electron and electron-builder. |
 | `implementation/desktop/scripts/build.cjs` | 4 | desktop/scripts/build.cjs 1-4 |  |
-| `implementation/desktop/scripts/package.cjs` | 95 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings; stages configuration.cjs; writes the icon, name, publisher and version into the executable. |
+| `implementation/desktop/scripts/package.cjs` | 97 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings; stages configuration.cjs; writes the icon, name, publisher and version into the executable. |
 | `implementation/desktop/src/configuration.cjs` | 13 | desktop/src/main.cjs 1-12, verify.cjs | The windows-desktop configuration document, shared by main and verify. |
 | `implementation/desktop/src/main.cjs` | 8 | desktop/src/main.cjs 1-12 |  |
 | `implementation/desktop/src/verify.cjs` | 134 | desktop/src/verify.cjs 1-135 |  |
 | `implementation/desktop/test/integration.test.cjs` | 31 | desktop/test/integration.test.cjs 1-20 | Adds the check that every packaged script's relative requires are packaged. |
+
+## Repository (`implementation/repository/`, destination `.github/`, `scripts/`, `release/`, `.gitignore`)
+
+### Repository
+
+| File | Lines | Origin (the source's recipe/ folder) | Notes |
+|---|---|---|---|
+| `implementation/repository/workflows/ci-server.yml` | 36 | McInPoker .github/workflows/ci-server.yml 1-36 | Server type check and tests; Node 26.5. |
+| `implementation/repository/workflows/ci-web.yml` | 36 | McInPoker .github/workflows/ci-web.yml 1-35 | Web type check and build. |
+| `implementation/repository/workflows/ci-android.yml` | 39 | McInPoker .github/workflows/ci-android.yml 1-34 | generate-project.ts first; unit tests and debug build. |
+| `implementation/repository/workflows/platform-packages.yml` | 48 | McInPoker .github/workflows/platform-packages.yml 65-93 | Windows only, also on pushes; the installer installed, started and uninstalled. |
+| `implementation/repository/workflows/release.yml` | 455 | McInPoker .github/workflows/release.yml 1-307 | Jobs per target found in the installation; secret names from ourapps-release's release.json; unsigned builds when the secrets are absent; the Windows installer attached; web and server deploys. |
+| `implementation/repository/workflows/apple-testflight.yml` | 114 | McInPoker .github/workflows/apple-testflight.yml 1-82 | Runs only with the store credentials; reservation inline. |
+| `implementation/repository/scripts/build-windows.sh` | 33 | McInPoker scripts/build-windows.sh 1-24 | Checks that packaging finished. |
+| `implementation/repository/scripts/inspect-windows.ps1` | 50 | McInPoker scripts/inspect-windows.ps1 1-29 | Adds the silent install, start and uninstall. |
+| `implementation/repository/scripts/build-ipa.sh` | 30 | McInPoker ios/build-ipa.sh 1-19 | The generated project, its signing variables and export options. |
+| `implementation/repository/scripts/build-apple-testflight.sh` | 93 | McInPoker scripts/build-apple-testflight.sh 1-81 | Stops first when the Apple helpers are missing. |
+| `implementation/repository/release/app.json` | 11 | new | The application description publish_release.py turns into my-app.json (a template). |
+| `implementation/repository/gitignore` | 32 | new | Installed as .gitignore. |
 
 ## Rules, text, assets
 

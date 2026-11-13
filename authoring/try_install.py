@@ -31,10 +31,18 @@ With options, for designs that have the target:
                     again with serverAddress and webAddress, the server deployed again, the web client built and deployed as the
                     static worker NAME-web, and the browser check run against them. Needs Wrangler logged in (`npx wrangler login`);
                     the workers stay deployed.
+  --github REPO     INSTRUCTIONS.md part 4, Repository and releases, for a design with the release pipeline: a fresh install with
+                    CHANGELOG.md committed and pushed to the private repository REPO (owner/name; made when missing, a new commit
+                    on top when it exists), every workflow a push to main starts run to success (one a push leaves untouched is
+                    started by hand), the tag --github-tag (default v0.1.0) pushed and the release run to success, then the
+                    release checked: published, my-app.json valid and pointing at the APK and web.zip assets, the APK of that
+                    version (played on the emulator with --android, its localhost server address forwarded to a server here),
+                    the Windows installer an unsigned NSIS installer of the unsigned x64 application of that version, web.zip
+                    served here and drawn in Chrome. Needs gh signed in; the repository stays.
 
 Usage (from the recipe folder; python 3.12, node 26.5.0, Chrome):
   PYTHONPATH=<aepm checkout> python3.12 -B authoring/try_install.py [ANSWERS ...] [--components DIR] [--work DIR] [--chrome PATH]
-                                         [--android [--avd NAME]] [--windows HOST] [--cloudflare NAME]
+                                         [--android [--avd NAME]] [--windows HOST] [--cloudflare NAME] [--github REPO [--github-tag TAG]]
 ANSWERS is an answer-set id of recipe.json (`default` for its default answers) or a path to an answers JSON file;
 without ANSWERS: default, local-web, fill-empty-own-hardware and lounge-web-ios. The work folder (default: a new temporary folder) keeps
 the store, identities, installed applications and logs; report.json there holds every result. Exit status 0 when every step passed.
@@ -48,6 +56,7 @@ import re
 import shutil
 import signal
 import socket
+import struct
 import subprocess
 import sys
 import tempfile
@@ -322,7 +331,8 @@ def native(work, name, app, results, start_server, options):
             if options.android:
                 output = run(["./gradlew", ":app:testDebugUnitTest"], work, f"{name}-android-unit-tests", cwd=android, timeout=1800)
                 results["androidUnitTests"] = "passed" if "BUILD SUCCESSFUL" in output else output[-500:]
-                results["androidRun"] = android_run(work, name, android, port, options.avd)
+                package = re.search(r'applicationId = "([^"]+)"', (android / "app/build.gradle.kts").read_text()).group(1)
+                results["androidRun"] = android_run(work, name, android / "app/build/outputs/apk/debug/app-debug.apk", package, port, options.avd)
         elif options.android:
             raise Step("--android needs ANDROID_HOME (INSTRUCTIONS.md part 4, Android)")
         else:
@@ -331,11 +341,11 @@ def native(work, name, app, results, start_server, options):
 
 # ---- the Android emulator (--android) ----
 
-def android_run(work, name, android, port, avd):
-    """Installs the debug build on a new emulator of AVD avd and plays to a dealt hand against the local server."""
+def android_run(work, name, apk, package, port, avd, reverse=None, shot="android-table.png"):
+    """Installs apk on a new emulator of AVD avd and plays to a dealt hand against the local server on port. With reverse
+    (a device port), the device's localhost:<reverse> reaches that server (for a build that calls localhost)."""
     sdk = Path(os.environ["ANDROID_HOME"])
     adb, serial = str(sdk / "platform-tools/adb"), "emulator-5584"
-    package = re.search(r'applicationId = "([^"]+)"', (android / "app/build.gradle.kts").read_text()).group(1)
     shots = work / "designs" / name
     processes = Processes()
     log = log_path(work, f"{name}-android-emulator")
@@ -373,7 +383,9 @@ def android_run(work, name, android, port, avd):
         else:
             raise Step("android emulator did not boot within 600s")
         run([adb, "-s", serial, "uninstall", package], work, f"{name}-android-uninstall", check=False)
-        device("install", "-g", str(android / "app/build/outputs/apk/debug/app-debug.apk"), timeout=300)
+        device("install", "-g", str(apk), timeout=300)
+        if reverse:
+            device("reverse", f"tcp:{reverse}", f"tcp:{port}")
         device("logcat", "-c")
         device("shell", "am", "start", "-W", "-n", f"{package}/.MainActivity")
         tap("No, I know how to play")
@@ -392,7 +404,7 @@ def android_run(work, name, android, port, avd):
         rooms = get_json(f"http://127.0.0.1:{port}/rooms")
         if not any("Droid" in room["names"] for room in rooms):
             raise Step("android: the server does not list the player")
-        (shots / "android-table.png").write_bytes(subprocess.run([adb, "-s", serial, "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
+        (shots / shot).write_bytes(subprocess.run([adb, "-s", serial, "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
         crashes = device("logcat", "-d", "-b", "crash")
         if package in crashes:
             raise Step(f"android: the app crashed\n{crashes[-2000:]}")
@@ -606,6 +618,266 @@ def cloudflare_run(work, store, policy, world, name, answers, app, options):
     return {"server": address, "web": web_address, "browser": browser}
 
 
+# ---- GitHub (--github OWNER/NAME) ----
+
+def github_env():
+    """gh and git with the signed-in GitHub account, not a GITHUB_TOKEN from the environment."""
+    return {key: value for key, value in os.environ.items() if key not in ("GITHUB_TOKEN", "GH_TOKEN")}
+
+
+def gh(args, work, label, cwd=None, check=True, timeout=300):
+    return run(["gh", *args], work, label, cwd=cwd, env=github_env(), check=check, timeout=timeout)
+
+
+def git(args, work, label, cwd, check=True, timeout=600):
+    # INSTRUCTIONS.md part 4 pushes with gh's credentials: credential.helper is reset, then gh's helper is the only one.
+    return run(["git", "-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential", *args], work, label, cwd=cwd, env=github_env(),
+               check=check, timeout=timeout)
+
+
+def workflow_names(app):
+    """file -> the workflow's name, for every workflow of the installed application, and the files that run on a push to main."""
+    names, on_push = {}, []
+    for path in sorted((app / ".github/workflows").glob("*.yml")):
+        text = path.read_text()
+        names[path.name] = re.search(r"^name: (\S+)$", text, re.M).group(1)
+        if re.search(r"^on:\n  push:\n    branches: \[main\]", text, re.M):
+            on_push.append(path.name)
+    return names, on_push
+
+
+def succeeds(argv):
+    return subprocess.run(argv, env=github_env(), capture_output=True, timeout=120).returncode == 0
+
+
+def wait_runs(work, label, repo, query, expected, names, timeout):
+    """file -> the latest run of each workflow file in `expected` that `query` (gh run list arguments) finds, once all completed."""
+    wanted = {names[file]: file for file in expected}
+    deadline = time.time() + timeout
+    while True:
+        listed = json.loads(gh(["run", "list", "--repo", repo, *query, "--limit", "50", "--json",
+                                "databaseId,workflowName,status,conclusion,event,headBranch,headSha"], work, f"{label}-runs"))
+        latest = {}
+        for item in listed:
+            file = wanted.get(item["workflowName"])
+            if file and (file not in latest or item["databaseId"] > latest[file]["databaseId"]):
+                latest[file] = item
+        if set(latest) == set(expected) and all(item["status"] == "completed" for item in latest.values()):
+            return latest
+        if time.time() > deadline:
+            raise Step(f"github: runs not complete within {timeout}s: {[(f, i['status']) for f, i in latest.items()]}, missing {sorted(set(expected) - set(latest))}")
+        time.sleep(20)
+
+
+def github_run(work, store, policy, world, name, answers, repo, options, server_app):
+    """INSTRUCTIONS.md part 4, Repository and releases, for a fresh install of the design: CHANGELOG.md, git init and commit, the
+    private repository made and pushed (a new commit on top when it exists), every workflow a push to main starts run to the
+    end, the tag pushed and the release run to the end, then the release's assets downloaded and checked."""
+    version = json.loads((ROOT / "recipe.json").read_text())["version"]
+    tag = options.github_tag
+    label = f"{name}-github"
+    _, app = install(work, store, policy, world, label, answers)
+    (app / "CHANGELOG.md").write_text(CHANGELOG.replace("<version>", tag[1:]))
+    git(["init", "-q", "-b", "main"], work, f"{label}-git-init", app)
+    git(["add", "-A"], work, f"{label}-git-add", app)
+    git(["commit", "-q", "-m", f"OurPoker from ourapps-ae/ourpoker {version}"], work, f"{label}-git-commit", app)
+    names, expected = workflow_names(app)
+    results = {"repository": repo, "workflows": sorted(names)}
+    if succeeds(["gh", "repo", "view", repo, "--json", "name"]):
+        git(["remote", "add", "origin", f"https://github.com/{repo}.git"], work, f"{label}-git-remote", app)
+        git(["fetch", "-q", "origin", "main"], work, f"{label}-git-fetch", app)
+        git(["reset", "-q", "--soft", "origin/main"], work, f"{label}-git-reset", app)
+        git(["commit", "-q", "-m", f"OurPoker from ourapps-ae/ourpoker {version}"], work, f"{label}-git-commit-again", app)
+        git(["push", "-q", "origin", "main"], work, f"{label}-git-push", app)
+        results["created"] = False
+    else:
+        gh(["repo", "create", repo, "--private", "--source", ".", "--remote", "origin"], work, f"{label}-repo-create", cwd=app)
+        git(["push", "-q", "-u", "origin", "main"], work, f"{label}-git-push", app)
+        results["created"] = True
+    sha = git(["rev-parse", "HEAD"], work, f"{label}-git-head", app).strip().splitlines()[-1]
+    results["commit"] = sha
+    time.sleep(30)
+    started = {item["workflowName"] for item in json.loads(gh(["run", "list", "--repo", repo, "--commit", sha, "--json", "workflowName"], work, f"{label}-runs"))}
+    for file in expected:
+        # a push that leaves a workflow's paths unchanged starts no run of it; the run comes from its manual trigger instead
+        if names[file] not in started:
+            gh(["workflow", "run", file, "--repo", repo, "--ref", "main"], work, f"{label}-dispatch-{file}")
+    ci = wait_runs(work, label, repo, ["--commit", sha], expected, names, timeout=3600)
+    results["ci"] = {file: {"run": item["databaseId"], "event": item["event"], "conclusion": item["conclusion"]} for file, item in ci.items()}
+    if any(item["conclusion"] != "success" for item in ci.values()):
+        raise Step(f"github: a workflow failed: {results['ci']}")
+    if succeeds(["gh", "api", f"repos/{repo}/git/refs/tags/{tag}"]):
+        raise Step(f"github: {repo} already has the tag {tag}; remove the tag and its release, or give --github-tag")
+    git(["tag", tag], work, f"{label}-git-tag", app)
+    git(["push", "-q", "origin", tag], work, f"{label}-git-push-tag", app)
+    time.sleep(20)
+    release_run = wait_runs(work, label, repo, ["--workflow", "release.yml", "--branch", tag], ["release.yml"], names, timeout=5400)["release.yml"]
+    results["release"] = {"run": release_run["databaseId"], "conclusion": release_run["conclusion"]}
+    if release_run["conclusion"] != "success":
+        raise Step(f"github: the release run failed: {results['release']}")
+    view = json.loads(gh(["release", "view", tag, "--repo", repo, "--json", "tagName,isDraft,isPrerelease,name,assets"], work, f"{label}-release-view"))
+    folder = work / "designs" / label / "release"
+    folder.mkdir(parents=True, exist_ok=True)
+    gh(["release", "download", tag, "--repo", repo, "--dir", str(folder)], work, f"{label}-release-download", timeout=1800)
+    results["assets"] = sorted(asset["name"] for asset in view["assets"])
+    results["checks"] = release_checks(work, label, folder, view, tag[1:], app, server_app, options)
+    return results
+
+
+CHANGELOG = "# Changelog\n\n## [<version>]\n\n### Added\n\n- OurPoker: Texas hold'em tournaments with friends, face to face.\n"
+
+
+def release_checks(work, label, folder, view, version, app, server_app, options):
+    """The release is published (not a draft or pre-release) with my-app.json valid by the ourapps contract, and each asset works:
+    the APK installs on the emulator and plays a hand, the Windows installer is an unsigned x64 NSIS installer of this version, and
+    web.zip serves the web client."""
+    checks = {}
+    if view["isDraft"] or view["isPrerelease"]:
+        raise Step("github: the release is a draft or a pre-release")
+    app_json = json.loads((app / "release/app.json").read_text())
+    sys.path.insert(0, str(app / "components/ourapps-release/server/scripts"))
+    import app_manifest  # noqa: E402  (the installed component's validator)
+    manifest = json.loads((folder / "my-app.json").read_text())
+    app_manifest.validate(manifest)
+    urls = {asset["name"]: asset["apiUrl"] for asset in view["assets"]}
+    if manifest["version"] != version or manifest["id"] != app_json["id"]:
+        raise Step(f"github: my-app.json is {manifest['id']} {manifest['version']}")
+    for field, asset in (("android", f"{app_json['id']}.apk"), ("pwa", "web.zip")):
+        entry = manifest["install"].get(field)
+        address = entry.get("apk") if isinstance(entry, dict) else entry
+        if asset in urls and address != urls[asset]:
+            raise Step(f"github: my-app.json install.{field} is {address}, not the {asset} asset {urls[asset]}")
+    if any(name.endswith(".exe") for name in urls) and manifest["install"].get("windows"):
+        raise Step("github: my-app.json offers the unsigned Windows installer")
+    checks["my-app.json"] = f"valid (schema 1, {manifest['id']} {manifest['version']}); install: " + ", ".join(f"{k} {'set' if v else 'null'}" for k, v in manifest["install"].items())
+    apk = folder / f"{app_json['id']}.apk"
+    if apk.is_file():
+        badging = run([str(next(Path(os.environ["ANDROID_HOME"]).glob("build-tools/*/aapt2"))), "dump", "badging", str(apk)], work, f"{label}-apk-badging")
+        package = re.search(r"package: name='([^']+)'", badging).group(1)
+        found = re.search(r"versionName='([^']+)'", badging).group(1)
+        if found != version:
+            raise Step(f"github: the APK is version {found}")
+        if options.android:
+            processes = Processes()
+            try:
+                port = free_port()
+                log = log_path(work, f"{label}-apk-server")
+                process = processes.start(["npm", "start"], server_app / "server", {**os.environ, "PORT": str(port), "DATA_DIRECTORY": str(work / "designs" / label / "apk-data")}, log)
+                wait_for("listening on", log, process)
+                served = re.match(r"http://(localhost|127\.0\.0\.1):(\d+)$", re.search(r'DEFAULT_SERVER = "([^"]+)"', (app / "web/src/api.ts").read_text()).group(1))
+                checks["apk"] = f"{package} {found}; " + android_run(work, label, apk, package, port, options.avd, reverse=served.group(2) if served else None, shot="release-apk.png")
+            finally:
+                processes.stop()
+        else:
+            checks["apk"] = f"{package} {found} (not installed: no --android)"
+    exes = sorted(folder.glob("*-windows-x64-unsigned.exe"))
+    if exes:
+        checks["windows"] = installer_check(work, label, exes[0], version, app_json["name"])
+    if (folder / "web.zip").is_file():
+        checks["web.zip"] = web_zip_check(work, label, folder / "web.zip", options.chrome)
+    return checks
+
+
+def installer_check(work, label, installer, version, name):
+    """An NSIS installer with no Authenticode signature, carrying the x64 application of this version, also unsigned."""
+    seven = shutil.which("7zz") or shutil.which("7z")
+    if not seven:
+        raise Step("github: the installer check needs 7-Zip (7zz)")
+    listing = run([seven, "l", "-slt", str(installer)], work, f"{label}-exe-list")
+    if "Type = Nsis" not in listing or "app-64.7z" not in listing:
+        raise Step("github: the installer is not an NSIS installer of the x64 application")
+    unpacked = work / "designs" / label / "exe"
+    shutil.rmtree(unpacked, ignore_errors=True)
+    run([seven, "e", "-y", f"-o{unpacked}", str(installer), "$PLUGINSDIR/app-64.7z"], work, f"{label}-exe-payload")
+    run([seven, "e", "-y", f"-o{unpacked}", str(unpacked / "app-64.7z"), f"{name}.exe"], work, f"{label}-exe-app")
+    run([seven, "x", "-y", f"-o{unpacked / 'resources'}", str(unpacked / f"{name}.exe"), ".rsrc/1033/version.txt"], work, f"{label}-exe-version")
+    info = (unpacked / "resources/.rsrc/1033/version.txt").read_bytes().decode("utf-16-le", errors="ignore")
+    product = re.search(r'VALUE "ProductVersion",\s+"([^"]+)"', info).group(1)
+    if not product.startswith(version):
+        raise Step(f"github: the application is version {product}")
+
+    def header(path):
+        data = path.read_bytes()
+        offset = struct.unpack_from("<I", data, 0x3C)[0]
+        machine = struct.unpack_from("<H", data, offset + 4)[0]
+        optional = offset + 24
+        directory = optional + (112 if struct.unpack_from("<H", data, optional)[0] == 0x20B else 96)
+        return machine, struct.unpack_from("<I", data, directory + 4 * 8 + 4)[0]
+
+    app_machine, app_signature = header(unpacked / f"{name}.exe")
+    _, installer_signature = header(installer)
+    if app_machine != 0x8664 or app_signature or installer_signature:
+        raise Step(f"github: machine {app_machine:#x}, signature sizes {app_signature} and {installer_signature}")
+    return f"{installer.name}: NSIS installer, unsigned; {name}.exe x64, unsigned, ProductVersion {product}"
+
+
+def web_zip_check(work, label, zip_path, chrome):
+    """web.zip unpacked and served from this machine: the page loads with web-host's head, every file it asks for is there, and it
+    draws its first screen with no script error. Its calls to the design's server address are not part of this check."""
+    import zipfile
+    served = work / "designs" / label / "web"
+    shutil.rmtree(served, ignore_errors=True)
+    with zipfile.ZipFile(zip_path) as archive:
+        archive.extractall(served)
+        names = archive.namelist()
+    if "index.html" not in names:
+        raise Step("github: web.zip has no index.html at its root")
+    processes = Processes()
+    try:
+        port = free_port()
+        processes.start([sys.executable, "-m", "http.server", str(port), "--bind", "127.0.0.1", "--directory", str(served)], work, os.environ.copy(),
+                        log_path(work, f"{label}-web-serve"))
+        time.sleep(1)
+        debug = free_port()
+        profile = work / "designs" / label / "chrome-profile"
+        processes.start([chrome, "--headless=new", f"--remote-debugging-port={debug}", f"--user-data-dir={profile}", "--no-first-run",
+                         "--no-default-browser-check", "about:blank"], work, os.environ.copy(), log_path(work, f"{label}-web-chrome"))
+        script = work / "web-zip-check.mjs"
+        script.write_text(WEB_ZIP_CHECK)
+        output = run(["node", str(script)], work, f"{label}-web-check", env={**os.environ, "DEBUG_PORT": str(debug), "PAGE": f"http://127.0.0.1:{port}/",
+                                                                              "SHOT": str(work / "designs" / label / "web-zip.png")}, timeout=120)
+    finally:
+        processes.stop()
+    return f"{len(names)} files; " + output.strip().splitlines()[-1]
+
+
+WEB_ZIP_CHECK = r"""
+const port = process.env.DEBUG_PORT, page = process.env.PAGE;
+const pause = (ms) => new Promise((done) => setTimeout(done, ms));
+let target;
+for (let i = 0; i < 100 && !target; i++) { try { target = await (await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, { method: "PUT" })).json(); } catch { await pause(100); } }
+if (!target) throw new Error("Chrome did not start");
+const socket = new WebSocket(target.webSocketDebuggerUrl);
+await new Promise((done, fail) => { socket.onopen = done; socket.onerror = fail; });
+let id = 0;
+const pending = new Map(), exceptions = [], missing = [];
+socket.onmessage = ({ data }) => {
+  const message = JSON.parse(data);
+  if (message.id) { const task = pending.get(message.id); pending.delete(message.id); message.error ? task.reject(new Error(JSON.stringify(message.error))) : task.resolve(message.result); }
+  if (message.method === "Runtime.exceptionThrown") exceptions.push(message.params.exceptionDetails.exception?.description ?? message.params.exceptionDetails.text);
+  if (message.method === "Network.responseReceived" && message.params.response.url.startsWith(page) && message.params.response.status >= 400) missing.push(message.params.response.url);
+};
+const command = (method, params = {}) => new Promise((resolve, reject) => { const n = ++id; pending.set(n, { resolve, reject }); socket.send(JSON.stringify({ id: n, method, params })); });
+const evaluate = async (expression) => (await command("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true })).result.value;
+await command("Runtime.enable"); await command("Network.enable"); await command("Page.enable");
+await command("Emulation.setDeviceMetricsOverride", { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false });
+await command("Page.navigate", { url: page });
+for (const until = Date.now() + 20000; !(await evaluate("document.readyState === 'complete' && document.body.innerText.includes('OurPoker')"));) { if (Date.now() > until) throw new Error(`the page did not draw; exceptions ${JSON.stringify(exceptions)}`); await pause(200); }
+await pause(1500);
+const title = await evaluate("document.title");
+if (title !== "OurPoker") throw new Error(`title ${title}`);
+if (!(await evaluate("!!document.querySelector('meta[name=theme-color]') && !!document.querySelector('link[rel=manifest]')"))) throw new Error("web-host head missing");
+if (missing.length) throw new Error(`missing files: ${missing.join(", ")}`);
+if (exceptions.length) throw new Error(`script errors: ${JSON.stringify(exceptions)}`);
+const shot = await command("Page.captureScreenshot", { format: "png" });
+(await import("node:fs")).writeFileSync(process.env.SHOT, Buffer.from(shot.data, "base64"));
+const scripts = await evaluate("document.querySelectorAll('script[src]').length");
+socket.close();
+console.log(`served: title OurPoker, web-host head, ${scripts} script file(s) loaded, the first screen drawn, no missing file, no script error`);
+process.exit(0);
+"""
+
+
 def kotlin_stand_ins(work):
     """The Kotlin stand-ins type-checked on the JVM (authoring/kotlin-stand-ins), when Gradle is installed."""
     if not shutil.which("gradle"):
@@ -719,6 +991,8 @@ def main(argv):
     parser.add_argument("--avd", default="ourpoker", help="the Android virtual device --android starts (default ourpoker)")
     parser.add_argument("--windows", metavar="HOST", help="package the Windows installer here, then install, play a hand and uninstall on HOST over ssh")
     parser.add_argument("--cloudflare", metavar="NAME", help="deploy the server as worker NAME and the web client as NAME-web, two-step, and check them")
+    parser.add_argument("--github", metavar="REPO", help="push a fresh install to the private repository REPO (owner/name), run its workflows and its release, check the release")
+    parser.add_argument("--github-tag", default="v0.1.0", help="the version tag --github pushes (default v0.1.0)")
     args = parser.parse_args(argv)
     work = (args.work or Path(tempfile.mkdtemp(prefix="ourpoker-install-", dir=os.path.realpath(tempfile.gettempdir())))).resolve()
     work.mkdir(parents=True, exist_ok=True)
@@ -757,6 +1031,8 @@ def main(argv):
             build_and_run(work, name, app, args, results)
             if args.cloudflare:
                 results["cloudflare"] = cloudflare_run(work, store, policy, world, name, answers, app, args)
+            if args.github:
+                results["github"] = github_run(work, store, policy, world, name, answers, args.github, args, app)
         except (Step, subprocess.TimeoutExpired) as error:
             ok = False
             results["error"] = str(error)

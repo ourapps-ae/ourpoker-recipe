@@ -81,6 +81,8 @@ INCLUDED_WHEN = {
     "guided-tour": "lessons",
     "video-calls": "video",
     "store-update": "updates",
+    # GitHub Actions and releases: always when builds are published, otherwise when the releases answer asks for them
+    "ourapps-release": "publish || releases",
 }
 # computer-players and poker-strategy are in the design unless the computer players answer is none (turn-engine's
 # `computer-players` requirement is optional, so nothing is left unconnected; main() asserts it).
@@ -165,7 +167,7 @@ QUESTIONS = [
     {"id": "hostingAccount", "ask": "Under which name is your Cloudflare account kept in your secret store?",
      "askAgent": "Ask only when the server runs on Cloudflare (the server needs it to start as a Cloudflare server and to deploy); a reference name (lowercase letters, digits, hyphens), never the account key.",
      "askWhen": "server == 'cloudflare'", "type": "secretRef",
-     "effects": [{"sets": {"server-host.accountReference": {"ref": "hostingAccount"}}}]},
+     "effects": [{"sets": {"server-host.accountReference": {"ref": "hostingAccount"}, "ourapps-release.hostingAccount": {"ref": "hostingAccount"}}}]},
     {"id": "serverAddress", "ask": "At which address does the server answer? Keep http://localhost:8788 until the server is deployed; after the first deploy, give the address it reports.",
      "askAgent": "Keep http://localhost:8788 for local use and for the first install; after the server is deployed, answer with its https address (Cloudflare reports it, own hardware is the developer's own) and rebuild the clients. Never guess a domain.",
      "type": "text", "default": "http://localhost:8788",
@@ -175,6 +177,14 @@ QUESTIONS = [
      "type": "boolean", "default": False, "effects": [{"sets": {"application.updatesEnabled": "$answer"}}]},
     {"id": "publish", "ask": "Will builds be signed and published (web hosting, Android and Apple stores, updates through ourapps.app)?",
      "askAgent": "No for building and running it locally or on the developer's own machine; yes only when the request is to publish. Every signing and deployment reference is asked only when this is yes.",
+     "type": "boolean", "default": False, "effects": []},
+    {"id": "repository", "ask": "In which GitHub repository should the application's code go (owner/name)? Leave empty for your own account and the name ourpoker.",
+     "askAgent": "The repository the developer names, else <login>/ourpoker (the login from `gh api user -q .login`); created private when it does not exist (INSTRUCTIONS.md part 4, Repository and releases). owner/name: letters, digits, hyphens, underscores.",
+     "type": "text", "default": "",
+     "effects": [{"sets": {"ourapps-release.repository": {"template": "https://github.com/{{answer}}"},
+                           "ourapps-release.manifestUrl": {"template": "https://api.github.com/repos/{{answer}}/releases/latest"}}}]},
+    {"id": "releases", "ask": "Should GitHub Actions check every change and publish a release for each version tag? (Publishing builds always sets this up.)",
+     "askAgent": "Yes when builds are published (publish yes sets it up whatever this answer is); otherwise yes only when the developer wants GitHub to build and check each change, which uses the repository's GitHub Actions minutes.",
      "type": "boolean", "default": False, "effects": []},
     {"id": "storeInvitation", "ask": "What is your ourapps.app store invitation link (leave empty to set it later)?",
      "askAgent": "Ask only when updates are on; the developer's own link, never invented.",
@@ -214,7 +224,7 @@ DEFAULT_ANSWERS = {
     "server": "cloudflare", "updates": False, "publish": False,
     # Reference names (never values). Each is used only where its question is asked; answer sets keep the ones that apply.
     "videoKey": "ourpoker/video-key", "videoSecret": "ourpoker/video-secret", "hostingAccount": "ourpoker-cloudflare-account",
-    "storeCredentials": "ourpoker/store-credentials", "androidSigning": "ourpoker/android-signing", "webDeploy": "ourpoker/web-deploy",
+    "storeCredentials": "ourpoker-store-credentials", "androidSigning": "ourpoker-android-signing", "webDeploy": "ourpoker-web-deploy",
 }
 REFERENCE_ASKED = {
     "videoKey": lambda a: a["video"] and a["publish"], "videoSecret": lambda a: a["video"] and a["publish"], "hostingAccount": lambda a: a["server"] == "cloudflare",

@@ -127,6 +127,22 @@ desktop = {
     "test/integration.test.cjs": ("desktop/test/integration.test.cjs 1-20", "Adds the check that every packaged script's relative requires are packaged."),
 }
 
+# The repository files, at the application root; GitHub's ${{ }} keeps the workflows out of aepm's templates.
+repository = {
+    "workflows/ci-server.yml": ("McInPoker .github/workflows/ci-server.yml 1-36", "Server type check and tests; Node 26.5."),
+    "workflows/ci-web.yml": ("McInPoker .github/workflows/ci-web.yml 1-35", "Web type check and build."),
+    "workflows/ci-android.yml": ("McInPoker .github/workflows/ci-android.yml 1-34", "generate-project.ts first; unit tests and debug build."),
+    "workflows/platform-packages.yml": ("McInPoker .github/workflows/platform-packages.yml 65-93", "Windows only, also on pushes; the installer installed, started and uninstalled."),
+    "workflows/release.yml": ("McInPoker .github/workflows/release.yml 1-307", "Jobs per target found in the installation; secret names from ourapps-release's release.json; unsigned builds when the secrets are absent; the Windows installer attached; web and server deploys."),
+    "workflows/apple-testflight.yml": ("McInPoker .github/workflows/apple-testflight.yml 1-82", "Runs only with the store credentials; reservation inline."),
+    "scripts/build-windows.sh": ("McInPoker scripts/build-windows.sh 1-24", "Checks that packaging finished."),
+    "scripts/inspect-windows.ps1": ("McInPoker scripts/inspect-windows.ps1 1-29", "Adds the silent install, start and uninstall."),
+    "scripts/build-ipa.sh": ("McInPoker ios/build-ipa.sh 1-19", "The generated project, its signing variables and export options."),
+    "scripts/build-apple-testflight.sh": ("McInPoker scripts/build-apple-testflight.sh 1-81", "Stops first when the Apple helpers are missing."),
+    "release/app.json": ("new", "The application description publish_release.py turns into my-app.json (a template)."),
+    "gitignore": ("new", "Installed as .gitignore."),
+}
+
 
 def table(title, folder, mapping, base_dir):
     out = [f"### {title}", "", "| File | Lines | Origin (the source's recipe/ folder) | Notes |", "|---|---|---|---|"]
@@ -185,6 +201,9 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 ## Implementation: desktop (`implementation/desktop/`, destination `desktop/`)
 
 {table("Desktop", "implementation/desktop/", desktop, "implementation/desktop")}
+## Repository (`implementation/repository/`, destination `.github/`, `scripts/`, `release/`, `.gitignore`)
+
+{table("Repository", "implementation/repository/", repository, "implementation/repository")}
 ## Rules, text, assets
 
 | File | Lines | Origin | Notes |

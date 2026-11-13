@@ -172,7 +172,7 @@ test("the manifest lists every packaged file, and every artefact has a source an
   const settings = new Set(manifest.collect.map((s: { id: string }) => s.id));
   for (const artefact of manifest.artefacts) {
     assert.ok(listed.includes(artefact.source), artefact.source);
-    if ("component" in artefact) assert.ok(json("recipe.json").components.some((c: { name: string }) => c.name === artefact.component), `${artefact.source}: ${artefact.component} is not a component of the recipe`);
+    for (const name of "component" in artefact ? [artefact.component].flat() : []) assert.ok(json("recipe.json").components.some((c: { name: string }) => c.name === name), `${artefact.source}: ${name} is not a component of the recipe`);
     assert.ok(!artefact.destination.startsWith("components/"), `${artefact.destination} is inside components/`);
     // a stand-in shares its destination with the real file: one is installed with the component, the other without it
     const key = artefact.destination.toLowerCase() + ("withoutComponent" in artefact ? " without" : "");

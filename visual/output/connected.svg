@@ -20,7 +20,7 @@
 <text xml:space="preserve" text-anchor="start" x="144.97" y="-1766.07" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="12.00" fill="#edf2fa">OurPoker</text>
 <text xml:space="preserve" text-anchor="start" x="76.34" y="-1755.97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Application&#45;owned code | Example definition</text>
 <text xml:space="preserve" text-anchor="start" x="151.72" y="-1745.97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">OurPoker</text>
-<text xml:space="preserve" text-anchor="start" x="122.47" y="-1735.97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example revision 0.4.2</text>
+<text xml:space="preserve" text-anchor="start" x="122.47" y="-1735.97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">Example revision 0.4.3</text>
 <text xml:space="preserve" text-anchor="start" x="22.22" y="-1707.72" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">INPUTS</text>
 <text xml:space="preserve" text-anchor="start" x="263.97" y="-1707.72" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#edf2fa">OUTPUTS</text>
 <polygon fill="#222b3a" stroke="none" points="16.22,-1637.72 16.22,-1697.72 179.72,-1697.72 179.72,-1637.72 16.22,-1637.72"/>
@@ -74,7 +74,7 @@
 <text xml:space="preserve" text-anchor="start" x="49.59" y="-1322.32" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="12.00" fill="#edf2fa"> Release pipeline</text>
 <text xml:space="preserve" text-anchor="start" x="25.22" y="-1312.22" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">interface: ae/release&#45;pipeline @</text>
 <text xml:space="preserve" text-anchor="start" x="83.34" y="-1302.22" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">1.0.0</text>
-<text xml:space="preserve" text-anchor="start" x="64.59" y="-1292.22" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">required / one</text>
+<text xml:space="preserve" text-anchor="start" x="64.97" y="-1292.22" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#edf2fa">optional / one</text>
 <polygon fill="#222b3a" stroke="none" points="180.72,-1281.72 180.72,-1341.72 328.47,-1341.72 328.47,-1281.72 180.72,-1281.72"/>
 <polygon fill="#222b3a" stroke="none" points="16.22,-1220.72 16.22,-1280.72 179.72,-1280.72 179.72,-1220.72 16.22,-1220.72"/>
 <text xml:space="preserve" text-anchor="start" x="47.72" y="-1261.32" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="12.00" fill="#65d6ff">●</text>

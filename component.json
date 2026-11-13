@@ -385,6 +385,113 @@
       "template": false
     },
     {
+      "destination": ".gitignore",
+      "executable": false,
+      "source": "implementation/repository/gitignore",
+      "template": false
+    },
+    {
+      "component": "ourapps-ae/ourapps-release",
+      "destination": "release/app.json",
+      "executable": false,
+      "source": "implementation/repository/release/app.json",
+      "template": true
+    },
+    {
+      "component": [
+        "ourapps-ae/apple-host",
+        "ourapps-ae/ourapps-release"
+      ],
+      "destination": "scripts/build-apple-testflight.sh",
+      "executable": false,
+      "source": "implementation/repository/scripts/build-apple-testflight.sh",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/apple-host",
+        "ourapps-ae/ourapps-release"
+      ],
+      "destination": "scripts/build-ipa.sh",
+      "executable": false,
+      "source": "implementation/repository/scripts/build-ipa.sh",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/ourapps-release",
+        "ourapps-ae/windows-desktop"
+      ],
+      "destination": "scripts/build-windows.sh",
+      "executable": false,
+      "source": "implementation/repository/scripts/build-windows.sh",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/ourapps-release",
+        "ourapps-ae/windows-desktop"
+      ],
+      "destination": "scripts/inspect-windows.ps1",
+      "executable": false,
+      "source": "implementation/repository/scripts/inspect-windows.ps1",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/apple-host",
+        "ourapps-ae/ourapps-release"
+      ],
+      "destination": ".github/workflows/apple-testflight.yml",
+      "executable": false,
+      "source": "implementation/repository/workflows/apple-testflight.yml",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/android-host",
+        "ourapps-ae/ourapps-release"
+      ],
+      "destination": ".github/workflows/ci-android.yml",
+      "executable": false,
+      "source": "implementation/repository/workflows/ci-android.yml",
+      "template": false
+    },
+    {
+      "component": "ourapps-ae/ourapps-release",
+      "destination": ".github/workflows/ci-server.yml",
+      "executable": false,
+      "source": "implementation/repository/workflows/ci-server.yml",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/ourapps-release",
+        "ourapps-ae/web-host"
+      ],
+      "destination": ".github/workflows/ci-web.yml",
+      "executable": false,
+      "source": "implementation/repository/workflows/ci-web.yml",
+      "template": false
+    },
+    {
+      "component": [
+        "ourapps-ae/ourapps-release",
+        "ourapps-ae/windows-desktop"
+      ],
+      "destination": ".github/workflows/platform-packages.yml",
+      "executable": false,
+      "source": "implementation/repository/workflows/platform-packages.yml",
+      "template": false
+    },
+    {
+      "component": "ourapps-ae/ourapps-release",
+      "destination": ".github/workflows/release.yml",
+      "executable": false,
+      "source": "implementation/repository/workflows/release.yml",
+      "template": false
+    },
+    {
       "destination": "server/package-lock.json",
       "executable": false,
       "source": "implementation/server/package-lock.json",
@@ -1705,6 +1812,13 @@
     "hosts": [],
     "secrets": [],
     "writes": [
+      ".github/workflows/apple-testflight.yml",
+      ".github/workflows/ci-android.yml",
+      ".github/workflows/ci-server.yml",
+      ".github/workflows/ci-web.yml",
+      ".github/workflows/platform-packages.yml",
+      ".github/workflows/release.yml",
+      ".gitignore",
       "android/app/src/androidTest/java/app/ourapps/ourpoker/FixtureScreenTest.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/AppLanguage.kt",
       "android/app/src/main/java/app/ourapps/ourpoker/AppSettings.kt",
@@ -1841,10 +1955,15 @@
       "ios/VerificationSupport/ServerAddress.swift",
       "ios/generate-project.ts",
       "ios/strings/Localizable.xcstrings",
+      "release/app.json",
       "resources/strings.json",
       "rules/texas-holdem-house-rules.json",
       "rules/texas-holdem-house-rules.md",
       "rules/texas-holdem-house-rules.schema.json",
+      "scripts/build-apple-testflight.sh",
+      "scripts/build-ipa.sh",
+      "scripts/build-windows.sh",
+      "scripts/inspect-windows.ps1",
       "server/fixtures/betting.json",
       "server/fixtures/cancelled.json",
       "server/fixtures/completed.json",
@@ -2684,6 +2803,54 @@
     },
     {
       "executable": false,
+      "path": "implementation/repository/gitignore"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/release/app.json"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/scripts/build-apple-testflight.sh"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/scripts/build-ipa.sh"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/scripts/build-windows.sh"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/scripts/inspect-windows.ps1"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/workflows/apple-testflight.yml"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/workflows/ci-android.yml"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/workflows/ci-server.yml"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/workflows/ci-web.yml"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/workflows/platform-packages.yml"
+    },
+    {
+      "executable": false,
+      "path": "implementation/repository/workflows/release.yml"
+    },
+    {
+      "executable": false,
       "path": "implementation/server/package-lock.json"
     },
     {
@@ -3460,6 +3627,7 @@
     },
     {
       "id": "release-pipeline",
+      "optional": true,
       "path": "interfaces/required-release-pipeline.json",
       "type": "ae/release-pipeline",
       "version": "1.0.0"

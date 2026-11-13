@@ -30,13 +30,14 @@ RECIPE = WORLD.recipe
 SETS = {s["id"]: s["answers"] for s in RECIPE["tests"]["answerSets"]}
 SETS = {"default": RECIPE["tests"]["defaultAnswers"], **SETS}
 INVITATION = "https://ourapps.app/l/0123456789abcdef01234567"
-KEY, SECRET, STORE = {"secretRef": "ourpoker/video-key"}, {"secretRef": "ourpoker/video-secret"}, {"secretRef": "ourpoker/store-credentials"}
-ANDROID, WEB_DEPLOY = {"secretRef": "ourpoker/android-signing"}, {"secretRef": "ourpoker/web-deploy"}
+KEY, SECRET = {"secretRef": "ourpoker/video-key"}, {"secretRef": "ourpoker/video-secret"}
+# The release pipeline's references are plain reference names (its release.json renders them); unset is none.
+STORE, ANDROID, WEB_DEPLOY = "ourpoker-store-credentials", "ourpoker-android-signing", "ourpoker-web-deploy"
 # The default answers with builds published: every signing and deployment reference is asked.
 PUBLISHED = {**SETS["default"], "publish": True, "videoKey": "ourpoker/video-key", "videoSecret": "ourpoker/video-secret",
-             "storeCredentials": "ourpoker/store-credentials", "androidSigning": "ourpoker/android-signing", "webDeploy": "ourpoker/web-deploy"}
+             "storeCredentials": STORE, "androidSigning": ANDROID, "webDeploy": WEB_DEPLOY}
 
-CONDITIONAL = {"web-host", "apple-host", "android-host", "windows-desktop", "guided-tour", "video-calls", "store-update"}
+CONDITIONAL = {"web-host", "apple-host", "android-host", "windows-desktop", "guided-tour", "video-calls", "store-update", "ourapps-release"}
 # turn-engine's computer-players requirement is optional (0.3.0), so computer-players and poker-strategy follow the answer.
 assert any(p["type"] == "ae/computer-players" and p.get("optional") for p in WORLD.manifests["turn-engine"]["requires"])
 
@@ -66,13 +67,11 @@ def codes(result):
 # fixed configuration, and the selected host) decide, and the selections.
 EXPECTED = {
     "default": dict(
-        out={"store-update"},
+        out={"store-update", "ourapps-release"},
         settings={
             "web-host": {"webAddress": "http://localhost:5173"},
             "apple-host": {"targets": "web ios android macos windows tvos", "bundleIdentifier": "app.ourapps.ourpoker"},
             "android-host": {"packageId": "app.ourapps.ourpoker"},
-            # not published: no signing or deployment reference
-            "ourapps-release": {"targets": "web ios android macos windows tvos", "storeCredentials": None, "androidSigning": None, "webDeploy": None, "bundleIdentifier": "app.ourapps.ourpoker"},
             "server-host": {"provider": "cloudflare-free", "accountReference": "ourpoker-cloudflare-account", "allowedOrigins": "http://localhost:5173", "roomPrefix": "ourpoker-"},
             "video-calls": {"keyReference": None, "secretReference": None},
             "theme": {"themeName": "night"}, "card-graphics": {"backStyle": "stripes"}, "translations": {"languages": "en fr de es"},
@@ -100,7 +99,7 @@ EXPECTED = {
         },
         selections={"server": "cloudflare-free", "realtime": "free", "video": "free"}),
     "company-event": dict(
-        out=set(),
+        out={"ourapps-release"},
         settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "store-update": {"inviteAddress": INVITATION}},
         selections={"server": "own-hardware", "realtime": "own-hardware", "video": "paid"}),
     "company-event-hosted": dict(
@@ -108,68 +107,69 @@ EXPECTED = {
         settings={"server-host": {"provider": "cloudflare-paid", "accountReference": "ourpoker-cloudflare-account"}},
         selections={"server": "cloudflare-paid", "realtime": "paid", "video": "paid"}),
     "tv-only": dict(
-        out={"web-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
-        settings={"apple-host": {"targets": "tvos"}, "ourapps-release": {"targets": "tvos"}, "translations": {"languages": "en"}},
+        out={"web-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour", "ourapps-release"},
+        settings={"apple-host": {"targets": "tvos"}, "translations": {"languages": "en"}},
         selections={"server": "cloudflare-free", "realtime": "free"}),
     "browser-only-no-extras": dict(
-        out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
-        settings={"ourapps-release": {"targets": "web", "webDeploy": None}, "tournament": {"rebuysPerPlayer": 0}, "application": {"computerPlayers": "none", "rebuysPerPlayer": 0}},
+        out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour", "ourapps-release"},
+        settings={"tournament": {"rebuysPerPlayer": 0}, "application": {"computerPlayers": "none", "rebuysPerPlayer": 0}},
         selections={"server": "cloudflare-free", "realtime": "free"}),
     "large-paid-host": dict(
         out={"store-update"},
         settings={
             "theme": {"themeName": "lounge"}, "card-graphics": {"backStyle": "plain"}, "seating": {"maximumPlayers": 6}, "chip-ledger": {"seats": 6}, "holdem-rules": {"seats": 6},
             "tournament": {"rebuysPerPlayer": 3}, "computer-players": {"mode": "fill-empty"}, "video-calls": {"serviceUrl": "https://video.acme.io"},
-            "apple-host": {"bundleIdentifier": "io.acme.poker"}, "android-host": {"packageId": "io.acme.poker"}, "ourapps-release": {"bundleIdentifier": "io.acme.poker"},
+            "apple-host": {"bundleIdentifier": "io.acme.poker"}, "android-host": {"packageId": "io.acme.poker"},
+            "ourapps-release": {"bundleIdentifier": "io.acme.poker", "androidSigning": ANDROID, "webDeploy": WEB_DEPLOY, "storeCredentials": STORE,
+                                "hostingAccount": "ourpoker-cloudflare-account", "storeAddress": "https://ourapps.app"},
             "application": {"packageId": "io.acme.poker", "maximumPlayers": 6, "computerPlayers": "fill-empty"},
             "server-host": {"provider": "cloudflare-paid"},
         },
         selections={"server": "cloudflare-paid", "realtime": "paid", "video": "paid"}),
     "clinic": dict(
-        out={"apple-host", "android-host", "store-update", "video-calls", "guided-tour"},
+        out={"apple-host", "android-host", "store-update", "video-calls", "guided-tour", "ourapps-release"},
         settings={
             "web-host": {"webAddress": "https://clinic.example"}, "server-host": {"provider": "own-hardware", "accountReference": "none", "allowedOrigins": "https://clinic.example"},
-            "translations": {"languages": "en es"}, "ourapps-release": {"targets": "web windows", "webDeploy": None},
+            "translations": {"languages": "en es"},
         },
         selections={"server": "own-hardware", "realtime": "own-hardware"}),
     "no-computers": dict(
-        out={"apple-host", "windows-desktop", "store-update"},
-        settings={"application": {"computerPlayers": "none"}, "ourapps-release": {"targets": "web android", "androidSigning": None, "webDeploy": None}},
+        out={"apple-host", "windows-desktop", "store-update", "ourapps-release"},
+        settings={"application": {"computerPlayers": "none"}},
         selections={"server": "cloudflare-free", "realtime": "free", "video": "free"}),
 }
 # The dry run's answers: nothing but devices, size, language, video and server; no reference is asked.
 EXPECTED["local-web"] = dict(
-    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls"},
+    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "ourapps-release"},
     settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en"},
-              "ourapps-release": {"targets": "web", "webDeploy": None, "storeCredentials": None},
               "application": {"inviteAddress": "http://localhost:5173", "serverAddress": "http://localhost:8788"}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
 EXPECTED["fill-empty-own-hardware"] = dict(
-    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
+    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour", "ourapps-release"},
     settings={"computer-players": {"mode": "fill-empty"}, "application": {"computerPlayers": "fill-empty", "maximumPlayers": 8, "look": "night", "cardBack": "stripes"},
               "seating": {"maximumPlayers": 8}, "server-host": {"provider": "own-hardware"}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
 # The second dry run's answers: the lounge look reaches the theme, the card backs and the application.
 EXPECTED["lounge-web-ios"] = dict(
-    out={"android-host", "windows-desktop", "store-update", "video-calls"},
+    out={"android-host", "windows-desktop", "store-update", "video-calls", "ourapps-release"},
     settings={"theme": {"themeName": "lounge"}, "card-graphics": {"backStyle": "plain"}, "application": {"look": "lounge", "cardBack": "plain", "computerPlayers": "fill-empty", "maximumPlayers": 8},
               "apple-host": {"targets": "web ios"}, "translations": {"languages": "en fr"}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
 EXPECTED["web-own-hardware"] = dict(
-    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour"},
+    out={"apple-host", "android-host", "windows-desktop", "store-update", "video-calls", "guided-tour", "ourapps-release"},
     settings={"server-host": {"provider": "own-hardware", "accountReference": "none"}, "translations": {"languages": "en fr"},
-              "application": {"computerPlayers": "none", "serverAddress": "http://localhost:8788"}, "ourapps-release": {"targets": "web", "webDeploy": None}},
+              "application": {"computerPlayers": "none", "serverAddress": "http://localhost:8788"}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
 # Phones and television with video and updates but no lessons: guided-tour's native files are replaced by stand-ins.
 EXPECTED["native-no-lessons"] = dict(
-    out={"web-host", "windows-desktop", "guided-tour"},
+    out={"web-host", "windows-desktop", "guided-tour", "ourapps-release"},
     settings={"apple-host": {"targets": "ios android tvos"}, "translations": {"languages": "en fr"}, "application": {"languages": "en fr", "updatesEnabled": True},
               "store-update": {"inviteAddress": INVITATION}},
     selections={"server": "cloudflare-free", "realtime": "free", "video": "free"})
 # Windows alone keeps the web project (web-host), which the Windows build packs; the deployed server address is an answer.
 EXPECTED["windows-only"] = dict(
-    out={"apple-host", "android-host", "store-update", "video-calls"},
-    settings={"web-host": {"webAddress": "http://localhost:5173"}, "server-host": {"provider": "own-hardware"}, "ourapps-release": {"targets": "windows"},
+    out={"apple-host", "android-host", "store-update", "video-calls", "ourapps-release"},
+    settings={"web-host": {"webAddress": "http://localhost:5173"}, "server-host": {"provider": "own-hardware"},
               "application": {"serverAddress": "https://poker.clinic.example"}},
     selections={"server": "own-hardware", "realtime": "own-hardware"})
 for name in ("browser-only-no-extras", "no-computers", "web-own-hardware"):
@@ -213,7 +213,7 @@ class AnswerSets(unittest.TestCase):
 
     def test_unasked_references_stay_unset_and_defaults_apply(self):
         book = settings_of(evaluated(SETS["book-club"]))
-        self.assertNotIn("webDeploy", book["ourapps-release"], "web is not a target: webDeploy is not asked")
+        self.assertEqual(book["ourapps-release"]["webDeploy"], "none", "web is not a target: webDeploy is not asked and keeps its default")
         self.assertNotIn("keyReference", book.get("video-calls", {}))
         own = settings_of(evaluated(SETS["company-event"]))
         self.assertEqual(own["server-host"]["accountReference"], "none", "own hardware: the account reference keeps its default")
@@ -321,7 +321,7 @@ class AnswerSets(unittest.TestCase):
 def all_answers():
     """Every combination of the answers that decide inclusion, asking and selection (the rest cannot change the connections)."""
     refs = {"videoKey": "ourpoker/video-key", "videoSecret": "ourpoker/video-secret", "hostingAccount": "ourpoker-cloudflare-account",
-            "storeCredentials": "ourpoker/store-credentials", "androidSigning": "ourpoker/android-signing", "webDeploy": "ourpoker/web-deploy"}
+            "storeCredentials": STORE, "androidSigning": ANDROID, "webDeploy": WEB_DEPLOY}
     options = RECIPE["questions"][0]["options"]
     for size in range(1, len(options) + 1):  # no devices at all is an invalid answer (test_invalid_answers)
         for targets in itertools.combinations(options, size):
@@ -354,6 +354,7 @@ class EveryAnswer(unittest.TestCase):
             self.assertEqual("video-calls" in present, answers["video"])
             self.assertEqual("guided-tour" in present, answers["lessons"])
             self.assertEqual("store-update" in present, answers["updates"])
+            self.assertEqual("ourapps-release" in present, answers["publish"])
             self.assertEqual("computer-players" in present, answers["computerPlayers"] != "none")
             self.assertEqual("poker-strategy" in present, answers["computerPlayers"] != "none")
 
@@ -570,17 +571,20 @@ class Rules(unittest.TestCase):
             return evaluated({**PUBLISHED, **changes})
         web_only = release(targets=["web"])
         self.assertNotIn("storeCredentials", web_only["answers"])
-        self.assertNotIn("storeCredentials", settings_of(web_only)["ourapps-release"])
+        self.assertEqual(settings_of(web_only)["ourapps-release"]["storeCredentials"], "none")
         self.assertEqual(settings_of(release(targets=["web"], updates=True, storeInvitation=INVITATION))["ourapps-release"]["storeCredentials"], STORE)
         self.assertEqual(settings_of(release(targets=["ios"]))["ourapps-release"]["storeCredentials"], STORE)
-        self.assertNotIn("storeCredentials", settings_of(release(targets=["android", "macos", "tvos"]))["ourapps-release"])
+        self.assertEqual(settings_of(release(targets=["android", "macos", "tvos"]))["ourapps-release"]["storeCredentials"], "none")
         self.assertIn(("unanswered", "answers.storeCredentials"), codes(E.evaluate(WORLD, {k: v for k, v in PUBLISHED.items() if k != "storeCredentials"})))
 
     def test_a_local_design_asks_for_no_signing_or_deployment_reference(self):
         local = evaluated({"targets": ["web", "ios", "android"], "server": "own-hardware", "video": True, "updates": True})
         for question in ("webDeploy", "androidSigning", "storeCredentials", "videoKey", "videoSecret", "hostingAccount"):
             self.assertNotIn(question, local["answers"])
-        self.assertEqual({k: v for k, v in settings_of(local)["ourapps-release"].items() if k in ("storeCredentials", "androidSigning", "webDeploy")}, {})
+        self.assertNotIn("ourapps-release", settings_of(local), "not published and no releases answer: no release pipeline")
+        released = settings_of(evaluated({"targets": ["web", "ios", "android"], "server": "own-hardware", "video": True, "updates": True, "releases": True}))
+        self.assertEqual({k: v for k, v in released["ourapps-release"].items() if k in ("storeCredentials", "androidSigning", "webDeploy", "hostingAccount")},
+                         dict.fromkeys(("storeCredentials", "androidSigning", "webDeploy", "hostingAccount"), "none"))
         self.assertNotIn("keyReference", settings_of(local)["video-calls"])
         # a Cloudflare server needs its account reference whether or not builds are published
         self.assertEqual(codes(E.evaluate(WORLD, {"targets": ["web"], "server": "cloudflare"})), {("unanswered", "answers.hostingAccount")})
@@ -625,7 +629,7 @@ class CelParity(unittest.TestCase):
 
     def test_the_python_evaluator_and_bufbuild_cel_agree(self):
         conditions = conditions_of(RECIPE)
-        self.assertEqual(len(conditions), 14, "distinct conditions of the recipe")
+        self.assertEqual(len(conditions), 15, "distinct conditions of the recipe")
         expressions = conditions + SAMPLES
         answer_sets = list(SETS.values()) + list(all_answers())
         lines = [{"kinds": KINDS, "bindings": E.bindings(WORLD, answers), "expressions": expressions} for answers in answer_sets]

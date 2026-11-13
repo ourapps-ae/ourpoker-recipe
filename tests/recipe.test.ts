@@ -97,7 +97,7 @@ test("recipe.json passes the ourapps catalogue validator, with the components' s
   assert.equal(recipe.name, "ourapps-ae/ourpoker");
   assert.equal(recipe.version, "0.4.3");
   assert.equal(recipe.components.length, 39);
-  assert.equal(recipe.questions.length, 26);
+  assert.equal(recipe.questions.length, 28);
 });
 
 test("page, instructions and diagram files exist; the diagrams are safe SVG", () => {
@@ -186,6 +186,10 @@ test("every question `sets` target is a real setting and its value form fits the
         const target = questions.get(value.ref);
         assert.ok(target && target.type === "secretRef", `${where}: ref names a secretRef question`);
         assert.equal(setting.type, "string", where);
+      } else if (form === "template") {
+        assert.equal(q.type, "text", where);
+        assert.equal(setting.type, "string", where);
+        assert.equal(value.template.split("{{answer}}").length, 2, `${where}: the template holds {{answer}} once`);
       } else assert.fail(`${where}: form ${form} is not used by this recipe`);
     } else {
       forms.add("literal");
@@ -193,7 +197,7 @@ test("every question `sets` target is a real setting and its value form fits the
     }
   }
   assert.ok(checked >= 40);
-  assert.deepEqual([...forms].sort(), ["$answer", "map", "ref"]);
+  assert.deepEqual([...forms].sort(), ["$answer", "map", "ref", "template"]);
 });
 
 test("secret references come only from secretRef questions guarded by askWhen, each set by a {ref} effect", () => {
@@ -235,16 +239,17 @@ test("inclusion is by includedWhen only, with the decided conditions", () => {
   assert.equal(when("video-calls"), "video");
   assert.equal(when("guided-tour"), "lessons");
   assert.equal(when("store-update"), "updates");
+  assert.equal(when("ourapps-release"), "publish || releases", "GitHub Actions whenever builds are published");
   const computersOut = "computerPlayers != 'none'";
   assert.ok(manifests.get("turn-engine")!.requires.some((p: Obj) => p.type === "ae/computer-players" && p.optional === true), "turn-engine's computer-players requirement is optional");
   assert.equal(when("computer-players"), computersOut);
   assert.equal(when("poker-strategy"), computersOut);
   const conditional = recipe.components.filter((c: Obj) => c.includedWhen).map((c: Obj) => c.id).sort();
-  assert.deepEqual(conditional, ["android-host", "apple-host", "guided-tour", "store-update", "video-calls", "web-host", "windows-desktop", "computer-players", "poker-strategy"].sort());
+  assert.deepEqual(conditional, ["android-host", "apple-host", "guided-tour", "store-update", "video-calls", "web-host", "windows-desktop", "computer-players", "poker-strategy", "ourapps-release"].sort());
   assert.deepEqual(questions.get("targets")!.effects[0].sets["apple-host.targets"], "$answer", "the devices answer reaches apple-host whole");
   // every condition is a CEL string that type-checks to bool over the questions, comparing only with options of the question
   const conditions = [...recipe.components.map((c: Obj) => [c.id, c.includedWhen]), ...recipe.questions.map((q: Obj) => [q.id, q.askWhen])].filter(([, w]) => w !== null && w !== undefined);
-  assert.equal(conditions.length, 18);
+  assert.equal(conditions.length, 19);
   for (const [owner, condition] of conditions) {
     assert.equal(typeof condition, "string", `${owner}: a condition is a CEL string`);
     const checked = checkCondition(condition, questions);
@@ -427,8 +432,12 @@ test("the questions of paper Section 5.4 are present, in order, with the follow-
   const paper = ["targets", "scale", "languages", "look", "players", "startingChips", "levelSeconds", "rebuys", "decisionSeconds", "computerPlayers", "video", "lessons", "server", "updates"];
   assert.deepEqual(ids.filter((id: string) => paper.includes(id)), paper);
   const followUps = ids.filter((id: string) => !paper.includes(id));
-  assert.deepEqual(followUps, ["webAddress", "bundleId", "videoServiceUrl", "videoKey", "videoSecret", "hostingAccount", "serverAddress", "publish", "storeInvitation", "storeCredentials", "androidSigning", "webDeploy"]);
-  for (const id of followUps) if (!["bundleId", "serverAddress", "publish"].includes(id)) assert.ok(questions.get(id)!.askWhen, `${id} has askWhen`);
+  assert.deepEqual(followUps, ["webAddress", "bundleId", "videoServiceUrl", "videoKey", "videoSecret", "hostingAccount", "serverAddress", "publish", "repository", "releases", "storeInvitation", "storeCredentials", "androidSigning", "webDeploy"]);
+  for (const id of followUps) if (!["bundleId", "serverAddress", "publish", "repository", "releases"].includes(id)) assert.ok(questions.get(id)!.askWhen, `${id} has askWhen`);
+  const repository = questions.get("repository")!;
+  assert.deepEqual([repository.type, repository.default, repository.effects[0].sets["ourapps-release.repository"], repository.effects[0].sets["ourapps-release.manifestUrl"]],
+    ["text", "", { template: "https://github.com/{{answer}}" }, { template: "https://api.github.com/repos/{{answer}}/releases/latest" }]);
+  assert.deepEqual([questions.get("releases")!.type, questions.get("releases")!.default], ["boolean", false]);
   // signing and deployment references are asked only when builds are published; a local design needs none
   for (const id of ["videoKey", "videoSecret", "storeCredentials", "androidSigning", "webDeploy"]) assert.match(questions.get(id)!.askWhen, /\bpublish\b/, `${id} is asked only when publishing`);
   assert.equal(questions.get("publish")!.default, false);
@@ -442,7 +451,7 @@ test("artefact `component` marks name only components the recipe can leave out",
   const optional = new Set(recipe.components.filter((c: Obj) => c.includedWhen).map((c: Obj) => c.name));
   const marked = ownManifest.artefacts.filter((a: Obj) => "component" in a);
   assert.ok(marked.length > 0);
-  for (const a of marked) assert.ok(optional.has(a.component), `${a.source}: ${a.component} is not conditional`);
+  for (const a of marked) for (const name of [a.component].flat()) assert.ok(optional.has(name), `${a.source}: ${name} is not conditional`);
 });
 
 test("INTEGRATION-GAPS.md lists only open and deferred items, and its totals match its table", () => {

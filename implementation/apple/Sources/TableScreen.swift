@@ -126,7 +126,7 @@ struct TableScreen: View {
                 }
             }
             .overlay(alignment: .topTrailing) {
-                // End game: the gold circle with a cross in the table's corner, as in Skull.
+                // End game: the gold circle with a cross in the table's corner.
                 if view.legal.cancel {
                     RoundIconButton(label: L("end_game"), enabled: !model.busy, filled: true, action: { confirmEnd = true }) { fg in
                         Image(systemName: "xmark").font(.system(size: 18, weight: .bold)).foregroundStyle(fg)

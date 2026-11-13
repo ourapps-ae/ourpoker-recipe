@@ -1,0 +1,39 @@
+# The Android unit tests and debug build, when the Android project, its text, the shared fixtures or a component changes.
+# The project files and the Gradle wrapper come from generate-project.ts; Gradle downloads are cached.
+name: ci-android
+
+on:
+  push:
+    branches: [main]
+    paths: ["android/**", "resources/**", "server/fixtures/**", "components/**", ".github/workflows/ci-android.yml"]
+  pull_request:
+    paths: ["android/**", "resources/**", "server/fixtures/**", "components/**", ".github/workflows/ci-android.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push replaces a check still running.
+concurrency:
+  group: ci-android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "26.5"
+      - run: node generate-project.ts
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+      - run: ./gradlew --no-daemon testDebugUnitTest assembleDebug

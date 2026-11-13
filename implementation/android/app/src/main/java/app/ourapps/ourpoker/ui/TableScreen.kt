@@ -174,7 +174,7 @@ fun TableScreen(vm: TableViewModel, ui: UiState, view: View) {
                 if (view.legal.leave) Box(Modifier.align(Alignment.TopStart).padding(4.dp).background(Color.Black.copy(alpha = 0.35f), CircleShape)) {
                     RoundIconButton(null, L("leave"), enabled = !ui.busy, filled = false, onClick = vm::leave) { BackIcon(it) }
                 }
-                // End game: the gold circle with a cross in the table's corner, as in Skull.
+                // End game: the gold circle with a cross in the table's corner.
                 if (view.legal.cancel) Box(Modifier.align(Alignment.TopEnd).padding(4.dp)) {
                     RoundIconButton(Icons.Filled.Close, L("end_game"), enabled = !ui.busy, filled = true, onClick = { confirmEnd = true })
                 }
