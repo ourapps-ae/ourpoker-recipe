@@ -3,7 +3,7 @@
   "name": "OurPoker",
   "kind": "application",
   "status": "example",
-  "revision": "0.5.0",
+  "revision": "0.5.1",
   "ports": [
     {
       "id": "wrapped-game-adapter",

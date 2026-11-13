@@ -95,7 +95,7 @@ test("recipe.json passes the ourapps catalogue validator, with the components' s
   const result = validateRecipe(recipe, validatorContext());
   assert.ok(result.ok, result.ok ? "" : result.errors.join("\n"));
   assert.equal(recipe.name, "ourapps-ae/ourpoker");
-  assert.equal(recipe.version, "0.5.0");
+  assert.equal(recipe.version, "0.5.1");
   assert.equal(recipe.components.length, 39);
   assert.equal(recipe.questions.length, 28);
 });

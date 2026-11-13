@@ -4,7 +4,7 @@ Nothing is pushed or published. Paths are relative to this repository. `PY` is `
 
 ## 1. What exists
 
-- `recipe.json` (package `ourapps-ae/ourpoker` 0.5.0): 26 questions, 39 components at exact versions, 65 connections, 3 jobs, 3 scale bands, 13 answer sets plus the default.
+- `recipe.json` (package `ourapps-ae/ourpoker` 0.5.1): 26 questions, 39 components at exact versions, 65 connections, 3 jobs, 3 scale bands, 13 answer sets plus the default.
 - The application-specific component: screen flow on web, Apple and Android, the server's wiring, house rules, text in four languages, lessons, art, sounds, the desktop entry, end-to-end specs, the build files and the stand-ins (`component.json`, 272 artefacts, 50 conditional, 18 stand-ins).
 - `page/` drawings, `INSTRUCTIONS.md` (asking, accounts, install, build and run, maintenance), `INTEGRATION-GAPS.md` (status and decisions).
 - `authoring/` and `scripts/` (not packaged): the generators, the conditional artefact check, the install proof (`try_install.py`) and the Kotlin stand-in type-check (`kotlin-stand-ins/`).
@@ -12,7 +12,7 @@ Nothing is pushed or published. Paths are relative to this repository. `PY` is `
 ## 2. How to inspect
 
 - The recipe: `page/diagram.svg` (all 39), `page/diagram-*.svg` (by group), `page/diagram-application.svg`, `page/description.md`, `recipe.json`.
-- One design: `PY -m aepm design ourpoker@0.5.0 --store STORE --answers answers.json --out definition.json` on a store that holds the packages (`authoring/try_install.py` makes one).
+- One design: `PY -m aepm design ourpoker@0.5.1 --store STORE --answers answers.json --out definition.json` on a store that holds the packages (`authoring/try_install.py` makes one).
 - What a design installs: `PY authoring/check_conditional_artefacts.py -v`.
 - Gaps and decisions: `INTEGRATION-GAPS.md`.
 
