@@ -1,6 +1,6 @@
 # ourpoker ownership
 
-Repository: https://github.com/ourapps-ae/ourpoker.git (local only; nothing pushed; branch work/ourapps-ae-components). Package `ourapps-ae/ourpoker` version 0.4.3, kind `recipe`.
+Repository: https://github.com/ourapps-ae/ourpoker.git (local only; nothing pushed; branch work/ourapps-ae-components). Package `ourapps-ae/ourpoker` version 0.5.0, kind `recipe`.
 Standard: the workspace's component and recipe standard (its `.opencode/knowledge`). Source (read-only): the OurPoker source tree's `recipe/` folder.
 
 This repository holds two things that are packaged together:
