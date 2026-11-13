@@ -363,15 +363,18 @@ def android_run(work, name, apk, package, port, avd, reverse=None, shot="android
                     found.setdefault(html.unescape(key), ((x1 + x2) // 2, (y1 + y2) // 2))
         return found
 
-    def tap(label, seconds=60):
-        deadline = time.time() + seconds
+    def tap(label, until, seconds=60):
+        """Tap `label` until `until` is on screen (a tap during an opening animation can be lost, so it is repeated)."""
+        deadline, tapped = time.time() + seconds, 0.0
         while time.time() < deadline:
             found = screen()
-            if label in found:
-                device("shell", "input", "tap", *map(str, found[label]))
+            if until in found:
                 return
+            if label in found and time.time() - tapped > 3:
+                device("shell", "input", "tap", *map(str, found[label]))
+                tapped = time.time()
             time.sleep(1)
-        raise Step(f"android: no '{label}' on screen within {seconds}s; saw {sorted(found)[:30]}")
+        raise Step(f"android: no '{until}' on screen within {seconds}s after '{label}'; saw {sorted(found)[:30]}")
 
     try:
         for _ in range(300):
@@ -388,14 +391,21 @@ def android_run(work, name, apk, package, port, avd, reverse=None, shot="android
             device("reverse", f"tcp:{reverse}", f"tcp:{port}")
         device("logcat", "-c")
         device("shell", "am", "start", "-W", "-n", f"{package}/.MainActivity")
-        tap("No, I know how to play")
-        tap("Your name")
-        device("shell", "input", "text", "Droid")
+        tap("No, I know how to play", "Your name")
+        for _ in range(3):  # the name field takes the text once it has the focus
+            found = screen()
+            if "Droid" in found:
+                break
+            if "Your name" in found:
+                device("shell", "input", "tap", *map(str, found["Your name"]))
+                time.sleep(1)
+                device("shell", "input", "text", "Droid")
+                time.sleep(1)
         device("shell", "input", "keyevent", "111")
-        tap("Save")
-        tap("Sit down")
-        tap("Add a computer player")
-        tap("Start the game")
+        tap("Save", "Sit down")
+        tap("Sit down", "Add a computer player")
+        tap("Add a computer player", "Start the game")
+        tap("Start the game", "Fold")
         deadline = time.time() + 60
         while not {"Fold", "Check", "Call"} & {label.split(" ")[0] for label in screen()}:
             if time.time() > deadline:
@@ -691,8 +701,10 @@ def github_run(work, store, policy, world, name, answers, repo, options, server_
         git(["remote", "add", "origin", f"https://github.com/{repo}.git"], work, f"{label}-git-remote", app)
         git(["fetch", "-q", "origin", "main"], work, f"{label}-git-fetch", app)
         git(["reset", "-q", "--soft", "origin/main"], work, f"{label}-git-reset", app)
-        git(["commit", "-q", "-m", f"OurPoker from ourapps-ae/ourpoker {version}"], work, f"{label}-git-commit-again", app)
-        git(["push", "-q", "origin", "main"], work, f"{label}-git-push", app)
+        # main already holding this very tree needs no commit: its workflows are started by hand below
+        if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=app).returncode == 1:
+            git(["commit", "-q", "-m", f"OurPoker from ourapps-ae/ourpoker {version}"], work, f"{label}-git-commit-again", app)
+            git(["push", "-q", "origin", "main"], work, f"{label}-git-push", app)
         results["created"] = False
     else:
         gh(["repo", "create", repo, "--private", "--source", ".", "--remote", "origin"], work, f"{label}-repo-create", cwd=app)
