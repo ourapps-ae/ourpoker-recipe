@@ -278,7 +278,7 @@ def connections_from(manifests, application, included_when):
         providers.setdefault(port["type"], []).append((APPLICATION, port["id"]))
     # realtime-rooms serves the clients through the application's adapter, which wraps turn-engine's; the application in turn
     # takes turn-engine's own adapter.
-    preferred = {("realtime-rooms", "game-adapter"): (APPLICATION, "poker-game-adapter"), (APPLICATION, "game-adapter"): ("turn-engine", "game-adapter")}
+    preferred = {("realtime-rooms", "game-adapter"): (APPLICATION, "game-adapter"), (APPLICATION, "wrapped-game-adapter"): ("turn-engine", "game-adapter")}
     out = []
     for consumer, manifest in [(slug, manifests[slug]) for slug in ORDER] + [(APPLICATION, application)]:
         for port in manifest["requires"]:

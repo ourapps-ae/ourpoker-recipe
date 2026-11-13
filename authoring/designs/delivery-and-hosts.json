@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/web-host",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -91,7 +91,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/apple-host",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "theme",
@@ -158,7 +158,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/android-host",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -210,10 +210,10 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/windows-desktop",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
-          "id": "configuration",
+          "id": "windows-desktop-configuration",
           "name": "Host configuration",
           "direction": "input",
           "kind": "interface",
@@ -223,7 +223,7 @@
           "cardinality": "one"
         },
         {
-          "id": "facility",
+          "id": "desktop-host",
           "name": "Windows desktop",
           "direction": "output",
           "kind": "interface",
@@ -239,7 +239,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/server-host",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "room-session",
@@ -310,83 +310,6 @@
           "default": "any"
         }
       ]
-    },
-    {
-      "id": "ourapps-ae.ourapps-release",
-      "name": "Ourapps release",
-      "kind": "component",
-      "status": "example",
-      "package": "ourapps-ae/ourapps-release",
-      "version": "0.4.1",
-      "ports": [
-        {
-          "id": "release-pipeline",
-          "name": "Release pipeline",
-          "direction": "output",
-          "kind": "interface",
-          "type": "ae/release-pipeline",
-          "version": "1.0.0"
-        }
-      ],
-      "settings": [
-        {
-          "id": "targets",
-          "name": "Targets",
-          "type": "string",
-          "required": true,
-          "secret": false
-        },
-        {
-          "id": "applicationId",
-          "name": "Applicationid",
-          "type": "string",
-          "required": true,
-          "secret": false
-        },
-        {
-          "id": "applicationName",
-          "name": "Applicationname",
-          "type": "string",
-          "required": true,
-          "secret": false
-        },
-        {
-          "id": "manifestUrl",
-          "name": "Manifesturl",
-          "type": "string",
-          "required": false,
-          "secret": false,
-          "default": "https://ourapps.app"
-        },
-        {
-          "id": "storeCredentials",
-          "name": "Storecredentials",
-          "type": "string",
-          "required": false,
-          "secret": true
-        },
-        {
-          "id": "bundleIdentifier",
-          "name": "Bundleidentifier",
-          "type": "string",
-          "required": false,
-          "secret": false
-        },
-        {
-          "id": "androidSigning",
-          "name": "Androidsigning",
-          "type": "string",
-          "required": false,
-          "secret": true
-        },
-        {
-          "id": "webDeploy",
-          "name": "Webdeploy",
-          "type": "string",
-          "required": false,
-          "secret": true
-        }
-      ]
     }
   ],
   "instances": [
@@ -442,18 +365,6 @@
         "region": "any",
         "roomPrefix": "ourpoker-",
         "provider": "cloudflare-free"
-      }
-    },
-    {
-      "id": "ourapps-release",
-      "name": "Ourapps release",
-      "definition": "ourapps-ae.ourapps-release",
-      "configuration": {
-        "manifestUrl": "https://ourapps.app",
-        "applicationId": "ourpoker",
-        "applicationName": "OurPoker",
-        "bundleIdentifier": "app.ourapps.ourpoker",
-        "targets": "web ios android macos windows tvos"
       }
     }
   ],

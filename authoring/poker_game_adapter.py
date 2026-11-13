@@ -1,7 +1,7 @@
-"""The document of the application's provided port `poker-game-adapter` (ae/game-adapter 1.0.0): OpenRPC 1.3.2, derived from
+"""The document of the application's provided port `game-adapter` (ae/game-adapter 1.0.0): OpenRPC 1.3.2, derived from
 implementation/server/src/adapter.ts, wire.ts and contract.ts. Every GameAdapter member but view is turn-engine's, so those
 members with their schemas and errors are read from turn-engine's provided document; the poker wire view (contract.ts) is
-written here. scripts/make_component.py writes it to interfaces/poker-game-adapter.json."""
+written here. scripts/make_component.py writes it to interfaces/game-adapter.json."""
 import copy
 import os
 import json
@@ -160,7 +160,7 @@ def document():
         "info": {
             "title": "ae/game-adapter",
             "version": "1.0.0",
-            "description": "The game adapter realtime-rooms calls (recipe.json connects this port to realtime-rooms' `game` requirement): turn-engine's GameAdapter over the recipe's parts (server/src/parts.ts: holdem-rules, seating, game-clock, private-views, presence, tournament, computer players, round-history, the house rules), whose view answers in the poker wire view the web, Apple and Android clients decode. The application's own `game-adapter` requirement takes turn-engine's adapter, which pokerAdapter wraps. Methods named `GameAdapter.<name>` are members of the object pokerAdapter returns; every one but view is turn-engine's. TypeScript, `implementation/server/src/adapter.ts` (wire.ts, contract.ts).",
+            "description": "The game adapter realtime-rooms calls (recipe.json connects this port to realtime-rooms' `game-adapter` requirement): turn-engine's GameAdapter over the recipe's parts (server/src/parts.ts: holdem-rules, seating, game-clock, private-views, presence, tournament, computer players, round-history, the house rules), whose view answers in the poker wire view the web, Apple and Android clients decode. The application's own `game-adapter` requirement takes turn-engine's adapter, which pokerAdapter wraps. Methods named `GameAdapter.<name>` are members of the object pokerAdapter returns; every one but view is turn-engine's. TypeScript, `implementation/server/src/adapter.ts` (wire.ts, contract.ts).",
         },
         "x-ourapps-modules": {"server": "server/src/adapter.ts"},
         "methods": [

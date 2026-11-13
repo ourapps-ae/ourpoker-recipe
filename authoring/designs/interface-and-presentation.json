@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/theme",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -53,7 +53,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/controls",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -82,7 +82,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/table-layout",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -121,7 +121,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/card-graphics",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -175,7 +175,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/chip-graphics",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -221,7 +221,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/sound-cues",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "preferences",
@@ -267,7 +267,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/guided-tour",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "controls",
@@ -316,7 +316,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/translations",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "language",

@@ -71,7 +71,7 @@ COLLECT = [
 # The three configuration requirements of display-mode, video-calls and windows-desktop are optional (0.3.1), so the application
 # provides no configuration port: it passes the documents in code (web/src/configuration.ts, desktop/src/configuration.cjs).
 PROVIDES = [
-    ("poker-game-adapter", "ae/game-adapter"),
+    ("game-adapter", "ae/game-adapter"),
 ]
 
 # Requirements whose provider the recipe can leave out of a design (its includedWhen is not null): optional in this manifest, so
@@ -80,7 +80,7 @@ OPTIONAL = {"web-shell", "apple-shell", "android-shell", "desktop-host", "media-
 
 # Port id (the type's last segment) -> providing component.
 REQUIRES = [
-    ("game-adapter", "turn-engine"), ("web-shell", "web-host"), ("apple-shell", "apple-host"), ("android-shell", "android-host"),
+    ("wrapped-game-adapter", "turn-engine"), ("web-shell", "web-host"), ("apple-shell", "apple-host"), ("android-shell", "android-host"),
     ("desktop-host", "windows-desktop"), ("server-host", "server-host"), ("release-pipeline", "ourapps-release"),
     ("invitations", "invitations"), ("display-policy", "display-mode"), ("media-session", "video-calls"),
     ("table-layout", "table-layout"), ("card-graphics", "card-graphics"), ("chip-graphics", "chip-graphics"),
@@ -337,7 +337,8 @@ def build_manifest(files):
     collect = [{"id": i, "type": t, "grammar": g, "required": True, "secret": False, "default": d} for i, t, g, d in COLLECT]
     requires = []
     for port, component in REQUIRES:
-        type_ = "ae/" + port
+        # a type the package both provides and requires: the required port is wrapped-<segment> (the component standard)
+        type_ = "ae/" + port.removeprefix("wrapped-")
         # the type is the providing port's type; check it is real
         provided_port(component, type_)
         entry = {"id": port, "type": type_, "version": "1.0.0", "path": f"interfaces/required-{port}.json"}
@@ -418,7 +419,7 @@ def connected_example(manifest, definition):
         stand_in_ports.append({"id": r["id"], "name": r["id"].replace("-", " ").capitalize(), "direction": "output", "kind": "interface", "type": r["type"], "version": r["version"]})
     for p in manifest["provides"]:
         stand_in_ports.append({"id": p["id"], "name": p["id"].replace("-", " ").capitalize(), "direction": "input", "kind": "interface", "type": p["type"],
-                               "version": p["version"], "required": p["id"] != "poker-game-adapter", "cardinality": "one"})
+                               "version": p["version"], "required": p["id"] != "game-adapter", "cardinality": "one"})
     connections = [{"source": {"instance": "rest", "port": r["id"]}, "target": {"instance": "application", "port": r["id"]}} for r in manifest["requires"]]
     connections += [{"source": {"instance": "application", "port": p["id"]}, "target": {"instance": "rest", "port": p["id"]}} for p in manifest["provides"]]
     return {"schemaVersion": 1, "id": "ourpoker-connected", "title": "OurPoker application-specific component: connected", "status": "example",
@@ -446,11 +447,11 @@ def render(example):
 def interfaces_json(manifest):
     """One standard document per provided port (interfaces/<port>.json), and interfaces/required-<port>.json, a byte copy of the
     providing component's document."""
-    documents = {"poker-game-adapter": poker_game_adapter.document()}
+    documents = {"game-adapter": poker_game_adapter.document()}
     out = {}
     for port, component in REQUIRES:
         provider = read(COMPONENTS / component / "component.json")
-        source = next(q["path"] for q in provider["provides"] if q["type"] == "ae/" + port)
+        source = next(q["path"] for q in provider["provides"] if q["type"] == "ae/" + port.removeprefix("wrapped-"))
         (ROOT / f"interfaces/required-{port}.json").write_bytes((COMPONENTS / component / source).read_bytes())
     for p in manifest["provides"]:
         document = documents[p["id"]]

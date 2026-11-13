@@ -11,8 +11,8 @@
 <text xml:space="preserve" text-anchor="start" x="120.86" y="-1048.59" font-family="Helvetica,sans-Serif" font-size="15.00" fill="#9fb0c6">Each box is one component. An arrow runs from the component that provides an interface to the one that uses it, under the default answers.</text>
 <g id="clust1" class="cluster">
 <title>cluster_0</title>
-<path fill="#101722" stroke="#5b7aa3" stroke-width="1.5" d="M815.29,-235.84C815.29,-235.84 986.54,-235.84 986.54,-235.84 992.54,-235.84 998.54,-241.84 998.54,-247.84 998.54,-247.84 998.54,-561.84 998.54,-561.84 998.54,-567.84 992.54,-573.84 986.54,-573.84 986.54,-573.84 815.29,-573.84 815.29,-573.84 809.29,-573.84 803.29,-567.84 803.29,-561.84 803.29,-561.84 803.29,-247.84 803.29,-247.84 803.29,-241.84 809.29,-235.84 815.29,-235.84"/>
-<text xml:space="preserve" text-anchor="start" x="811.29" y="-554.69" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="17.00" fill="#e8eef7">Delivery and hosts (7)</text>
+<path fill="#101722" stroke="#5b7aa3" stroke-width="1.5" d="M815.29,-235.84C815.29,-235.84 986.54,-235.84 986.54,-235.84 992.54,-235.84 998.54,-241.84 998.54,-247.84 998.54,-247.84 998.54,-569.84 998.54,-569.84 998.54,-575.84 992.54,-581.84 986.54,-581.84 986.54,-581.84 815.29,-581.84 815.29,-581.84 809.29,-581.84 803.29,-575.84 803.29,-569.84 803.29,-569.84 803.29,-247.84 803.29,-247.84 803.29,-241.84 809.29,-235.84 815.29,-235.84"/>
+<text xml:space="preserve" text-anchor="start" x="811.29" y="-562.69" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="17.00" fill="#e8eef7">Delivery and hosts (7)</text>
 </g>
 <g id="clust2" class="cluster">
 <title>cluster_1</title>
@@ -129,15 +129,16 @@
 <!-- ourapps&#45;release -->
 <g id="node7" class="node">
 <title>ourapps&#45;release</title>
-<path fill="#1d2a3d" stroke="#5b7aa3" stroke-width="1.3" d="M957.29,-488.96C957.29,-488.96 843.53,-488.96 843.53,-488.96 838.49,-488.96 833.45,-483.92 833.45,-478.88 833.45,-478.88 833.45,-468.8 833.45,-468.8 833.45,-463.76 838.49,-458.72 843.53,-458.72 843.53,-458.72 957.29,-458.72 957.29,-458.72 962.34,-458.72 967.38,-463.76 967.38,-468.8 967.38,-468.8 967.38,-478.88 967.38,-478.88 967.38,-483.92 962.34,-488.96 957.29,-488.96"/>
-<text xml:space="preserve" text-anchor="middle" x="900.41" y="-467.46" font-family="Helvetica,sans-Serif" font-size="15.00" fill="#e8eef7">ourapps&#45;release</text>
+<path fill="#1d2a3d" stroke="#5b7aa3" stroke-width="1.3" stroke-dasharray="5,2" d="M961.38,-496.6C961.38,-496.6 839.45,-496.6 839.45,-496.6 833.45,-496.6 827.45,-490.6 827.45,-484.6 827.45,-484.6 827.45,-471.08 827.45,-471.08 827.45,-465.08 833.45,-459.08 839.45,-459.08 839.45,-459.08 961.38,-459.08 961.38,-459.08 967.38,-459.08 973.38,-465.08 973.38,-471.08 973.38,-471.08 973.38,-484.6 973.38,-484.6 973.38,-490.6 967.38,-496.6 961.38,-496.6"/>
+<text xml:space="preserve" text-anchor="start" x="846.41" y="-477.59" font-family="Helvetica,sans-Serif" font-size="15.00" fill="#e8eef7">ourapps&#45;release</text>
+<text xml:space="preserve" text-anchor="start" x="840.41" y="-466.39" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#9fb0c6">only when updates is yes</text>
 </g>
 <!-- store&#45;update -->
 <g id="node8" class="node">
 <title>store&#45;update</title>
-<path fill="#1d2a3d" stroke="#5b7aa3" stroke-width="1.3" stroke-dasharray="5,2" d="M961.38,-539.6C961.38,-539.6 839.45,-539.6 839.45,-539.6 833.45,-539.6 827.45,-533.6 827.45,-527.6 827.45,-527.6 827.45,-514.08 827.45,-514.08 827.45,-508.08 833.45,-502.08 839.45,-502.08 839.45,-502.08 961.38,-502.08 961.38,-502.08 967.38,-502.08 973.38,-508.08 973.38,-514.08 973.38,-514.08 973.38,-527.6 973.38,-527.6 973.38,-533.6 967.38,-539.6 961.38,-539.6"/>
-<text xml:space="preserve" text-anchor="start" x="858.04" y="-520.59" font-family="Helvetica,sans-Serif" font-size="15.00" fill="#e8eef7">store&#45;update</text>
-<text xml:space="preserve" text-anchor="start" x="840.41" y="-509.39" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#9fb0c6">only when updates is yes</text>
+<path fill="#1d2a3d" stroke="#5b7aa3" stroke-width="1.3" stroke-dasharray="5,2" d="M961.38,-547.6C961.38,-547.6 839.45,-547.6 839.45,-547.6 833.45,-547.6 827.45,-541.6 827.45,-535.6 827.45,-535.6 827.45,-522.08 827.45,-522.08 827.45,-516.08 833.45,-510.08 839.45,-510.08 839.45,-510.08 961.38,-510.08 961.38,-510.08 967.38,-510.08 973.38,-516.08 973.38,-522.08 973.38,-522.08 973.38,-535.6 973.38,-535.6 973.38,-541.6 967.38,-547.6 961.38,-547.6"/>
+<text xml:space="preserve" text-anchor="start" x="858.04" y="-528.59" font-family="Helvetica,sans-Serif" font-size="15.00" fill="#e8eef7">store&#45;update</text>
+<text xml:space="preserve" text-anchor="start" x="840.41" y="-517.39" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#9fb0c6">only when updates is yes</text>
 </g>
 <!-- realtime&#45;rooms&#45;&gt;server&#45;host -->
 <g id="edge9" class="edge">
@@ -220,8 +221,8 @@
 <!-- private&#45;views&#45;&gt;turn&#45;engine -->
 <g id="edge17" class="edge">
 <title>private&#45;views&#45;&gt;turn&#45;engine</title>
-<path fill="none" stroke="#62c6f2" stroke-width="1.1" d="M246.54,-389.29C374.41,-386.9 683.05,-387.97 761.29,-450.84 807.3,-487.81 772.11,-526.72 803.29,-576.84 821.52,-606.14 850.53,-633.13 871.92,-650.8"/>
-<polygon fill="#62c6f2" stroke="#62c6f2" stroke-width="1.1" points="870.3,-652.64 877.28,-655.14 873.39,-648.83 870.3,-652.64"/>
+<path fill="none" stroke="#62c6f2" stroke-width="1.1" d="M246.62,-389.2C374.65,-386.6 683.62,-387.27 761.29,-450.84 809.59,-490.37 769.64,-532.28 803.29,-584.84 820.41,-611.58 847.85,-635.26 869.03,-651.14"/>
+<polygon fill="#62c6f2" stroke="#62c6f2" stroke-width="1.1" points="867.52,-653.07 874.61,-655.24 870.42,-649.12 867.52,-653.07"/>
 </g>
 <!-- display&#45;mode -->
 <g id="node15" class="node">

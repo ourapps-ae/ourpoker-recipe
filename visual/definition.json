@@ -6,8 +6,8 @@
   "revision": "0.4.3",
   "ports": [
     {
-      "id": "game-adapter",
-      "name": "Game adapter",
+      "id": "wrapped-game-adapter",
+      "name": "Wrapped game adapter",
       "direction": "input",
       "kind": "interface",
       "type": "ae/game-adapter",
@@ -206,8 +206,8 @@
       "cardinality": "one"
     },
     {
-      "id": "poker-game-adapter",
-      "name": "Poker game adapter",
+      "id": "game-adapter",
+      "name": "Game adapter",
       "direction": "output",
       "kind": "interface",
       "type": "ae/game-adapter",

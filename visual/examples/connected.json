@@ -13,8 +13,8 @@
       "revision": "0.4.3",
       "ports": [
         {
-          "id": "game-adapter",
-          "name": "Game adapter",
+          "id": "wrapped-game-adapter",
+          "name": "Wrapped game adapter",
           "direction": "input",
           "kind": "interface",
           "type": "ae/game-adapter",
@@ -213,8 +213,8 @@
           "cardinality": "one"
         },
         {
-          "id": "poker-game-adapter",
-          "name": "Poker game adapter",
+          "id": "game-adapter",
+          "name": "Game adapter",
           "direction": "output",
           "kind": "interface",
           "type": "ae/game-adapter",
@@ -392,8 +392,8 @@
       "revision": "0.1.0",
       "ports": [
         {
-          "id": "game-adapter",
-          "name": "Game adapter",
+          "id": "wrapped-game-adapter",
+          "name": "Wrapped game adapter",
           "direction": "output",
           "kind": "interface",
           "type": "ae/game-adapter",
@@ -552,8 +552,8 @@
           "version": "1.0.0"
         },
         {
-          "id": "poker-game-adapter",
-          "name": "Poker game adapter",
+          "id": "game-adapter",
+          "name": "Game adapter",
           "direction": "input",
           "kind": "interface",
           "type": "ae/game-adapter",
@@ -583,11 +583,11 @@
     {
       "source": {
         "instance": "rest",
-        "port": "game-adapter"
+        "port": "wrapped-game-adapter"
       },
       "target": {
         "instance": "application",
-        "port": "game-adapter"
+        "port": "wrapped-game-adapter"
       }
     },
     {
@@ -783,11 +783,11 @@
     {
       "source": {
         "instance": "application",
-        "port": "poker-game-adapter"
+        "port": "game-adapter"
       },
       "target": {
         "instance": "rest",
-        "port": "poker-game-adapter"
+        "port": "game-adapter"
       }
     }
   ]

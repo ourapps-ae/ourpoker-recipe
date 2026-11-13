@@ -2249,7 +2249,7 @@
       "examples/configuration.ts"
     ],
     "interfaces": [
-      "interfaces/poker-game-adapter.json",
+      "interfaces/game-adapter.json",
       "interfaces/required-android-shell.json",
       "interfaces/required-apple-shell.json",
       "interfaces/required-card-graphics.json",
@@ -2257,7 +2257,6 @@
       "interfaces/required-controls.json",
       "interfaces/required-desktop-host.json",
       "interfaces/required-display-policy.json",
-      "interfaces/required-game-adapter.json",
       "interfaces/required-guided-tour.json",
       "interfaces/required-invitations.json",
       "interfaces/required-language.json",
@@ -2270,6 +2269,7 @@
       "interfaces/required-theme.json",
       "interfaces/required-updates.json",
       "interfaces/required-web-shell.json",
+      "interfaces/required-wrapped-game-adapter.json",
       "suitability.json"
     ],
     "licenceNotice": "LICENCE"
@@ -3103,7 +3103,7 @@
     },
     {
       "executable": false,
-      "path": "interfaces/poker-game-adapter.json"
+      "path": "interfaces/game-adapter.json"
     },
     {
       "executable": false,
@@ -3132,10 +3132,6 @@
     {
       "executable": false,
       "path": "interfaces/required-display-policy.json"
-    },
-    {
-      "executable": false,
-      "path": "interfaces/required-game-adapter.json"
     },
     {
       "executable": false,
@@ -3184,6 +3180,10 @@
     {
       "executable": false,
       "path": "interfaces/required-web-shell.json"
+    },
+    {
+      "executable": false,
+      "path": "interfaces/required-wrapped-game-adapter.json"
     },
     {
       "executable": false,
@@ -3574,16 +3574,16 @@
   "kind": "recipe",
   "provides": [
     {
-      "id": "poker-game-adapter",
-      "path": "interfaces/poker-game-adapter.json",
+      "id": "game-adapter",
+      "path": "interfaces/game-adapter.json",
       "type": "ae/game-adapter",
       "version": "1.0.0"
     }
   ],
   "requires": [
     {
-      "id": "game-adapter",
-      "path": "interfaces/required-game-adapter.json",
+      "id": "wrapped-game-adapter",
+      "path": "interfaces/required-wrapped-game-adapter.json",
       "type": "ae/game-adapter",
       "version": "1.0.0"
     },

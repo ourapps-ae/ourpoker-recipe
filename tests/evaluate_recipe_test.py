@@ -554,7 +554,7 @@ class Rules(unittest.TestCase):
                 self.assertIn(("application", port["id"]), targets)
         self.assertIn(("realtime-rooms", "game-adapter"), targets)
         source = [c["source"] for c in design["design"]["connections"] if c["target"] == {"instance": "realtime-rooms", "port": "game-adapter"}]
-        self.assertEqual(source, [{"instance": "application", "port": "poker-game-adapter"}])
+        self.assertEqual(source, [{"instance": "application", "port": "game-adapter"}])
 
     def test_computer_players_and_poker_strategy_are_left_out_for_none_and_nothing_is_left_unconnected(self):
         none = evaluated({**SETS["default"], "computerPlayers": "none"})

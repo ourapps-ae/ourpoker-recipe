@@ -11,7 +11,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/web-host",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -91,7 +91,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/apple-host",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "theme",
@@ -158,7 +158,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/android-host",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -210,10 +210,10 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/windows-desktop",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
-          "id": "configuration",
+          "id": "windows-desktop-configuration",
           "name": "Host configuration",
           "direction": "input",
           "kind": "interface",
@@ -223,7 +223,7 @@
           "cardinality": "one"
         },
         {
-          "id": "facility",
+          "id": "desktop-host",
           "name": "Windows desktop",
           "direction": "output",
           "kind": "interface",
@@ -239,7 +239,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/server-host",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "room-session",
@@ -312,92 +312,15 @@
       ]
     },
     {
-      "id": "ourapps-ae.ourapps-release",
-      "name": "Ourapps release",
-      "kind": "component",
-      "status": "example",
-      "package": "ourapps-ae/ourapps-release",
-      "version": "0.4.1",
-      "ports": [
-        {
-          "id": "release-pipeline",
-          "name": "Release pipeline",
-          "direction": "output",
-          "kind": "interface",
-          "type": "ae/release-pipeline",
-          "version": "1.0.0"
-        }
-      ],
-      "settings": [
-        {
-          "id": "targets",
-          "name": "Targets",
-          "type": "string",
-          "required": true,
-          "secret": false
-        },
-        {
-          "id": "applicationId",
-          "name": "Applicationid",
-          "type": "string",
-          "required": true,
-          "secret": false
-        },
-        {
-          "id": "applicationName",
-          "name": "Applicationname",
-          "type": "string",
-          "required": true,
-          "secret": false
-        },
-        {
-          "id": "manifestUrl",
-          "name": "Manifesturl",
-          "type": "string",
-          "required": false,
-          "secret": false,
-          "default": "https://ourapps.app"
-        },
-        {
-          "id": "storeCredentials",
-          "name": "Storecredentials",
-          "type": "string",
-          "required": false,
-          "secret": true
-        },
-        {
-          "id": "bundleIdentifier",
-          "name": "Bundleidentifier",
-          "type": "string",
-          "required": false,
-          "secret": false
-        },
-        {
-          "id": "androidSigning",
-          "name": "Androidsigning",
-          "type": "string",
-          "required": false,
-          "secret": true
-        },
-        {
-          "id": "webDeploy",
-          "name": "Webdeploy",
-          "type": "string",
-          "required": false,
-          "secret": true
-        }
-      ]
-    },
-    {
       "id": "ourapps-ae.realtime-rooms",
       "name": "Realtime rooms",
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/realtime-rooms",
-      "version": "0.6.3",
+      "version": "0.7.0",
       "ports": [
         {
-          "id": "game",
+          "id": "game-adapter",
           "name": "Game adapter",
           "direction": "input",
           "kind": "interface",
@@ -417,7 +340,7 @@
           "cardinality": "one"
         },
         {
-          "id": "session",
+          "id": "room-session",
           "name": "Room session",
           "direction": "output",
           "kind": "interface",
@@ -433,7 +356,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/room-directory",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "room-session",
@@ -479,7 +402,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/guest-identity",
-      "version": "0.5.2",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "guest-identity",
@@ -523,7 +446,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/presence",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "guest-identity",
@@ -577,7 +500,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/invitations",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "ports": [
         {
           "id": "invitations",
@@ -612,7 +535,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/private-views",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "private-views",
@@ -631,10 +554,10 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/display-mode",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
-          "id": "configuration",
+          "id": "display-mode-configuration",
           "name": "Host configuration",
           "direction": "input",
           "kind": "interface",
@@ -644,7 +567,7 @@
           "cardinality": "one"
         },
         {
-          "id": "facility",
+          "id": "display-policy",
           "name": "Display mode",
           "direction": "output",
           "kind": "interface",
@@ -660,10 +583,10 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/video-calls",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
-          "id": "configuration",
+          "id": "video-calls-configuration",
           "name": "Host configuration",
           "direction": "input",
           "kind": "interface",
@@ -673,7 +596,7 @@
           "cardinality": "one"
         },
         {
-          "id": "facility",
+          "id": "media-session",
           "name": "Video calls",
           "direction": "output",
           "kind": "interface",
@@ -719,7 +642,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/preferences",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "ports": [
         {
           "id": "preferences",
@@ -763,7 +686,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/turn-engine",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "game-rules",
@@ -912,7 +835,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/game-clock",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "game-clock",
@@ -948,7 +871,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/seating",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "guest-identity",
@@ -1018,7 +941,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/fair-shuffle",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "random-source",
@@ -1053,7 +976,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/card-deck",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "random-source",
@@ -1099,7 +1022,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/computer-players",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "player-strategy",
@@ -1197,7 +1120,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/chip-ledger",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "chip-ledger",
@@ -1257,7 +1180,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/level-schedule",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "level-schedule",
@@ -1301,7 +1224,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/tournament",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "chip-ledger",
@@ -1399,7 +1322,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/round-history",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "round-history",
@@ -1427,7 +1350,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/rules-settings",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "rules-settings",
@@ -1463,7 +1386,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/poker-hand-ranking",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "card-deck",
@@ -1492,7 +1415,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/poker-odds",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "hand-ranking",
@@ -1548,7 +1471,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/holdem-rules",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "card-deck",
@@ -1642,7 +1565,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/poker-strategy",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "hand-ranking",
@@ -1698,7 +1621,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/theme",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -1740,7 +1663,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/controls",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -1769,7 +1692,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/table-layout",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -1808,7 +1731,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/card-graphics",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -1862,7 +1785,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/chip-graphics",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "theme",
@@ -1908,7 +1831,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/sound-cues",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "preferences",
@@ -1954,7 +1877,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/guided-tour",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "ports": [
         {
           "id": "controls",
@@ -2003,7 +1926,7 @@
       "kind": "component",
       "status": "example",
       "package": "ourapps-ae/translations",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "ports": [
         {
           "id": "language",
@@ -2033,8 +1956,8 @@
       "revision": "0.4.3",
       "ports": [
         {
-          "id": "game-adapter",
-          "name": "Game adapter",
+          "id": "wrapped-game-adapter",
+          "name": "Wrapped game adapter",
           "direction": "input",
           "kind": "interface",
           "type": "ae/game-adapter",
@@ -2099,7 +2022,7 @@
           "kind": "interface",
           "type": "ae/release-pipeline",
           "version": "1.0.0",
-          "required": true,
+          "required": false,
           "cardinality": "one"
         },
         {
@@ -2233,8 +2156,8 @@
           "cardinality": "one"
         },
         {
-          "id": "poker-game-adapter",
-          "name": "Poker game adapter",
+          "id": "game-adapter",
+          "name": "Game adapter",
           "direction": "output",
           "kind": "interface",
           "type": "ae/game-adapter",
@@ -2458,18 +2381,6 @@
         "region": "any",
         "roomPrefix": "ourpoker-",
         "provider": "cloudflare-free"
-      }
-    },
-    {
-      "id": "ourapps-release",
-      "name": "Ourapps release",
-      "definition": "ourapps-ae.ourapps-release",
-      "configuration": {
-        "manifestUrl": "https://ourapps.app",
-        "applicationId": "ourpoker",
-        "applicationName": "OurPoker",
-        "bundleIdentifier": "app.ourapps.ourpoker",
-        "targets": "web ios android macos windows tvos"
       }
     },
     {
@@ -2819,7 +2730,7 @@
     {
       "source": {
         "instance": "realtime-rooms",
-        "port": "session"
+        "port": "room-session"
       },
       "target": {
         "instance": "server-host",
@@ -2839,11 +2750,11 @@
     {
       "source": {
         "instance": "application",
-        "port": "poker-game-adapter"
+        "port": "game-adapter"
       },
       "target": {
         "instance": "realtime-rooms",
-        "port": "game"
+        "port": "game-adapter"
       }
     },
     {
@@ -2859,7 +2770,7 @@
     {
       "source": {
         "instance": "realtime-rooms",
-        "port": "session"
+        "port": "room-session"
       },
       "target": {
         "instance": "room-directory",
@@ -3243,7 +3154,7 @@
       },
       "target": {
         "instance": "application",
-        "port": "game-adapter"
+        "port": "wrapped-game-adapter"
       }
     },
     {
@@ -3279,7 +3190,7 @@
     {
       "source": {
         "instance": "windows-desktop",
-        "port": "facility"
+        "port": "desktop-host"
       },
       "target": {
         "instance": "application",
@@ -3298,16 +3209,6 @@
     },
     {
       "source": {
-        "instance": "ourapps-release",
-        "port": "release-pipeline"
-      },
-      "target": {
-        "instance": "application",
-        "port": "release-pipeline"
-      }
-    },
-    {
-      "source": {
         "instance": "invitations",
         "port": "invitations"
       },
@@ -3319,7 +3220,7 @@
     {
       "source": {
         "instance": "display-mode",
-        "port": "facility"
+        "port": "display-policy"
       },
       "target": {
         "instance": "application",
@@ -3329,7 +3230,7 @@
     {
       "source": {
         "instance": "video-calls",
-        "port": "facility"
+        "port": "media-session"
       },
       "target": {
         "instance": "application",

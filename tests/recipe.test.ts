@@ -277,8 +277,8 @@ test("connections use real port ids and types, join identical type and version, 
   assert.deepEqual(open.sort(), ["display-mode.display-mode-configuration:true", "video-calls.video-calls-configuration:true", "windows-desktop.windows-desktop-configuration:true"]);
   const has = (s: string, sp: string, t: string, tp: string) => recipe.connections.some((c: Obj) => c.source.instance === s && c.source.port === sp && c.target.instance === t && c.target.port === tp);
   assert.ok(has("guest-identity", "guest-identity", "realtime-rooms", "guest-identity"), "realtime-rooms takes identity from guest-identity");
-  assert.ok(has(APPLICATION, "poker-game-adapter", "realtime-rooms", "game-adapter"), "the clients read the application's poker view");
-  assert.ok(has("turn-engine", "game-adapter", APPLICATION, "game-adapter"));
+  assert.ok(has(APPLICATION, "game-adapter", "realtime-rooms", "game-adapter"), "the clients read the application's poker view");
+  assert.ok(has("turn-engine", "game-adapter", APPLICATION, "wrapped-game-adapter"));
   assert.equal(recipe.connections.filter((c: Obj) => c.target.instance === APPLICATION).length, ownManifest.requires.length);
 });
 
@@ -288,7 +288,7 @@ test("the application's requirement is optional exactly when its provider has an
     const provider = byId.get(providerOf.get(p.id)!)!;
     assert.equal(p.optional === true, provider.includedWhen !== null, `application.${p.id} (${provider.id})`);
   }
-  assert.deepEqual(ownManifest.provides.map((p: Obj) => p.id), ["poker-game-adapter"]);
+  assert.deepEqual(ownManifest.provides.map((p: Obj) => p.id), ["game-adapter"]);
   const visual = read(join(root, "visual", "definition.json"));
   for (const p of ownManifest.requires) assert.equal(visual.ports.find((v: Obj) => v.id === p.id).required, p.optional !== true, p.id);
 });
