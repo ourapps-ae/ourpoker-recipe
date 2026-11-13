@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { readContext, writeResult } from '../components/video-calls/verification/result.mjs';
+import { readContext, writeResult } from '../components/video-calls/verification/index.mjs';
 import { checkUpdate } from './update-check.mjs';
 
 const context = await readContext();

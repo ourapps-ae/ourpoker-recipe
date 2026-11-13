@@ -165,14 +165,14 @@ test("every art file the web manifest lists exists", () => {
 test("the manifest lists every packaged file, and every artefact has a source and a unique destination", { skip: !existsSync(join(root, "component.json")) && "no component.json beside the tests" }, () => {
   const manifest = json("component.json");
   const listed = manifest.files.map((f: { path: string }) => f.path);
-  const unpackaged = new Set([".git", ".gitignore", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "REVIEW.md"]);
+  const unpackaged = new Set([".git", ".gitattributes", ".gitignore", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "REVIEW.md"]);
   const onDisk = walk(root).filter((f) => !unpackaged.has(f.split("/")[0]));
   assert.deepEqual([...listed].sort(), onDisk.sort());
   const destinations = new Set<string>();
   const settings = new Set(manifest.collect.map((s: { id: string }) => s.id));
   for (const artefact of manifest.artefacts) {
     assert.ok(listed.includes(artefact.source), artefact.source);
-    for (const name of "component" in artefact ? [artefact.component].flat() : []) assert.ok(json("recipe.json").components.some((c: { name: string }) => c.name === name), `${artefact.source}: ${name} is not a component of the recipe`);
+    for (const name of "component" in artefact ? [artefact.component].flat() : []) assert.ok(json("recipe.json").components.some((c: { id: string }) => c.id === name), `${artefact.source}: ${name} is not a slot of the recipe`);
     assert.ok(!artefact.destination.startsWith("components/"), `${artefact.destination} is inside components/`);
     // a stand-in shares its destination with the real file: one is installed with the component, the other without it
     const key = artefact.destination.toLowerCase() + ("withoutComponent" in artefact ? " without" : "");
@@ -186,15 +186,28 @@ test("the manifest lists every packaged file, and every artefact has a source an
   assert.equal(manifest.identity.name, "ourapps-ae/ourpoker");
 });
 
-test("code that imports components names only folders the recipe's components provide", () => {
+test("code that imports components names only the recipe's slots", () => {
   const recipe = json("recipe.json");
-  const names = new Set<string>(recipe.components.map((c: { name: string }) => c.name.split("/")[1]));
+  const names = new Set<string>(recipe.components.map((c: { id: string }) => c.id));
   const unknown = new Set<string>();
   for (const file of walk(join(root, "implementation"))) {
     if (!/\.(ts|cjs)$/.test(file)) continue;
     for (const m of readFileSync(join(root, file), "utf8").matchAll(/components\/([a-z-]+)\//g)) if (!names.has(m[1])) unknown.add(`${file}: ${m[1]}`);
   }
   assert.deepEqual([...unknown], []);
+});
+
+test("code reaches a component only through an entry module its interface documents declare", () => {
+  const entries = new Set(["web/index", "web/index.ts", "server/index", "server/index.ts", "desktop/index.cjs", "verification/index.mjs"]);
+  const specifier = /(?:\bfrom\s*|\bimport\s*\(?\s*|\brequire\(\s*|\bimport\s+)(["'])((?:\.\.\/)+components\/([a-z0-9-]+)\/([^"']+))\1/g;
+  const internal: string[] = [];
+  for (const top of ["implementation", "tests"]) {
+    for (const file of walk(join(root, top))) {
+      if (!/\.(ts|mjs|cjs)$/.test(file) || file.includes("node_modules")) continue;
+      for (const m of readFileSync(join(root, file), "utf8").matchAll(specifier)) if (!entries.has(m[4])) internal.push(`${file}: ${m[2]}`);
+    }
+  }
+  assert.deepEqual(internal, []);
 });
 
 // ---- wire fixtures and the configuration example ----

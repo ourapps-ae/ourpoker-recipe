@@ -1,14 +1,14 @@
 // The application's entry: starts the store, draws the screen for the state, and keeps the room's
 // look, the video, the lessons and the update notice in step with it. The installable shell (manifest,
 // service worker, install banner) is the web-host component's; the look is the theme's.
-import "../../components/theme/web/theme.css";
-import "../../components/controls/web/controls.css";
-import "../../components/card-graphics/web/cards.css";
-import "../../components/chip-graphics/web/chips.css";
-import "../../components/table-layout/web/table-layout.css";
+import "../../components/theme/web/index";
+import "../../components/controls/web/index";
+import "../../components/card-graphics/web/index";
+import "../../components/chip-graphics/web/index";
+import "../../components/table-layout/web/index";
 import "./guide-style";
 import "./poker.css";
-import { Background } from "../../components/theme/web/background";
+import { Background } from "../../components/theme/web/index";
 import { startWebShell } from "./shell";
 import { boardScreen } from "./board";
 import { loadArtManifest, h, icon, cardEl, setCardTheme } from "./ui";

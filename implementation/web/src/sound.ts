@@ -1,8 +1,8 @@
 // The game's sounds (assets/sounds): short and quiet, as players' microphones are open. The
 // sound-cues component plays them from the manifest; this keeps the game's names and the rule that a
 // shared display never makes a sound. Browsers allow sound only after a tap, so nothing plays before the first one.
-import { createCues } from "../../components/sound-cues/web/cues";
-import { createPreferences } from "../../components/preferences/web/preferences";
+import { createCues } from "../../components/sound-cues/web/index";
+import { createPreferences } from "../../components/preferences/web/index";
 import manifest from "../public/sounds/manifest.json";
 import { modeEvent, sessionMode } from "./mode";
 

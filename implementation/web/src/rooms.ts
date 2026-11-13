@@ -1,9 +1,8 @@
 // The two permanent rooms. Both wear the design's look (the `look` answer: a theme of the theme component). The recipe ships no
 // scene pictures; a picture added as web/public/art/scene-<room>-back.jpg or -front.png and named in a room's scene here is drawn.
-import themes from "../../components/theme/web/themes.json";
 import { look } from "./configuration";
-import { Background, type Scene } from "../../components/theme/web/background";
-import { applyTheme, resolveTheme, type ThemeFile, type Tokens } from "../../components/theme/web/tokens";
+import { Background, type Scene } from "../../components/theme/web/index";
+import { applyTheme, resolveTheme, type ThemeFile, type Tokens, themes } from "../../components/theme/web/index";
 
 type Look = { theme: string; scene: Scene };
 

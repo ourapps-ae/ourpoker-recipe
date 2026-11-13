@@ -35,7 +35,7 @@ EXPECTED_MARKS = {"android-host": 1, "apple-host": 1, "computer-players": 1, "gu
                   "web-host": 2, "windows-desktop": 9}
 # The repository files that build one host: installed with the release pipeline and that host (a list mark: both).
 EXPECTED_RELEASE_MARKS = {"android-host": 1, "apple-host": 3, "web-host": 1, "windows-desktop": 3}
-RELEASE = "ourapps-ae/ourapps-release"
+RELEASE = "ourapps-release"
 
 
 def marks(artefact):
@@ -47,7 +47,7 @@ EXPECTED_STAND_INS = {"computer-players": 1, "guided-tour": 4, "store-update": 4
 
 
 def names_in(design):
-    return {design["recipe"]["name"], *(c["name"] for c in design["components"])}
+    return application.present_components(design)
 
 
 class Marks(unittest.TestCase):
@@ -62,16 +62,16 @@ class Marks(unittest.TestCase):
             reached = {c for c, _ in component_imports.references(ROOT / artefact["source"]) if c in optional}
             if reached:
                 self.assertIn("component", artefact, artefact["source"])
-                names = [mark.split("/")[1] for mark in marks(artefact)]
+                names = marks(artefact)
                 self.assertTrue(set(names) & reached or artefact["source"].startswith("tests/"), f"{artefact['source']}: {names} not in {reached}")
 
     def test_the_count_of_marked_artefacts_per_component(self):
         marked, listed = {}, {}
         for artefact in MANIFEST["artefacts"]:
             if isinstance(artefact.get("component"), str):
-                marked[artefact["component"].split("/")[1]] = marked.get(artefact["component"].split("/")[1], 0) + 1
+                marked[artefact["component"]] = marked.get(artefact["component"], 0) + 1
             elif "component" in artefact:
-                hosts = [name.split("/")[1] for name in artefact["component"] if name != RELEASE]
+                hosts = [name for name in artefact["component"] if name != RELEASE]
                 self.assertEqual((len(artefact["component"]), len(hosts)), (2, 1), artefact["source"])
                 listed[hosts[0]] = listed.get(hosts[0], 0) + 1
         self.assertEqual(marked, EXPECTED_MARKS)
@@ -94,7 +94,7 @@ class Marks(unittest.TestCase):
                 workflows = {d for d in installed if d.startswith(".github/")}
                 self.assertEqual(bool(workflows), RELEASE in present)
                 self.assertEqual(RELEASE in present, bool(answers.get("publish") or answers.get("releases")))
-                self.assertEqual(".github/workflows/ci-android.yml" in installed, RELEASE in present and "ourapps-ae/android-host" in present)
+                self.assertEqual(".github/workflows/ci-android.yml" in installed, RELEASE in present and "android-host" in present)
                 self.assertIn(".gitignore", installed)
 
     def test_native_files_that_name_an_optional_components_types_are_marked(self):
@@ -111,15 +111,15 @@ class Marks(unittest.TestCase):
                 text = text.replace("currentVersion", "isNewer(")  # store-update's Swift global (the Kotlin view model has its own)
             for component, pattern in names.items():
                 if re.search(pattern, text):
-                    self.assertEqual(artefact.get("component"), "ourapps-ae/" + component, artefact["source"])
+                    self.assertEqual(artefact.get("component"), component, artefact["source"])
 
     def test_a_package_with_these_marks_is_a_valid_component_to_aepm(self):
         model.validate_component(load(ROOT / "component.json"))
         self.assertEqual(sum(1 for a in MANIFEST["artefacts"] if "component" in a), sum(EXPECTED_MARKS.values()) + sum(EXPECTED_RELEASE_MARKS.values()))
 
-    def test_aepm_refuses_a_mark_naming_the_component_itself(self):
+    def test_aepm_refuses_a_mark_naming_a_package_instead_of_a_slot(self):
         broken = json.loads((ROOT / "component.json").read_text())
-        next(a for a in broken["artefacts"] if "component" in a)["component"] = broken["identity"]["name"]
+        next(a for a in broken["artefacts"] if "component" in a)["component"] = "ourapps-ae/video-calls"
         with self.assertRaises(Exception):
             model.validate_component(broken)
 
@@ -146,7 +146,7 @@ class Installed(unittest.TestCase):
     def test_every_included_conditional_component_brings_its_files_and_every_excluded_one_takes_them_away(self):
         everything = application.installed_artefacts(MANIFEST, names_in(E.evaluate(WORLD, C.answer_sets(WORLD)["poker-league"])["design"]))
         self.assertEqual(len(everything), len(MANIFEST["artefacts"]) - sum(EXPECTED_STAND_INS.values()), "poker-league includes every conditional component")
-        none = application.installed_artefacts(MANIFEST, {"ourapps-ae/ourpoker"})
+        none = application.installed_artefacts(MANIFEST, set())
         self.assertEqual(len(none), len(MANIFEST["artefacts"]) - sum(EXPECTED_MARKS.values()) - sum(EXPECTED_RELEASE_MARKS.values()))
         self.assertEqual(sum(1 for a in none if "withoutComponent" in a), sum(EXPECTED_STAND_INS.values()))
 
@@ -156,7 +156,7 @@ class Installed(unittest.TestCase):
             if "withoutComponent" in artefact:
                 twins = [a for a in MANIFEST["artefacts"] if a["destination"] == artefact["destination"] and a is not artefact]
                 self.assertEqual([a.get("component") for a in twins], [artefact["withoutComponent"]], artefact["source"])
-                name = artefact["withoutComponent"].split("/")[1]
+                name = artefact["withoutComponent"]
                 stand_ins[name] = stand_ins.get(name, 0) + 1
         self.assertEqual(stand_ins, EXPECTED_STAND_INS)
 
@@ -188,7 +188,7 @@ class Checker(unittest.TestCase):
                 del artefact["component"]
         world.manifests[E.APPLICATION] = manifest
         found = C.check_design(world, self.design())
-        self.assertIn("implementation/web/src/video.ts: video-calls/web/video", found["excluded"])
+        self.assertIn("implementation/web/src/video.ts: video-calls/web/index", found["excluded"])
 
     def test_a_path_that_is_not_an_artefact_of_the_component_is_found(self):
         self.assertTrue(component_imports.resolves("web/video", {"web/video.ts"}))

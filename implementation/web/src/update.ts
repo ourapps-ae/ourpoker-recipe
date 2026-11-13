@@ -1,4 +1,4 @@
-import { fetchUpdate, isNewer } from "../../components/store-update/web/update";
+import { fetchUpdate, isNewer } from "../../components/store-update/web/index";
 import { SERVER } from "./api";
 import { normalizeStoreUpdate, type UpdateSelection } from "./store-response";
 

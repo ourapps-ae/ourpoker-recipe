@@ -3,7 +3,7 @@ import { createServer } from 'node:net';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readContext, requireOperations } from '../components/video-calls/verification/result.mjs';
+import { readContext, requireOperations } from '../components/video-calls/verification/index.mjs';
 
 const context = await readContext();
 requireOperations(context, ['native-test']);

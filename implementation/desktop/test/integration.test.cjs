@@ -3,7 +3,7 @@ const { test } = require('node:test');
 const { mkdtemp, readFile, writeFile, rm } = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
-const { createPolicy } = require('../../components/windows-desktop/desktop/src/policy.cjs');
+const { createPolicy } = require('../../components/windows-desktop/desktop/index.cjs');
 
 test('every relative require of a packaged script is packaged', async () => {
   const { sources } = require('../scripts/package.cjs');

@@ -1,5 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
-import { createDirectoryClass } from "../../components/room-directory/server/directory";
+import { createDirectoryClass } from "../../components/room-directory/server/index";
 import { ROOM_IDS } from "./contract";
 
 // The room list, kept under the same DIRECTORY binding and storage key the rooms already write to.

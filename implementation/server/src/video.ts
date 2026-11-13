@@ -1,5 +1,5 @@
 import type { Services } from "../../components/realtime-rooms/server/index";
-import { videoGrant as grant, listRooms, type VideoEnv } from "../../components/video-calls/server/video";
+import { videoGrant as grant, listRooms, type VideoEnv } from "../../components/video-calls/server/index";
 import { settings } from "./settings";
 export { listRooms, type VideoEnv };
 

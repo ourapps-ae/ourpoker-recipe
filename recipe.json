@@ -29,8 +29,63 @@
   "components": [
     {
       "id": "web-host",
-      "name": "ourapps-ae/web-host",
-      "version": "0.4.2",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/web-shell",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "applicationId": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "applicationName": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "backgroundColour": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            },
+            "shortName": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "themeColour": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            },
+            "webAddress": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            }
+          },
+          "required": [
+            "applicationId",
+            "applicationName",
+            "backgroundColour",
+            "shortName",
+            "themeColour",
+            "webAddress"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/web-host",
+        "version": "0.4.2"
+      },
       "configuration": {
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
@@ -42,8 +97,53 @@
     },
     {
       "id": "apple-host",
-      "name": "ourapps-ae/apple-host",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/apple-shell",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "bundleIdentifier": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+            },
+            "displayName": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "scheme": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            },
+            "targets": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            }
+          },
+          "required": [
+            "bundleIdentifier",
+            "displayName",
+            "scheme",
+            "targets"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/apple-host",
+        "version": "0.5.1"
+      },
       "configuration": {
         "bundleIdentifier": "app.ourapps.ourpoker",
         "displayName": "OurPoker",
@@ -53,8 +153,43 @@
     },
     {
       "id": "android-host",
-      "name": "ourapps-ae/android-host",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/android-shell",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "applicationName": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "packageId": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+            }
+          },
+          "required": [
+            "applicationName",
+            "packageId"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/android-host",
+        "version": "0.4.1"
+      },
       "configuration": {
         "packageId": "app.ourapps.ourpoker",
         "applicationName": "OurPoker"
@@ -63,15 +198,81 @@
     },
     {
       "id": "windows-desktop",
-      "name": "ourapps-ae/windows-desktop",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/desktop-host",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/windows-desktop",
+        "version": "0.5.1"
+      },
       "configuration": {},
       "includedWhen": "'windows' in targets"
     },
     {
       "id": "server-host",
-      "name": "ourapps-ae/server-host",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/server-host",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/room-directory",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/room-session",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "accountReference": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "allowedOrigins": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            },
+            "provider": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "roomPrefix": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            }
+          },
+          "required": [
+            "allowedOrigins",
+            "provider",
+            "roomPrefix"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/server-host",
+        "version": "0.5.1"
+      },
       "configuration": {
         "roomPrefix": "ourpoker-"
       },
@@ -79,8 +280,72 @@
     },
     {
       "id": "ourapps-release",
-      "name": "ourapps-ae/ourapps-release",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/release-pipeline",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "androidSigning": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "applicationId": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "applicationName": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "bundleIdentifier": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)+$"
+            },
+            "hostingAccount": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "manifestUrl": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            },
+            "repository": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            },
+            "storeCredentials": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "targets": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "webDeploy": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            }
+          },
+          "required": [
+            "applicationId",
+            "applicationName",
+            "bundleIdentifier",
+            "targets"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/ourapps-release",
+        "version": "0.4.1"
+      },
       "configuration": {
         "applicationId": "ourpoker",
         "applicationName": "OurPoker",
@@ -90,36 +355,171 @@
     },
     {
       "id": "store-update",
-      "name": "ourapps-ae/store-update",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/updates",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "inviteAddress": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            }
+          },
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/store-update",
+        "version": "0.5.1"
+      },
       "configuration": {},
       "includedWhen": "updates"
     },
     {
       "id": "realtime-rooms",
-      "name": "ourapps-ae/realtime-rooms",
-      "version": "0.6.3",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/room-session",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/game-adapter",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/guest-identity",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/realtime-rooms",
+        "version": "0.6.3"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "room-directory",
-      "name": "ourapps-ae/room-directory",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/room-directory",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/room-session",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "roomCapacity": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "roomCapacity"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/room-directory",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "guest-identity",
-      "name": "ourapps-ae/guest-identity",
-      "version": "0.5.2",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/guest-identity",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/guest-identity",
+        "version": "0.5.2"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "presence",
-      "name": "ourapps-ae/presence",
-      "version": "0.4.2",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/presence",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/guest-identity",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "awayAfterSeconds": {
+              "type": "integer"
+            },
+            "dropAfterSeconds": {
+              "type": "integer"
+            },
+            "hostAbsentRule": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            }
+          },
+          "required": [
+            "awayAfterSeconds",
+            "dropAfterSeconds",
+            "hostAbsentRule"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/presence",
+        "version": "0.4.2"
+      },
       "configuration": {
         "awayAfterSeconds": 30,
         "dropAfterSeconds": 1800,
@@ -129,8 +529,37 @@
     },
     {
       "id": "invitations",
-      "name": "ourapps-ae/invitations",
-      "version": "0.2.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/invitations",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "codeLength": {
+              "type": "integer"
+            },
+            "inviteAddress": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            }
+          },
+          "required": [
+            "codeLength",
+            "inviteAddress"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/invitations",
+        "version": "0.2.1"
+      },
       "configuration": {
         "codeLength": 6
       },
@@ -138,29 +567,128 @@
     },
     {
       "id": "private-views",
-      "name": "ourapps-ae/private-views",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/private-views",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/private-views",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "display-mode",
-      "name": "ourapps-ae/display-mode",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/display-policy",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/display-mode",
+        "version": "0.5.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "video-calls",
-      "name": "ourapps-ae/video-calls",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/media-session",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "keyReference": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            },
+            "secretReference": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            },
+            "serviceUrl": {
+              "type": "string",
+              "pattern": "^https?://[A-Za-z0-9.-]+(:[0-9]{1,5})?(/[A-Za-z0-9_/-]*)?$"
+            }
+          },
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/video-calls",
+        "version": "0.5.1"
+      },
       "configuration": {},
       "includedWhen": "video"
     },
     {
       "id": "preferences",
-      "name": "ourapps-ae/preferences",
-      "version": "0.2.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/preferences",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "defaultCameraOn": {
+              "type": "boolean"
+            },
+            "defaultMicrophoneOn": {
+              "type": "boolean"
+            },
+            "defaultSound": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "defaultCameraOn",
+            "defaultMicrophoneOn",
+            "defaultSound"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/preferences",
+        "version": "0.2.1"
+      },
       "configuration": {
         "defaultSound": true,
         "defaultMicrophoneOn": true,
@@ -170,8 +698,86 @@
     },
     {
       "id": "turn-engine",
-      "name": "ourapps-ae/turn-engine",
-      "version": "0.5.3",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/game-adapter",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/computer-players",
+            "version": "1.0.0",
+            "optional": true
+          },
+          {
+            "type": "ae/game-clock",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/game-rules",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/presence",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/private-views",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/round-history",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/rules-settings",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/seating",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/tournament",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "decisionSeconds": {
+              "type": "integer"
+            },
+            "lobbyDropSeconds": {
+              "type": "integer"
+            },
+            "settleMs": {
+              "type": "integer"
+            },
+            "staleMinutes": {
+              "type": "integer"
+            },
+            "standingsSeconds": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "decisionSeconds",
+            "lobbyDropSeconds",
+            "settleMs",
+            "staleMinutes",
+            "standingsSeconds"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/turn-engine",
+        "version": "0.5.3"
+      },
       "configuration": {
         "settleMs": 4000,
         "staleMinutes": 30,
@@ -182,15 +788,72 @@
     },
     {
       "id": "game-clock",
-      "name": "ourapps-ae/game-clock",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/game-clock",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "decisionSeconds": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "decisionSeconds"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/game-clock",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "seating",
-      "name": "ourapps-ae/seating",
-      "version": "0.4.2",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/seating",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/guest-identity",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "hostRemovesPeople": {
+              "type": "boolean"
+            },
+            "maximumPlayers": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "hostRemovesPeople",
+            "maximumPlayers"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/seating",
+        "version": "0.4.2"
+      },
       "configuration": {
         "hostRemovesPeople": false
       },
@@ -198,8 +861,33 @@
     },
     {
       "id": "fair-shuffle",
-      "name": "ourapps-ae/fair-shuffle",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/random-source",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/fair-shuffle",
+        "version": "0.4.1"
+      },
       "configuration": {
         "source": "secure"
       },
@@ -207,8 +895,41 @@
     },
     {
       "id": "card-deck",
-      "name": "ourapps-ae/card-deck",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/card-deck",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/random-source",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "decks": {
+              "type": "integer"
+            },
+            "jokers": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "decks",
+            "jokers"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/card-deck",
+        "version": "0.4.1"
+      },
       "configuration": {
         "decks": 1,
         "jokers": false
@@ -217,8 +938,67 @@
     },
     {
       "id": "computer-players",
-      "name": "ourapps-ae/computer-players",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/computer-players",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/game-clock",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/player-strategy",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/seating",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "minimumGapMs": {
+              "type": "integer"
+            },
+            "mode": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "names": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "rebuyDelayMs": {
+              "type": "integer"
+            },
+            "thinkMinMs": {
+              "type": "integer"
+            },
+            "thinkSpreadMs": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "minimumGapMs",
+            "mode",
+            "names",
+            "rebuyDelayMs",
+            "thinkMinMs",
+            "thinkSpreadMs"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/computer-players",
+        "version": "0.5.1"
+      },
       "configuration": {
         "names": "Robin Sam Alex Jordan Casey Morgan Taylor Riley",
         "thinkMinMs": 300,
@@ -230,22 +1010,120 @@
     },
     {
       "id": "chip-ledger",
-      "name": "ourapps-ae/chip-ledger",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/chip-ledger",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "seats": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "seats"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/chip-ledger",
+        "version": "0.5.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "level-schedule",
-      "name": "ourapps-ae/level-schedule",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/level-schedule",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "levelSeconds": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "levelSeconds"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/level-schedule",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "tournament",
-      "name": "ourapps-ae/tournament",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/tournament",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/chip-ledger",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/level-schedule",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/seating",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "rebuyStack": {
+              "type": "integer"
+            },
+            "rebuysPerPlayer": {
+              "type": "integer"
+            },
+            "startingStack": {
+              "type": "integer"
+            },
+            "tiebreak": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            }
+          },
+          "required": [
+            "rebuyStack",
+            "rebuysPerPlayer",
+            "startingStack",
+            "tiebreak"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/tournament",
+        "version": "0.4.1"
+      },
       "configuration": {
         "tiebreak": "stackAtDeal"
       },
@@ -253,8 +1131,32 @@
     },
     {
       "id": "round-history",
-      "name": "ourapps-ae/round-history",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/round-history",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "maxRounds": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "maxRounds"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/round-history",
+        "version": "0.4.1"
+      },
       "configuration": {
         "maxRounds": 50
       },
@@ -262,8 +1164,37 @@
     },
     {
       "id": "rules-settings",
-      "name": "ourapps-ae/rules-settings",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/rules-settings",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "rulesFile": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "strict": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "rulesFile",
+            "strict"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/rules-settings",
+        "version": "0.4.1"
+      },
       "configuration": {
         "rulesFile": "texas-holdem-house-rules",
         "strict": true
@@ -272,15 +1203,75 @@
     },
     {
       "id": "poker-hand-ranking",
-      "name": "ourapps-ae/poker-hand-ranking",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/hand-ranking",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/card-deck",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/poker-hand-ranking",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "poker-odds",
-      "name": "ourapps-ae/poker-odds",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/poker-odds",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/card-deck",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/hand-ranking",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "cacheSize": {
+              "type": "integer"
+            },
+            "sampleBoards": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "cacheSize",
+            "sampleBoards"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/poker-odds",
+        "version": "0.4.1"
+      },
       "configuration": {
         "sampleBoards": 2000,
         "cacheSize": 500
@@ -289,8 +1280,57 @@
     },
     {
       "id": "holdem-rules",
-      "name": "ourapps-ae/holdem-rules",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/game-rules",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/card-deck",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/chip-ledger",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/hand-ranking",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/level-schedule",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/rules-settings",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "revealAtRunout": {
+              "type": "boolean"
+            },
+            "seats": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "revealAtRunout",
+            "seats"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/holdem-rules",
+        "version": "0.4.1"
+      },
       "configuration": {
         "revealAtRunout": true
       },
@@ -298,8 +1338,45 @@
     },
     {
       "id": "poker-strategy",
-      "name": "ourapps-ae/poker-strategy",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/player-strategy",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/hand-ranking",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/poker-odds",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "aggression": {
+              "type": "integer"
+            },
+            "difficulty": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "aggression",
+            "difficulty"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/poker-strategy",
+        "version": "0.4.1"
+      },
       "configuration": {
         "difficulty": 2,
         "aggression": 50
@@ -308,29 +1385,143 @@
     },
     {
       "id": "theme",
-      "name": "ourapps-ae/theme",
-      "version": "0.4.2",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "themeName": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            }
+          },
+          "required": [
+            "themeName"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/theme",
+        "version": "0.4.2"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "controls",
-      "name": "ourapps-ae/controls",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/controls",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/controls",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "table-layout",
-      "name": "ourapps-ae/table-layout",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/table-layout",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/controls",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/table-layout",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": null
     },
     {
       "id": "card-graphics",
-      "name": "ourapps-ae/card-graphics",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/card-graphics",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "backStyle": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            },
+            "cardWidth": {
+              "type": "integer"
+            },
+            "cornerStyle": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+            }
+          },
+          "required": [
+            "backStyle",
+            "cardWidth",
+            "cornerStyle"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/card-graphics",
+        "version": "0.4.1"
+      },
       "configuration": {
         "cornerStyle": "rounded",
         "cardWidth": 56
@@ -339,8 +1530,43 @@
     },
     {
       "id": "chip-graphics",
-      "name": "ourapps-ae/chip-graphics",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/chip-graphics",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/theme",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "chipColours": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            },
+            "denominations": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            }
+          },
+          "required": [
+            "chipColours",
+            "denominations"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/chip-graphics",
+        "version": "0.4.1"
+      },
       "configuration": {
         "denominations": "casino 5000 1000 500 100 25 5 1",
         "chipColours": "casino"
@@ -349,8 +1575,42 @@
     },
     {
       "id": "sound-cues",
-      "name": "ourapps-ae/sound-cues",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/sound-cues",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/preferences",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "defaultMuted": {
+              "type": "boolean"
+            },
+            "soundManifest": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            }
+          },
+          "required": [
+            "defaultMuted",
+            "soundManifest"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/sound-cues",
+        "version": "0.4.1"
+      },
       "configuration": {
         "soundManifest": "sounds",
         "defaultMuted": false
@@ -359,15 +1619,71 @@
     },
     {
       "id": "guided-tour",
-      "name": "ourapps-ae/guided-tour",
-      "version": "0.4.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/guided-tour",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/controls",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/language",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/preferences",
+            "version": "1.0.0"
+          }
+        ],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/guided-tour",
+        "version": "0.4.1"
+      },
       "configuration": {},
       "includedWhen": "lessons"
     },
     {
       "id": "translations",
-      "name": "ourapps-ae/translations",
-      "version": "0.5.1",
+      "class": {
+        "provides": [
+          {
+            "type": "ae/language",
+            "version": "1.0.0"
+          }
+        ],
+        "requires": [],
+        "configuration": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "languages": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9 -]{0,63}$"
+            }
+          },
+          "required": [
+            "languages"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "preferred": {
+        "name": "ourapps-ae/translations",
+        "version": "0.5.1"
+      },
       "configuration": {},
       "includedWhen": null
     }
@@ -375,6 +1691,7 @@
   "jobs": [
     {
       "id": "server",
+      "slot": "server-host",
       "overrideQuestion": "server",
       "candidates": [
         {
@@ -393,6 +1710,7 @@
     },
     {
       "id": "realtime",
+      "slot": "realtime-rooms",
       "overrideQuestion": "server",
       "candidates": [
         {
@@ -411,6 +1729,7 @@
     },
     {
       "id": "video",
+      "slot": "video-calls",
       "candidates": [
         {
           "component": "ourapps-ae/video-calls",
@@ -960,7 +2279,7 @@
     {
       "source": {
         "instance": "realtime-rooms",
-        "port": "session"
+        "port": "room-session"
       },
       "target": {
         "instance": "server-host",
@@ -984,7 +2303,7 @@
       },
       "target": {
         "instance": "realtime-rooms",
-        "port": "game"
+        "port": "game-adapter"
       }
     },
     {
@@ -1000,7 +2319,7 @@
     {
       "source": {
         "instance": "realtime-rooms",
-        "port": "session"
+        "port": "room-session"
       },
       "target": {
         "instance": "room-directory",
@@ -1420,7 +2739,7 @@
     {
       "source": {
         "instance": "windows-desktop",
-        "port": "facility"
+        "port": "desktop-host"
       },
       "target": {
         "instance": "application",
@@ -1460,7 +2779,7 @@
     {
       "source": {
         "instance": "display-mode",
-        "port": "facility"
+        "port": "display-policy"
       },
       "target": {
         "instance": "application",
@@ -1470,7 +2789,7 @@
     {
       "source": {
         "instance": "video-calls",
-        "port": "facility"
+        "port": "media-session"
       },
       "target": {
         "instance": "application",

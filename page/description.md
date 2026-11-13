@@ -54,6 +54,8 @@ Secrets are given by reference only; no key is written into the recipe, the answ
 
 39 components in five groups (delivery and hosts; rooms, people and sessions; turn-based game framework; poker; interface and presentation) plus the recipe's own application-specific component: screen flow, artwork, text in four languages, lessons and end-to-end tests. Thirty-five of the 39 have nothing to do with poker. The diagram names every component, grouped, with the connections of the default design; store-update is dashed because it is present only when updates is yes.
 
+Each component sits in a slot named after it: the slot's class is what the recipe relies on (the interfaces it connects and the settings it writes), and the component named is the one the recipe prefers. Any catalogue component of the same class can take its place: `aepm alternatives ourpoker@<version> <slot>` lists them and `aepm design ... --substitute <slot>=<name>@<version>` uses one. `ourapps-ae/theme-high-contrast`, for example, fills the `theme` slot with high-contrast night and lounge looks.
+
 ## Building it
 
 With aepm and the published catalogue: `aepm fetch ourpoker@0.4.3 --with-dependencies --store STORE`, then read the recipe's INSTRUCTIONS.md from the fetched archive:

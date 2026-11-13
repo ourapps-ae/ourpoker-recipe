@@ -1,6 +1,6 @@
 // The shared display: the public table for a television or any shared screen. It shows the board, the
 // pots, every seat and the standings; it never shows private cards and never acts.
-import { formatClock } from "../../components/game-clock/web/countdown";
+import { formatClock } from "../../components/game-clock/web/index";
 import type { View } from "./api";
 import { cardEl, chips, h } from "./ui";
 import { actionText, L, promptText, roomName } from "./i18n";

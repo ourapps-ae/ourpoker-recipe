@@ -1,8 +1,8 @@
 import { DEFAULT_SERVER, SERVER, type RoomInfo, type View } from "./api";
 import { addBotIcon, cardEl, chips, h, icon, type IconName } from "./ui";
 import { resetGuides, want } from "./guide";
-import { seatRows, canTakeSeat } from "../../components/seating/web/lobby";
-import { headingKey, resultRows } from "../../components/tournament/web/results";
+import { seatRows, canTakeSeat } from "../../components/seating/web/index";
+import { headingKey, resultRows } from "../../components/tournament/web/index";
 import { L, LANGUAGES, currentLanguage, pickLanguage, pickedLanguage, promptText, roomName } from "./i18n";
 import { play, setSound, soundOn } from "./sound";
 import type { State, Store } from "./store";

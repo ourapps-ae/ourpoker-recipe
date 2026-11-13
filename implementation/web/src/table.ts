@@ -2,8 +2,8 @@
 // below. Rebuilt from the view on every change; countdowns tick on their own. Seat positions come from
 // the table-layout component, cards, chips and controls from theirs; what stays here is what only
 // poker needs: the hand's moves, sounds and lessons, the showdown, the zoomed cards and the rebuy offer.
-import { dealRounds } from "../../components/card-graphics/web/card-model";
-import { ALL_IN_MS, FLY_MS } from "../../components/chip-graphics/web/chip-model";
+import { dealRounds } from "../../components/card-graphics/web/index";
+import { ALL_IN_MS, FLY_MS } from "../../components/chip-graphics/web/index";
 import type { PlayerView, View } from "./api";
 import { hintsEl, playControls, taps } from "./betting";
 import { boardSpot, burnSpot, cardsSpot, deckSpot, distanceFrom, mySeatOf, potSpot, seatCount, seatIndex, seatSpot, shownSpot, betSpot, YOUR_HAND, type Point } from "./geometry";

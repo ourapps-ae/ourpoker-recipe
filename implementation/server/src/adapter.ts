@@ -1,9 +1,11 @@
 // The game adapter realtime-rooms calls: the turn engine over this recipe's parts, answering in the
 // poker wire view.
-import { createGameAdapter } from "../../components/turn-engine/server/adapter";
+import { createGameAdapter } from "../../components/turn-engine/server/index";
+export type { GameAdapter } from "../../components/turn-engine/server/index";
 import { handRanking } from "../../components/poker-hand-ranking/server/index";
 import { engineSettings, odds, parts, schedule } from "./parts";
 import { toWireView, type LinkExtras, type WireDeps } from "./wire";
+export { toWireView };
 
 const wireDeps: WireDeps = {
   evaluate: (cards) => handRanking.evaluate(cards),

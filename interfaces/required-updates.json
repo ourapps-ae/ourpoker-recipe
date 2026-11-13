@@ -30,7 +30,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -54,7 +54,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -87,7 +87,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "web"
         },
         {
           "name": "swift"
@@ -131,7 +131,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "web"
         }
       ]
     },
@@ -197,5 +197,11 @@
         "description": "The store's answer to GET on the update address (application/json); other fields are dropped."
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "server": "server/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

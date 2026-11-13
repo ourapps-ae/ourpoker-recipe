@@ -2,10 +2,10 @@
 // is about. The guided-tour component runs them; this holds the game's lessons (locales/lessons.json),
 // the choice to be guided (asked once) and what each moment of the game asks for. While one shows at
 // the table the play clock is held for everyone.
-import { createTour, parseLessons } from "../../components/guided-tour/web/tour-model";
-import { mountTour } from "../../components/guided-tour/web/tour-view";
-import * as controls from "../../components/controls/web/controls";
-import { h } from "../../components/controls/web/dom";
+import { createTour, parseLessons } from "../../components/guided-tour/web/index";
+import { mountTour } from "../../components/guided-tour/web/index";
+import * as controls from "../../components/controls/web/index";
+import { h } from "../../components/controls/web/index";
 import { L, lookupText } from "./i18n";
 import lessons from "./lessons.json";
 import { play } from "./sound";

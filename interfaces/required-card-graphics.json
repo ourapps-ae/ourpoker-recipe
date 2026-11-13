@@ -29,7 +29,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "allCards",
@@ -47,7 +52,12 @@
           "maxItems": 52,
           "uniqueItems": true
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "normaliseSettings",
@@ -81,6 +91,11 @@
           "code": 4,
           "message": "cardWidth must be between 8 and 600"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -110,7 +125,12 @@
         "schema": {
           "$ref": "#/components/schemas/Metrics"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "faceModel",
@@ -159,6 +179,11 @@
         {
           "code": 1,
           "message": "not a card: <code>"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
         }
       ]
     },
@@ -209,7 +234,12 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "dealPlan",
@@ -255,7 +285,12 @@
             "$ref": "#/components/schemas/DealStep"
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "dealRounds",
@@ -311,7 +346,12 @@
             "$ref": "#/components/schemas/SeatDealStep"
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "flipState",
@@ -331,7 +371,12 @@
         "schema": {
           "$ref": "#/components/schemas/FlipState"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "cardClasses",
@@ -371,7 +416,12 @@
         "schema": {
           "type": "string"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "cardEl",
@@ -416,6 +466,11 @@
           "code": 4,
           "message": "cardWidth must be between 8 and 600"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -445,7 +500,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "dealStyle",
@@ -480,7 +540,12 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "dealInto",
@@ -527,7 +592,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "flippingCard",
@@ -579,6 +649,11 @@
         {
           "code": 1,
           "message": "not a card: <code>"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
         }
       ]
     }
@@ -1104,5 +1179,10 @@
         "description": "A DOM HTMLElement."
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

@@ -1,5 +1,8 @@
 {
   "openrpc": "1.3.2",
+  "x-ourapps-modules": {
+    "server": "server/src/adapter.ts"
+  },
   "info": {
     "title": "ae/game-adapter",
     "version": "1.0.0",
@@ -8,6 +11,11 @@
   "methods": [
     {
       "name": "pokerAdapter",
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ],
       "description": "The adapter: turn-engine's createGameAdapter(parts, engineSettings) with view mapped by toWireView.",
       "paramStructure": "by-position",
       "params": [
@@ -33,6 +41,11 @@
     },
     {
       "name": "toWireView",
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ],
       "description": "The poker wire view from the engine's view: phases renamed, the poker part of the game copied out, the best hand worked out for every face-up hand, the viewer's odds when asked, prompts that name the winner, and the links.",
       "paramStructure": "by-position",
       "params": [
@@ -92,7 +105,12 @@
         "schema": {
           "$ref": "#/components/schemas/EngineState"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.restore",
@@ -123,6 +141,11 @@
       "errors": [
         {
           "$ref": "#/components/errors/UnsupportedState"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
         }
       ]
     },
@@ -175,7 +198,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.members",
@@ -211,7 +239,12 @@
             "additionalProperties": false
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.summary",
@@ -252,7 +285,12 @@
           ],
           "additionalProperties": false
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.clearSpectators",
@@ -272,7 +310,12 @@
         "schema": {
           "type": "boolean"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.join",
@@ -370,7 +413,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.parseAction",
@@ -438,7 +486,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.apply",
@@ -523,6 +576,11 @@
         {
           "$ref": "#/components/errors/NoOutcome"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -571,7 +629,12 @@
           ],
           "additionalProperties": false
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.connection",
@@ -667,7 +730,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.advance",
@@ -719,6 +787,11 @@
         {
           "$ref": "#/components/errors/NoOutcome"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -742,7 +815,12 @@
             "null"
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "GameAdapter.view",
@@ -804,7 +882,12 @@
         "schema": {
           "$ref": "#/components/schemas/View"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     }
   ],
   "components": {

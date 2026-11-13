@@ -37,6 +37,8 @@ const sources = [
   ...['main', 'verify', 'configuration'].map(name => [`desktop/src/${name}.cjs`, `src/${name}.cjs`]),
   ...['main', 'shell', 'policy'].map(name => [`components/windows-desktop/desktop/src/${name}.cjs`, `../components/windows-desktop/desktop/src/${name}.cjs`]),
   ['components/windows-desktop/verification/result.mjs', '../components/windows-desktop/verification/result.mjs'],
+  ['components/windows-desktop/desktop/index.cjs', '../components/windows-desktop/desktop/index.cjs'],
+  ['components/windows-desktop/desktop/scripts/build.cjs', '../components/windows-desktop/desktop/scripts/build.cjs'],
 ];
 
 async function pack() {

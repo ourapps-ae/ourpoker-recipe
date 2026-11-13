@@ -1,5 +1,5 @@
 // Installed in place of the guides when the design leaves out guided-tour (no lessons): nothing is ever shown or held.
-import { h } from "../../components/controls/web/dom";
+import { h } from "../../components/controls/web/index";
 import { L } from "./i18n";
 
 export type GuideId = "home" | "lobby" | "bots" | "table" | "blinds" | "call" | "bet" | "pot" | "flop" | "turn" | "river";

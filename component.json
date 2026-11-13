@@ -31,14 +31,14 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
@@ -81,7 +81,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/guided-tour",
+      "component": "guided-tour",
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
@@ -124,7 +124,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
       "executable": false,
       "source": "implementation/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
@@ -155,7 +155,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/android-host",
+      "component": "android-host",
       "destination": "android/generate-project.ts",
       "executable": false,
       "source": "implementation/android/generate-project.ts",
@@ -204,7 +204,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/guided-tour",
+      "component": "guided-tour",
       "destination": "ios/OurPoker/Sources/Lessons.swift",
       "executable": false,
       "source": "implementation/apple/Sources/Lessons.swift",
@@ -271,7 +271,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "ios/OurPoker/Sources/SeatScreen.swift",
       "executable": false,
       "source": "implementation/apple/Sources/SeatScreen.swift",
@@ -308,77 +308,77 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "ios/OurPoker/Sources/Updates.swift",
       "executable": false,
       "source": "implementation/apple/Sources/Updates.swift",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "ios/OurPoker/Sources/Video.swift",
       "executable": false,
       "source": "implementation/apple/Sources/Video.swift",
       "template": false
     },
     {
-      "component": "ourapps-ae/apple-host",
+      "component": "apple-host",
       "destination": "ios/generate-project.ts",
       "executable": false,
       "source": "implementation/apple/generate-project.ts",
       "template": true
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/package-lock.json",
       "executable": false,
       "source": "implementation/desktop/package-lock.json",
       "template": false
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/package.json",
       "executable": false,
       "source": "implementation/desktop/package.json",
       "template": true
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/scripts/build.cjs",
       "executable": false,
       "source": "implementation/desktop/scripts/build.cjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/scripts/package.cjs",
       "executable": false,
       "source": "implementation/desktop/scripts/package.cjs",
       "template": true
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/src/configuration.cjs",
       "executable": false,
       "source": "implementation/desktop/src/configuration.cjs",
       "template": true
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/src/main.cjs",
       "executable": false,
       "source": "implementation/desktop/src/main.cjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/src/verify.cjs",
       "executable": false,
       "source": "implementation/desktop/src/verify.cjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "desktop/test/integration.test.cjs",
       "executable": false,
       "source": "implementation/desktop/test/integration.test.cjs",
@@ -391,7 +391,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/ourapps-release",
+      "component": "ourapps-release",
       "destination": "release/app.json",
       "executable": false,
       "source": "implementation/repository/release/app.json",
@@ -399,8 +399,8 @@
     },
     {
       "component": [
-        "ourapps-ae/apple-host",
-        "ourapps-ae/ourapps-release"
+        "apple-host",
+        "ourapps-release"
       ],
       "destination": "scripts/build-apple-testflight.sh",
       "executable": false,
@@ -409,8 +409,8 @@
     },
     {
       "component": [
-        "ourapps-ae/apple-host",
-        "ourapps-ae/ourapps-release"
+        "apple-host",
+        "ourapps-release"
       ],
       "destination": "scripts/build-ipa.sh",
       "executable": false,
@@ -419,8 +419,8 @@
     },
     {
       "component": [
-        "ourapps-ae/ourapps-release",
-        "ourapps-ae/windows-desktop"
+        "ourapps-release",
+        "windows-desktop"
       ],
       "destination": "scripts/build-windows.sh",
       "executable": false,
@@ -429,8 +429,8 @@
     },
     {
       "component": [
-        "ourapps-ae/ourapps-release",
-        "ourapps-ae/windows-desktop"
+        "ourapps-release",
+        "windows-desktop"
       ],
       "destination": "scripts/inspect-windows.ps1",
       "executable": false,
@@ -439,8 +439,8 @@
     },
     {
       "component": [
-        "ourapps-ae/apple-host",
-        "ourapps-ae/ourapps-release"
+        "apple-host",
+        "ourapps-release"
       ],
       "destination": ".github/workflows/apple-testflight.yml",
       "executable": false,
@@ -449,8 +449,8 @@
     },
     {
       "component": [
-        "ourapps-ae/android-host",
-        "ourapps-ae/ourapps-release"
+        "android-host",
+        "ourapps-release"
       ],
       "destination": ".github/workflows/ci-android.yml",
       "executable": false,
@@ -458,7 +458,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/ourapps-release",
+      "component": "ourapps-release",
       "destination": ".github/workflows/ci-server.yml",
       "executable": false,
       "source": "implementation/repository/workflows/ci-server.yml",
@@ -466,8 +466,8 @@
     },
     {
       "component": [
-        "ourapps-ae/ourapps-release",
-        "ourapps-ae/web-host"
+        "ourapps-release",
+        "web-host"
       ],
       "destination": ".github/workflows/ci-web.yml",
       "executable": false,
@@ -476,8 +476,8 @@
     },
     {
       "component": [
-        "ourapps-ae/ourapps-release",
-        "ourapps-ae/windows-desktop"
+        "ourapps-release",
+        "windows-desktop"
       ],
       "destination": ".github/workflows/platform-packages.yml",
       "executable": false,
@@ -485,7 +485,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/ourapps-release",
+      "component": "ourapps-release",
       "destination": ".github/workflows/release.yml",
       "executable": false,
       "source": "implementation/repository/workflows/release.yml",
@@ -510,7 +510,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/computer-players",
+      "component": "computer-players",
       "destination": "server/src/computers.ts",
       "executable": false,
       "source": "implementation/server/src/computers.ts",
@@ -565,14 +565,14 @@
       "template": true
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "server/src/update-links.ts",
       "executable": false,
       "source": "implementation/server/src/update-links.ts",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "server/src/video.ts",
       "executable": false,
       "source": "implementation/server/src/video.ts",
@@ -601,126 +601,126 @@
       "executable": false,
       "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/Updates.kt",
       "template": false,
-      "withoutComponent": "ourapps-ae/store-update"
+      "withoutComponent": "store-update"
     },
     {
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
       "executable": false,
       "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/Video.kt",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
       "executable": false,
       "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/ui/Lessons.kt",
       "template": false,
-      "withoutComponent": "ourapps-ae/guided-tour"
+      "withoutComponent": "guided-tour"
     },
     {
       "destination": "android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
       "executable": false,
       "source": "implementation/stand-ins/android/app/src/main/java/app/ourapps/ourpoker/ui/SeatScreen.kt",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "ios/OurPoker/Sources/Lessons.swift",
       "executable": false,
       "source": "implementation/stand-ins/apple/Sources/Lessons.swift",
       "template": false,
-      "withoutComponent": "ourapps-ae/guided-tour"
+      "withoutComponent": "guided-tour"
     },
     {
       "destination": "ios/OurPoker/Sources/SeatScreen.swift",
       "executable": false,
       "source": "implementation/stand-ins/apple/Sources/SeatScreen.swift",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "ios/OurPoker/Sources/Updates.swift",
       "executable": false,
       "source": "implementation/stand-ins/apple/Sources/Updates.swift",
       "template": false,
-      "withoutComponent": "ourapps-ae/store-update"
+      "withoutComponent": "store-update"
     },
     {
       "destination": "ios/OurPoker/Sources/Video.swift",
       "executable": false,
       "source": "implementation/stand-ins/apple/Sources/Video.swift",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "server/src/computers.ts",
       "executable": false,
       "source": "implementation/stand-ins/server/src/computers.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/computer-players"
+      "withoutComponent": "computer-players"
     },
     {
       "destination": "server/src/update-links.ts",
       "executable": false,
       "source": "implementation/stand-ins/server/src/update-links.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/store-update"
+      "withoutComponent": "store-update"
     },
     {
       "destination": "server/src/video.ts",
       "executable": false,
       "source": "implementation/stand-ins/server/src/video.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "web/package-lock.json",
       "executable": false,
       "source": "implementation/stand-ins/web/package-lock.json",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "web/package.json",
       "executable": false,
       "source": "implementation/stand-ins/web/package.json",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "web/src/guide-style.ts",
       "executable": false,
       "source": "implementation/stand-ins/web/src/guide-style.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/guided-tour"
+      "withoutComponent": "guided-tour"
     },
     {
       "destination": "web/src/guide.ts",
       "executable": false,
       "source": "implementation/stand-ins/web/src/guide.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/guided-tour"
+      "withoutComponent": "guided-tour"
     },
     {
       "destination": "web/src/shell.ts",
       "executable": false,
       "source": "implementation/stand-ins/web/src/shell.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/web-host"
+      "withoutComponent": "web-host"
     },
     {
       "destination": "web/src/update.ts",
       "executable": false,
       "source": "implementation/stand-ins/web/src/update.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/store-update"
+      "withoutComponent": "store-update"
     },
     {
       "destination": "web/src/video.ts",
       "executable": false,
       "source": "implementation/stand-ins/web/src/video.ts",
       "template": false,
-      "withoutComponent": "ourapps-ae/video-calls"
+      "withoutComponent": "video-calls"
     },
     {
       "destination": "web/index.html",
@@ -729,14 +729,14 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "web/package-lock.json",
       "executable": false,
       "source": "implementation/web/package-lock.json",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "web/package.json",
       "executable": false,
       "source": "implementation/web/package.json",
@@ -773,14 +773,14 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/guided-tour",
+      "component": "guided-tour",
       "destination": "web/src/guide-style.ts",
       "executable": false,
       "source": "implementation/web/src/guide-style.ts",
       "template": false
     },
     {
-      "component": "ourapps-ae/guided-tour",
+      "component": "guided-tour",
       "destination": "web/src/guide.ts",
       "executable": false,
       "source": "implementation/web/src/guide.ts",
@@ -829,7 +829,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/web-host",
+      "component": "web-host",
       "destination": "web/src/shell.ts",
       "executable": false,
       "source": "implementation/web/src/shell.ts",
@@ -848,7 +848,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "web/src/store-response.ts",
       "executable": false,
       "source": "implementation/web/src/store-response.ts",
@@ -879,14 +879,14 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "web/src/update.ts",
       "executable": false,
       "source": "implementation/web/src/update.ts",
       "template": true
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "web/src/video.ts",
       "executable": false,
       "source": "implementation/web/src/video.ts",
@@ -899,7 +899,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/web-host",
+      "component": "web-host",
       "destination": "web/vite.config.ts",
       "executable": false,
       "source": "implementation/web/vite.config.ts",
@@ -996,21 +996,21 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "server/test/update-links.test.ts",
       "executable": false,
       "source": "tests/e2e/server/update-links.test.ts",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "server/test/video-services.test.ts",
       "executable": false,
       "source": "tests/e2e/server/video-services.test.ts",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "server/test/video.test.ts",
       "executable": false,
       "source": "tests/e2e/server/video.test.ts",
@@ -1029,35 +1029,35 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/application-bridge-fixture.mjs",
       "executable": false,
       "source": "tests/e2e/verification/application-bridge-fixture.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/application-media.mjs",
       "executable": false,
       "source": "tests/e2e/verification/application-media.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/media-runner.mjs",
       "executable": false,
       "source": "tests/e2e/verification/media-runner.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/native-check.py",
       "executable": false,
       "source": "tests/e2e/verification/native-check.py",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/native-server.mjs",
       "executable": false,
       "source": "tests/e2e/verification/native-server.mjs",
@@ -1070,49 +1070,49 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/prepare-browser.mjs",
       "executable": false,
       "source": "tests/e2e/verification/prepare-browser.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "verification/update-check.mjs",
       "executable": false,
       "source": "tests/e2e/verification/update-check.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "verification/update-check.test.mjs",
       "executable": false,
       "source": "tests/e2e/verification/update-check.test.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "verification/update-runner.mjs",
       "executable": false,
       "source": "tests/e2e/verification/update-runner.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "verification/update-runner.test.mjs",
       "executable": false,
       "source": "tests/e2e/verification/update-runner.test.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/windows-desktop",
+      "component": "windows-desktop",
       "destination": "verification/windows-package.mjs",
       "executable": false,
       "source": "tests/e2e/verification/windows-package.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "verification/windows-runtime.mjs",
       "executable": false,
       "source": "tests/e2e/verification/windows-runtime.mjs",
@@ -1137,21 +1137,21 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "web/test/local-application.mjs",
       "executable": false,
       "source": "tests/e2e/web/local-application.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "web/test/media.test.mjs",
       "executable": false,
       "source": "tests/e2e/web/media.test.mjs",
       "template": false
     },
     {
-      "component": "ourapps-ae/video-calls",
+      "component": "video-calls",
       "destination": "web/test/multiplayer.mjs",
       "executable": false,
       "source": "tests/e2e/web/multiplayer.mjs",
@@ -1164,7 +1164,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/guided-tour",
+      "component": "guided-tour",
       "destination": "web/test/session.test.mjs",
       "executable": false,
       "source": "tests/e2e/web/session.test.mjs",
@@ -1177,7 +1177,7 @@
       "template": false
     },
     {
-      "component": "ourapps-ae/store-update",
+      "component": "store-update",
       "destination": "web/test/update.test.mjs",
       "executable": false,
       "source": "tests/e2e/web/update.test.mjs",
@@ -2281,10 +2281,6 @@
     }
   ],
   "files": [
-    {
-      "executable": false,
-      "path": ".gitattributes"
-    },
     {
       "executable": false,
       "path": "CONTRACT.md"

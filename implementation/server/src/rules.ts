@@ -3,7 +3,7 @@
 // file access, so the file and its schema are imported as data and checked with the rules-settings checker.
 import base from "../../rules/texas-holdem-house-rules.json" with { type: "json" };
 import schema from "../../rules/texas-holdem-house-rules.schema.json" with { type: "json" };
-import { createRulesSettings, validate } from "../../components/rules-settings/web/schema";
+import { createRulesSettings, validate } from "../../components/rules-settings/web/index";
 import { settings } from "./settings";
 
 type Rules = typeof base;

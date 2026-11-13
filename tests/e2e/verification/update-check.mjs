@@ -1,4 +1,4 @@
-import { updateUrlFor } from '../components/store-update/server/store.ts';
+import { updateUrlFor } from '../components/store-update/server/index.ts';
 import { normalizeStoreUpdate } from '../web/src/store-response.ts';
 
 export const updateAssertions = ['delivery-origin-allowed', 'invitation-whole-segment', 'no-install', 'platform-selection', 'response-valid', 'version-match'];

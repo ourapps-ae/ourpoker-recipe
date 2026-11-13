@@ -831,5 +831,9 @@
         }
       }
     }
+  },
+  "x-ourapps-modules": {
+    "server": "server/index.ts",
+    "android": "android/src/main/java"
   }
 }

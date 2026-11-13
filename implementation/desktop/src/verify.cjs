@@ -3,9 +3,9 @@ const { readFileSync, lstatSync, realpathSync, readdirSync } = require('node:fs'
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { app, session } = require('electron');
-const { start } = require('../../components/windows-desktop/desktop/src/main.cjs');
+const { start } = require('../../components/windows-desktop/desktop/index.cjs');
 const { desktopConfiguration } = require('./configuration.cjs');
-const { validateContext, writeResult } = require('../../components/windows-desktop/verification/result.mjs');
+const { validateContext, writeResult } = require('../../components/windows-desktop/desktop/index.cjs');
 
 async function waitFor(check, milliseconds = 10000) {
   const deadline = Date.now() + milliseconds;
@@ -54,7 +54,7 @@ async function verify() {
         assert.equal(createHash('sha256').update(executable).digest('hex'), evidence.executable.sha256);
         assert.equal(evidence.executable.machine, 0x8664);
         mark('executable-architecture');
-        assert.equal(Object.keys(evidence.scriptDigests).length, 7);
+        assert.equal(Object.keys(evidence.scriptDigests).length, 9);
         for (const [entry, expected] of Object.entries(evidence.scriptDigests)) {
           assert.ok(!path.isAbsolute(entry) && !entry.split('/').some(part => part === '..' || part === '.'));
           assert.equal(createHash('sha256').update(readFileSync(path.join(app.getAppPath(), entry))).digest('hex'), expected);

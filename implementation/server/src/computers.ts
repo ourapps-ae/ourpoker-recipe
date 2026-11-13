@@ -1,4 +1,4 @@
-import { createComputers, type ComputerMode } from "../../components/computer-players/server/computers";
+import { createComputers, type ComputerMode } from "../../components/computer-players/server/index";
 import { createStrategy } from "../../components/poker-strategy/server/index";
 import { settings } from "./settings";
 

@@ -43,6 +43,7 @@ With options, for designs that have the target:
 Usage (from the recipe folder; python 3.12, node 26.5.0, Chrome):
   PYTHONPATH=<aepm checkout> python3.12 -B authoring/try_install.py [ANSWERS ...] [--components DIR] [--work DIR] [--chrome PATH]
                                          [--android [--avd NAME]] [--windows HOST] [--cloudflare NAME] [--github REPO [--github-tag TAG]]
+                                         [--substitute SLOT=NAME@VERSION ...]
 ANSWERS is an answer-set id of recipe.json (`default` for its default answers) or a path to an answers JSON file;
 without ANSWERS: default, local-web, fill-empty-own-hardware and lounge-web-ios. The work folder (default: a new temporary folder) keeps
 the store, identities, installed applications and logs; report.json there holds every result. Exit status 0 when every step passed.
@@ -221,17 +222,22 @@ def get_json(url, timeout=10):
         return json.loads(response.read())
 
 
-def install(work, store, policy, world, name, answers):
-    result = E.evaluate(world, answers)
-    if not result["ok"]:
-        raise Step(f"evaluate: {result['errors']}")
+def install(work, store, policy, world, name, answers, substitutes=()):
+    """`aepm design` (with each --substitute SLOT=NAME@VERSION), `aepm resolve` and `aepm install`, as INSTRUCTIONS.md part 3 says."""
     folder = work / "designs" / name
     folder.mkdir(parents=True)
     definition, lock, app = folder / "definition.json", folder / "lock.json", folder / "app"
-    definition.write_text(E.to_json(result["design"]))
+    (folder / "answers.json").write_text(json.dumps(answers, indent=2) + "\n")
+    recipe = world.recipe
+    extra = [argument for item in substitutes for argument in ("--substitute", item)]
+    result = aepm(["design", f"{recipe['name'].split('/')[1]}@{recipe['version']}", "--store", str(store), "--answers", str(folder / "answers.json"),
+                   *extra, "--out", str(definition)], work, f"{name}-design", check=False)
+    if not result.get("ok") or not definition.is_file():
+        raise Step(f"design: {json.dumps(result)[:3000]}")
+    design = json.loads(definition.read_text())
     aepm(["resolve", str(definition), "--catalogue", str(store / "catalogue.json"), "--out", str(lock)], work, f"{name}-resolve")
     aepm(["install", str(definition), "--lock", str(lock), "--store", str(store), "--policy", str(policy), "--target", str(app)], work, f"{name}-install")
-    return result["design"], app
+    return design, app
 
 
 def tree(app):
@@ -1009,6 +1015,8 @@ def main(argv):
     parser.add_argument("--cloudflare", metavar="NAME", help="deploy the server as worker NAME and the web client as NAME-web, two-step, and check them")
     parser.add_argument("--github", metavar="REPO", help="push a fresh install to the private repository REPO (owner/name), run its workflows and its release, check the release")
     parser.add_argument("--github-tag", default="v0.1.0", help="the version tag --github pushes (default v0.1.0)")
+    parser.add_argument("--substitute", action="append", default=[], metavar="SLOT=NAME@VERSION",
+                        help="put that component in the slot (aepm design --substitute); its folder must be in --components")
     args = parser.parse_args(argv)
     work = (args.work or Path(tempfile.mkdtemp(prefix="ourpoker-install-", dir=os.path.realpath(tempfile.gettempdir())))).resolve()
     work.mkdir(parents=True, exist_ok=True)
@@ -1040,8 +1048,11 @@ def main(argv):
             needed = {c["name"] for c in evaluated["design"]["components"]} | {world.recipe["name"]} if evaluated["ok"] else set()
             if needed & set(blocked):
                 raise Step(f"not installed: no guardian review for {sorted(needed & set(blocked))}")
-            design, app = install(work, store, policy, world, name, answers)
+            design, app = install(work, store, policy, world, name, answers, args.substitute)
             results["install"] = "passed"
+            substituted = {slot: f"{s['component']}@{s['version']}" for slot, s in design.get("selections", {}).items() if s.get("reason") == "substituted"}
+            if substituted:
+                results["substituted"] = substituted
             results["components"] = len(design["components"])
             results["tree"] = tree(app)
             build_and_run(work, name, app, args, results)

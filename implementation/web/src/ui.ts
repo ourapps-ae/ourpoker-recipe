@@ -1,12 +1,12 @@
 // The recipe's one door to the shared interface parts: the controls, card and chip graphics, number
 // formats and the room artwork, in the shapes the screens were written against.
-import { h } from "../../components/controls/web/dom";
-import { badgedIcon, icon, type IconName } from "../../components/controls/web/icons";
-import { formatCount, mmss } from "../../components/controls/web/format";
-import { cardEl as drawCard } from "../../components/card-graphics/web/cards";
-import { pileEl as drawPile } from "../../components/chip-graphics/web/chips";
-import { PLACED } from "../../components/table-layout/web/placed-seats";
-import { clockwiseTarget, relativeSeat, ringPoint, seatAngle, tableCardWidth } from "../../components/table-layout/web/layout";
+import { h } from "../../components/controls/web/index";
+import { badgedIcon, icon, type IconName } from "../../components/controls/web/index";
+import { formatCount, mmss } from "../../components/controls/web/index";
+import { cardEl as drawCard } from "../../components/card-graphics/web/index";
+import { pileEl as drawPile } from "../../components/chip-graphics/web/index";
+import { PLACED } from "../../components/table-layout/web/index";
+import { clockwiseTarget, relativeSeat, ringPoint, seatAngle, tableCardWidth } from "../../components/table-layout/web/index";
 import { L } from "./i18n";
 import { look } from "./configuration";
 

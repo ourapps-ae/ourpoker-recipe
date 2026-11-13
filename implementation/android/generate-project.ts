@@ -4,8 +4,7 @@
 // reaches this Mac's localhost as http://10.0.2.2:<port>).
 import { cpSync, existsSync, readdirSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { renderAndroid, writeAndroid, writeWrapper } from "../components/android-host/android/render.ts";
-import { androidHostSettings } from "../components/android-host/android/settings.ts";
+import { androidHostSettings, renderAndroid, writeAndroid, writeWrapper } from "../components/android-host/server/index.ts";
 
 const components = new URL("../components/", import.meta.url);
 const has = (path: string) => existsSync(new URL(path, components));

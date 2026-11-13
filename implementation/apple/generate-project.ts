@@ -3,8 +3,7 @@
 // `xcodegen generate`. SERVER_ADDRESS replaces the server address the design was installed with.
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { renderApple, writeApple } from "../components/apple-host/apple/render.ts";
-import { appleHostSettings } from "../components/apple-host/apple/settings.ts";
+import { appleHostSettings, renderApple, writeApple } from "../components/apple-host/server/index.ts";
 
 const components = new URL("../components/", import.meta.url);
 const has = (path: string) => existsSync(new URL(path, components));

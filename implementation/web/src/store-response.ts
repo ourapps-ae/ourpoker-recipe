@@ -1,4 +1,4 @@
-import { isNewer } from "../../components/store-update/web/update.ts";
+import { isNewer } from "../../components/store-update/web/index.ts";
 
 export type UpdateSelection = {
   platform: "web" | "android" | "ios" | "macos" | "tvos" | "windows";

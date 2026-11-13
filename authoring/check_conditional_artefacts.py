@@ -45,16 +45,15 @@ def destinations(world, component_id: str) -> set[str]:
 def check_design(world, design) -> dict:
     """Findings for one design: lists of strings under marks, excluded, unresolved, seams."""
     manifest = world.manifests[E.APPLICATION]
-    names = {c["name"]: c["id"] for c in design["components"]}
-    present = {design["recipe"]["name"], *names}
-    ids = set(names.values())
+    ids = {c["id"] for c in design["components"]}
+    present = application.present_components(design)
     conditional = {c["id"] for c in world.recipe["components"] if c.get("includedWhen") is not None}
-    recipe_names = {c["name"] for c in world.recipe["components"]}
+    slots = {c["id"] for c in world.recipe["components"]}
     found = {"marks": [], "excluded": [], "unresolved": [], "seams": [], "generated": []}
 
     for artefact in manifest["artefacts"]:
         for name in ([artefact["component"]] if isinstance(artefact.get("component"), str) else artefact.get("component", [])):
-            if name not in recipe_names or name.split("/")[1] not in conditional:
+            if name not in slots or name not in conditional:
                 found["marks"].append(f"{artefact['source']}: {name} is not a component the recipe can leave out")
 
     installed = application.installed_artefacts(manifest, present)
@@ -77,7 +76,7 @@ def check_design(world, design) -> dict:
 
 def load_world():
     world = recipe_world.world()
-    world.recipe_names = {c["id"]: c["name"] for c in world.recipe["components"]}
+    world.recipe_names = {c["id"]: c["preferred"]["name"] for c in world.recipe["components"]}
     return world
 
 
@@ -94,7 +93,7 @@ def run(world=None):
             raise SystemExit(f"{name}: the evaluator refused the answers: {result['errors']}")
         design = result["design"]
         found = check_design(world, design)
-        present = {design["recipe"]["name"], *(c["name"] for c in design["components"])}
+        present = application.present_components(design)
         found["installed"] = len(application.installed_artefacts(world.manifests[E.APPLICATION], present))
         found["total"] = len(world.manifests[E.APPLICATION]["artefacts"])
         results[name] = found

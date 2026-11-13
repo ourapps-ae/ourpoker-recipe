@@ -1,4 +1,4 @@
-import { createServerHost } from "../../components/server-host/server/host";
+import { createServerHost } from "../../components/server-host/server/index";
 import { createWorker, json } from "../../components/realtime-rooms/server/index";
 import { updateRoute } from "./update-links";
 import { videoRoute } from "./video";
@@ -6,7 +6,7 @@ import { ROOM_IDS } from "./contract";
 import { Room as RoomBase, settings } from "./room";
 import { Directory as DirectoryBase } from "./directory";
 // aepm renders this file at install from the server-host settings (provider, account reference, allowed origins, room prefix, region).
-import { serverSettings } from "../../components/server-host/server/host-settings";
+import { serverSettings } from "../../components/server-host/server/index";
 
 // The web client, the native apps' own origin (not an http address, so the host takes it as a pattern),
 // and web copies served by the library on a subdomain.

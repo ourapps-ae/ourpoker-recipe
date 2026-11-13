@@ -1,6 +1,6 @@
 // Countdown bars: each element carries the wall-clock deadline and the total; one interval updates
 // them all. A frozen bar (the play clock held) stands still at the value the server sent.
-import { formatClock } from "../../components/game-clock/web/countdown";
+import { formatClock } from "../../components/game-clock/web/index";
 import { h } from "./ui";
 import { L } from "./i18n";
 import { play } from "./sound";

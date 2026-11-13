@@ -2,7 +2,7 @@
 // and check, and the bet bar while choosing an amount. What the quick amounts and the confirm button
 // mean comes from the holdem-rules component (web/betting.ts); this draws them.
 import type { PlayerView, View } from "./api";
-import { betKind, canSlide, presets, stepFor } from "../../components/holdem-rules/web/betting";
+import { betKind, canSlide, presets, stepFor } from "../../components/holdem-rules/web/index";
 import { L } from "./i18n";
 import { play } from "./sound";
 import type { State, Store } from "./store";

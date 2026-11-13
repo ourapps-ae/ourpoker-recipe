@@ -28,7 +28,7 @@ export async function openOwnedBrowser() {
   const base = process.env.AEPM_CONTEXT_FILE ? path.dirname(process.env.AEPM_CONTEXT_FILE) : process.env.AEPM_PRIVATE_ROOT;
   const profileRoot = path.join(base, 'profiles', 'browser');
   await mkdir(profileRoot, { recursive: true, mode: 0o700 });
-  const { launchOwnedBrowser } = await import('../../components/video-calls/verification/browser-process.mjs');
+  const { launchOwnedBrowser } = await import('../../components/video-calls/verification/index.mjs');
   return await launchOwnedBrowser({ profileRoot, timeoutMilliseconds: 30000 });
 }
 

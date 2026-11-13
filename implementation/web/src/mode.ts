@@ -1,4 +1,4 @@
-import { createMode, displayCapabilities, type SessionMode } from "../../components/display-mode/web/mode";
+import { createMode, displayCapabilities, type SessionMode } from "../../components/display-mode/web/index";
 import { displayModeConfiguration } from "./configuration";
 export type { SessionMode };
 export const modeEvent = displayModeConfiguration.eventName;

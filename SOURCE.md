@@ -8,7 +8,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 
 | File | Lines | Origin (the source's recipe/ folder) | Notes |
 |---|---|---|---|
-| `implementation/server/src/adapter.ts` | 18 | server/src/adapter.ts 1-109 | The room's lobby, join, apply, advance and view moved to turn-engine; the rest wraps its view in the poker wire view and gives it the hand text and odds. |
+| `implementation/server/src/adapter.ts` | 20 | server/src/adapter.ts 1-109 | The room's lobby, join, apply, advance and view moved to turn-engine; the rest wraps its view in the poker wire view and gives it the hand text and odds. |
 | `implementation/server/src/contract.ts` | 257 | server/src/contract.ts 1-257 | Wire types the four clients decode. |
 | `implementation/server/src/directory.ts` | 6 | server/src/directory.ts 1-3 | The room list class, over room-directory's createDirectoryClass. |
 | `implementation/server/src/env.d.ts` | 15 | new | The worker's bindings and variables; the source generated it with `wrangler types`. |
@@ -40,7 +40,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/web/src/mode.ts` | 10 | web/src/mode.ts 1-9 | Over display-mode. |
 | `implementation/web/src/odds-panel.ts` | 67 | web/src/table.ts 1023-1081 | The possible-hands panel. |
 | `implementation/web/src/poker.css` | 273 | web/src/style.css 1-359 | Rules only poker needs; the rest moved to theme, controls, card-graphics, chip-graphics, table-layout and guided-tour. |
-| `implementation/web/src/rooms.ts` | 26 | web/src/background.ts 1-181 | The two room looks; the drawing moved to theme. |
+| `implementation/web/src/rooms.ts` | 25 | web/src/background.ts 1-181 | The two room looks; the drawing moved to theme. |
 | `implementation/web/src/screens.ts` | 232 | web/src/screens.ts 1-230 | Home, name, lobby, end and help screens. |
 | `implementation/web/src/shell.ts` | 7 | web/src/main.ts 118-121 | Starts the installable shell; the only web module that imports web-host. |
 | `implementation/web/src/showdown.ts` | 216 | web/src/table.ts 327-523 | Showdown display and where shown hands go. |
@@ -62,10 +62,10 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/server/vitest.config.ts` | 16 | server/vitest.config.ts 1-19 | The room tests use server-host's `wrangler.jsonc`. |
 | `implementation/web/package.json`, `package-lock.json` | 23, 1075 | web/package.json 1-20, web/package-lock.json | Exact versions; with `livekit-client` (installed with video-calls). |
 | `implementation/web/index.html` | 10 | web/index.html 1-21 | The body and the entry; web-host's Vite configuration writes the head. |
-| `implementation/web/vite.config.ts` | 20 | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
+| `implementation/web/vite.config.ts` | 18 | web/vite.config.ts 1-28 | Returns web-host's `webHostConfig` with the theme's colours. |
 | `implementation/web/tsconfig.json` | 17 | web/tsconfig.json 1-16 | |
-| `implementation/apple/generate-project.ts` | 30 | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
-| `implementation/android/generate-project.ts` | 47 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
+| `implementation/apple/generate-project.ts` | 29 | ios/project.yml 1-150, prepare-project.py | Runs apple-host's renderer with the installed components' Swift folders. |
+| `implementation/android/generate-project.ts` | 46 | android/settings.gradle.kts, build.gradle.kts, app/build.gradle.kts 1-150, AndroidManifest.xml | Runs android-host's renderer with the installed components' Android folders and the source's dependencies. |
 | `locales/generated/` | 6 files | i18n generator output | Written by `scripts/make_component.py` with translations' generator from `locales/strings.json`. |
 
 ## Stand-ins (`implementation/stand-ins/`, installed when the design leaves the component out)
@@ -152,7 +152,7 @@ Everything here was taken from the `recipe/` folder of the OurPoker source at Mc
 | `implementation/desktop/package.json` | 22 | desktop/package.json 1-21 | Name templated. |
 | `implementation/desktop/package-lock.json` | 3604 | desktop/package-lock.json | Exact versions of electron and electron-builder. |
 | `implementation/desktop/scripts/build.cjs` | 4 | desktop/scripts/build.cjs 1-4 |  |
-| `implementation/desktop/scripts/package.cjs` | 97 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings; stages configuration.cjs; writes the icon, name, publisher and version into the executable. |
+| `implementation/desktop/scripts/package.cjs` | 99 | desktop/scripts/package.cjs 1-93 | Unsigned Windows installer settings; stages configuration.cjs; writes the icon, name, publisher and version into the executable. |
 | `implementation/desktop/src/configuration.cjs` | 13 | desktop/src/main.cjs 1-12, verify.cjs | The windows-desktop configuration document, shared by main and verify. |
 | `implementation/desktop/src/main.cjs` | 8 | desktop/src/main.cjs 1-12 |  |
 | `implementation/desktop/src/verify.cjs` | 134 | desktop/src/verify.cjs 1-135 |  |
@@ -203,7 +203,7 @@ Copied from the source and mapped back to the application layout by the artefact
 | `tests/e2e/apple/*` (6) | 339 | ios/OurPokerTests/{Contract,Session,Guide,ChallengeLayout}Tests.swift, OurPokerUITests/HomeButtonsUITests.swift, VerificationSupport/ServerAddress.swift |
 | `tests/e2e/android/*` (3) | 190 | android app/src/test FixturesTest.kt, SoundSettingTest.kt; androidTest FixtureScreenTest.kt (strings looked up by name) |
 | `tests/fixtures/*.json` (15) | 3575 | server/fixtures/* |
-| `tests/portable.test.ts` | 218 | new |
+| `tests/portable.test.ts` | 231 | new |
 | `examples/configuration.ts` | 46 | new |
 
 ## Moved to components

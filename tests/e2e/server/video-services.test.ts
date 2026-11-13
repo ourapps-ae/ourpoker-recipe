@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import type { VideoGrant } from "../../components/video-calls/server/video";
+import type { VideoGrant } from "../../components/video-calls/server/index";
 import { createVideoServices } from "../src/video";
 import { settings } from "../src/settings";
 

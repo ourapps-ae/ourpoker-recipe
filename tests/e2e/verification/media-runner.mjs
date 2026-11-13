@@ -1,11 +1,11 @@
-import { readContext, makeResult, writeResult, writeCleanupResult } from '../components/video-calls/verification/result.mjs';
-import { verifyMedia } from '../components/video-calls/verification/provider.mjs';
+import { readContext, makeResult, writeResult, writeCleanupResult } from '../components/video-calls/verification/index.mjs';
+import { verifyMedia } from '../components/video-calls/verification/index.mjs';
 import { fileURLToPath } from 'node:url';
 import { prepareApplicationMedia } from './application-media.mjs';
 
 const context = await readContext();
 process.env.PLAYWRIGHT_BROWSERS_PATH = fileURLToPath(new URL('../.verification-browser', import.meta.url));
-const { createProviderDependencies, cleanupProvider } = await import('../components/video-calls/verification/adapters.mjs');
+const { createProviderDependencies, cleanupProvider } = await import('../components/video-calls/verification/index.mjs');
 if (process.argv[2] === 'cleanup') {
   await writeCleanupResult(await cleanupProvider(context));
 } else {

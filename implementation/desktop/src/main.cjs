@@ -1,5 +1,5 @@
 const { app } = require('electron');
-const { start } = require('../../components/windows-desktop/desktop/src/main.cjs');
+const { start } = require('../../components/windows-desktop/desktop/index.cjs');
 const { desktopConfiguration } = require('./configuration.cjs');
 if (process.argv.includes('--verify-application')) {
   require('./verify.cjs').verify().catch(() => app.exit(1));

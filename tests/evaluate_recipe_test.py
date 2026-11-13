@@ -496,7 +496,7 @@ class Rules(unittest.TestCase):
 
     def test_unknown_component_and_unknown_setting(self):
         def component(recipe):
-            recipe["components"].append({"id": "ghost", "name": "ourapps-ae/ghost", "version": "0.1.0", "configuration": {}, "includedWhen": None})
+            recipe["components"].append({"id": "ghost", "class": {"provides": [], "requires": [], "configuration": {"type": "object"}}, "preferred": {"name": "ourapps-ae/ghost", "version": "0.1.0"}, "configuration": {}, "includedWhen": None})
         self.assertIn(("unknown-component", "ghost"), codes(E.evaluate(self.mutate(component), SETS["default"])))
 
         def setting(recipe):
@@ -543,8 +543,8 @@ class Rules(unittest.TestCase):
         design = evaluated(SETS["tv-only"])
         self.assertFalse([c for c in design["design"]["connections"] if "web-host" in (c["source"]["instance"], c["target"]["instance"])])
         open_ports = {f"{c['id']}.{p['id']}" for c in design["components"] for p in WORLD.manifests[c["id"]]["requires"] if p.get("optional")}
-        self.assertTrue({"display-mode.configuration"} <= open_ports)
-        self.assertFalse([c for c in design["design"]["connections"] if c["target"] == {"instance": "display-mode", "port": "configuration"}])
+        self.assertTrue({"display-mode.display-mode-configuration"} <= open_ports)
+        self.assertFalse([c for c in design["design"]["connections"] if c["target"] == {"instance": "display-mode", "port": "display-mode-configuration"}])
 
     def test_the_application_is_an_instance_of_the_design(self):
         design = evaluated(SETS["default"])
@@ -552,8 +552,8 @@ class Rules(unittest.TestCase):
         for port in WORLD.manifests["application"]["requires"]:
             if not port.get("optional"):
                 self.assertIn(("application", port["id"]), targets)
-        self.assertIn(("realtime-rooms", "game"), targets)
-        source = [c["source"] for c in design["design"]["connections"] if c["target"] == {"instance": "realtime-rooms", "port": "game"}]
+        self.assertIn(("realtime-rooms", "game-adapter"), targets)
+        source = [c["source"] for c in design["design"]["connections"] if c["target"] == {"instance": "realtime-rooms", "port": "game-adapter"}]
         self.assertEqual(source, [{"instance": "application", "port": "poker-game-adapter"}])
 
     def test_computer_players_and_poker_strategy_are_left_out_for_none_and_nothing_is_left_unconnected(self):

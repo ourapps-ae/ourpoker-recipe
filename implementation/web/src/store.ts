@@ -1,12 +1,12 @@
 // Client state: saved name and seat, the live connections, actions, and a simple subscribe.
 import { ApiError, api, SERVER, type JoinResponse, type RoomInfo, type View } from "./api";
 import { guideOpen } from "./guide";
-import { Live } from "../../components/realtime-rooms/web/live";
-import { displayCapabilities } from "../../components/display-mode/web/mode";
-import { createIdentityStore } from "../../components/guest-identity/web/identity-store";
-import { watchRooms, type RoomWatcher } from "../../components/room-directory/web/directory-client";
-import { accept } from "../../components/private-views/web/views";
-import { betIsAllIn, callIsAllIn } from "../../components/holdem-rules/web/betting";
+import { Live } from "../../components/realtime-rooms/web/index";
+import { displayCapabilities } from "../../components/display-mode/web/index";
+import { createIdentityStore } from "../../components/guest-identity/web/index";
+import { watchRooms, type RoomWatcher } from "../../components/room-directory/web/index";
+import { accept } from "../../components/private-views/web/index";
+import { betIsAllIn, callIsAllIn } from "../../components/holdem-rules/web/index";
 import { play, type SoundName } from "./sound";
 import { publishMode, type SessionMode } from "./mode";
 

@@ -37,7 +37,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -112,7 +112,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -173,7 +173,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -243,7 +243,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -314,7 +314,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -389,7 +389,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -427,7 +427,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -549,7 +549,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "server"
         }
       ]
     },
@@ -615,7 +615,7 @@
       },
       "tags": [
         {
-          "name": "typescript"
+          "name": "web"
         }
       ]
     }
@@ -716,5 +716,11 @@
         ]
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "server": "server/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

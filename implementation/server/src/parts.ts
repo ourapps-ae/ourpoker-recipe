@@ -1,17 +1,17 @@
 // Composition: selects the components that fill each of the turn engine's parts, each through its own interface, and
 // gives them the numbers from the house rules (rules.ts). The components know nothing of each other.
-import type { EngineSettings } from "../../components/turn-engine/server/engine";
-import type { Parts } from "../../components/turn-engine/server/parts";
-import { advance, create as createClock, elapsed, reset, wallAt } from "../../components/game-clock/server/clock";
-import { redact } from "../../components/private-views/server/private-views";
-import { createPresenceApi } from "../../components/presence/server/presence";
-import { createHistoryApi } from "../../components/round-history/server/history";
-import { awardPot, buildPots, commit, createLedgerApi, displayPots, endRound, fold, nextHand, returnUncalled, setSeats, settle, stakeOf, validateSettings, voidHand } from "../../components/chip-ledger/server/ledger";
-import { createScheduleApi, scheduleFromRules } from "../../components/level-schedule/server/levels";
-import { createShuffledDeck } from "../../components/card-deck/server/deck";
-import { createSeating, type SeatingSettings } from "../../components/seating/server/seating";
-import { createIdentityApi } from "../../components/guest-identity/server/identity";
-import { createTournament } from "../../components/tournament/server/tournament";
+import type { EngineSettings } from "../../components/turn-engine/server/index";
+import type { Parts } from "../../components/turn-engine/server/index";
+import { advance, create as createClock, elapsed, reset, wallAt } from "../../components/game-clock/server/index";
+import { redact } from "../../components/private-views/server/index";
+import { createPresenceApi } from "../../components/presence/server/index";
+import { createHistoryApi } from "../../components/round-history/server/index";
+import { awardPot, buildPots, commit, createLedgerApi, displayPots, endRound, fold, nextHand, returnUncalled, setSeats, settle, stakeOf, validateSettings, voidHand } from "../../components/chip-ledger/server/index";
+import { createScheduleApi, scheduleFromRules } from "../../components/level-schedule/server/index";
+import { createShuffledDeck } from "../../components/card-deck/server/index";
+import { createSeating, type SeatingSettings } from "../../components/seating/server/index";
+import { createIdentityApi } from "../../components/guest-identity/server/index";
+import { createTournament } from "../../components/tournament/server/index";
 import { createGameRules } from "../../components/holdem-rules/server/index";
 import { handRanking } from "../../components/poker-hand-ranking/server/index";
 import { createOdds } from "../../components/poker-odds/server/index";

@@ -3,7 +3,7 @@ import { test } from "node:test";
 globalThis.localStorage = { getItem: () => null, setItem: () => {} };
 globalThis.document = Object.assign(new EventTarget(), { documentElement: { dataset: {} }, body: { append() {} } });
 globalThis.window = Object.assign(new EventTarget(), { setTimeout, setInterval });
-const { Video: ComponentVideo } = await import("../../components/video-calls/web/video.ts");
+const { Video: ComponentVideo } = await import("../../components/video-calls/web/index.ts");
 const { publishMode, canCapture, modeEvent } = await import("../src/mode.ts");
 const { soundOn } = await import("../src/sound.ts");
 class Video extends ComponentVideo {

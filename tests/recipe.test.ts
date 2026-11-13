@@ -40,7 +40,7 @@ const rules: Obj = read(join(root, "rules", "texas-holdem-house-rules.json"));
 const componentDirectories = () => readdirSync(componentsRoot, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort();
 
 const byId = new Map<string, Obj>(recipe.components.map((c: Obj) => [c.id, c]));
-const manifests = new Map<string, Obj>(recipe.components.map((c: Obj) => [c.id, manifest(slugOf(c.name))]));
+const manifests = new Map<string, Obj>(recipe.components.map((c: Obj) => [c.id, manifest(slugOf(c.preferred.name))]));
 const questions = new Map<string, Obj>(recipe.questions.map((q: Obj) => [q.id, q]));
 
 // `application.<setting>` is a setting of the recipe's own component (component.json beside this file).
@@ -83,8 +83,8 @@ function validatorContext(): { settings: Record<string, Obj[]>; profiles: Record
   const settings: Record<string, Obj[]> = { [APPLICATION]: ownManifest.collect };
   const profiles: Record<string, Obj[]> = {};
   for (const c of recipe.components) {
-    settings[c.name] = manifests.get(c.id)!.collect;
-    profiles[c.name] = suitability(slugOf(c.name)).profiles;
+    settings[c.preferred.name] = manifests.get(c.id)!.collect;
+    profiles[c.preferred.name] = suitability(slugOf(c.preferred.name)).profiles;
   }
   return { settings, profiles };
 }
@@ -112,14 +112,14 @@ test("page, instructions and diagram files exist; the diagrams are safe SVG", ()
   assert.ok(existsSync(join(root, "page", "diagram.png")), "page/diagram.png is missing");
 });
 
-test("every component exists in components/ at the version named, and all 39 directories are used", () => {
+test("every slot's preferred component exists in components/ at the version named", () => {
   const directories = componentDirectories();
-  assert.deepEqual(recipe.components.map((c: Obj) => slugOf(c.name)).sort(), directories);
+  assert.deepEqual(recipe.components.map((c: Obj) => slugOf(c.preferred.name)).sort(), directories.filter((d) => recipe.components.some((c: Obj) => slugOf(c.preferred.name) === d)));
   for (const c of recipe.components) {
     const m = manifests.get(c.id)!;
-    assert.equal(m.identity.name, c.name, `${c.id} name`);
-    assert.equal(m.identity.version.join ? m.identity.version.join(".") : m.identity.version, c.version, `${c.id} version`);
-    assert.equal(c.id, slugOf(c.name), `${c.id}: the instance id is the component's short name`);
+    assert.equal(m.identity.name, c.preferred.name, `${c.id} name`);
+    assert.equal(m.identity.version, c.preferred.version, `${c.id} version`);
+    assert.equal(c.id, slugOf(c.preferred.name), `${c.id}: the slot id is the preferred component's short name`);
     assert.notEqual(c.id, APPLICATION);
   }
 });
@@ -274,10 +274,10 @@ test("connections use real port ids and types, join identical type and version, 
   }
   const open: string[] = [];
   for (const [id, m] of all) for (const p of m.requires) if (!connected.has(`${id}.${p.id}`)) open.push(`${id}.${p.id}:${p.optional === true}`);
-  assert.deepEqual(open.sort(), ["display-mode.configuration:true", "video-calls.configuration:true", "windows-desktop.configuration:true"]);
+  assert.deepEqual(open.sort(), ["display-mode.display-mode-configuration:true", "video-calls.video-calls-configuration:true", "windows-desktop.windows-desktop-configuration:true"]);
   const has = (s: string, sp: string, t: string, tp: string) => recipe.connections.some((c: Obj) => c.source.instance === s && c.source.port === sp && c.target.instance === t && c.target.port === tp);
   assert.ok(has("guest-identity", "guest-identity", "realtime-rooms", "guest-identity"), "realtime-rooms takes identity from guest-identity");
-  assert.ok(has(APPLICATION, "poker-game-adapter", "realtime-rooms", "game"), "the clients read the application's poker view");
+  assert.ok(has(APPLICATION, "poker-game-adapter", "realtime-rooms", "game-adapter"), "the clients read the application's poker view");
   assert.ok(has("turn-engine", "game-adapter", APPLICATION, "game-adapter"));
   assert.equal(recipe.connections.filter((c: Obj) => c.target.instance === APPLICATION).length, ownManifest.requires.length);
 });
@@ -448,7 +448,7 @@ test("the questions of paper Section 5.4 are present, in order, with the follow-
 });
 
 test("artefact `component` marks name only components the recipe can leave out", () => {
-  const optional = new Set(recipe.components.filter((c: Obj) => c.includedWhen).map((c: Obj) => c.name));
+  const optional = new Set(recipe.components.filter((c: Obj) => c.includedWhen).map((c: Obj) => c.id));
   const marked = ownManifest.artefacts.filter((a: Obj) => "component" in a);
   assert.ok(marked.length > 0);
   for (const a of marked) for (const name of [a.component].flat()) assert.ok(optional.has(name), `${a.source}: ${name} is not conditional`);

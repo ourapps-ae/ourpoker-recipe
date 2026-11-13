@@ -52,6 +52,11 @@
           "code": 1,
           "message": "width and height must be above 0"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -87,7 +92,12 @@
         "schema": {
           "$ref": "#/components/schemas/Orientation"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "relativeSeat",
@@ -122,7 +132,12 @@
           "type": "integer",
           "minimum": 0
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "clampSeats",
@@ -144,7 +159,12 @@
           "minimum": 2,
           "maximum": 9
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "seatAngle",
@@ -171,7 +191,12 @@
         "schema": {
           "type": "number"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "ringPoint",
@@ -191,7 +216,12 @@
         "schema": {
           "$ref": "#/components/schemas/Point"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "clockwiseTarget",
@@ -221,7 +251,12 @@
         "schema": {
           "type": "number"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "tableCardWidth",
@@ -254,7 +289,12 @@
             36
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "tableBoxSize",
@@ -300,7 +340,12 @@
         "schema": {
           "$ref": "#/components/schemas/BoxSize"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Ring",
@@ -329,7 +374,12 @@
         "schema": {
           "$ref": "#/components/schemas/Ring"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Ring.angle",
@@ -349,7 +399,12 @@
         "schema": {
           "type": "number"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Ring.point",
@@ -369,7 +424,12 @@
         "schema": {
           "$ref": "#/components/schemas/Point"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Ring.fractionToward",
@@ -398,7 +458,12 @@
           "minimum": 0,
           "maximum": 1
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Ring.outward",
@@ -418,7 +483,12 @@
         "schema": {
           "type": "number"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "seatStyle",
@@ -455,7 +525,12 @@
         "schema": {
           "$ref": "#/components/schemas/SeatStyle"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "boxAspect",
@@ -476,7 +551,12 @@
           "type": "string",
           "pattern": "^[0-9.]+ / [0-9.]+$"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "tableView",
@@ -512,7 +592,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "tableFor",
@@ -575,7 +660,12 @@
             }
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "tvScreen",
@@ -629,7 +719,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     }
   ],
   "components": {
@@ -979,5 +1074,10 @@
         "description": "A DOM HTMLElement."
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

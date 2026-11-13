@@ -1,6 +1,6 @@
 // Where things sit on the poker table, read from the table-layout component's portrait layout.
 // The component gives fractions of the table box; the screens position in percent.
-import { relativeSeat, tableLayout, type Point, type TableLayout } from "../../components/table-layout/web/layout";
+import { relativeSeat, tableLayout, type Point, type TableLayout } from "../../components/table-layout/web/index";
 export type { Point };
 import type { PlayerView, View } from "./api";
 

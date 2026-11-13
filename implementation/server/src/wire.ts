@@ -1,7 +1,7 @@
 // The wire contract the four clients decode (contract.ts) built from the turn engine's view. The
 // engine's view is generic (round, game, legal.game); this maps it to the poker view the web, Apple
 // and Android clients already read, so the clients and the decoder fixtures stay as they are.
-import type { View as EngineView } from "../../components/turn-engine/server/engine";
+import type { View as EngineView } from "../../components/turn-engine/server/index";
 import { CONTRACT_VERSION, type ClockView, type HandResultView, type HandView, type Legal, type OddsCard, type OddsRow, type Phase, type PlayerView, type View } from "./contract";
 
 export type LinkExtras = { inviteUrl: string | null; updateUrl: string | null };

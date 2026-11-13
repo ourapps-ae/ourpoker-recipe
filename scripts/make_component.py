@@ -38,7 +38,7 @@ TITLE = "OurPoker"
 SOURCE_REVISION = "19905b75dbea89fbfd424d67fe26c81aaed0e018"
 KOTLIN = "app/ourapps/ourpoker"
 
-NOT_PACKAGED_TOP = {".git", ".gitignore", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "releases", "REVIEW.md"}
+NOT_PACKAGED_TOP = {".git", ".gitattributes", ".gitignore", ".opencode", "authoring", "scripts", "component.json", "AGENTS.md", "releases", "REVIEW.md"}
 SKIPPED = {".DS_Store", "__pycache__"}
 
 COLLECT = [
@@ -270,7 +270,7 @@ DECLARED = {
 
 # The repository files (GitHub Actions, their scripts, the release description): installed with the release pipeline
 # (ourapps-release, in the design when builds are published or the releases answer is yes) and the host each one builds.
-RELEASE = "ourapps-ae/ourapps-release"
+RELEASE = "ourapps-release"
 REPOSITORY = {
     "workflows/ci-server.yml": [], "workflows/release.yml": [], "release/app.json": [],
     "workflows/ci-web.yml": ["web-host"], "workflows/ci-android.yml": ["android-host"],
@@ -282,7 +282,7 @@ REPOSITORY = {
 def repository_condition(source):
     """The `component` of a repository file: the release pipeline, and with it the host the file builds (a list: all of them)."""
     hosts = REPOSITORY[source[len("implementation/repository/"):]]
-    return RELEASE if not hosts else sorted([RELEASE, *("ourapps-ae/" + host for host in hosts)])
+    return RELEASE if not hosts else sorted([RELEASE, *hosts])
 
 
 def stand_ins(pairs, conditions):
@@ -329,7 +329,7 @@ def conditions_of(pairs):
     for source, names in reached.items():
         choices = {min(same[conditional[c]]) for c in names}
         if choices:
-            out[source] = "ourapps-ae/" + min(choices, key=lambda c: (c not in hosts, c))
+            out[source] = min(choices, key=lambda c: (c not in hosts, c))
     return out
 
 
@@ -444,10 +444,14 @@ def render(example):
 # ---- the interface files ----
 
 def interfaces_json(manifest):
-    """One standard document per provided port (interfaces/<port>.json). interfaces/required-<port>.json are copies of the
-    providing components' documents, written by the workspace's interface sync, not here."""
+    """One standard document per provided port (interfaces/<port>.json), and interfaces/required-<port>.json, a byte copy of the
+    providing component's document."""
     documents = {"poker-game-adapter": poker_game_adapter.document()}
     out = {}
+    for port, component in REQUIRES:
+        provider = read(COMPONENTS / component / "component.json")
+        source = next(q["path"] for q in provider["provides"] if q["type"] == "ae/" + port)
+        (ROOT / f"interfaces/required-{port}.json").write_bytes((COMPONENTS / component / source).read_bytes())
     for p in manifest["provides"]:
         document = documents[p["id"]]
         assert (document["info"]["title"], document["info"]["version"]) == (p["type"], p["version"]), p["id"]

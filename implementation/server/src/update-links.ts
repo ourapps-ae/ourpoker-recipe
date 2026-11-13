@@ -1,4 +1,4 @@
-import { updateUrlFor } from "../../components/store-update/server/store";
+import { updateUrlFor } from "../../components/store-update/server/index";
 import { settings } from "./settings";
 
 // The only server module that imports store-update: the manifest installs it only when the design includes that component.

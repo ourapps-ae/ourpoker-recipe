@@ -874,5 +874,9 @@
         }
       }
     }
+  },
+  "x-ourapps-modules": {
+    "server": "server/index.ts",
+    "apple": "apple/Sources"
   }
 }

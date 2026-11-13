@@ -8,10 +8,13 @@ Usage: python3 -B authoring/make_recipe.py
 """
 import os
 import json
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
 COMPONENTS = Path(os.environ.get("OURPOKER_COMPONENTS") or HERE.parent.parent / "components")  # the component checkouts
+sys.path.insert(0, str(HERE.parent.parent / "aepm"))  # a sibling checkout, unless PYTHONPATH already names one
+from aepm.application import GRAMMARS  # noqa: E402  (the setting grammars a class's patterns come from)
 
 # Order follows paper Section 5.3.
 ORDER = [
@@ -205,11 +208,11 @@ QUESTIONS = [
 
 # Server provider and size are chosen by selection (rule 7); the server answer restricts the candidates.
 JOBS = [
-    {"id": "server", "overrideQuestion": "server",
+    {"id": "server", "slot": "server-host", "overrideQuestion": "server",
      "candidates": [{"component": "ourapps-ae/server-host", "profile": p} for p in ("cloudflare-free", "cloudflare-paid", "own-hardware")]},
-    {"id": "realtime", "overrideQuestion": "server",
+    {"id": "realtime", "slot": "realtime-rooms", "overrideQuestion": "server",
      "candidates": [{"component": "ourapps-ae/realtime-rooms", "profile": p} for p in ("free", "paid", "own-hardware")]},
-    {"id": "video", "candidates": [{"component": "ourapps-ae/video-calls", "profile": p} for p in ("free", "paid", "scale")]},
+    {"id": "video", "slot": "video-calls", "candidates": [{"component": "ourapps-ae/video-calls", "profile": p} for p in ("free", "paid", "scale")]},
 ]
 
 SCALE = {"question": "scale", "bands": [
@@ -275,7 +278,7 @@ def connections_from(manifests, application, included_when):
         providers.setdefault(port["type"], []).append((APPLICATION, port["id"]))
     # realtime-rooms serves the clients through the application's adapter, which wraps turn-engine's; the application in turn
     # takes turn-engine's own adapter.
-    preferred = {("realtime-rooms", "game"): (APPLICATION, "poker-game-adapter"), (APPLICATION, "game-adapter"): ("turn-engine", "game-adapter")}
+    preferred = {("realtime-rooms", "game-adapter"): (APPLICATION, "poker-game-adapter"), (APPLICATION, "game-adapter"): ("turn-engine", "game-adapter")}
     out = []
     for consumer, manifest in [(slug, manifests[slug]) for slug in ORDER] + [(APPLICATION, application)]:
         for port in manifest["requires"]:
@@ -298,20 +301,74 @@ def connections_from(manifests, application, included_when):
     return out
 
 
+def written_settings(slug):
+    """setting id -> True when the recipe always writes it: the slot's configuration, and question `sets` that give a value for
+    every answer (a literal, a map, a scale load, or the answer of a question whose answer is never empty text)."""
+    out = {setting: True for setting in CONFIGURATION.get(slug, {})}
+    for question in QUESTIONS:
+        for effect in question["effects"]:
+            for target, form in effect.get("sets", {}).items():
+                instance, _, setting = target.partition(".")
+                if instance != slug:
+                    continue
+                if isinstance(form, dict) and ("ref" in form or "template" in form):
+                    always = False
+                elif form == "$answer":
+                    always = question["type"] != "text" or question.get("default", "") != ""
+                else:
+                    always = True
+                out[setting] = out.get(setting, False) or always
+    return out
+
+
+def slot_class(slug, manifest, connections):
+    """What the recipe relies on in the slot (the component standard, "Recipe slots and component classes"): the interfaces its
+    connections take from it and feed into it, and a JSON Schema of the settings the recipe writes on it."""
+    by_id = {port["id"]: port for key in ("provides", "requires") for port in manifest[key]}
+    out_ports = sorted({c["source"]["port"] for c in connections if c["source"]["instance"] == slug})
+    in_ports = sorted({c["target"]["port"] for c in connections if c["target"]["instance"] == slug})
+    provides = [{"type": by_id[p]["type"], "version": by_id[p]["version"]} for p in out_ports]
+    requires = [{"type": by_id[p]["type"], "version": by_id[p]["version"], **({"optional": True} if by_id[p].get("optional") else {})}
+                for p in in_ports]
+    declarations = {item["id"]: item for item in manifest["collect"]}
+    written = written_settings(slug)
+    # the slot's job writes `provider` from the selected profile (rule 17) and the profile's own settings (rule 23)
+    for job in JOBS:
+        if job["slot"] != slug:
+            continue
+        if "provider" in declarations:
+            written["provider"] = True
+        profiles = {p["id"]: p for p in read(COMPONENTS / slug / "suitability.json")["profiles"]}
+        chosen = [profiles[c["profile"]].get("settings") or {} for c in job["candidates"]]
+        for setting in set().union(*chosen):
+            written[setting] = written.get(setting, False) or all(setting in s for s in chosen)
+    properties = {}
+    for setting in sorted(written):
+        declaration = declarations[setting]
+        schema = {"type": declaration["type"]}
+        if declaration["type"] == "string":
+            schema["pattern"] = "^" + GRAMMARS[declaration["grammar"]] + "$"
+        properties[setting] = schema
+    return {"provides": provides, "requires": requires,
+            "configuration": {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object", "properties": properties,
+                              "required": sorted(s for s, always in written.items() if always), "additionalProperties": True}}
+
+
 def main() -> None:
     manifests = {s: read(COMPONENTS / s / "component.json") for s in ORDER}
-    assert len(manifests) == 39 and sorted(p.name for p in COMPONENTS.iterdir() if p.is_dir()) == sorted(ORDER)
+    assert len(manifests) == 39  # the components folder may hold other components too (alternatives for a slot)
     application = read(HERE / "component.json")
 
     included_when = conditions(manifests)
 
+    connections = connections_from(manifests, application, included_when)
     components = []
     for slug in ORDER:
         ident = manifests[slug]["identity"]
         assert ident["name"] == f"ourapps-ae/{slug}"
-        components.append({"id": slug, "name": ident["name"], "version": ident["version"],
+        components.append({"id": slug, "class": slot_class(slug, manifests[slug], connections),
+                           "preferred": {"name": ident["name"], "version": ident["version"]},
                            "configuration": CONFIGURATION.get(slug, {}), "includedWhen": included_when.get(slug)})
-    connections = connections_from(manifests, application, included_when)
 
     recipe = {
         "format": 1, "name": "ourapps-ae/ourpoker", "version": "0.4.3", "title": "OurPoker",
