@@ -58,10 +58,10 @@ Each component sits in a slot named after it: the slot's class is what the recip
 
 ## Building it
 
-With aepm and the published catalogue: `aepm fetch ourpoker@0.5.1 --with-dependencies --store STORE`, then read the recipe's INSTRUCTIONS.md from the fetched archive:
+With aepm and the published catalogue: `aepm fetch ourpoker@0.5.2 --with-dependencies --store STORE`, then read the recipe's INSTRUCTIONS.md from the fetched archive:
 
 ```
-python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e in json.load(open(s+"/catalogue.json"))["entries"] if e["name"]=="ourapps-ae/ourpoker" and e["version"]==v); sys.stdout.write(tarfile.open(f"{s}/objects/{d}.tar").extractfile("INSTRUCTIONS.md").read().decode())' STORE 0.5.1 > INSTRUCTIONS.md
+python3 -c 'import json,sys,tarfile; s,v=sys.argv[1:]; d=next(e["digest"] for e in json.load(open(s+"/catalogue.json"))["entries"] if e["name"]=="ourapps-ae/ourpoker" and e["version"]==v); sys.stdout.write(tarfile.open(f"{s}/objects/{d}.tar").extractfile("INSTRUCTIONS.md").read().decode())' STORE 0.5.2 > INSTRUCTIONS.md
 ```
 
 It takes you through `aepm questions`, `aepm design`, `aepm resolve` and `aepm install`, then the build and run commands for each device.
@@ -83,7 +83,7 @@ The default answers, `book-club`, `poker-league`, `company-event`, `company-even
 
 ## Status
 
-Version 0.5.1. Installed with `aepm install` from signed packages and built and run with the recipe's own install proof and by fresh agents following INSTRUCTIONS.md:
+Version 0.5.2. Installed with `aepm install` from signed packages and built and run with the recipe's own install proof and by fresh agents following INSTRUCTIONS.md:
 
 - Server on Node and on Cloudflare Workers (deployed, two-step with the web client on its own worker); the web client in a browser, locally and deployed: a player sits, a computer player joins and a hand is dealt.
 - iPhone and iPad, Mac (Mac Catalyst) and Apple TV apps built for their simulators and Mac; the Android app built, unit-tested and played to a dealt hand on the emulator; the Windows installer built, installed, played and uninstalled on a Windows PC.

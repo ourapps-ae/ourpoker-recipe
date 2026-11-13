@@ -1,6 +1,6 @@
 # OurPoker recipe: instructions
 
-Package `ourapps-ae/ourpoker` 0.5.1. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts, part 3 installs the application with aepm, part 4 builds and runs it, and part 5 is for maintainers of the recipe's own repository. `recipe.json` is the source of truth; this file explains how to use it.
+Package `ourapps-ae/ourpoker` 0.5.2. Part 1 is for the agent that answers the questions, part 2 for the developer who owns the accounts, part 3 installs the application with aepm, part 4 builds and runs it, and part 5 is for maintainers of the recipe's own repository. `recipe.json` is the source of truth; this file explains how to use it.
 
 ## 1. For the agent
 
@@ -128,7 +128,7 @@ AEPM="$PWD/aepm"
 aepm() { PYTHONPATH="$AEPM" python3 -B -m aepm "$@"; }
 ```
 
-STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder for downloaded packages, POLICY the owner's policy file, APP the application folder `aepm install` creates (it must not exist yet). `<version>` is the recipe version the catalogue lists (this file belongs to 0.5.1).
+STORE, POLICY and APP below are absolute paths of your choosing: STORE a folder for downloaded packages, POLICY the owner's policy file, APP the application folder `aepm install` creates (it must not exist yet). `<version>` is the recipe version the catalogue lists (this file belongs to 0.5.2).
 
 1. Fetch the recipe and every component it names, with their release and guardian attestations, then read these instructions from the recipe's archive:
    ```

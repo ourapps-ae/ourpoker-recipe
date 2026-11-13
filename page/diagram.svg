@@ -7,7 +7,7 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(28.8 1120.64)">
 <title>recipe</title>
 <polygon fill="#101722" stroke="none" points="-28.8,28.8 -28.8,-1120.64 1208.01,-1120.64 1208.01,28.8 -28.8,28.8"/>
-<text xml:space="preserve" text-anchor="start" x="291.11" y="-1064.14" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="26.00" fill="#e8eef7">OurPoker 0.5.1: the 39 components of the recipe</text>
+<text xml:space="preserve" text-anchor="start" x="291.11" y="-1064.14" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="26.00" fill="#e8eef7">OurPoker 0.5.2: the 39 components of the recipe</text>
 <text xml:space="preserve" text-anchor="start" x="120.86" y="-1048.59" font-family="Helvetica,sans-Serif" font-size="15.00" fill="#9fb0c6">Each box is one component. An arrow runs from the component that provides an interface to the one that uses it, under the default answers.</text>
 <g id="clust1" class="cluster">
 <title>cluster_0</title>

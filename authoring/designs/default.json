@@ -1953,7 +1953,7 @@
       "name": "OurPoker",
       "kind": "application",
       "status": "example",
-      "revision": "0.5.1",
+      "revision": "0.5.2",
       "ports": [
         {
           "id": "wrapped-game-adapter",
