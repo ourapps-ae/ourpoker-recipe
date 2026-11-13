@@ -401,9 +401,13 @@ def android_run(work, name, apk, package, port, avd, reverse=None, shot="android
             if time.time() > deadline:
                 raise Step("android: no Fold, Check or Call button after the game started")
             time.sleep(1)
-        rooms = get_json(f"http://127.0.0.1:{port}/rooms")
-        if not any("Droid" in room["names"] for room in rooms):
-            raise Step("android: the server does not list the player")
+        for _ in range(30):  # the room list catches up with the game within moments
+            rooms = get_json(f"http://127.0.0.1:{port}/rooms")
+            if any("Droid" in room["names"] for room in rooms):
+                break
+            time.sleep(1)
+        else:
+            raise Step(f"android: the server does not list the player: {rooms}")
         (shots / shot).write_bytes(subprocess.run([adb, "-s", serial, "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
         crashes = device("logcat", "-d", "-b", "crash")
         if package in crashes:

@@ -198,7 +198,7 @@ Every value that depends on an answer is already in the installed files (aepm re
 
 ### Repository and releases
 
-The application goes to the GitHub repository the `repository` answer names (the agent proposes `<login>/ourpoker`, with the login from `gh api user -q .login`). Needs git and the GitHub CLI signed in (`gh auth login`). From the application folder, with `<owner>/<name>` the repository and `<version>` the recipe version:
+The application goes to the GitHub repository the `repository` answer names (the agent proposes `<login>/ourpoker`, with the login from `gh api user -q .login`). Needs git and the GitHub CLI signed in (`gh auth login`, then `gh auth setup-git` so git pushes with that sign-in). From the application folder, with `<owner>/<name>` the repository and `<version>` the recipe version:
 
 ```
 printf '# Changelog\n\n## [0.1.0]\n\n### Added\n\n- First release.\n' > CHANGELOG.md
